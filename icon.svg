@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#050a12"/>
+  <rect x="80" y="80" width="352" height="352" fill="none" stroke="#1e6fff" stroke-width="8"/>
+  <rect x="100" y="100" width="312" height="312" fill="none" stroke="#1a3a6a" stroke-width="2"/>
+  <text x="256" y="300" font-family="monospace" font-size="180" font-weight="bold" fill="#1e6fff" text-anchor="middle">S</text>
+  <text x="256" y="420" font-family="monospace" font-size="28" fill="#4a6fa8" text-anchor="middle" letter-spacing="8">SYSTEM</text>
+</svg>
