@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -323,56 +324,30 @@
     /* AVATAR */
     .avatar-stage {
       position: relative;
-      height: 190px;
+      height: 200px;
       margin-bottom: 10px;
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
       pointer-events: none;
+      overflow: hidden;
     }
 
-    .avatar-img {
-      height: 180px;
-      width: auto;
-      object-fit: contain;
-      object-position: bottom center;
-      filter: drop-shadow(0 4px 16px rgba(30,111,255,0.25));
-      transform-origin: bottom center;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      opacity: 0;
-      transition: opacity 0.25s ease;
+    .avatar-lottie {
+      width: 160px;
+      height: 200px;
+      flex-shrink: 0;
+      display: none;
+      filter: drop-shadow(0 4px 16px rgba(30,111,255,0.2));
     }
 
-    .avatar-img.active { opacity: 1; }
-
-    /* IDLE BREATHE */
-    @keyframes idle-breathe {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(2px); }
-    }
-    .avatar-img.active.pose-idle {
-      animation: idle-breathe 3.5s ease-in-out infinite;
-    }
-
-    /* CELEBRATE BOUNCE */
-    @keyframes celebrate-bounce {
-      0%, 100% { transform: translateY(0px); }
-      20%      { transform: translateY(-8px); }
-      40%      { transform: translateY(-4px); }
-      60%      { transform: translateY(-10px); }
-      80%      { transform: translateY(-3px); }
-    }
-    .avatar-img.active.pose-celebrate {
-      animation: celebrate-bounce 0.7s ease-in-out 3;
-    }
+    .avatar-lottie.active { display: block; }
 
     /* SPEECH BUBBLE */
     .speech-bubble {
       position: absolute;
       bottom: 160px;
-      right: 96px;
+      right: 155px;
       background: var(--panel);
       border: 1px solid var(--blue);
       padding: 6px 10px;
@@ -558,10 +533,11 @@
 
     <div class="avatar-stage">
       <div class="speech-bubble" id="speech-bubble"></div>
-      <img class="avatar-img pose-idle active" id="av-idle"         src="avatar_idle.png"         alt="" />
-      <img class="avatar-img pose-watch"       id="av-watch"        src="avatar_watch.png"        alt="" />
-      <img class="avatar-img pose-celebrate"   id="av-celebrate"    src="avatar_celebrate.png"    alt="" />
-      <img class="avatar-img pose-disappoint"  id="av-disappointed" src="avatar_disappointed.png" alt="" />
+      <dotlottie-player class="avatar-lottie active" id="av-idle"    src="mascot.json"         background="transparent" speed="1" loop autoplay></dotlottie-player>
+      <dotlottie-player class="avatar-lottie"        id="av-happy"   src="mascot_happy.json"   background="transparent" speed="1" loop autoplay></dotlottie-player>
+      <dotlottie-player class="avatar-lottie"        id="av-wave"    src="mascot_wave.json"    background="transparent" speed="1" loop autoplay></dotlottie-player>
+      <dotlottie-player class="avatar-lottie"        id="av-winner"  src="mascot_winner.json"  background="transparent" speed="1" loop autoplay></dotlottie-player>
+      <dotlottie-player class="avatar-lottie"        id="av-fail"    src="mascot_fail.json"    background="transparent" speed="1" loop autoplay></dotlottie-player>
     </div>
 
     <div class="progress-bar-wrap">
@@ -824,17 +800,18 @@
     setTimeout(() => t.classList.remove('show'), 2800);
   }
 
-  // ── AVATAR POSE SYSTEM ────────────────────────────────
-  const poses = {
-    idle:        document.getElementById('av-idle'),
-    watch:       document.getElementById('av-watch'),
-    celebrate:   document.getElementById('av-celebrate'),
-    disappointed:document.getElementById('av-disappointed'),
+  // ── AVATAR LOTTIE SYSTEM ─────────────────────────────
+  const lottiePoses = {
+    idle:   document.getElementById('av-idle'),
+    happy:  document.getElementById('av-happy'),
+    wave:   document.getElementById('av-wave'),
+    winner: document.getElementById('av-winner'),
+    fail:   document.getElementById('av-fail'),
   };
   const speechBubble = document.getElementById('speech-bubble');
-  let currentPose = 'idle';
   let idleTimer = null;
   let isAnimating = false;
+  let currentPose = 'idle';
 
   const watchPhrases = [
     "Time's ticking.",
@@ -845,13 +822,8 @@
   ];
 
   function showPose(name, duration) {
-    // Hide all
-    Object.values(poses).forEach(el => {
-      el.classList.remove('active');
-    });
-    // Show target
-    const el = poses[name];
-    if (el) el.classList.add('active');
+    Object.values(lottiePoses).forEach(el => el.classList.remove('active'));
+    if (lottiePoses[name]) lottiePoses[name].classList.add('active');
     currentPose = name;
   }
 
@@ -865,15 +837,28 @@
 
   function startIdleTimer() {
     clearTimeout(idleTimer);
-    idleTimer = setTimeout(doWatchCheck, 9000);
+    idleTimer = setTimeout(doWaveCheck, 10000);
   }
 
-  function doWatchCheck() {
+  function doWaveCheck() {
     if (isAnimating) return;
     isAnimating = true;
-    showPose('watch');
+    showPose('wave');
     const phrase = watchPhrases[Math.floor(Math.random() * watchPhrases.length)];
     showSpeech(phrase, 600, 2200);
+    setTimeout(() => {
+      showPose('idle');
+      isAnimating = false;
+      startIdleTimer();
+    }, 5000);
+  }
+
+  function doQuestComplete() {
+    if (isAnimating) return;
+    isAnimating = true;
+    clearTimeout(idleTimer);
+    showPose('happy');
+    showSpeech('Quest complete. Keep moving.', 400, 2000);
     setTimeout(() => {
       showPose('idle');
       isAnimating = false;
@@ -881,38 +866,49 @@
     }, 3500);
   }
 
-  function doQuestComplete() {
-    isAnimating = true;
-    clearTimeout(idleTimer);
-    showPose('celebrate');
-    showSpeech('Quest complete. Keep moving.', 400, 2500);
-    setTimeout(() => {
-      showPose('idle');
-      isAnimating = false;
-      startIdleTimer();
-    }, 3200);
-  }
-
   function doAllQuestsComplete() {
     isAnimating = true;
     clearTimeout(idleTimer);
-    showPose('celebrate');
-    showSpeech("That's how it's done.", 400, 3000);
+    showPose('winner');
+    showSpeech("That's how it's done.", 500, 3000);
     setTimeout(() => {
       showPose('idle');
       isAnimating = false;
-    }, 4000);
+    }, 6000);
   }
 
   function doMissedDay() {
-    showPose('disappointed');
-    showSpeech("Don't let it happen again.", 400, 2500);
-    setTimeout(() => showPose('idle'), 3500);
+    showPose('fail');
+    showSpeech("Don't let it happen again.", 500, 2500);
+    setTimeout(() => {
+      showPose('idle');
+    }, 4000);
   }
 
   function onQuestTabActive() {
-    showPose('idle');
-    startIdleTimer();
+    // Check if missed yesterday
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yKey = yesterday.toISOString().split('T')[0];
+    const yesterdayDone = localStorage.getItem('sys_celebrated_' + yKey) === '1';
+    const missedYesterday = lastDate && lastDate !== todayKey && !yesterdayDone && lastDate !== yKey;
+
+    if (missedYesterday) {
+      setTimeout(doMissedDay, 800);
+    } else if (!alreadyCelebrated) {
+      // Wave hello on first open today
+      setTimeout(() => {
+        showPose('wave');
+        showSpeech('Your quests await, Hunter.', 400, 2200);
+        setTimeout(() => {
+          showPose('idle');
+          startIdleTimer();
+        }, 5000);
+      }, 600);
+    } else {
+      showPose('idle');
+      startIdleTimer();
+    }
   }
 
   function onQuestTabInactive() {
