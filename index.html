@@ -640,30 +640,51 @@
 </div>
 
 <script>
-  // Date
-  const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
-  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  // ── DATE ──────────────────────────────────────────────
+  const DAYS   = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   const now = new Date();
   document.getElementById('datebar').textContent =
-    days[now.getDay()] + ' · ' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+    DAYS[now.getDay()] + ' · ' + MONTHS[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
 
-  // Streak
-  const todayKey = now.toISOString().split('T')[0];
-  let streak = parseInt(localStorage.getItem('sys_streak') || '0');
-  let lastDate = localStorage.getItem('sys_last_date') || '';
-  if (lastDate !== todayKey) {
-    const yesterday = new Date(now); yesterday.setDate(yesterday.getDate() - 1);
-    const yKey = yesterday.toISOString().split('T')[0];
-    if (lastDate !== yKey) streak = 0;
+  // ── TODAY KEY (EST) ───────────────────────────────────
+  // Convert current time to EST (UTC-5) to determine "today"
+  function getESTDateKey() {
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const est = new Date(utc + (-5 * 3600000));
+    return est.toISOString().split('T')[0];
   }
-  document.getElementById('streak-display').textContent = streak + ' days';
+  const todayKey = getESTDateKey();
 
-  // Quest state — persist per day
+  // ── STREAK ────────────────────────────────────────────
+  let streak   = parseInt(localStorage.getItem('sys_streak') || '0');
+  let lastDate = localStorage.getItem('sys_last_date') || '';
+
+  // If the last completed date wasn't yesterday or today, reset streak
+  if (lastDate && lastDate !== todayKey) {
+    const prev = new Date(lastDate + 'T00:00:00-05:00');
+    prev.setDate(prev.getDate() + 1);
+    const expectedToday = prev.toISOString().split('T')[0];
+    if (expectedToday !== todayKey) {
+      streak = 0;
+      localStorage.setItem('sys_streak', '0');
+    }
+  }
+  document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
+
+  // ── QUEST STATE (resets each new day) ─────────────────
   const stateKey = 'sys_quests_' + todayKey;
   let completed = new Set(JSON.parse(localStorage.getItem(stateKey) || '[]'));
-  completed.forEach(id => document.getElementById(id) && document.getElementById(id).classList.add('completed'));
+  let alreadyCelebrated = localStorage.getItem('sys_celebrated_' + todayKey) === '1';
+
+  // Restore checked state on load
+  completed.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('completed');
+  });
   updateProgress();
 
+  // ── QUEST TOGGLE ──────────────────────────────────────
   function toggleQuest(id, stat) {
     const el = document.getElementById(id);
     if (completed.has(id)) {
@@ -688,24 +709,27 @@
   }
 
   function checkComplete() {
-    if (completed.size === 8) {
-      showToast('DAILY QUEST COMPLETE — WELL DONE, HUNTER');
-      if (lastDate !== todayKey) {
-        streak++;
-        localStorage.setItem('sys_streak', streak);
-        localStorage.setItem('sys_last_date', todayKey);
-        document.getElementById('streak-display').textContent = streak + ' days';
-      }
+    if (completed.size === 8 && !alreadyCelebrated) {
+      alreadyCelebrated = true;
+      localStorage.setItem('sys_celebrated_' + todayKey, '1');
+      // Update streak
+      streak++;
+      localStorage.setItem('sys_streak', streak);
+      localStorage.setItem('sys_last_date', todayKey);
+      document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
+      setTimeout(() => showToast('DAILY QUEST COMPLETE — DAY ' + streak + ' STREAK!'), 300);
     }
   }
 
+  // ── TOAST ─────────────────────────────────────────────
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    setTimeout(() => t.classList.remove('show'), 2800);
   }
 
+  // ── TAB SWITCHING ─────────────────────────────────────
   function switchTab(name, btn) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -713,9 +737,46 @@
     btn.classList.add('active');
   }
 
-  // Service worker
+  // ── SERVICE WORKER + NOTIFICATIONS ───────────────────
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      scheduleNotification(reg);
+    }).catch(() => {});
+  }
+
+  async function scheduleNotification(reg) {
+    // Request permission if not already granted
+    if (!('Notification' in window)) return;
+    let permission = Notification.permission;
+    if (permission === 'default') {
+      permission = await Notification.requestPermission();
+    }
+    if (permission !== 'granted') return;
+
+    // Only schedule if quests aren't done yet today
+    if (alreadyCelebrated) return;
+
+    // Calculate ms until 5:00 PM EST today
+    const nowMs = Date.now();
+    const nowEST = new Date(nowMs + (new Date().getTimezoneOffset() * 60000) + (-5 * 3600000));
+    const target = new Date(nowEST);
+    target.setHours(17, 0, 0, 0); // 5:00 PM EST
+
+    let delay = target.getTime() - nowEST.getTime();
+
+    // If 5PM has already passed today, don't send
+    if (delay < 0) return;
+
+    // Cancel any previously scheduled tag before scheduling new one
+    const sw = reg.active || reg.waiting || reg.installing;
+    if (sw) {
+      sw.postMessage({
+        type: 'SCHEDULE_NOTIFICATION',
+        delay,
+        title: '[ The System ]',
+        body: 'Hunter, your daily quests await. Do not break the chain.'
+      });
+    }
   }
 </script>
 </body>
