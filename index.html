@@ -323,81 +323,55 @@
     /* AVATAR */
     .avatar-stage {
       position: relative;
-      height: 180px;
+      height: 190px;
       margin-bottom: 10px;
-      overflow: visible;
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
       pointer-events: none;
     }
 
-    .avatar-wrap {
-      position: relative;
-      width: 100px;
-      height: 178px;
-      transform-origin: bottom center;
-      flex-shrink: 0;
-    }
-
     .avatar-img {
-      width: 100%;
-      height: 100%;
+      height: 180px;
+      width: auto;
       object-fit: contain;
       object-position: bottom center;
-      filter: drop-shadow(0 4px 16px rgba(30,111,255,0.3));
+      filter: drop-shadow(0 4px 16px rgba(30,111,255,0.25));
       transform-origin: bottom center;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
 
+    .avatar-img.active { opacity: 1; }
+
+    /* IDLE BREATHE */
     @keyframes idle-breathe {
-      0%, 100% { transform: translateY(0px) scaleY(1); }
-      50%       { transform: translateY(1.5px) scaleY(0.988); }
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(2px); }
     }
-
-    @keyframes watch-body {
-      0%         { transform: translateY(0px) rotate(0deg); }
-      15%        { transform: translateY(-2px) rotate(-1.5deg); }
-      20%, 60%   { transform: translateY(-3px) rotate(-2deg); }
-      80%        { transform: translateY(-1px) rotate(-0.5deg); }
-      100%       { transform: translateY(0px) rotate(0deg); }
-    }
-
-    .avatar-wrap.idle .avatar-img {
+    .avatar-img.active.pose-idle {
       animation: idle-breathe 3.5s ease-in-out infinite;
     }
 
-    .avatar-wrap.checking .avatar-img {
-      animation: watch-body 3.8s ease-in-out forwards;
+    /* CELEBRATE BOUNCE */
+    @keyframes celebrate-bounce {
+      0%, 100% { transform: translateY(0px); }
+      20%      { transform: translateY(-8px); }
+      40%      { transform: translateY(-4px); }
+      60%      { transform: translateY(-10px); }
+      80%      { transform: translateY(-3px); }
     }
-
-    /* WATCH GLINT */
-    .watch-glint {
-      position: absolute;
-      bottom: 33%;
-      right: 16%;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ffe066, #d4a017);
-      box-shadow: 0 0 10px #ffd700, 0 0 20px rgba(255,215,0,0.4);
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.5);
-    }
-
-    @keyframes glint {
-      0%, 100% { opacity: 0; transform: scale(0.4); }
-      40%, 60%  { opacity: 1; transform: scale(1.3); }
-    }
-
-    .avatar-wrap.checking .watch-glint {
-      animation: glint 1.4s ease-in-out 1.4s both;
+    .avatar-img.active.pose-celebrate {
+      animation: celebrate-bounce 0.7s ease-in-out 3;
     }
 
     /* SPEECH BUBBLE */
     .speech-bubble {
       position: absolute;
-      bottom: 148px;
+      bottom: 160px;
       right: 96px;
       background: var(--panel);
       border: 1px solid var(--blue);
@@ -583,11 +557,11 @@
   <div class="tab" id="tab-quests">
 
     <div class="avatar-stage">
-      <div class="speech-bubble" id="speech-bubble">Time's ticking.</div>
-      <div class="avatar-wrap idle" id="avatar-wrap">
-        <img class="avatar-img" src="avatar.png" alt="Avatar" id="avatar-img" />
-        <div class="watch-glint" id="watch-glint"></div>
-      </div>
+      <div class="speech-bubble" id="speech-bubble"></div>
+      <img class="avatar-img pose-idle active" id="av-idle"         src="avatar_idle.png"         alt="" />
+      <img class="avatar-img pose-watch"       id="av-watch"        src="avatar_watch.png"        alt="" />
+      <img class="avatar-img pose-celebrate"   id="av-celebrate"    src="avatar_celebrate.png"    alt="" />
+      <img class="avatar-img pose-disappoint"  id="av-disappointed" src="avatar_disappointed.png" alt="" />
     </div>
 
     <div class="progress-bar-wrap">
@@ -817,6 +791,7 @@
     localStorage.setItem(stateKey, JSON.stringify([...completed]));
     updateProgress();
     checkComplete();
+    if (completed.has(id)) doQuestComplete();
   }
 
   function updateProgress() {
@@ -837,6 +812,7 @@
       localStorage.setItem('sys_last_date', todayKey);
       document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
       setTimeout(() => showToast('DAILY QUEST COMPLETE — DAY ' + streak + ' STREAK!'), 300);
+      doAllQuestsComplete();
     }
   }
 
@@ -848,9 +824,15 @@
     setTimeout(() => t.classList.remove('show'), 2800);
   }
 
-  // ── AVATAR IDLE & WATCH-CHECK ─────────────────────────
-  const avatarWrap = document.getElementById('avatar-wrap');
+  // ── AVATAR POSE SYSTEM ────────────────────────────────
+  const poses = {
+    idle:        document.getElementById('av-idle'),
+    watch:       document.getElementById('av-watch'),
+    celebrate:   document.getElementById('av-celebrate'),
+    disappointed:document.getElementById('av-disappointed'),
+  };
   const speechBubble = document.getElementById('speech-bubble');
+  let currentPose = 'idle';
   let idleTimer = null;
   let isAnimating = false;
 
@@ -862,50 +844,81 @@
     "The grind waits for no one."
   ];
 
+  function showPose(name, duration) {
+    // Hide all
+    Object.values(poses).forEach(el => {
+      el.classList.remove('active');
+    });
+    // Show target
+    const el = poses[name];
+    if (el) el.classList.add('active');
+    currentPose = name;
+  }
+
+  function showSpeech(text, delay = 0, hideAfter = 2500) {
+    setTimeout(() => {
+      speechBubble.textContent = text;
+      speechBubble.classList.add('show');
+      setTimeout(() => speechBubble.classList.remove('show'), hideAfter);
+    }, delay);
+  }
+
   function startIdleTimer() {
     clearTimeout(idleTimer);
-    idleTimer = setTimeout(doWatchCheck, 8000);
+    idleTimer = setTimeout(doWatchCheck, 9000);
   }
 
   function doWatchCheck() {
     if (isAnimating) return;
     isAnimating = true;
-
-    // Pick a random phrase
+    showPose('watch');
     const phrase = watchPhrases[Math.floor(Math.random() * watchPhrases.length)];
-    speechBubble.textContent = phrase;
-
-    // Switch to checking animation
-    avatarWrap.classList.remove('idle');
-    avatarWrap.classList.add('checking');
-
-    // Show speech bubble after a short delay (when he "looks" at the watch)
-    setTimeout(() => speechBubble.classList.add('show'), 1400);
-
-    // After animation completes, return to idle
+    showSpeech(phrase, 600, 2200);
     setTimeout(() => {
-      speechBubble.classList.remove('show');
-      avatarWrap.classList.remove('checking');
-      // Force reflow so animation resets
-      void avatarWrap.offsetWidth;
-      avatarWrap.classList.add('idle');
+      showPose('idle');
       isAnimating = false;
-      // Schedule next check
       startIdleTimer();
-    }, 4200);
+    }, 3500);
   }
 
-  // Only run avatar when on quests tab
+  function doQuestComplete() {
+    isAnimating = true;
+    clearTimeout(idleTimer);
+    showPose('celebrate');
+    showSpeech('Quest complete. Keep moving.', 400, 2500);
+    setTimeout(() => {
+      showPose('idle');
+      isAnimating = false;
+      startIdleTimer();
+    }, 3200);
+  }
+
+  function doAllQuestsComplete() {
+    isAnimating = true;
+    clearTimeout(idleTimer);
+    showPose('celebrate');
+    showSpeech("That's how it's done.", 400, 3000);
+    setTimeout(() => {
+      showPose('idle');
+      isAnimating = false;
+    }, 4000);
+  }
+
+  function doMissedDay() {
+    showPose('disappointed');
+    showSpeech("Don't let it happen again.", 400, 2500);
+    setTimeout(() => showPose('idle'), 3500);
+  }
+
   function onQuestTabActive() {
+    showPose('idle');
     startIdleTimer();
   }
 
   function onQuestTabInactive() {
     clearTimeout(idleTimer);
-    avatarWrap.classList.remove('checking');
-    avatarWrap.classList.add('idle');
-    speechBubble.classList.remove('show');
     isAnimating = false;
+    speechBubble.classList.remove('show');
   }
   function switchTab(name, btn) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
