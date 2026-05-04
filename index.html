@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#050a12" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="The System" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#020509"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <title>The System</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #050a12;
-      --panel: #0a1628;
-      --border: #1a3a6a;
-      --blue: #1e6fff;
-      --blue-glow: rgba(30,111,255,0.12);
-      --text: #c8deff;
-      --text-dim: #4a6fa8;
-      --text-bright: #ffffff;
-      --gold: #d4a017;
-      --gold-dim: #7a5a00;
-      --danger: #cc2222;
-      --success: #1a8a3a;
-      --locked: #1a2540;
+      --bg:        #020509;
+      --bg2:       #040b14;
+      --panel:     rgba(6, 18, 38, 0.95);
+      --border:    rgba(30, 111, 255, 0.3);
+      --border2:   rgba(30, 111, 255, 0.6);
+      --blue:      #1e6fff;
+      --blue-dim:  rgba(30, 111, 255, 0.08);
+      --blue-glow: rgba(30, 111, 255, 0.25);
+      --cyan:      #00d4ff;
+      --cyan-dim:  rgba(0, 212, 255, 0.1);
+      --text:      #a8c8f0;
+      --text-dim:  #3a6090;
+      --text-bright: #e8f4ff;
+      --gold:      #c8a84b;
+      --gold-dim:  rgba(200, 168, 75, 0.15);
+      --danger:    #cc2233;
+      --success:   #1a9a5a;
+      --locked:    rgba(30, 60, 100, 0.4);
     }
 
     html, body {
@@ -39,251 +42,352 @@
     }
 
     body {
-      font-family: 'Rajdhani', sans-serif;
+      font-family: 'Lato', sans-serif;
       color: var(--text);
       display: flex;
       flex-direction: column;
       max-width: 480px;
       margin: 0 auto;
+      position: relative;
+    }
+
+    /* BACKGROUND GRID */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(30,111,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,111,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* SCANLINE EFFECT */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 0;
     }
 
     /* HEADER */
-    .header {
-      background: linear-gradient(180deg, #0a1e40 0%, var(--bg) 100%);
+    .sys-header {
+      position: relative;
+      z-index: 10;
+      padding: 12px 16px 8px;
       border-bottom: 1px solid var(--border);
-      padding: 14px 16px 10px;
-      text-align: center;
+      background: linear-gradient(180deg, rgba(6,18,38,0.98) 0%, rgba(2,5,9,0.95) 100%);
       flex-shrink: 0;
     }
-    .header-sys {
+
+    .sys-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .sys-title-block { }
+
+    .sys-title-label {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
+      font-size: 9px;
       color: var(--blue);
       letter-spacing: 4px;
       margin-bottom: 2px;
     }
-    .header-name {
-      font-size: 20px;
-      font-weight: 700;
+
+    .sys-title-name {
+      font-size: 11px;
+      font-weight: 900;
       color: var(--text-bright);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .sys-level-block {
+      text-align: right;
+    }
+
+    .sys-level-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
       letter-spacing: 2px;
     }
-    .header-rank {
-      display: inline-block;
+
+    .sys-level-val {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--gold);
-      border: 1px solid var(--gold-dim);
-      padding: 2px 10px;
-      letter-spacing: 2px;
-      margin-top: 4px;
+      font-size: 18px;
+      color: var(--cyan);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* XP BAR */
+    .sys-xp-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sys-xp-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    .sys-xp-track {
+      flex: 1;
+      height: 4px;
+      background: rgba(30,111,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sys-xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transition: width 0.6s ease;
+      position: relative;
+    }
+
+    .sys-xp-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 20px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+      animation: xp-shine 2s ease-in-out infinite;
+    }
+
+    @keyframes xp-shine {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    .sys-xp-val {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--cyan);
+      flex-shrink: 0;
     }
 
     /* DATE BAR */
-    .datebar {
+    .sys-datebar {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
+      font-size: 8px;
       color: var(--text-dim);
       letter-spacing: 2px;
       text-align: center;
-      padding: 5px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      padding: 4px 16px;
+      background: rgba(0,0,0,0.3);
+      border-bottom: 1px solid rgba(30,111,255,0.1);
       flex-shrink: 0;
+      position: relative;
+      z-index: 10;
     }
 
-    /* NAV */
-    nav {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      background: var(--panel);
-      flex-shrink: 0;
-    }
-    .nav-btn {
-      flex: 1;
-      padding: 10px 4px;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .nav-btn.active {
-      color: var(--blue);
-      border-bottom-color: var(--blue);
-      background: var(--blue-glow);
-    }
-
-    /* CONTENT */
-    .content {
+    /* MAIN CONTENT */
+    .sys-content {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 5;
       -webkit-overflow-scrolling: touch;
     }
 
-    .tab { display: none; }
-    .tab.active { display: block; }
+    /* PANELS */
+    .sys-panel {
+      display: none;
+      padding: 0;
+      animation: panel-open 0.25s ease forwards;
+    }
 
-    /* LABELS */
-    .section-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: var(--blue);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      padding-bottom: 4px;
+    .sys-panel.active { display: block; }
+
+    @keyframes panel-open {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PANEL HEADER */
+    .panel-header {
+      padding: 14px 16px 10px;
       border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(6,18,38,0.6) 0%, transparent 100%);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      backdrop-filter: blur(10px);
     }
 
-    /* CARDS */
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-
-    /* INFO ROWS */
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-    }
-    .info-row:last-child { border-bottom: none; }
-    .info-label { color: var(--text-dim); font-size: 11px; letter-spacing: 0.5px; }
-    .info-val { font-weight: 600; color: var(--text-bright); }
-
-    /* STAT GRID */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .stat-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 10px;
-      text-align: center;
-    }
-    .stat-icon { font-size: 18px; margin-bottom: 2px; }
-    .stat-name {
+    .panel-header-label {
       font-family: 'Share Tech Mono', monospace;
       font-size: 9px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-    }
-    .stat-class { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.2; }
-    .stat-tier { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); margin-top: 2px; }
-
-    /* BARS */
-    .bar-track { height: 5px; background: var(--locked); margin-top: 6px; }
-    .bar-fill { height: 100%; background: var(--blue); transition: width 0.8s ease; }
-
-    /* REMINDERS */
-    .reminder {
-      font-size: 13px;
-      color: var(--text);
-      padding: 8px 10px;
-      border-left: 2px solid var(--blue);
-      margin-bottom: 6px;
-      background: var(--blue-glow);
-      line-height: 1.4;
-    }
-    .reminder-num {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
       color: var(--blue);
+      letter-spacing: 4px;
       margin-bottom: 2px;
     }
 
-    /* QUEST PROGRESS */
-    .progress-bar-wrap {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 12px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+    .panel-header-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text-bright);
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
-    .progress-count {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 22px;
-      color: var(--blue);
-      font-weight: 700;
-      flex-shrink: 0;
+
+    .panel-body { padding: 14px 16px; }
+
+    /* NOTIFICATION BOX — System message style */
+    .sys-notification {
+      border: 1px solid var(--border2);
+      background: var(--blue-dim);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
     }
-    .progress-right { flex: 1; }
-    .progress-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 4px; }
-    .progress-track { height: 5px; background: var(--locked); }
-    .progress-pct {
+
+    .sys-notification::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--blue);
+    }
+
+    .sys-notification-title {
       font-family: 'Share Tech Mono', monospace;
       font-size: 9px;
-      color: var(--text-dim);
-      margin-top: 3px;
-      letter-spacing: 1px;
+      color: var(--cyan);
+      letter-spacing: 3px;
+      margin-bottom: 6px;
     }
 
-    /* WARNING */
-    .warning {
-      background: rgba(204,34,34,0.08);
-      border: 1px solid var(--danger);
-      padding: 10px 12px;
-      margin-bottom: 10px;
+    .sys-notification-body {
+      font-size: 13px;
+      color: var(--text-bright);
+      line-height: 1.5;
+      font-weight: 300;
     }
-    .warning-title {
+
+    /* WARNING BOX */
+    .sys-warning {
+      border: 1px solid rgba(204,34,51,0.5);
+      background: rgba(204,34,51,0.05);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sys-warning::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--danger);
+    }
+
+    .sys-warning-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--danger);
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+
+    .sys-warning-body {
+      font-size: 12px;
+      color: #e06070;
+      line-height: 1.5;
+    }
+
+    /* QUEST SECTION LABEL */
+    .quest-section {
+      margin-bottom: 16px;
+    }
+
+    .quest-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .quest-section-icon { font-size: 14px; }
+
+    .quest-section-title {
       font-family: 'Share Tech Mono', monospace;
       font-size: 10px;
-      color: var(--danger);
-      letter-spacing: 2px;
-      margin-bottom: 4px;
+      color: var(--cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
     }
-    .warning-text { font-size: 12px; color: #ff6666; line-height: 1.4; }
 
-    /* QUEST GROUPS */
-    .quest-group { margin-bottom: 14px; }
-    .quest-group-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--blue);
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
+    /* QUEST ITEM */
     .quest-item {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      padding: 10px;
-      margin-bottom: 4px;
-      background: var(--panel);
-      border: 1px solid var(--border);
+      gap: 12px;
+      padding: 12px 12px;
+      margin-bottom: 3px;
+      background: rgba(6,18,38,0.6);
+      border: 1px solid rgba(30,111,255,0.12);
       cursor: pointer;
-      transition: background 0.15s;
+      transition: all 0.15s;
+      position: relative;
+      overflow: hidden;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
-    .quest-item:active { background: var(--blue-glow); }
-    .quest-item.completed { border-color: var(--success); background: rgba(26,138,58,0.08); }
 
-    .checkbox {
+    .quest-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 2px;
+      height: 100%;
+      background: var(--border2);
+      transition: background 0.2s;
+    }
+
+    .quest-item:active,
+    .quest-item:hover { background: rgba(30,111,255,0.06); }
+
+    .quest-item.completed {
+      border-color: rgba(26,154,90,0.3);
+      background: rgba(26,154,90,0.04);
+    }
+
+    .quest-item.completed::before { background: var(--success); }
+
+    /* CHECKBOX */
+    .quest-check {
       width: 18px;
       height: 18px;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border2);
       flex-shrink: 0;
       margin-top: 1px;
       display: flex;
@@ -291,19 +395,36 @@
       justify-content: center;
       transition: all 0.15s;
     }
-    .quest-item.completed .checkbox { background: var(--success); border-color: var(--success); }
-    .check-inner {
+
+    .quest-item.completed .quest-check {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .quest-check-inner {
       width: 10px;
       height: 10px;
       background: white;
       display: none;
       clip-path: polygon(20% 50%, 45% 75%, 80% 20%, 90% 30%, 45% 88%, 10% 60%);
     }
-    .quest-item.completed .check-inner { display: block; }
 
-    .quest-text { font-size: 13px; color: var(--text); line-height: 1.4; flex: 1; }
-    .quest-item.completed .quest-text { color: var(--text-dim); text-decoration: line-through; }
-    .xp-tag {
+    .quest-item.completed .quest-check-inner { display: block; }
+
+    .quest-text {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    .quest-item.completed .quest-text {
+      color: var(--text-dim);
+      text-decoration: line-through;
+    }
+
+    .quest-xp {
       font-family: 'Share Tech Mono', monospace;
       font-size: 9px;
       color: var(--gold);
@@ -311,82 +432,252 @@
       margin-top: 2px;
     }
 
-    .charisma-note {
+    /* PROGRESS */
+    .sys-progress {
+      background: rgba(6,18,38,0.8);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .sys-progress-count {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 26px;
+      color: var(--blue);
+      font-weight: 700;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .sys-progress-right { flex: 1; }
+
+    .sys-progress-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+
+    .sys-progress-track {
+      height: 4px;
+      background: rgba(30,111,255,0.1);
+      overflow: hidden;
+    }
+
+    .sys-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transition: width 0.4s ease;
+    }
+
+    .sys-progress-pct {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+
+    /* STATUS STATS */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .stat-card {
+      background: rgba(6,18,38,0.6);
+      border: 1px solid var(--border);
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle at bottom right, var(--blue-glow), transparent 70%);
+    }
+
+    .stat-name {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .stat-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text-bright);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-bar {
+      height: 2px;
+      background: rgba(30,111,255,0.1);
+      overflow: hidden;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transition: width 0.8s ease;
+    }
+
+    /* INFO ROWS */
+    .sys-info-card {
+      background: rgba(6,18,38,0.6);
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+
+    .sys-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(30,111,255,0.08);
+      font-size: 13px;
+    }
+
+    .sys-info-row:last-child { border-bottom: none; }
+    .sys-info-key { color: var(--text-dim); font-size: 11px; letter-spacing: 0.5px; }
+    .sys-info-val { font-weight: 700; color: var(--text-bright); }
+
+    /* RANK BAR */
+    .rank-block {
+      background: rgba(6,18,38,0.6);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .rank-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .rank-name {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .rank-next {
       font-family: 'Share Tech Mono', monospace;
       font-size: 9px;
       color: var(--text-dim);
-      text-align: center;
-      padding: 6px;
-      letter-spacing: 1px;
     }
 
-    /* MILESTONES */
-    .milestone {
-      padding: 10px 12px;
-      margin-bottom: 6px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      position: relative;
+    .rank-track {
+      height: 5px;
+      background: rgba(30,111,255,0.1);
+      overflow: hidden;
+      margin-bottom: 4px;
     }
-    .milestone.locked { opacity: 0.45; border-color: var(--locked); }
-    .milestone-name { font-size: 13px; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
-    .milestone-sub { font-size: 11px; color: var(--text-dim); margin-bottom: 3px; }
-    .milestone-effect { font-size: 11px; color: var(--blue); }
-    .lock-icon { position: absolute; top: 8px; right: 10px; font-size: 14px; opacity: 0.4; }
 
-    /* SHOP */
-    .shop-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      margin-bottom: 6px;
-      border: 1px solid var(--border);
-      background: var(--panel);
+    .rank-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), #f0d080);
+      transition: width 0.6s ease;
     }
-    .shop-item.locked { opacity: 0.4; border-color: var(--locked); }
-    .shop-name { font-size: 13px; color: var(--text); font-weight: 600; }
-    .shop-req { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); margin-top: 2px; }
-    .shop-status { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 1px; }
 
-    /* SKILLS */
-    .skill-item {
-      padding: 10px 12px;
-      margin-bottom: 6px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .skill-item.locked { opacity: 0.4; border-color: var(--locked); }
-    .skill-name { font-size: 13px; color: var(--text); font-weight: 600; }
-    .skill-unlocked { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--success); letter-spacing: 1px; }
-    .skill-locked-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
-
-    /* NOTIFICATION TOAST */
-    .toast {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--blue);
-      color: white;
+    .rank-label {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      padding: 9px 20px;
-      letter-spacing: 1px;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      z-index: 999;
-      white-space: nowrap;
-      max-width: 90vw;
+      font-size: 8px;
+      color: var(--text-dim);
     }
-    .toast.show { opacity: 1; }
+
+    /* ACHIEVEMENTS */
+    .achievement-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .achievement {
+      background: rgba(6,18,38,0.6);
+      border: 1px solid var(--border);
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .achievement.unlocked {
+      border-color: rgba(200,168,75,0.4);
+      background: var(--gold-dim);
+    }
+
+    .achievement.locked { opacity: 0.3; }
+    .achievement-icon { font-size: 18px; flex-shrink: 0; }
+    .achievement-info { flex: 1; min-width: 0; }
+
+    .achievement-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-bright);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .achievement.locked .achievement-name { color: var(--text-dim); }
+
+    .achievement-desc {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .achievement-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--gold);
+      margin-top: 2px;
+    }
 
     /* WEEKLY CHART */
-    .chart-bar-wrap {
+    .chart-wrap {
+      background: rgba(6,18,38,0.6);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .chart-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 60px;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .chart-col {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -395,355 +686,568 @@
       height: 100%;
       gap: 3px;
     }
+
     .chart-bar {
       width: 100%;
-      border-radius: 2px;
-      min-height: 3px;
+      min-height: 2px;
+      border-radius: 1px;
+      background: rgba(30,111,255,0.15);
       transition: height 0.5s ease;
     }
-    .chart-bar.today { background: var(--blue); box-shadow: 0 0 8px rgba(30,111,255,0.4); }
-    .chart-bar.has-xp { background: var(--success); }
-    .chart-bar.empty  { background: var(--locked); }
-    .chart-xp {
+
+    .chart-bar.today { background: linear-gradient(180deg, var(--cyan), var(--blue)); }
+    .chart-bar.done  { background: linear-gradient(180deg, #2aff8a, var(--success)); }
+
+    .chart-day {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 7px;
+      color: var(--text-dim);
+    }
+
+    /* QUOTE */
+    .quote-block {
+      background: rgba(6,18,38,0.6);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .quote-author {
       font-family: 'Share Tech Mono', monospace;
       font-size: 8px;
-      color: var(--text-dim);
-      text-align: center;
+      color: var(--blue);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
     }
-    /* ACHIEVEMENTS */
-    .achievement {
-      background: var(--panel);
+
+    .quote-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* MISSION */
+    .mission-block {
+      background: rgba(6,18,38,0.6);
       border: 1px solid var(--border);
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: border-color 0.3s;
-    }
-    .achievement.unlocked {
-      border-color: var(--gold);
-      background: rgba(212,160,23,0.06);
-    }
-    .achievement.locked { opacity: 0.35; }
-    .achievement-icon { font-size: 20px; flex-shrink: 0; }
-    .achievement-info { flex: 1; min-width: 0; }
-    .achievement-name {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-bright);
-      white-space: nowrap;
+      padding: 14px;
+      margin-bottom: 10px;
+      position: relative;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
-    .achievement.locked .achievement-name { color: var(--text-dim); }
-    .achievement-desc {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-      margin-top: 2px;
+
+    .mission-block::after {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, var(--gold-dim), transparent 70%);
     }
-    .achievement-unlocked-tag {
+
+    .mission-label {
       font-family: 'Share Tech Mono', monospace;
       font-size: 8px;
       color: var(--gold);
-      margin-top: 2px;
+      letter-spacing: 3px;
+      margin-bottom: 6px;
     }
 
+    .mission-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--text-bright);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .mission-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* MILESTONE */
+    .milestone {
+      padding: 10px 14px;
+      margin-bottom: 4px;
+      border: 1px solid var(--border);
+      background: rgba(6,18,38,0.4);
+      position: relative;
+    }
+
+    .milestone.locked { opacity: 0.4; }
+
+    .milestone-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 2px;
+    }
+
+    .milestone-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 3px;
+    }
+
+    .milestone-effect {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--cyan);
+    }
+
+    .milestone-lock {
+      position: absolute;
+      top: 8px; right: 10px;
+      font-size: 12px;
+      opacity: 0.5;
+    }
+
+    /* SHOP */
+    .shop-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      margin-bottom: 4px;
+      border: 1px solid var(--border);
+      background: rgba(6,18,38,0.4);
+    }
+
+    .shop-item.locked { opacity: 0.35; }
+    .shop-name { font-size: 13px; color: var(--text); font-weight: 700; }
+    .shop-req { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); margin-top: 2px; }
+    .shop-status { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 1px; }
+
+    /* SKILL ITEM */
+    .skill-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      margin-bottom: 4px;
+      border: 1px solid var(--border);
+      background: rgba(6,18,38,0.4);
+    }
+
+    .skill-item.locked { opacity: 0.35; }
+    .skill-name { font-size: 13px; color: var(--text); font-weight: 700; }
+    .skill-unlocked { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--success); }
+    .skill-locked-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
+
+    /* SECTION DIVIDER */
+    .sys-section {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 10px 0 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+
+    /* BOTTOM NAV */
+    .sys-nav {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      background: rgba(4,11,20,0.97);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .sys-nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 4px 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      border-top: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      gap: 4px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .sys-nav-icon { font-size: 16px; line-height: 1; }
+
+    .sys-nav-btn.active {
+      color: var(--cyan);
+      border-top-color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+
+    /* TOAST */
+    .sys-toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(6,18,38,0.96);
+      border: 1px solid var(--border2);
+      color: var(--cyan);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      padding: 8px 20px;
+      letter-spacing: 1px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 999;
+      white-space: nowrap;
+      box-shadow: 0 0 20px var(--blue-glow);
+    }
+
+    .sys-toast.show { opacity: 1; }
+
+    /* SCROLLBAR */
+    .sys-content::-webkit-scrollbar { width: 2px; }
+    .sys-content::-webkit-scrollbar-track { background: transparent; }
+    .sys-content::-webkit-scrollbar-thumb { background: var(--border); }
   </style>
 </head>
 <body>
 
-<div class="toast" id="toast"></div>
+<div class="sys-toast" id="toast"></div>
 
-<div class="header">
-  <div class="header-sys">[ The System ]</div>
-  <div class="header-name">SUNG JIN-WOO</div>
-  <div class="header-rank">RANK: EMPLOYEE &nbsp;|&nbsp; $50,000</div>
+<!-- HEADER -->
+<div class="sys-header">
+  <div class="sys-header-top">
+    <div class="sys-title-block">
+      <div class="sys-title-label">[ SYSTEM INTERFACE ]</div>
+      <div class="sys-title-name">Sung Jin-Woo</div>
+    </div>
+    <div class="sys-level-block">
+      <div class="sys-level-label">LEVEL</div>
+      <div class="sys-level-val" id="level-display">1</div>
+    </div>
+  </div>
+  <div class="sys-xp-row">
+    <div class="sys-xp-label">EXP</div>
+    <div class="sys-xp-track">
+      <div class="sys-xp-fill" id="xp-bar" style="width:0%"></div>
+    </div>
+    <div class="sys-xp-val" id="xp-display">0 / 10</div>
+  </div>
 </div>
 
-<div class="datebar" id="datebar"></div>
+<div class="sys-datebar" id="datebar"></div>
 
-<nav>
-  <button class="nav-btn active" onclick="switchTab('status', this)">Status</button>
-  <button class="nav-btn" onclick="switchTab('quests', this)">Quests</button>
-  <button class="nav-btn" onclick="switchTab('mission', this)">Mission</button>
-  <button class="nav-btn" onclick="switchTab('rewards', this)">Rewards</button>
+<!-- CONTENT PANELS -->
+<div class="sys-content">
+
+  <!-- QUEST LOG -->
+  <div class="sys-panel active" id="panel-quests">
+    <div class="panel-header">
+      <div class="panel-header-label">[ DAILY QUEST ]</div>
+      <div class="panel-header-title">Quest Log</div>
+    </div>
+    <div class="panel-body">
+
+      <div class="sys-notification">
+        <div class="sys-notification-title">▶ SYSTEM NOTIFICATION</div>
+        <div class="sys-notification-body">The following tasks have been assigned to the Player. Complete all tasks before the deadline to avoid penalty.</div>
+      </div>
+
+      <div class="sys-progress" id="quest-progress-block">
+        <div class="sys-progress-count" id="quest-count">0/5</div>
+        <div class="sys-progress-right">
+          <div class="sys-progress-label">QUEST COMPLETION</div>
+          <div class="sys-progress-track">
+            <div class="sys-progress-fill" id="quest-bar" style="width:0%"></div>
+          </div>
+          <div class="sys-progress-pct" id="quest-pct">0%</div>
+        </div>
+      </div>
+
+      <div class="quest-section">
+        <div class="quest-section-header">
+          <div class="quest-section-icon">⚔️</div>
+          <div class="quest-section-title">Daily Training</div>
+        </div>
+        <div class="quest-item" id="q1" onclick="toggleQuest('q1')">
+          <div class="quest-check"><div class="quest-check-inner"></div></div>
+          <div class="quest-text">100 Push-ups</div>
+          <div class="quest-xp">+1 XP</div>
+        </div>
+        <div class="quest-item" id="q2" onclick="toggleQuest('q2')">
+          <div class="quest-check"><div class="quest-check-inner"></div></div>
+          <div class="quest-text">100 Sit-ups</div>
+          <div class="quest-xp">+1 XP</div>
+        </div>
+        <div class="quest-item" id="q3" onclick="toggleQuest('q3')">
+          <div class="quest-check"><div class="quest-check-inner"></div></div>
+          <div class="quest-text">100 Squats</div>
+          <div class="quest-xp">+1 XP</div>
+        </div>
+        <div class="quest-item" id="q4" onclick="toggleQuest('q4')">
+          <div class="quest-check"><div class="quest-check-inner"></div></div>
+          <div class="quest-text">10km Run</div>
+          <div class="quest-xp">+1 XP</div>
+        </div>
+        <div class="quest-item" id="q5" onclick="toggleQuest('q5')">
+          <div class="quest-check"><div class="quest-check-inner"></div></div>
+          <div class="quest-text">No Rest. Keep Moving.</div>
+          <div class="quest-xp">+1 XP</div>
+        </div>
+      </div>
+
+      <div class="sys-warning">
+        <div class="sys-warning-title">⚠ PENALTY WARNING</div>
+        <div class="sys-warning-body">Failure to complete the Daily Quest will result in the appropriate penalty being administered without exception.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATUS WINDOW -->
+  <div class="sys-panel" id="panel-status">
+    <div class="panel-header">
+      <div class="panel-header-label">[ STATUS WINDOW ]</div>
+      <div class="panel-header-title">Player Status</div>
+    </div>
+    <div class="panel-body">
+
+      <div class="sys-info-card" style="margin-bottom:10px;">
+        <div class="sys-info-row">
+          <span class="sys-info-key">NAME</span>
+          <span class="sys-info-val">Sung Jin-Woo</span>
+        </div>
+        <div class="sys-info-row">
+          <span class="sys-info-key">TITLE</span>
+          <span class="sys-info-val" style="color:var(--gold)">The Weakest Hunter</span>
+        </div>
+        <div class="sys-info-row">
+          <span class="sys-info-key">RANK</span>
+          <span class="sys-info-val" id="rank-display" style="color:var(--cyan)">E-Rank</span>
+        </div>
+        <div class="sys-info-row">
+          <span class="sys-info-key">STREAK</span>
+          <span class="sys-info-val" id="streak-display" style="color:var(--gold)">0 Days</span>
+        </div>
+        <div class="sys-info-row">
+          <span class="sys-info-key">TOTAL EXP</span>
+          <span class="sys-info-val" id="total-xp-display" style="color:var(--blue)">0</span>
+        </div>
+      </div>
+
+      <div class="rank-block">
+        <div class="rank-header">
+          <div class="rank-name" id="rank-name-display">E-Rank</div>
+          <div class="rank-next" id="rank-next-display">10 EXP to D-Rank</div>
+        </div>
+        <div class="rank-track">
+          <div class="rank-fill" id="rank-fill" style="width:0%"></div>
+        </div>
+        <div class="rank-label" id="rank-label">0 / 10 EXP</div>
+      </div>
+
+      <div class="sys-section">Stats</div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-name">STRENGTH</div>
+          <div class="stat-val" id="stat-str">1</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-str" style="width:2%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-name">AGILITY</div>
+          <div class="stat-val" id="stat-agi">1</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-agi" style="width:2%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-name">VITALITY</div>
+          <div class="stat-val" id="stat-vit">1</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-vit" style="width:2%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-name">INTELLIGENCE</div>
+          <div class="stat-val" id="stat-int">1</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-int" style="width:2%"></div></div>
+        </div>
+        <div class="stat-card" style="grid-column: span 1;">
+          <div class="stat-name">SENSE</div>
+          <div class="stat-val" id="stat-sen">1</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-sen" style="width:2%"></div></div>
+        </div>
+      </div>
+
+      <div class="sys-section">Weekly Progress</div>
+      <div class="chart-wrap">
+        <div class="chart-title">EXP EARNED THIS WEEK</div>
+        <div class="chart-bars" id="weekly-chart"></div>
+        <div style="display:flex;justify-content:space-between;">
+          <span class="chart-day">MON</span>
+          <span class="chart-day">TUE</span>
+          <span class="chart-day">WED</span>
+          <span class="chart-day">THU</span>
+          <span class="chart-day">FRI</span>
+          <span class="chart-day">SAT</span>
+          <span class="chart-day">SUN</span>
+        </div>
+      </div>
+
+      <div class="sys-section">Achievements</div>
+      <div class="achievement-grid" id="achievements-grid"></div>
+
+      <div class="sys-section">Word of the Day</div>
+      <div class="quote-block">
+        <div class="quote-author" id="quote-author"></div>
+        <div class="quote-text" id="quote-text"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN QUEST -->
+  <div class="sys-panel" id="panel-mission">
+    <div class="panel-header">
+      <div class="panel-header-label">[ MAIN QUEST ]</div>
+      <div class="panel-header-title">Mission</div>
+    </div>
+    <div class="panel-body">
+
+      <div class="mission-block">
+        <div class="mission-label">▶ ULTIMATE OBJECTIVE</div>
+        <div class="mission-title">Become the Strongest</div>
+        <div class="mission-sub">Overcome all limits. Surpass every hunter. Stand alone at the top.</div>
+      </div>
+
+      <div class="sys-section">Milestones</div>
+
+      <div class="milestone">
+        <div class="milestone-name">First Awakening</div>
+        <div class="milestone-sub">Survive the Double Dungeon</div>
+        <div class="milestone-effect">↑ All stats unlocked</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-name">Daily Quest Mastery</div>
+        <div class="milestone-sub">Complete 7 consecutive daily quests</div>
+        <div class="milestone-effect">↑ STR +5 · AGI +5</div>
+      </div>
+      <div class="milestone">
+        <div class="milestone-name">Job Change</div>
+        <div class="milestone-sub">Reach B-Rank</div>
+        <div class="milestone-effect">↑ Unlock Shadow Extraction</div>
+      </div>
+      <div class="milestone locked">
+        <div class="milestone-lock">🔒</div>
+        <div class="milestone-name">Shadow Monarch</div>
+        <div class="milestone-sub">Reach S-Rank</div>
+        <div class="milestone-effect" style="color:var(--text-dim)">Effect: 🔒</div>
+      </div>
+      <div class="milestone locked">
+        <div class="milestone-lock">🔒</div>
+        <div class="milestone-name">Monarch of Destruction</div>
+        <div class="milestone-sub">Reach National Level</div>
+        <div class="milestone-effect" style="color:var(--text-dim)">Effect: 🔒</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INVENTORY / REWARDS -->
+  <div class="sys-panel" id="panel-inventory">
+    <div class="panel-header">
+      <div class="panel-header-label">[ INVENTORY ]</div>
+      <div class="panel-header-title">Items & Skills</div>
+    </div>
+    <div class="panel-body">
+
+      <div class="sys-section">Shop</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">Items obtained upon completing challenges.</div>
+
+      <div class="shop-item">
+        <div>
+          <div class="shop-name">Health Potion</div>
+          <div class="shop-req">Req: Complete 3 daily quests</div>
+        </div>
+        <div class="shop-status">AVAILABLE</div>
+      </div>
+      <div class="shop-item locked">
+        <div>
+          <div class="shop-name">Demon King's Longsword</div>
+          <div class="shop-req">🔒 Reach A-Rank</div>
+        </div>
+        <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
+      </div>
+      <div class="shop-item locked">
+        <div>
+          <div class="shop-name">Elixir of Life</div>
+          <div class="shop-req">🔒 Reach S-Rank</div>
+        </div>
+        <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
+      </div>
+      <div class="shop-item locked">
+        <div>
+          <div class="shop-name">Ruler's Gloves</div>
+          <div class="shop-req">🔒 Shadow Monarch milestone</div>
+        </div>
+        <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
+      </div>
+
+      <div class="sys-section">Skills</div>
+
+      <div class="skill-item">
+        <div class="skill-name">Sprint</div>
+        <div class="skill-unlocked">ACTIVE</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">Dash</div>
+        <div class="skill-unlocked">ACTIVE</div>
+      </div>
+      <div class="skill-item locked">
+        <div class="skill-name">Stealth</div>
+        <div class="skill-locked-tag">🔒 B-Rank</div>
+      </div>
+      <div class="skill-item locked">
+        <div class="skill-name">Ruler's Authority</div>
+        <div class="skill-locked-tag">🔒 S-Rank</div>
+      </div>
+      <div class="skill-item locked">
+        <div class="skill-name">Shadow Extraction</div>
+        <div class="skill-locked-tag">🔒 Shadow Monarch</div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end sys-content -->
+
+<!-- BOTTOM NAV -->
+<nav class="sys-nav">
+  <button class="sys-nav-btn active" onclick="switchPanel('quests', this)">
+    <div class="sys-nav-icon">📋</div>
+    <span>QUESTS</span>
+  </button>
+  <button class="sys-nav-btn" onclick="switchPanel('status', this)">
+    <div class="sys-nav-icon">⚔️</div>
+    <span>STATUS</span>
+  </button>
+  <button class="sys-nav-btn" onclick="switchPanel('mission', this)">
+    <div class="sys-nav-icon">🎯</div>
+    <span>MISSION</span>
+  </button>
+  <button class="sys-nav-btn" onclick="switchPanel('inventory', this)">
+    <div class="sys-nav-icon">🎒</div>
+    <span>ITEMS</span>
+  </button>
 </nav>
 
-<div class="content">
-
-  <!-- STATUS -->
-  <div class="tab active" id="tab-status">
-    <div class="section-label">Player Stats</div>
-    <div class="card" style="margin-bottom:10px;">
-      <div class="info-row">
-        <span class="info-label">RANK</span>
-        <span class="info-val" id="rank-display" style="color:var(--gold)">E-Rank</span>
-      </div>
-      <div style="padding: 4px 0 8px;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">RANK PROGRESS</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);" id="rank-progress-label">0 / 10 XP</span>
-        </div>
-        <div class="bar-track">
-          <div class="bar-fill" id="rank-bar" style="width:0%; background:var(--gold);"></div>
-        </div>
-      </div>
-      <div class="info-row">
-        <span class="info-label">INCOME</span>
-        <span class="info-val">$50,000</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">MAIN QUEST</span>
-        <span class="info-val" style="color:var(--blue)">Build a Diamondship</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">DAY STREAK</span>
-        <span class="info-val" id="streak-display" style="color:var(--gold)">0 days</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">TOTAL XP</span>
-        <span class="info-val" id="xp-display" style="color:var(--blue)">0 XP</span>
-      </div>
-    </div>
-
-    <div class="section-label">Classes</div>
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-icon">💪</div>
-        <div class="stat-name">Strength</div>
-        <div class="stat-class">Middle-Class</div>
-        <div class="stat-tier">Athlete</div>
-        <div class="bar-track"><div class="bar-fill" style="width:45%"></div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">🧠</div>
-        <div class="stat-name">Intelligence</div>
-        <div class="stat-class">Low-Class</div>
-        <div class="stat-tier">Polymath</div>
-        <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
-      </div>
-    </div>
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-icon">✨</div>
-        <div class="stat-name">Charisma</div>
-        <div class="stat-class">Low-Class</div>
-        <div class="stat-tier">Salesman</div>
-        <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
-      </div>
-      <div class="stat-card" style="opacity:0.4; border-color:var(--locked);">
-        <div class="stat-icon">👑</div>
-        <div class="stat-name">Leadership</div>
-        <div class="stat-class" style="color:var(--text-dim)">🔒 Locked</div>
-        <div class="stat-tier" style="color:var(--text-dim)">———</div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
-      </div>
-    </div>
-
-    <div class="section-label" style="margin-top:14px;">Achievements</div>
-    <div id="achievements-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;"></div>
-
-    <div class="section-label" style="margin-top:14px;">Word of the Day</div>
-    <div class="card" style="margin-bottom:10px;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:2px;margin-bottom:6px;" id="quote-author"></div>
-      <div style="font-size:13px;color:var(--text);line-height:1.6;font-style:italic;" id="quote-text"></div>
-    </div>
-
-    <div class="section-label" style="margin-top:4px;">System Reminders</div>
-    <div class="reminder"><div class="reminder-num">01</div>Choose God first, and He'll provide for you.</div>
-    <div class="reminder"><div class="reminder-num">02</div>Stay small enough long enough, and you'll be big enough soon enough.</div>
-    <div class="reminder"><div class="reminder-num">03</div>Embrace the process; enjoy the progress.</div>
-
-    <div class="section-label" style="margin-top:14px;">Weekly Progress</div>
-    <div class="card" style="margin-bottom:10px;">
-      <div style="display:flex; align-items:flex-end; justify-content:space-between; height:80px; gap:6px;" id="weekly-chart">
-      </div>
-      <div style="display:flex; justify-content:space-between; margin-top:6px;">
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">MON</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">TUE</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">WED</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">THU</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">FRI</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">SAT</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">SUN</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- QUESTS -->
-  <div class="tab" id="tab-quests">
-
-    <div class="progress-bar-wrap">
-      <div>
-        <div class="progress-count" id="quest-count">0/8</div>
-        <div class="progress-label">QUESTS COMPLETE</div>
-      </div>
-      <div class="progress-right">
-        <div class="progress-label" id="quest-pct">0%</div>
-        <div class="progress-track">
-          <div class="bar-fill" id="quest-bar" style="width:0%"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="warning">
-      <div class="warning-title">⚠ System Warning</div>
-      <div class="warning-text">Failure to complete daily quest will result in penalty: Murph Workout (1mi run · 100 pull-ups · 200 push-ups · 300 squats · 1mi run)</div>
-    </div>
-
-    <div class="quest-group">
-      <div class="quest-group-title">💪 Strength</div>
-      <div class="quest-item" id="q1" onclick="toggleQuest('q1','STR')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">Push / Pull / Legs (2x per week)</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-      <div class="quest-item" id="q2" onclick="toggleQuest('q2','STR')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">10,000+ steps</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-      <div class="quest-item" id="q3" onclick="toggleQuest('q3','STR')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">Eat 1,600–1,800 calories</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-    </div>
-
-    <div class="quest-group">
-      <div class="quest-group-title">🧠 Intelligence</div>
-      <div class="quest-item" id="q4" onclick="toggleQuest('q4','INT')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">Read 1 book chapter</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-      <div class="quest-item" id="q5" onclick="toggleQuest('q5','INT')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">Listen to 1 audio (LTD)</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-    </div>
-
-    <div class="quest-group">
-      <div class="quest-group-title">✨ Charisma</div>
-      <div class="quest-item" id="q6" onclick="toggleQuest('q6','CHA')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">5 conversations</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-      <div class="quest-item" id="q7" onclick="toggleQuest('q7','CHA')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">3 MSAs</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-      <div class="quest-item" id="q8" onclick="toggleQuest('q8','CHA')">
-        <div class="checkbox"><div class="check-inner"></div></div>
-        <div class="quest-text">1 customer lead or business contact</div>
-        <div class="xp-tag">+1 XP</div>
-      </div>
-    </div>
-    <div class="charisma-note">Complete any ONE Charisma quest to fulfill that stat.</div>
-  </div>
-
-  <!-- MISSION -->
-  <div class="tab" id="tab-mission">
-    <div class="section-label">Main Quest</div>
-    <div class="card" style="margin-bottom:14px;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;">ULTIMATE GOAL</div>
-      <div style="font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Build a Diamondship</div>
-      <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Become a hero who saves people.</div>
-    </div>
-
-    <div class="section-label">Milestones</div>
-
-    <div class="milestone">
-      <div class="milestone-name">Greek God</div>
-      <div class="milestone-sub">130 lbs / 7–8% body fat</div>
-      <div class="milestone-effect">↑ Charisma in marketplace (L)</div>
-    </div>
-    <div class="milestone">
-      <div class="milestone-name">Superhero</div>
-      <div class="milestone-sub">150 lbs</div>
-      <div class="milestone-effect">↑ Charisma in marketplace (XL)</div>
-    </div>
-    <div class="milestone locked">
-      <div class="lock-icon">🔒</div>
-      <div class="milestone-name">$70K+ Salary</div>
-      <div class="milestone-sub">Income milestone</div>
-      <div class="milestone-effect" style="color:var(--text-dim)">Effect: 🔒</div>
-    </div>
-    <div class="milestone">
-      <div class="milestone-name">Fortress of Solitude</div>
-      <div class="milestone-sub">Own apartment</div>
-      <div class="milestone-effect">↑ Intelligence at home (M)</div>
-    </div>
-    <div class="milestone">
-      <div class="milestone-name">Core 300</div>
-      <div class="milestone-sub">Q12 300 PV personal circle</div>
-      <div class="milestone-effect">↑ Charisma (M) · ↑ Leadership (M)</div>
-    </div>
-    <div class="milestone">
-      <div class="milestone-name">VCS Master</div>
-      <div class="milestone-sub">Q12 1000 PV personal circle</div>
-      <div class="milestone-effect">↑ Leadership in business (L)</div>
-    </div>
-    <div class="milestone">
-      <div class="milestone-name">Rising Star</div>
-      <div class="milestone-sub">Q12 3/10 — 1500 PV</div>
-      <div class="milestone-effect">↑ Charisma (L) · ↑ Leadership (L)</div>
-    </div>
-  </div>
-
-  <!-- REWARDS -->
-  <div class="tab" id="tab-rewards">
-    <div class="section-label">Shop</div>
-    <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">Items unlocked upon completing challenges.</div>
-
-    <div class="shop-item">
-      <div>
-        <div class="shop-name">LTD VIP Subscription</div>
-        <div class="shop-req">Req: 3/10 — 1500 PV</div>
-      </div>
-      <div class="shop-status">AVAILABLE</div>
-    </div>
-    <div class="shop-item locked">
-      <div>
-        <div class="shop-name">Brown Thursday Sneakers</div>
-        <div class="shop-req">🔒 Locked</div>
-      </div>
-      <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
-    </div>
-    <div class="shop-item locked">
-      <div>
-        <div class="shop-name">Black Thursday Sneakers</div>
-        <div class="shop-req">🔒 Locked</div>
-      </div>
-      <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
-    </div>
-    <div class="shop-item locked">
-      <div>
-        <div class="shop-name">Brown Peacoat</div>
-        <div class="shop-req">🔒 Locked</div>
-      </div>
-      <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
-    </div>
-
-    <div class="section-label" style="margin-top:14px;">Skills Unlocked</div>
-    <div class="skill-item">
-      <div class="skill-name">100-lb Incline DB Bench Press</div>
-      <div class="skill-unlocked">UNLOCKED</div>
-    </div>
-    <div class="skill-item locked">
-      <div class="skill-name">One-Arm Chin-Up</div>
-      <div class="skill-locked-tag">🔒 LOCKED</div>
-    </div>
-  </div>
-
-</div>
-
+<!-- FIREBASE MODULE -->
 <script type="module">
-  // ── FIREBASE ──────────────────────────────────────────
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
@@ -756,56 +1260,32 @@
     appId: "1:881172104244:web:1010d48037fc807ef97661"
   };
 
-  const firebaseApp = initializeApp(firebaseConfig);
-  const db = getFirestore(firebaseApp);
-  const PLAYER_ID = 'strive';
-  const playerRef = doc(db, 'players', PLAYER_ID);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const ref = doc(db, 'players', 'strive');
 
-  async function saveToCloud(data) {
-    try {
-      await setDoc(playerRef, data, { merge: true });
-    } catch (e) {
-      console.warn('Cloud save failed:', e);
-    }
-  }
+  window._saveToCloud = async (data) => {
+    try { await setDoc(ref, data, { merge: true }); }
+    catch(e) { console.warn('Save failed:', e); }
+  };
 
-  async function loadFromCloud() {
+  window._loadFromCloud = async () => {
     try {
-      const snap = await getDoc(playerRef);
+      const snap = await getDoc(ref);
       if (snap.exists()) return snap.data();
-    } catch (e) {
-      console.warn('Cloud load failed:', e);
-    }
+    } catch(e) { console.warn('Load failed:', e); }
     return null;
-  }
+  };
 
-  // Expose to global scope so the rest of the app can use them
-  window._saveToCloud = saveToCloud;
-  window._loadFromCloud = loadFromCloud;
   window._firebaseReady = true;
-
-  // Trigger the main app init once Firebase is ready
-  if (window._appInit) window._appInit();
-  else window._firebaseReadyCallback = true;
+  if (window._onFirebaseReady) window._onFirebaseReady();
 </script>
 
+<!-- MAIN APP -->
 <script>
-  // ── DATE ──────────────────────────────────────────────
-  const DAYS   = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
-  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  const now = new Date();
-  document.getElementById('datebar').textContent =
-    DAYS[now.getDay()] + ' · ' + MONTHS[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+  const TOTAL_QUESTS = 5;
 
-  // ── TODAY KEY (EST) ───────────────────────────────────
-  // Convert current time to EST (UTC-5) to determine "today"
-  function getESTDateKey() {
-    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-    const est = new Date(utc + (-5 * 3600000));
-    return est.toISOString().split('T')[0];
-  }
-  const todayKey = getESTDateKey();
-
+  // ── HELPERS ───────────────────────────────────────────
   function saveToCloud(data) {
     if (window._saveToCloud) window._saveToCloud(data);
   }
@@ -814,104 +1294,121 @@
     if (window._loadFromCloud) return window._loadFromCloud();
     return Promise.resolve(null);
   }
-  let streak   = parseInt(localStorage.getItem('sys_streak') || '0');
-  let lastDate = localStorage.getItem('sys_last_date') || '';
-  let totalXP  = parseInt(localStorage.getItem('sys_xp') || '0');
 
-  // Load from cloud and sync down
-  loadFromCloud().then(cloudData => {
-    if (cloudData) {
-      // Cloud wins if XP or streak is higher (most authoritative)
-      if ((cloudData.xp || 0) > totalXP) {
-        totalXP = cloudData.xp;
-        localStorage.setItem('sys_xp', totalXP);
-      }
-      if ((cloudData.streak || 0) > streak) {
-        streak = cloudData.streak;
-        localStorage.setItem('sys_streak', streak);
-      }
-      if (cloudData.lastDate) {
-        lastDate = cloudData.lastDate;
-        localStorage.setItem('sys_last_date', lastDate);
-      }
-      if (cloudData.achievements) {
-        localStorage.setItem('sys_achievements', JSON.stringify(cloudData.achievements));
-      }
-      // Sync today's quests if cloud has them
-      if (cloudData['quests_' + todayKey]) {
-        const cloudQuests = cloudData['quests_' + todayKey];
-        localStorage.setItem('sys_quests_' + todayKey, JSON.stringify(cloudQuests));
-        completed = new Set(cloudQuests);
-        completed.forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.classList.add('completed');
-        });
-        updateProgress();
-      }
-      // Refresh all UI with cloud data
-      document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
-      document.getElementById('xp-display').textContent = totalXP + ' XP';
-      updateRank();
-      buildAchievements(false);
-      buildChart();
-    }
-  });
+  // ── DATE ──────────────────────────────────────────────
+  const DAYS   = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const now = new Date();
+  document.getElementById('datebar').textContent =
+    DAYS[now.getDay()] + ' · ' + MONTHS[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
 
-  // If the last completed date wasn't yesterday or today, reset streak
+  function getESTDateKey() {
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const est = new Date(utc + (-5 * 3600000));
+    return est.toISOString().split('T')[0];
+  }
+
+  const todayKey = getESTDateKey();
+
+  // ── PERSISTENT STATE ──────────────────────────────────
+  let streak     = parseInt(localStorage.getItem('sys_streak') || '0');
+  let lastDate   = localStorage.getItem('sys_last_date') || '';
+  let totalXP    = parseInt(localStorage.getItem('sys_xp') || '0');
+  let alreadyCelebrated = localStorage.getItem('sys_celebrated_' + todayKey) === '1';
+
+  const stateKey = 'sys_quests_' + todayKey;
+  let completed  = new Set(JSON.parse(localStorage.getItem(stateKey) || '[]'));
+
+  // Check streak validity
   if (lastDate && lastDate !== todayKey) {
     const prev = new Date(lastDate + 'T00:00:00-05:00');
     prev.setDate(prev.getDate() + 1);
-    const expectedToday = prev.toISOString().split('T')[0];
-    if (expectedToday !== todayKey) {
+    if (prev.toISOString().split('T')[0] !== todayKey) {
       streak = 0;
       localStorage.setItem('sys_streak', '0');
     }
   }
-  document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
-  document.getElementById('xp-display').textContent = totalXP + ' XP';
 
-  // ── QUEST STATE (resets each new day) ─────────────────
-  const stateKey = 'sys_quests_' + todayKey;
-  let completed = new Set(JSON.parse(localStorage.getItem(stateKey) || '[]'));
-  let alreadyCelebrated = localStorage.getItem('sys_celebrated_' + todayKey) === '1';
-
-  // Restore checked state on load
+  // ── RENDER INITIAL STATE ──────────────────────────────
   completed.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('completed');
   });
+
   updateProgress();
+  updateXPBar();
+  updateRank();
+  updateStats();
+  buildAchievements(false);
+  buildChart();
+  buildQuote();
+  refreshDisplays();
+
+  // Load from cloud
+  loadFromCloud().then(data => {
+    if (!data) return;
+    if ((data.xp || 0) > totalXP) {
+      totalXP = data.xp;
+      localStorage.setItem('sys_xp', totalXP);
+    }
+    if ((data.streak || 0) > streak) {
+      streak = data.streak;
+      localStorage.setItem('sys_streak', streak);
+    }
+    if (data.lastDate) {
+      lastDate = data.lastDate;
+      localStorage.setItem('sys_last_date', lastDate);
+    }
+    if (data.achievements) {
+      localStorage.setItem('sys_achievements', JSON.stringify(data.achievements));
+    }
+    if (data['quests_' + todayKey]) {
+      const cq = data['quests_' + todayKey];
+      localStorage.setItem(stateKey, JSON.stringify(cq));
+      completed = new Set(cq);
+      document.querySelectorAll('.quest-item').forEach(el => el.classList.remove('completed'));
+      completed.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('completed');
+      });
+      updateProgress();
+    }
+    updateXPBar();
+    updateRank();
+    updateStats();
+    buildAchievements(false);
+    buildChart();
+    refreshDisplays();
+  });
 
   // ── QUEST TOGGLE ──────────────────────────────────────
-  function toggleQuest(id, stat) {
+  function toggleQuest(id) {
     const el = document.getElementById(id);
     const prevRank = getRank(totalXP).name;
     if (completed.has(id)) {
       completed.delete(id);
       el.classList.remove('completed');
       totalXP = Math.max(0, totalXP - 1);
-      localStorage.setItem('sys_xp', totalXP);
-      document.getElementById('xp-display').textContent = totalXP + ' XP';
     } else {
       completed.add(id);
       el.classList.add('completed');
       totalXP++;
-      localStorage.setItem('sys_xp', totalXP);
-      document.getElementById('xp-display').textContent = totalXP + ' XP';
-      showToast('+1 XP');
-      // Check for rank up
+      showToast('+1 EXP');
       const newRank = getRank(totalXP).name;
       if (newRank !== prevRank) {
-        setTimeout(() => showToast('RANK UP — ' + newRank + '!'), 1200);
+        setTimeout(() => showToast('RANK UP ▶ ' + newRank), 1200);
       }
     }
-    updateRank();
-    buildAchievements(true);
+    localStorage.setItem('sys_xp', totalXP);
     localStorage.setItem(stateKey, JSON.stringify([...completed]));
     updateProgress();
+    updateXPBar();
+    updateRank();
+    updateStats();
+    buildAchievements(true);
+    buildChart();
+    refreshDisplays();
     checkComplete();
-    refreshChart();
-    // Save to cloud
     saveToCloud({
       xp: totalXP,
       streak,
@@ -921,26 +1418,29 @@
     });
   }
 
+  window.toggleQuest = toggleQuest;
+
+  // ── PROGRESS ──────────────────────────────────────────
   function updateProgress() {
     const count = completed.size;
-    const pct = Math.round((count / 8) * 100);
-    document.getElementById('quest-count').textContent = count + '/8';
+    const pct = Math.round((count / TOTAL_QUESTS) * 100);
+    document.getElementById('quest-count').textContent = count + '/' + TOTAL_QUESTS;
     document.getElementById('quest-bar').style.width = pct + '%';
     document.getElementById('quest-pct').textContent = pct + '%';
   }
 
+  // ── CHECK COMPLETE ────────────────────────────────────
   function checkComplete() {
-    if (completed.size === 8 && !alreadyCelebrated) {
+    if (completed.size === TOTAL_QUESTS && !alreadyCelebrated) {
       alreadyCelebrated = true;
       localStorage.setItem('sys_celebrated_' + todayKey, '1');
-      // Update streak
       streak++;
+      lastDate = todayKey;
       localStorage.setItem('sys_streak', streak);
       localStorage.setItem('sys_last_date', todayKey);
-      document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
-      setTimeout(() => showToast('DAILY QUEST COMPLETE — DAY ' + streak + ' STREAK!'), 300);
+      refreshDisplays();
+      setTimeout(() => showToast('DAILY QUEST COMPLETE — ' + streak + ' DAY STREAK'), 400);
       buildAchievements(true);
-      // Save streak completion to cloud
       saveToCloud({
         xp: totalXP,
         streak,
@@ -952,129 +1452,32 @@
     }
   }
 
-  // ── TOAST ─────────────────────────────────────────────
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
-  }
-
-  // ── DAILY QUOTE ───────────────────────────────────────
-  const QUOTES = [
-    { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle" },
-    { text: "The temptation to quit will be greatest just before you are about to succeed.", author: "Chinese Proverb" },
-    { text: "You don't rise to the level of your goals. You fall to the level of your systems.", author: "James Clear" },
-    { text: "Commit to the LORD whatever you do, and he will establish your plans.", author: "Proverbs 16:3" },
-    { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
-    { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
-    { text: "Do not conform to the pattern of this world, but be transformed by the renewing of your mind.", author: "Romans 12:2" },
-    { text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" },
-    { text: "He who has a why to live can bear almost any how.", author: "Nietzsche" },
-    { text: "I can do all things through Christ who strengthens me.", author: "Philippians 4:13" },
-    { text: "The disciplined man is the free man.", author: "Unknown" },
-    { text: "Don't watch the clock. Do what it does — keep going.", author: "Sam Levenson" },
-    { text: "Be stronger than your excuses.", author: "Unknown" },
-    { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
-    { text: "For I know the plans I have for you, plans to prosper you and not to harm you.", author: "Jeremiah 29:11" },
-    { text: "The pain of discipline is nothing like the pain of disappointment.", author: "Justin Langer" },
-    { text: "Small disciplines repeated with consistency every day lead to great achievements gained slowly over time.", author: "John Maxwell" },
-    { text: "Either you run the day or the day runs you.", author: "Jim Rohn" },
-    { text: "Without vision, the people perish.", author: "Proverbs 29:18" },
-    { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
-    { text: "No man is free who is not master of himself.", author: "Epictetus" },
-    { text: "Trust in the LORD with all your heart and lean not on your own understanding.", author: "Proverbs 3:5" },
-    { text: "Motivation gets you started. Habit keeps you going.", author: "Jim Rohn" },
-    { text: "A winner is just a loser who tried one more time.", author: "George M. Moore Jr." },
-    { text: "The grind is the glory.", author: "Unknown" },
-    { text: "Character is doing the right thing when nobody's looking.", author: "J.C. Watts" },
-    { text: "Iron sharpens iron, and one man sharpens another.", author: "Proverbs 27:17" },
-    { text: "You have power over your mind, not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
-    { text: "What you do in the dark will put you in the light.", author: "Unknown" },
-    { text: "Seek first the kingdom of God and his righteousness, and all these things will be added to you.", author: "Matthew 6:33" },
-  ];
-
-  function buildQuote() {
-    const textEl = document.getElementById('quote-text');
-    const authorEl = document.getElementById('quote-author');
-    if (!textEl || !authorEl) return;
-    // Pick quote based on day of year so it changes daily but is consistent all day
-    const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
-    const q = QUOTES[dayOfYear % QUOTES.length];
-    textEl.textContent = '"' + q.text + '"';
-    authorEl.textContent = '— ' + q.author;
-  }
-
-  buildQuote();
-
-  // ── ACHIEVEMENTS ──────────────────────────────────────
-  const ACHIEVEMENTS = [
-    { id: 'first_blood',     icon: '🔥', name: 'First Blood',     desc: 'Complete your first quest',   check: () => totalXP >= 1 },
-    { id: 'awakened',        icon: '⚡', name: 'Awakened',         desc: 'Complete all 8 in one day',   check: () => alreadyCelebrated },
-    { id: 'consistent',      icon: '📅', name: 'Consistent',       desc: '3-day streak',                check: () => streak >= 3 },
-    { id: 'iron_will',       icon: '💀', name: 'Iron Will',        desc: '7-day streak',                check: () => streak >= 7 },
-    { id: 'hunter',          icon: '👁️', name: 'Hunter',           desc: '14-day streak',               check: () => streak >= 14 },
-    { id: 'shadow_monarch',  icon: '👑', name: 'Shadow Monarch',   desc: '30-day streak',               check: () => streak >= 30 },
-    { id: 'scholar',         icon: '🧠', name: 'Scholar',          desc: 'Earn 25 XP',                  check: () => totalXP >= 25 },
-    { id: 'veteran',         icon: '⚔️', name: 'Veteran',          desc: 'Earn 50 XP',                  check: () => totalXP >= 50 },
-    { id: 'elite',           icon: '🏆', name: 'Elite',            desc: 'Reach A-Rank',                check: () => totalXP >= 100 },
-    { id: 'legend',          icon: '🌟', name: 'Legend',           desc: 'Reach S-Rank',                check: () => totalXP >= 200 },
-  ];
-
-  function loadUnlocked() {
-    return new Set(JSON.parse(localStorage.getItem('sys_achievements') || '[]'));
-  }
-
-  function saveUnlocked(set) {
-    localStorage.setItem('sys_achievements', JSON.stringify([...set]));
-  }
-
-  function buildAchievements(announce = false) {
-    const grid = document.getElementById('achievements-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    const unlocked = loadUnlocked();
-    let newlyUnlocked = [];
-
-    ACHIEVEMENTS.forEach(a => {
-      const isUnlocked = unlocked.has(a.id) || a.check();
-      if (isUnlocked && !unlocked.has(a.id)) {
-        unlocked.add(a.id);
-        newlyUnlocked.push(a);
-      }
-
-      const el = document.createElement('div');
-      el.className = 'achievement ' + (isUnlocked ? 'unlocked' : 'locked');
-      el.innerHTML = `
-        <div class="achievement-icon">${isUnlocked ? a.icon : '🔒'}</div>
-        <div class="achievement-info">
-          <div class="achievement-name">${a.name}</div>
-          <div class="achievement-desc">${a.desc}</div>
-          ${isUnlocked ? '<div class="achievement-unlocked-tag">UNLOCKED</div>' : ''}
-        </div>`;
-      grid.appendChild(el);
-    });
-
-    saveUnlocked(unlocked);
-
-    if (announce && newlyUnlocked.length > 0) {
-      newlyUnlocked.forEach((a, i) => {
-        setTimeout(() => showToast(a.icon + ' ' + a.name.toUpperCase() + ' UNLOCKED'), i * 1500);
-      });
+  // ── XP BAR ────────────────────────────────────────────
+  function updateXPBar() {
+    const rank = getRank(totalXP);
+    if (rank.max === Infinity) {
+      document.getElementById('xp-bar').style.width = '100%';
+      document.getElementById('xp-display').textContent = totalXP + ' EXP';
+      document.getElementById('level-display').textContent = '∞';
+    } else {
+      const progress = totalXP - rank.min;
+      const needed = rank.max - rank.min + 1;
+      const pct = Math.min((progress / needed) * 100, 100);
+      document.getElementById('xp-bar').style.width = pct + '%';
+      document.getElementById('xp-display').textContent = totalXP + ' / ' + (rank.max + 1);
+      document.getElementById('level-display').textContent = totalXP;
     }
   }
 
-  buildAchievements(false);
-
-  // ── RANK SYSTEM ───────────────────────────────────────
+  // ── RANKS ─────────────────────────────────────────────
   const RANKS = [
-    { name: 'E-Rank',          min: 0,   max: 9,   color: '#7a8a9a' },
-    { name: 'D-Rank',          min: 10,  max: 24,  color: '#4a9a6a' },
-    { name: 'C-Rank',          min: 25,  max: 49,  color: '#1e6fff' },
-    { name: 'B-Rank',          min: 50,  max: 99,  color: '#9a4aff' },
-    { name: 'A-Rank',          min: 100, max: 199, color: '#d4a017' },
-    { name: 'S-Rank',          min: 200, max: 399, color: '#ff6a00' },
-    { name: 'National Level',  min: 400, max: Infinity, color: '#ff2244' },
+    { name: 'E-Rank', min: 0,   max: 9,   color: '#7a9ab0', next: 'D-Rank' },
+    { name: 'D-Rank', min: 10,  max: 24,  color: '#4aaa7a', next: 'C-Rank' },
+    { name: 'C-Rank', min: 25,  max: 49,  color: '#1e6fff', next: 'B-Rank' },
+    { name: 'B-Rank', min: 50,  max: 99,  color: '#9a4aff', next: 'A-Rank' },
+    { name: 'A-Rank', min: 100, max: 199, color: '#c8a84b', next: 'S-Rank' },
+    { name: 'S-Rank', min: 200, max: 399, color: '#ff6a00', next: 'National Level' },
+    { name: 'National Level', min: 400, max: Infinity, color: '#ff2244', next: 'MAX' },
   ];
 
   function getRank(xp) {
@@ -1083,97 +1486,177 @@
 
   function updateRank() {
     const rank = getRank(totalXP);
-    const rankEl = document.getElementById('rank-display');
-    const barEl = document.getElementById('rank-bar');
-    const labelEl = document.getElementById('rank-progress-label');
-    if (!rankEl) return;
-
-    rankEl.textContent = rank.name;
-    rankEl.style.color = rank.color;
-
+    const el = document.getElementById('rank-display');
+    const nameEl = document.getElementById('rank-name-display');
+    const nextEl = document.getElementById('rank-next-display');
+    const fillEl = document.getElementById('rank-fill');
+    const labelEl = document.getElementById('rank-label');
+    if (!el) return;
+    el.textContent = rank.name;
+    el.style.color = rank.color;
+    nameEl.textContent = rank.name;
+    nameEl.style.color = rank.color;
     if (rank.max === Infinity) {
-      barEl.style.width = '100%';
-      barEl.style.background = rank.color;
-      labelEl.textContent = 'MAX RANK';
+      fillEl.style.width = '100%';
+      nextEl.textContent = 'MAX RANK';
+      labelEl.textContent = 'PEAK ACHIEVED';
     } else {
       const progress = totalXP - rank.min;
       const needed = rank.max - rank.min + 1;
       const pct = Math.min((progress / needed) * 100, 100);
-      barEl.style.width = pct + '%';
-      barEl.style.background = rank.color;
-      labelEl.textContent = totalXP + ' / ' + (rank.max + 1) + ' XP';
+      fillEl.style.width = pct + '%';
+      nextEl.textContent = (rank.max + 1 - totalXP) + ' EXP to ' + rank.next;
+      labelEl.textContent = totalXP + ' / ' + (rank.max + 1) + ' EXP';
     }
   }
 
-  updateRank();
+  // ── STATS ─────────────────────────────────────────────
+  function updateStats() {
+    // Stats grow with XP — simple formula for now
+    const base = 1 + Math.floor(totalXP / 5);
+    const stats = {
+      str: base + Math.floor(completed.has('q1') ? 1 : 0),
+      agi: base + Math.floor(completed.has('q4') ? 1 : 0),
+      vit: base + Math.floor(completed.has('q2') ? 1 : 0),
+      int: base,
+      sen: base + Math.floor(completed.has('q3') ? 1 : 0),
+    };
+    const max = Math.max(...Object.values(stats), 10);
+    Object.entries(stats).forEach(([key, val]) => {
+      const el = document.getElementById('stat-' + key);
+      const bar = document.getElementById('bar-' + key);
+      if (el) el.textContent = val;
+      if (bar) bar.style.width = Math.min((val / max) * 100, 100) + '%';
+    });
+  }
+
+  // ── DISPLAYS ──────────────────────────────────────────
+  function refreshDisplays() {
+    document.getElementById('streak-display').textContent = streak + (streak === 1 ? ' Day' : ' Days');
+    document.getElementById('total-xp-display').textContent = totalXP;
+  }
 
   // ── WEEKLY CHART ──────────────────────────────────────
   function buildChart() {
     const chart = document.getElementById('weekly-chart');
     if (!chart) return;
     chart.innerHTML = '';
-
-    // Get Monday of current EST week
     const estNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + (-5 * 3600000));
-    const dayOfWeek = estNow.getDay(); // 0=Sun
+    const day = estNow.getDay();
     const monday = new Date(estNow);
-    monday.setDate(estNow.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-
+    monday.setDate(estNow.getDate() - (day === 0 ? 6 : day - 1));
     const weekDays = [];
     for (let i = 0; i < 7; i++) {
       const d = new Date(monday);
       d.setDate(monday.getDate() + i);
       weekDays.push(d.toISOString().split('T')[0]);
     }
-
-    // Get XP for each day this week
-    const xpPerDay = weekDays.map(key => {
-      const quests = JSON.parse(localStorage.getItem('sys_quests_' + key) || '[]');
-      return quests.length;
-    });
-
-    const maxXP = Math.max(...xpPerDay, 1);
-
+    const xpPerDay = weekDays.map(k => JSON.parse(localStorage.getItem('sys_quests_' + k) || '[]').length);
     weekDays.forEach((key, i) => {
       const xp = xpPerDay[i];
       const isToday = key === todayKey;
       const isFuture = key > todayKey;
-      const heightPct = isFuture ? 0 : Math.max((xp / 8) * 100, xp > 0 ? 8 : 4);
-
-      const wrap = document.createElement('div');
-      wrap.className = 'chart-bar-wrap';
-
-      const xpLabel = document.createElement('div');
-      xpLabel.className = 'chart-xp';
-      xpLabel.textContent = isFuture ? '' : (xp > 0 ? xp : '');
-
+      const col = document.createElement('div');
+      col.className = 'chart-col';
       const bar = document.createElement('div');
-      bar.className = 'chart-bar ' + (isToday ? 'today' : xp > 0 ? 'has-xp' : 'empty');
-      bar.style.height = heightPct + '%';
-
-      wrap.appendChild(xpLabel);
-      wrap.appendChild(bar);
-      chart.appendChild(wrap);
+      bar.className = 'chart-bar' + (isToday ? ' today' : xp > 0 ? ' done' : '');
+      bar.style.height = isFuture ? '2px' : Math.max((xp / TOTAL_QUESTS) * 100, xp > 0 ? 8 : 4) + '%';
+      col.appendChild(bar);
+      chart.appendChild(col);
     });
   }
 
-  buildChart();
+  // ── ACHIEVEMENTS ──────────────────────────────────────
+  const ACHIEVEMENTS = [
+    { id: 'first_blood',    icon: '🔥', name: 'First Blood',    desc: 'Complete first quest',  check: () => totalXP >= 1 },
+    { id: 'awakened',       icon: '⚡', name: 'Awakened',        desc: 'Complete all quests',   check: () => alreadyCelebrated },
+    { id: 'consistent',     icon: '📅', name: 'Consistent',      desc: '3-day streak',          check: () => streak >= 3 },
+    { id: 'iron_will',      icon: '💀', name: 'Iron Will',       desc: '7-day streak',          check: () => streak >= 7 },
+    { id: 'hunter',         icon: '👁️', name: 'Hunter',          desc: '14-day streak',         check: () => streak >= 14 },
+    { id: 'shadow_monarch', icon: '👑', name: 'Shadow Monarch',  desc: '30-day streak',         check: () => streak >= 30 },
+    { id: 'scholar',        icon: '🧠', name: 'Scholar',         desc: 'Earn 25 EXP',           check: () => totalXP >= 25 },
+    { id: 'veteran',        icon: '⚔️', name: 'Veteran',         desc: 'Earn 50 EXP',           check: () => totalXP >= 50 },
+    { id: 'elite',          icon: '🏆', name: 'Elite',           desc: 'Reach A-Rank',          check: () => totalXP >= 100 },
+    { id: 'legend',         icon: '🌟', name: 'Legend',          desc: 'Reach S-Rank',          check: () => totalXP >= 200 },
+  ];
 
-  // Rebuild chart when XP updates
-  function refreshChart() { buildChart(); }
-
-  function switchTab(name, btn) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    btn.classList.add('active');
+  function buildAchievements(announce) {
+    const grid = document.getElementById('achievements-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    const unlocked = new Set(JSON.parse(localStorage.getItem('sys_achievements') || '[]'));
+    const newOnes = [];
+    ACHIEVEMENTS.forEach(a => {
+      const isUnlocked = unlocked.has(a.id) || a.check();
+      if (isUnlocked && !unlocked.has(a.id)) { unlocked.add(a.id); newOnes.push(a); }
+      const el = document.createElement('div');
+      el.className = 'achievement ' + (isUnlocked ? 'unlocked' : 'locked');
+      el.innerHTML = `
+        <div class="achievement-icon">${isUnlocked ? a.icon : '🔒'}</div>
+        <div class="achievement-info">
+          <div class="achievement-name">${a.name}</div>
+          <div class="achievement-desc">${a.desc}</div>
+          ${isUnlocked ? '<div class="achievement-tag">UNLOCKED</div>' : ''}
+        </div>`;
+      grid.appendChild(el);
+    });
+    localStorage.setItem('sys_achievements', JSON.stringify([...unlocked]));
+    if (announce) newOnes.forEach((a, i) =>
+      setTimeout(() => showToast(a.icon + ' ' + a.name.toUpperCase() + ' UNLOCKED'), i * 1500)
+    );
   }
 
-  // Expose to global scope for onclick handlers
-  window.switchTab = switchTab;
-  window.toggleQuest = toggleQuest;
+  // ── DAILY QUOTE ───────────────────────────────────────
+  const QUOTES = [
+    { text: "We are what we repeatedly do. Excellence is not an act, but a habit.", author: "Aristotle" },
+    { text: "The temptation to quit will be greatest just before you are about to succeed.", author: "Chinese Proverb" },
+    { text: "You don't rise to the level of your goals. You fall to the level of your systems.", author: "James Clear" },
+    { text: "Commit to the LORD whatever you do, and he will establish your plans.", author: "Proverbs 16:3" },
+    { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
+    { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
+    { text: "Do not conform to the pattern of this world, but be transformed by the renewing of your mind.", author: "Romans 12:2" },
+    { text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" },
+    { text: "I can do all things through Christ who strengthens me.", author: "Philippians 4:13" },
+    { text: "The disciplined man is the free man.", author: "Unknown" },
+    { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
+    { text: "For I know the plans I have for you, plans to prosper you and not to harm you.", author: "Jeremiah 29:11" },
+    { text: "The pain of discipline is nothing like the pain of disappointment.", author: "Justin Langer" },
+    { text: "Either you run the day or the day runs you.", author: "Jim Rohn" },
+    { text: "No man is free who is not master of himself.", author: "Epictetus" },
+    { text: "Trust in the LORD with all your heart and lean not on your own understanding.", author: "Proverbs 3:5" },
+    { text: "Iron sharpens iron, and one man sharpens another.", author: "Proverbs 27:17" },
+    { text: "You have power over your mind, not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
+    { text: "Seek first the kingdom of God and his righteousness, and all these things will be added to you.", author: "Matthew 6:33" },
+    { text: "What you do in the dark will put you in the light.", author: "Unknown" },
+  ];
 
-  // ── SERVICE WORKER + NOTIFICATIONS ───────────────────
+  function buildQuote() {
+    const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+    const q = QUOTES[dayOfYear % QUOTES.length];
+    document.getElementById('quote-text').textContent = '\u201C' + q.text + '\u201D';
+    document.getElementById('quote-author').textContent = '\u2014 ' + q.author;
+  }
+
+  // ── TOAST ─────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ── PANEL SWITCHING ───────────────────────────────────
+  function switchPanel(name, btn) {
+    document.querySelectorAll('.sys-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sys-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    btn.classList.add('active');
+    document.querySelector('.sys-content').scrollTop = 0;
+  }
+
+  window.switchPanel = switchPanel;
+
+  // ── SERVICE WORKER ────────────────────────────────────
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').then(reg => {
       scheduleNotification(reg);
@@ -1183,26 +1666,22 @@
   async function scheduleNotification(reg) {
     if (!('Notification' in window)) return;
     let permission = Notification.permission;
-    if (permission === 'default') {
-      permission = await Notification.requestPermission();
-    }
+    if (permission === 'default') permission = await Notification.requestPermission();
     if (permission !== 'granted') return;
     if (alreadyCelebrated) return;
     const nowMs = Date.now();
     const nowEST = new Date(nowMs + (new Date().getTimezoneOffset() * 60000) + (-5 * 3600000));
     const target = new Date(nowEST);
     target.setHours(17, 0, 0, 0);
-    let delay = target.getTime() - nowEST.getTime();
+    const delay = target.getTime() - nowEST.getTime();
     if (delay < 0) return;
     const sw = reg.active || reg.waiting || reg.installing;
-    if (sw) {
-      sw.postMessage({
-        type: 'SCHEDULE_NOTIFICATION',
-        delay,
-        title: '[ The System ]',
-        body: 'Hunter, your daily quests await. Do not break the chain.'
-      });
-    }
+    if (sw) sw.postMessage({
+      type: 'SCHEDULE_NOTIFICATION',
+      delay,
+      title: '[ The System ]',
+      body: 'The daily quest awaits, Hunter. Do not break the chain.'
+    });
   }
 </script>
 </body>
