@@ -997,11 +997,6 @@
           <div class="quest-text">10km Run</div>
           <div class="quest-xp">+1 XP</div>
         </div>
-        <div class="quest-item" id="q5" onclick="toggleQuest('q5')">
-          <div class="quest-check"><div class="quest-check-inner"></div></div>
-          <div class="quest-text">No Rest. Keep Moving.</div>
-          <div class="quest-xp">+1 XP</div>
-        </div>
       </div>
 
       <div class="sys-warning">
@@ -1101,12 +1096,6 @@
 
       <div class="sys-section">Achievements</div>
       <div class="achievement-grid" id="achievements-grid"></div>
-
-      <div class="sys-section">Word of the Day</div>
-      <div class="quote-block">
-        <div class="quote-author" id="quote-author"></div>
-        <div class="quote-text" id="quote-text"></div>
-      </div>
 
     </div>
   </div>
@@ -1283,7 +1272,7 @@
 
 <!-- MAIN APP -->
 <script>
-  const TOTAL_QUESTS = 5;
+  const TOTAL_QUESTS = 4;
 
   // ── HELPERS ───────────────────────────────────────────
   function saveToCloud(data) {

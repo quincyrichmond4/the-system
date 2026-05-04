@@ -1,8 +1,8 @@
-const CACHE = 'system-v2';
-const ASSETS = ['/', '/index.html', '/manifest.json', '/icon.svg'];
+const CACHE = 'system-v3';
+const ASSETS = ['/', '/the-system/', '/the-system/index.html', '/the-system/manifest.json', '/the-system/icon.svg'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(() => {})));
   self.skipWaiting();
 });
 
@@ -13,9 +13,25 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
+// NETWORK-FIRST: always try network, fall back to cache
 self.addEventListener('fetch', e => {
+  // Only handle GET requests for our own pages
+  if (e.request.method !== 'GET') return;
+
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
+    fetch(e.request)
+      .then(response => {
+        // Got a fresh response — update the cache and return it
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return response;
+      })
+      .catch(() => {
+        // Network failed — serve from cache
+        return caches.match(e.request);
+      })
   );
 });
 
