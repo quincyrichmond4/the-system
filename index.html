@@ -13,7 +13,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -321,64 +320,6 @@
       letter-spacing: 1px;
     }
 
-    /* AVATAR */
-    .avatar-stage {
-      position: relative;
-      height: 200px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .avatar-lottie {
-      width: 160px;
-      height: 200px;
-      flex-shrink: 0;
-      display: none;
-      filter: drop-shadow(0 4px 16px rgba(30,111,255,0.2));
-    }
-
-    .avatar-lottie.active { display: block; }
-
-    /* SPEECH BUBBLE */
-    .speech-bubble {
-      position: absolute;
-      bottom: 160px;
-      right: 155px;
-      background: var(--panel);
-      border: 1px solid var(--blue);
-      padding: 6px 10px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: var(--text);
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      pointer-events: none;
-      z-index: 10;
-    }
-    .speech-bubble::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      right: 12px;
-      width: 10px;
-      height: 10px;
-      background: var(--panel);
-      border-right: 1px solid var(--blue);
-      border-bottom: 1px solid var(--blue);
-      transform: rotate(45deg);
-    }
-    .speech-bubble.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     /* MILESTONES */
     .milestone {
       padding: 10px 12px;
@@ -443,6 +384,71 @@
       max-width: 90vw;
     }
     .toast.show { opacity: 1; }
+
+    /* WEEKLY CHART */
+    .chart-bar-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      gap: 3px;
+    }
+    .chart-bar {
+      width: 100%;
+      border-radius: 2px;
+      min-height: 3px;
+      transition: height 0.5s ease;
+    }
+    .chart-bar.today { background: var(--blue); box-shadow: 0 0 8px rgba(30,111,255,0.4); }
+    .chart-bar.has-xp { background: var(--success); }
+    .chart-bar.empty  { background: var(--locked); }
+    .chart-xp {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+    /* ACHIEVEMENTS */
+    .achievement {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.3s;
+    }
+    .achievement.unlocked {
+      border-color: var(--gold);
+      background: rgba(212,160,23,0.06);
+    }
+    .achievement.locked { opacity: 0.35; }
+    .achievement-icon { font-size: 20px; flex-shrink: 0; }
+    .achievement-info { flex: 1; min-width: 0; }
+    .achievement-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-bright);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .achievement.locked .achievement-name { color: var(--text-dim); }
+    .achievement-desc {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .achievement-unlocked-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
   </style>
 </head>
 <body>
@@ -472,7 +478,16 @@
     <div class="card" style="margin-bottom:10px;">
       <div class="info-row">
         <span class="info-label">RANK</span>
-        <span class="info-val" style="color:var(--gold)">Employee</span>
+        <span class="info-val" id="rank-display" style="color:var(--gold)">E-Rank</span>
+      </div>
+      <div style="padding: 4px 0 8px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">RANK PROGRESS</span>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);" id="rank-progress-label">0 / 10 XP</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" id="rank-bar" style="width:0%; background:var(--gold);"></div>
+        </div>
       </div>
       <div class="info-row">
         <span class="info-label">INCOME</span>
@@ -485,6 +500,10 @@
       <div class="info-row">
         <span class="info-label">DAY STREAK</span>
         <span class="info-val" id="streak-display" style="color:var(--gold)">0 days</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">TOTAL XP</span>
+        <span class="info-val" id="xp-display" style="color:var(--blue)">0 XP</span>
       </div>
     </div>
 
@@ -522,23 +541,38 @@
       </div>
     </div>
 
-    <div class="section-label">System Reminders</div>
+    <div class="section-label" style="margin-top:14px;">Achievements</div>
+    <div id="achievements-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;"></div>
+
+    <div class="section-label" style="margin-top:14px;">Word of the Day</div>
+    <div class="card" style="margin-bottom:10px;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:2px;margin-bottom:6px;" id="quote-author"></div>
+      <div style="font-size:13px;color:var(--text);line-height:1.6;font-style:italic;" id="quote-text"></div>
+    </div>
+
+    <div class="section-label" style="margin-top:4px;">System Reminders</div>
     <div class="reminder"><div class="reminder-num">01</div>Choose God first, and He'll provide for you.</div>
     <div class="reminder"><div class="reminder-num">02</div>Stay small enough long enough, and you'll be big enough soon enough.</div>
     <div class="reminder"><div class="reminder-num">03</div>Embrace the process; enjoy the progress.</div>
+
+    <div class="section-label" style="margin-top:14px;">Weekly Progress</div>
+    <div class="card" style="margin-bottom:10px;">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; height:80px; gap:6px;" id="weekly-chart">
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:6px;">
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">MON</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">TUE</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">WED</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">THU</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">FRI</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">SAT</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);">SUN</span>
+      </div>
+    </div>
   </div>
 
   <!-- QUESTS -->
   <div class="tab" id="tab-quests">
-
-    <div class="avatar-stage">
-      <div class="speech-bubble" id="speech-bubble"></div>
-      <dotlottie-player class="avatar-lottie active" id="av-idle"    src="mascot.json"         background="transparent" speed="1" loop autoplay></dotlottie-player>
-      <dotlottie-player class="avatar-lottie"        id="av-happy"   src="mascot_happy.json"   background="transparent" speed="1" loop autoplay></dotlottie-player>
-      <dotlottie-player class="avatar-lottie"        id="av-wave"    src="mascot_wave.json"    background="transparent" speed="1" loop autoplay></dotlottie-player>
-      <dotlottie-player class="avatar-lottie"        id="av-winner"  src="mascot_winner.json"  background="transparent" speed="1" loop autoplay></dotlottie-player>
-      <dotlottie-player class="avatar-lottie"        id="av-fail"    src="mascot_fail.json"    background="transparent" speed="1" loop autoplay></dotlottie-player>
-    </div>
 
     <div class="progress-bar-wrap">
       <div>
@@ -563,17 +597,17 @@
       <div class="quest-item" id="q1" onclick="toggleQuest('q1','STR')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">Push / Pull / Legs (2x per week)</div>
-        <div class="xp-tag">+STR</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
       <div class="quest-item" id="q2" onclick="toggleQuest('q2','STR')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">10,000+ steps</div>
-        <div class="xp-tag">+STR</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
       <div class="quest-item" id="q3" onclick="toggleQuest('q3','STR')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">Eat 1,600–1,800 calories</div>
-        <div class="xp-tag">+STR</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
     </div>
 
@@ -582,12 +616,12 @@
       <div class="quest-item" id="q4" onclick="toggleQuest('q4','INT')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">Read 1 book chapter</div>
-        <div class="xp-tag">+INT</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
       <div class="quest-item" id="q5" onclick="toggleQuest('q5','INT')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">Listen to 1 audio (LTD)</div>
-        <div class="xp-tag">+INT</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
     </div>
 
@@ -596,17 +630,17 @@
       <div class="quest-item" id="q6" onclick="toggleQuest('q6','CHA')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">5 conversations</div>
-        <div class="xp-tag">+CHA</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
       <div class="quest-item" id="q7" onclick="toggleQuest('q7','CHA')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">3 MSAs</div>
-        <div class="xp-tag">+CHA</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
       <div class="quest-item" id="q8" onclick="toggleQuest('q8','CHA')">
         <div class="checkbox"><div class="check-inner"></div></div>
         <div class="quest-text">1 customer lead or business contact</div>
-        <div class="xp-tag">+CHA</div>
+        <div class="xp-tag">+1 XP</div>
       </div>
     </div>
     <div class="charisma-note">Complete any ONE Charisma quest to fulfill that stat.</div>
@@ -708,7 +742,45 @@
 
 </div>
 
-<script>
+<script type="module">
+  // ── FIREBASE ──────────────────────────────────────────
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBqGBnG9v1kdm-181xBCvNZeVe5B1wfFzc",
+    authDomain: "the-system-strive2026.firebaseapp.com",
+    projectId: "the-system-strive2026",
+    storageBucket: "the-system-strive2026.firebasestorage.app",
+    messagingSenderId: "881172104244",
+    appId: "1:881172104244:web:1010d48037fc807ef97661"
+  };
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const db = getFirestore(firebaseApp);
+  const PLAYER_ID = 'strive'; // single player for now
+  const playerRef = doc(db, 'players', PLAYER_ID);
+
+  // Save all persistent data to Firestore
+  async function saveToCloud(data) {
+    try {
+      await setDoc(playerRef, data, { merge: true });
+    } catch (e) {
+      console.warn('Cloud save failed, using local only:', e);
+    }
+  }
+
+  // Load data from Firestore, fall back to localStorage
+  async function loadFromCloud() {
+    try {
+      const snap = await getDoc(playerRef);
+      if (snap.exists()) return snap.data();
+    } catch (e) {
+      console.warn('Cloud load failed, using local:', e);
+    }
+    return null;
+  }
+
   // ── DATE ──────────────────────────────────────────────
   const DAYS   = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -728,6 +800,46 @@
   // ── STREAK ────────────────────────────────────────────
   let streak   = parseInt(localStorage.getItem('sys_streak') || '0');
   let lastDate = localStorage.getItem('sys_last_date') || '';
+  let totalXP  = parseInt(localStorage.getItem('sys_xp') || '0');
+
+  // Load from cloud and sync down
+  loadFromCloud().then(cloudData => {
+    if (cloudData) {
+      // Cloud wins if XP or streak is higher (most authoritative)
+      if ((cloudData.xp || 0) > totalXP) {
+        totalXP = cloudData.xp;
+        localStorage.setItem('sys_xp', totalXP);
+      }
+      if ((cloudData.streak || 0) > streak) {
+        streak = cloudData.streak;
+        localStorage.setItem('sys_streak', streak);
+      }
+      if (cloudData.lastDate) {
+        lastDate = cloudData.lastDate;
+        localStorage.setItem('sys_last_date', lastDate);
+      }
+      if (cloudData.achievements) {
+        localStorage.setItem('sys_achievements', JSON.stringify(cloudData.achievements));
+      }
+      // Sync today's quests if cloud has them
+      if (cloudData['quests_' + todayKey]) {
+        const cloudQuests = cloudData['quests_' + todayKey];
+        localStorage.setItem('sys_quests_' + todayKey, JSON.stringify(cloudQuests));
+        completed = new Set(cloudQuests);
+        completed.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add('completed');
+        });
+        updateProgress();
+      }
+      // Refresh all UI with cloud data
+      document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
+      document.getElementById('xp-display').textContent = totalXP + ' XP';
+      updateRank();
+      buildAchievements(false);
+      buildChart();
+    }
+  });
 
   // If the last completed date wasn't yesterday or today, reset streak
   if (lastDate && lastDate !== todayKey) {
@@ -740,6 +852,7 @@
     }
   }
   document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
+  document.getElementById('xp-display').textContent = totalXP + ' XP';
 
   // ── QUEST STATE (resets each new day) ─────────────────
   const stateKey = 'sys_quests_' + todayKey;
@@ -756,18 +869,40 @@
   // ── QUEST TOGGLE ──────────────────────────────────────
   function toggleQuest(id, stat) {
     const el = document.getElementById(id);
+    const prevRank = getRank(totalXP).name;
     if (completed.has(id)) {
       completed.delete(id);
       el.classList.remove('completed');
+      totalXP = Math.max(0, totalXP - 1);
+      localStorage.setItem('sys_xp', totalXP);
+      document.getElementById('xp-display').textContent = totalXP + ' XP';
     } else {
       completed.add(id);
       el.classList.add('completed');
-      showToast('+' + stat + ' INCREASED');
+      totalXP++;
+      localStorage.setItem('sys_xp', totalXP);
+      document.getElementById('xp-display').textContent = totalXP + ' XP';
+      showToast('+1 XP');
+      // Check for rank up
+      const newRank = getRank(totalXP).name;
+      if (newRank !== prevRank) {
+        setTimeout(() => showToast('RANK UP — ' + newRank + '!'), 1200);
+      }
     }
+    updateRank();
+    buildAchievements(true);
     localStorage.setItem(stateKey, JSON.stringify([...completed]));
     updateProgress();
     checkComplete();
-    if (completed.has(id)) doQuestComplete();
+    refreshChart();
+    // Save to cloud
+    saveToCloud({
+      xp: totalXP,
+      streak,
+      lastDate,
+      achievements: [...JSON.parse(localStorage.getItem('sys_achievements') || '[]')],
+      ['quests_' + todayKey]: [...completed]
+    });
   }
 
   function updateProgress() {
@@ -788,7 +923,16 @@
       localStorage.setItem('sys_last_date', todayKey);
       document.getElementById('streak-display').textContent = streak + ' day' + (streak === 1 ? '' : 's');
       setTimeout(() => showToast('DAILY QUEST COMPLETE — DAY ' + streak + ' STREAK!'), 300);
-      doAllQuestsComplete();
+      buildAchievements(true);
+      // Save streak completion to cloud
+      saveToCloud({
+        xp: totalXP,
+        streak,
+        lastDate: todayKey,
+        achievements: [...JSON.parse(localStorage.getItem('sys_achievements') || '[]')],
+        ['quests_' + todayKey]: [...completed],
+        ['celebrated_' + todayKey]: true
+      });
     }
   }
 
@@ -800,133 +944,214 @@
     setTimeout(() => t.classList.remove('show'), 2800);
   }
 
-  // ── AVATAR LOTTIE SYSTEM ─────────────────────────────
-  const lottiePoses = {
-    idle:   document.getElementById('av-idle'),
-    happy:  document.getElementById('av-happy'),
-    wave:   document.getElementById('av-wave'),
-    winner: document.getElementById('av-winner'),
-    fail:   document.getElementById('av-fail'),
-  };
-  const speechBubble = document.getElementById('speech-bubble');
-  let idleTimer = null;
-  let isAnimating = false;
-  let currentPose = 'idle';
-
-  const watchPhrases = [
-    "Time's ticking.",
-    "Stay on track.",
-    "Don't waste it.",
-    "Every second counts.",
-    "The grind waits for no one."
+  // ── DAILY QUOTE ───────────────────────────────────────
+  const QUOTES = [
+    { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle" },
+    { text: "The temptation to quit will be greatest just before you are about to succeed.", author: "Chinese Proverb" },
+    { text: "You don't rise to the level of your goals. You fall to the level of your systems.", author: "James Clear" },
+    { text: "Commit to the LORD whatever you do, and he will establish your plans.", author: "Proverbs 16:3" },
+    { text: "Hard work beats talent when talent doesn't work hard.", author: "Tim Notke" },
+    { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
+    { text: "Do not conform to the pattern of this world, but be transformed by the renewing of your mind.", author: "Romans 12:2" },
+    { text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" },
+    { text: "He who has a why to live can bear almost any how.", author: "Nietzsche" },
+    { text: "I can do all things through Christ who strengthens me.", author: "Philippians 4:13" },
+    { text: "The disciplined man is the free man.", author: "Unknown" },
+    { text: "Don't watch the clock. Do what it does — keep going.", author: "Sam Levenson" },
+    { text: "Be stronger than your excuses.", author: "Unknown" },
+    { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
+    { text: "For I know the plans I have for you, plans to prosper you and not to harm you.", author: "Jeremiah 29:11" },
+    { text: "The pain of discipline is nothing like the pain of disappointment.", author: "Justin Langer" },
+    { text: "Small disciplines repeated with consistency every day lead to great achievements gained slowly over time.", author: "John Maxwell" },
+    { text: "Either you run the day or the day runs you.", author: "Jim Rohn" },
+    { text: "Without vision, the people perish.", author: "Proverbs 29:18" },
+    { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+    { text: "No man is free who is not master of himself.", author: "Epictetus" },
+    { text: "Trust in the LORD with all your heart and lean not on your own understanding.", author: "Proverbs 3:5" },
+    { text: "Motivation gets you started. Habit keeps you going.", author: "Jim Rohn" },
+    { text: "A winner is just a loser who tried one more time.", author: "George M. Moore Jr." },
+    { text: "The grind is the glory.", author: "Unknown" },
+    { text: "Character is doing the right thing when nobody's looking.", author: "J.C. Watts" },
+    { text: "Iron sharpens iron, and one man sharpens another.", author: "Proverbs 27:17" },
+    { text: "You have power over your mind, not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
+    { text: "What you do in the dark will put you in the light.", author: "Unknown" },
+    { text: "Seek first the kingdom of God and his righteousness, and all these things will be added to you.", author: "Matthew 6:33" },
   ];
 
-  function showPose(name, duration) {
-    Object.values(lottiePoses).forEach(el => el.classList.remove('active'));
-    if (lottiePoses[name]) lottiePoses[name].classList.add('active');
-    currentPose = name;
+  function buildQuote() {
+    const textEl = document.getElementById('quote-text');
+    const authorEl = document.getElementById('quote-author');
+    if (!textEl || !authorEl) return;
+    // Pick quote based on day of year so it changes daily but is consistent all day
+    const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+    const q = QUOTES[dayOfYear % QUOTES.length];
+    textEl.textContent = '"' + q.text + '"';
+    authorEl.textContent = '— ' + q.author;
   }
 
-  function showSpeech(text, delay = 0, hideAfter = 2500) {
-    setTimeout(() => {
-      speechBubble.textContent = text;
-      speechBubble.classList.add('show');
-      setTimeout(() => speechBubble.classList.remove('show'), hideAfter);
-    }, delay);
+  buildQuote();
+
+  // ── ACHIEVEMENTS ──────────────────────────────────────
+  const ACHIEVEMENTS = [
+    { id: 'first_blood',     icon: '🔥', name: 'First Blood',     desc: 'Complete your first quest',   check: () => totalXP >= 1 },
+    { id: 'awakened',        icon: '⚡', name: 'Awakened',         desc: 'Complete all 8 in one day',   check: () => alreadyCelebrated },
+    { id: 'consistent',      icon: '📅', name: 'Consistent',       desc: '3-day streak',                check: () => streak >= 3 },
+    { id: 'iron_will',       icon: '💀', name: 'Iron Will',        desc: '7-day streak',                check: () => streak >= 7 },
+    { id: 'hunter',          icon: '👁️', name: 'Hunter',           desc: '14-day streak',               check: () => streak >= 14 },
+    { id: 'shadow_monarch',  icon: '👑', name: 'Shadow Monarch',   desc: '30-day streak',               check: () => streak >= 30 },
+    { id: 'scholar',         icon: '🧠', name: 'Scholar',          desc: 'Earn 25 XP',                  check: () => totalXP >= 25 },
+    { id: 'veteran',         icon: '⚔️', name: 'Veteran',          desc: 'Earn 50 XP',                  check: () => totalXP >= 50 },
+    { id: 'elite',           icon: '🏆', name: 'Elite',            desc: 'Reach A-Rank',                check: () => totalXP >= 100 },
+    { id: 'legend',          icon: '🌟', name: 'Legend',           desc: 'Reach S-Rank',                check: () => totalXP >= 200 },
+  ];
+
+  function loadUnlocked() {
+    return new Set(JSON.parse(localStorage.getItem('sys_achievements') || '[]'));
   }
 
-  function startIdleTimer() {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(doWaveCheck, 10000);
+  function saveUnlocked(set) {
+    localStorage.setItem('sys_achievements', JSON.stringify([...set]));
   }
 
-  function doWaveCheck() {
-    if (isAnimating) return;
-    isAnimating = true;
-    showPose('wave');
-    const phrase = watchPhrases[Math.floor(Math.random() * watchPhrases.length)];
-    showSpeech(phrase, 600, 2200);
-    setTimeout(() => {
-      showPose('idle');
-      isAnimating = false;
-      startIdleTimer();
-    }, 5000);
-  }
+  function buildAchievements(announce = false) {
+    const grid = document.getElementById('achievements-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    const unlocked = loadUnlocked();
+    let newlyUnlocked = [];
 
-  function doQuestComplete() {
-    if (isAnimating) return;
-    isAnimating = true;
-    clearTimeout(idleTimer);
-    showPose('happy');
-    showSpeech('Quest complete. Keep moving.', 400, 2000);
-    setTimeout(() => {
-      showPose('idle');
-      isAnimating = false;
-      startIdleTimer();
-    }, 3500);
-  }
+    ACHIEVEMENTS.forEach(a => {
+      const isUnlocked = unlocked.has(a.id) || a.check();
+      if (isUnlocked && !unlocked.has(a.id)) {
+        unlocked.add(a.id);
+        newlyUnlocked.push(a);
+      }
 
-  function doAllQuestsComplete() {
-    isAnimating = true;
-    clearTimeout(idleTimer);
-    showPose('winner');
-    showSpeech("That's how it's done.", 500, 3000);
-    setTimeout(() => {
-      showPose('idle');
-      isAnimating = false;
-    }, 6000);
-  }
+      const el = document.createElement('div');
+      el.className = 'achievement ' + (isUnlocked ? 'unlocked' : 'locked');
+      el.innerHTML = `
+        <div class="achievement-icon">${isUnlocked ? a.icon : '🔒'}</div>
+        <div class="achievement-info">
+          <div class="achievement-name">${a.name}</div>
+          <div class="achievement-desc">${a.desc}</div>
+          ${isUnlocked ? '<div class="achievement-unlocked-tag">UNLOCKED</div>' : ''}
+        </div>`;
+      grid.appendChild(el);
+    });
 
-  function doMissedDay() {
-    showPose('fail');
-    showSpeech("Don't let it happen again.", 500, 2500);
-    setTimeout(() => {
-      showPose('idle');
-    }, 4000);
-  }
+    saveUnlocked(unlocked);
 
-  function onQuestTabActive() {
-    // Check if missed yesterday
-    const yesterday = new Date(now);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yKey = yesterday.toISOString().split('T')[0];
-    const yesterdayDone = localStorage.getItem('sys_celebrated_' + yKey) === '1';
-    const missedYesterday = lastDate && lastDate !== todayKey && !yesterdayDone && lastDate !== yKey;
-
-    if (missedYesterday) {
-      setTimeout(doMissedDay, 800);
-    } else if (!alreadyCelebrated) {
-      // Wave hello on first open today
-      setTimeout(() => {
-        showPose('wave');
-        showSpeech('Your quests await, Hunter.', 400, 2200);
-        setTimeout(() => {
-          showPose('idle');
-          startIdleTimer();
-        }, 5000);
-      }, 600);
-    } else {
-      showPose('idle');
-      startIdleTimer();
+    if (announce && newlyUnlocked.length > 0) {
+      newlyUnlocked.forEach((a, i) => {
+        setTimeout(() => showToast(a.icon + ' ' + a.name.toUpperCase() + ' UNLOCKED'), i * 1500);
+      });
     }
   }
 
-  function onQuestTabInactive() {
-    clearTimeout(idleTimer);
-    isAnimating = false;
-    speechBubble.classList.remove('show');
+  buildAchievements(false);
+
+  // ── RANK SYSTEM ───────────────────────────────────────
+  const RANKS = [
+    { name: 'E-Rank',          min: 0,   max: 9,   color: '#7a8a9a' },
+    { name: 'D-Rank',          min: 10,  max: 24,  color: '#4a9a6a' },
+    { name: 'C-Rank',          min: 25,  max: 49,  color: '#1e6fff' },
+    { name: 'B-Rank',          min: 50,  max: 99,  color: '#9a4aff' },
+    { name: 'A-Rank',          min: 100, max: 199, color: '#d4a017' },
+    { name: 'S-Rank',          min: 200, max: 399, color: '#ff6a00' },
+    { name: 'National Level',  min: 400, max: Infinity, color: '#ff2244' },
+  ];
+
+  function getRank(xp) {
+    return RANKS.find(r => xp >= r.min && xp <= r.max) || RANKS[0];
   }
+
+  function updateRank() {
+    const rank = getRank(totalXP);
+    const rankEl = document.getElementById('rank-display');
+    const barEl = document.getElementById('rank-bar');
+    const labelEl = document.getElementById('rank-progress-label');
+    if (!rankEl) return;
+
+    rankEl.textContent = rank.name;
+    rankEl.style.color = rank.color;
+
+    if (rank.max === Infinity) {
+      barEl.style.width = '100%';
+      barEl.style.background = rank.color;
+      labelEl.textContent = 'MAX RANK';
+    } else {
+      const progress = totalXP - rank.min;
+      const needed = rank.max - rank.min + 1;
+      const pct = Math.min((progress / needed) * 100, 100);
+      barEl.style.width = pct + '%';
+      barEl.style.background = rank.color;
+      labelEl.textContent = totalXP + ' / ' + (rank.max + 1) + ' XP';
+    }
+  }
+
+  updateRank();
+
+  // ── WEEKLY CHART ──────────────────────────────────────
+  function buildChart() {
+    const chart = document.getElementById('weekly-chart');
+    if (!chart) return;
+    chart.innerHTML = '';
+
+    // Get Monday of current EST week
+    const estNow = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + (-5 * 3600000));
+    const dayOfWeek = estNow.getDay(); // 0=Sun
+    const monday = new Date(estNow);
+    monday.setDate(estNow.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+    const weekDays = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      weekDays.push(d.toISOString().split('T')[0]);
+    }
+
+    // Get XP for each day this week
+    const xpPerDay = weekDays.map(key => {
+      const quests = JSON.parse(localStorage.getItem('sys_quests_' + key) || '[]');
+      return quests.length;
+    });
+
+    const maxXP = Math.max(...xpPerDay, 1);
+
+    weekDays.forEach((key, i) => {
+      const xp = xpPerDay[i];
+      const isToday = key === todayKey;
+      const isFuture = key > todayKey;
+      const heightPct = isFuture ? 0 : Math.max((xp / 8) * 100, xp > 0 ? 8 : 4);
+
+      const wrap = document.createElement('div');
+      wrap.className = 'chart-bar-wrap';
+
+      const xpLabel = document.createElement('div');
+      xpLabel.className = 'chart-xp';
+      xpLabel.textContent = isFuture ? '' : (xp > 0 ? xp : '');
+
+      const bar = document.createElement('div');
+      bar.className = 'chart-bar ' + (isToday ? 'today' : xp > 0 ? 'has-xp' : 'empty');
+      bar.style.height = heightPct + '%';
+
+      wrap.appendChild(xpLabel);
+      wrap.appendChild(bar);
+      chart.appendChild(wrap);
+    });
+  }
+
+  buildChart();
+
+  // Rebuild chart when XP updates
+  function refreshChart() { buildChart(); }
+
   function switchTab(name, btn) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     btn.classList.add('active');
-    if (name === 'quests') onQuestTabActive();
-    else onQuestTabInactive();
   }
-
-  // Quests is the default tab — start idle timer on load
-  onQuestTabActive();
 
   // ── SERVICE WORKER + NOTIFICATIONS ───────────────────
   if ('serviceWorker' in navigator) {
@@ -936,29 +1161,19 @@
   }
 
   async function scheduleNotification(reg) {
-    // Request permission if not already granted
     if (!('Notification' in window)) return;
     let permission = Notification.permission;
     if (permission === 'default') {
       permission = await Notification.requestPermission();
     }
     if (permission !== 'granted') return;
-
-    // Only schedule if quests aren't done yet today
     if (alreadyCelebrated) return;
-
-    // Calculate ms until 5:00 PM EST today
     const nowMs = Date.now();
     const nowEST = new Date(nowMs + (new Date().getTimezoneOffset() * 60000) + (-5 * 3600000));
     const target = new Date(nowEST);
-    target.setHours(17, 0, 0, 0); // 5:00 PM EST
-
+    target.setHours(17, 0, 0, 0);
     let delay = target.getTime() - nowEST.getTime();
-
-    // If 5PM has already passed today, don't send
     if (delay < 0) return;
-
-    // Cancel any previously scheduled tag before scheduling new one
     const sw = reg.active || reg.waiting || reg.installing;
     if (sw) {
       sw.postMessage({
