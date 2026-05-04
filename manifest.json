@@ -2,17 +2,29 @@
   "name": "The System",
   "short_name": "The System",
   "description": "Your personal RPG life system.",
-  "start_url": "/",
+  "start_url": "/the-system/",
+  "scope": "/the-system/",
   "display": "standalone",
   "background_color": "#050a12",
   "theme_color": "#050a12",
   "orientation": "portrait",
   "icons": [
     {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "icon.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/svg+xml"
     }
   ]
 }
