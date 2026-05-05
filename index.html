@@ -1562,8 +1562,14 @@
     } catch(e) {}
   }
 
-  // App open sound
-  function playSystemSound() { playSound('notification'); }
+  // Press Start button sound
+  function playSystemSound() { playSound('counter'); }
+
+  // ── AUTO-PLAY ON LOAD ────────────────────────────────
+  // Play notification sound immediately when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => playSound('notification'), 100);
+  });
 
   // ── SPLASH ────────────────────────────────────────────
   function startSystem() {
