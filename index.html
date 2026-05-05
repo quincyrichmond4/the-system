@@ -1050,6 +1050,27 @@
 
     .sys-toast.show { opacity: 1; }
 
+    /* ── BLACK TRANSITION OVERLAY ───────────────────────── */
+    #black-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 980;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    #black-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #black-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     /* ── SETUP WIZARD ───────────────────────────────────── */
     #setup-overlay {
       position: fixed;
@@ -1497,6 +1518,9 @@
   </style>
 </head>
 <body>
+
+<!-- BLACK TRANSITION OVERLAY -->
+<div id="black-overlay"></div>
 
 <!-- SETUP WIZARD -->
 <div id="setup-overlay">
@@ -2158,14 +2182,23 @@
       playSystemSound();
       startAmbient();
       const splash = document.getElementById('splash');
-      splash.classList.add('fade-out');
-      setTimeout(() => {
-        splash.style.display = 'none';
-        if (window._needsSetup) {
+      const blackOverlay = document.getElementById('black-overlay');
+
+      if (window._needsSetup) {
+        // New player — fade splash to black, then show setup on black
+        blackOverlay.classList.add('show');
+        setTimeout(() => {
+          splash.style.display = 'none';
           document.getElementById('setup-overlay').classList.add('show');
           showSetupScreen(1);
-        }
-      }, 600);
+          // Keep black overlay up — fade it away once setup is visible
+          setTimeout(() => blackOverlay.classList.remove('show'), 100);
+        }, 400);
+      } else {
+        // Returning player — normal fade out
+        splash.classList.add('fade-out');
+        setTimeout(() => { splash.style.display = 'none'; }, 600);
+      }
     } catch(e) {
       document.getElementById('splash').style.display = 'none';
     }
@@ -2685,9 +2718,16 @@
     // Apply profile to app
     applyProfile(profile);
 
-    // Hide setup, show app
-    document.getElementById('setup-overlay').classList.remove('show');
-    showToast('PROFILE ESTABLISHED. ARISE, HUNTER.');
+    // Fade to black, hide setup, reveal app
+    const blackOverlay = document.getElementById('black-overlay');
+    blackOverlay.classList.add('show');
+    setTimeout(() => {
+      document.getElementById('setup-overlay').classList.remove('show');
+      setTimeout(() => {
+        blackOverlay.classList.remove('show');
+        showToast('PROFILE ESTABLISHED. ARISE, HUNTER.');
+      }, 300);
+    }, 400);
   }
 
   function applyProfile(profile) {
