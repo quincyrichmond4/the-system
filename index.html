@@ -1693,17 +1693,42 @@
     } catch(e) { console.warn('Counter decode failed:', e); }
   }
 
+  // Press Start button sound — plays counter via direct Audio clone
+  // (doesn't depend on _counterBuffer being decoded yet)
+  function playSystemSound() {
+    try {
+      const snd = SOUNDS['counter'];
+      if (!snd) return;
+      // Always create a fresh clone so it plays even on first interaction
+      const clone = new Audio(snd.src);
+      clone.volume = 0.8;
+      clone.play().catch(() => {});
+    } catch(e) {}
+  }
+
+  // General playSound — counter uses Web Audio for overlap once decoded
+  // All others use standard Audio element
   function playSound(name) {
     try {
-      if (name === 'counter' && _ambientCtx && _counterBuffer) {
-        // Spawn a new source node — allows overlap, never restarts existing playback
-        const src = _ambientCtx.createBufferSource();
-        src.buffer = _counterBuffer;
-        const gain = _ambientCtx.createGain();
-        gain.gain.value = 0.8;
-        src.connect(gain);
-        gain.connect(_ambientCtx.destination);
-        src.start(0);
+      if (name === 'counter') {
+        if (_ambientCtx && _counterBuffer) {
+          // Spawn new buffer source — fully overlapping
+          const node = _ambientCtx.createBufferSource();
+          node.buffer = _counterBuffer;
+          const gain = _ambientCtx.createGain();
+          gain.gain.value = 0.8;
+          node.connect(gain);
+          gain.connect(_ambientCtx.destination);
+          node.start(0);
+        } else {
+          // Fallback before decode completes
+          const snd = SOUNDS['counter'];
+          if (snd) {
+            const clone = new Audio(snd.src);
+            clone.volume = 0.8;
+            clone.play().catch(() => {});
+          }
+        }
         return;
       }
       const snd = SOUNDS[name];
@@ -1714,9 +1739,6 @@
       if (p) p.catch(() => {});
     } catch(e) {}
   }
-
-  // Press Start button sound
-  function playSystemSound() { playSound('counter'); }
 
   // ── AUTO-PLAY ON LOAD ────────────────────────────────
   // Browsers block autoplay before user interaction.
