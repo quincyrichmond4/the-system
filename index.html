@@ -1693,22 +1693,35 @@
     } catch(e) { console.warn('Counter decode failed:', e); }
   }
 
-  // Press Start button sound — plays counter via direct Audio clone
-  // (doesn't depend on _counterBuffer being decoded yet)
+  // Press Start button sound — notification plays here
   function playSystemSound() {
     try {
-      const snd = SOUNDS['counter'];
+      const snd = SOUNDS['notification'];
       if (!snd) return;
-      // Always create a fresh clone so it plays even on first interaction
       const clone = new Audio(snd.src);
       clone.volume = 0.8;
       clone.play().catch(() => {});
     } catch(e) {}
   }
 
-  // General playSound — counter uses Web Audio for overlap once decoded
-  // All others use standard Audio element
-  function playSound(name) {
+  // ── AUTO-PLAY ON LOAD ────────────────────────────────
+  // Ambient starts silently on first interaction, no sound on load
+
+  // Try ambient immediately (silent — no notification on load)
+  setTimeout(startAmbient, 100);
+
+  // Fallback: start ambient on first touch if blocked
+  let ambientStarted = false;
+  function onFirstInteraction() {
+    if (!ambientStarted) {
+      ambientStarted = true;
+      startAmbient();
+    }
+    document.removeEventListener('touchstart', onFirstInteraction);
+    document.removeEventListener('click', onFirstInteraction);
+  }
+  document.addEventListener('touchstart', onFirstInteraction, { once: true });
+  document.addEventListener('click', onFirstInteraction, { once: true });
     try {
       if (name === 'counter') {
         if (_ambientCtx && _counterBuffer) {
@@ -1739,31 +1752,6 @@
       if (p) p.catch(() => {});
     } catch(e) {}
   }
-
-  // ── AUTO-PLAY ON LOAD ────────────────────────────────
-  // Browsers block autoplay before user interaction.
-  // We try immediately, then on first touch/click as fallback.
-  function tryPlayNotification() {
-    playSound('notification');
-  }
-
-  // Try immediately (works on reload if browser considers it trusted)
-  setTimeout(tryPlayNotification, 100);
-  setTimeout(startAmbient, 200);
-
-  // Fallback: play on very first touch/click if it didn't work
-  let notifPlayed = false;
-  function onFirstInteraction() {
-    if (!notifPlayed) {
-      notifPlayed = true;
-      tryPlayNotification();
-      startAmbient();
-    }
-    document.removeEventListener('touchstart', onFirstInteraction);
-    document.removeEventListener('click', onFirstInteraction);
-  }
-  document.addEventListener('touchstart', onFirstInteraction, { once: true });
-  document.addEventListener('click', onFirstInteraction, { once: true });
 
   // ── SPLASH ────────────────────────────────────────────
   function startSystem() {
