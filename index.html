@@ -1050,9 +1050,262 @@
 
     .sys-toast.show { opacity: 1; }
 
-    .sys-content::-webkit-scrollbar { width: 2px; }
-    .sys-content::-webkit-scrollbar-track { background: transparent; }
-    .sys-content::-webkit-scrollbar-thumb { background: var(--border); }
+    /* ── SETUP WIZARD ───────────────────────────────────── */
+    #setup-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 990;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #setup-overlay.show { display: flex; }
+
+    .setup-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,18,38,0.8);
+      flex-shrink: 0;
+    }
+
+    .setup-header-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--blue);
+      letter-spacing: 4px;
+      margin-bottom: 4px;
+    }
+
+    .setup-progress {
+      height: 2px;
+      background: rgba(30,111,255,0.1);
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .setup-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transition: width 0.4s ease;
+    }
+
+    .setup-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .setup-screen { display: none; }
+    .setup-screen.active { display: block; }
+
+    .setup-sys-message {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .setup-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text-bright);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .setup-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+
+    .setup-field-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .setup-input {
+      width: 100%;
+      background: rgba(6,18,38,0.8);
+      border: 1px solid var(--border2);
+      color: var(--text-bright);
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .setup-input:focus { border-color: var(--cyan); }
+
+    .setup-select {
+      width: 100%;
+      background: rgba(6,18,38,0.8);
+      border: 1px solid var(--border2);
+      color: var(--text-bright);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .setup-select option { background: #040b14; }
+
+    .setup-quest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .setup-quest-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      background: rgba(6,18,38,0.6);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: border-color 0.15s;
+    }
+
+    .setup-quest-item.selected {
+      border-color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+
+    .setup-quest-check {
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--border2);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .setup-quest-item.selected .setup-quest-check {
+      background: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    .setup-quest-check-inner {
+      width: 8px;
+      height: 8px;
+      background: #000;
+      display: none;
+      clip-path: polygon(20% 50%, 45% 75%, 80% 20%, 90% 30%, 45% 88%, 10% 60%);
+    }
+
+    .setup-quest-item.selected .setup-quest-check-inner { display: block; }
+
+    .setup-quest-text {
+      font-size: 13px;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .setup-quest-limit {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .setup-quest-limit span {
+      color: var(--cyan);
+    }
+
+    .setup-confirm-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(30,111,255,0.08);
+    }
+
+    .setup-confirm-key {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+
+    .setup-confirm-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-bright);
+      max-width: 60%;
+      text-align: right;
+    }
+
+    .setup-warning {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--danger);
+      letter-spacing: 1px;
+      margin: 16px 0;
+      padding: 10px 12px;
+      border: 1px solid rgba(204,34,51,0.3);
+      background: rgba(204,34,51,0.05);
+      line-height: 1.6;
+    }
+
+    .setup-footer {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(4,11,20,0.97);
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .setup-btn-next {
+      flex: 1;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: #000;
+      background: var(--cyan);
+      border: none;
+      padding: 14px;
+      cursor: pointer;
+      letter-spacing: 2px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .setup-btn-back {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 14px 20px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .setup-btn-next:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
 
     /* SYSTEM ALERT POPUP */
     #sys-alert-overlay {
@@ -1244,6 +1497,94 @@
   </style>
 </head>
 <body>
+
+<!-- SETUP WIZARD -->
+<div id="setup-overlay">
+  <div class="setup-header">
+    <div class="setup-header-label">[ SYSTEM — INITIAL ASSESSMENT ]</div>
+    <div class="setup-progress">
+      <div class="setup-progress-fill" id="setup-progress-fill" style="width:14%"></div>
+    </div>
+  </div>
+  <div class="setup-body">
+    <!-- SCREEN 1: WELCOME -->
+    <div class="setup-screen active" id="setup-s1">
+      <div class="setup-sys-message">▶ NEW PLAYER DETECTED</div>
+      <div class="setup-title">Identification Required.</div>
+      <div class="setup-desc">The System has no record of this Player. A profile must be established before access is granted. Your name is permanent and cannot be changed. All other profile information can be updated later.</div>
+      <div class="setup-desc" style="color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;margin-top:-12px;">All stats are locked until the First Awakening is achieved.</div>
+    </div>
+    <!-- SCREEN 2: NAME -->
+    <div class="setup-screen" id="setup-s2">
+      <div class="setup-sys-message">▶ QUERY 1 OF 5</div>
+      <div class="setup-title">State your name.</div>
+      <div class="setup-desc">Enter the name by which the System will address you. This is the only field that cannot be changed after confirmation.</div>
+      <div class="setup-field-label">PLAYER NAME</div>
+      <input class="setup-input" id="setup-name" type="text" placeholder="Enter your name" maxlength="30" oninput="setupValidate()"/>
+    </div>
+    <!-- SCREEN 3: JOB -->
+    <div class="setup-screen" id="setup-s3">
+      <div class="setup-sys-message">▶ QUERY 2 OF 5</div>
+      <div class="setup-title">State your vocation.</div>
+      <div class="setup-desc">Your Job determines the nature of your dungeons and the arena in which you grow.</div>
+      <div class="setup-field-label">JOB / VOCATION</div>
+      <input class="setup-input" id="setup-job" type="text" placeholder="e.g. Entrepreneur" maxlength="40" oninput="setupValidate()"/>
+    </div>
+    <!-- SCREEN 4: INCOME -->
+    <div class="setup-screen" id="setup-s4">
+      <div class="setup-sys-message">▶ QUERY 3 OF 5</div>
+      <div class="setup-title">State your current income.</div>
+      <div class="setup-desc">Income determines your starting Rank. This reflects your current resource level — not your ceiling.</div>
+      <div class="setup-field-label">ANNUAL INCOME</div>
+      <select class="setup-select" id="setup-income" onchange="setupValidate()">
+        <option value="">— Select income range —</option>
+        <option value="E-Rank">Under $30,000  →  E-Rank</option>
+        <option value="D-Rank">$30,000 – $55,999  →  D-Rank</option>
+        <option value="C-Rank">$56,000 – $83,999  →  C-Rank</option>
+        <option value="B-Rank">$84,000 – $169,999  →  B-Rank</option>
+        <option value="A-Rank">$170,000 – $499,999  →  A-Rank</option>
+        <option value="S-Rank">$500,000 – $999,999  →  S-Rank</option>
+        <option value="National Level">$1,000,000+  →  National Level</option>
+      </select>
+    </div>
+    <!-- SCREEN 5: AWAKENING GOAL -->
+    <div class="setup-screen" id="setup-s5">
+      <div class="setup-sys-message">▶ QUERY 4 OF 5</div>
+      <div class="setup-title">Define your First Awakening.</div>
+      <div class="setup-desc">Your Awakening is the physical milestone that unlocks the full System. State your fitness goal. Be specific. The System holds you to it.</div>
+      <div class="setup-field-label">AWAKENING GOAL</div>
+      <input class="setup-input" id="setup-awakening" type="text" placeholder="e.g. Reach 7-8% body fat" maxlength="80" oninput="setupValidate()"/>
+    </div>
+    <!-- SCREEN 6: DAILY QUESTS -->
+    <div class="setup-screen" id="setup-s6">
+      <div class="setup-sys-message">▶ QUERY 5 OF 5</div>
+      <div class="setup-title">Define your Daily Quests.</div>
+      <div class="setup-desc">Enter up to 5 daily training tasks. At least 1 is required. These will be your daily obligations until the First Awakening is achieved.</div>
+      <div class="setup-field-label">QUEST 1 — REQUIRED</div>
+      <input class="setup-input" id="sq1" type="text" placeholder="e.g. 100 Push-ups" maxlength="60" oninput="setupValidate()"/>
+      <div class="setup-field-label">QUEST 2</div>
+      <input class="setup-input" id="sq2" type="text" placeholder="Optional" maxlength="60"/>
+      <div class="setup-field-label">QUEST 3</div>
+      <input class="setup-input" id="sq3" type="text" placeholder="Optional" maxlength="60"/>
+      <div class="setup-field-label">QUEST 4</div>
+      <input class="setup-input" id="sq4" type="text" placeholder="Optional" maxlength="60"/>
+      <div class="setup-field-label">QUEST 5</div>
+      <input class="setup-input" id="sq5" type="text" placeholder="Optional" maxlength="60"/>
+    </div>
+    <!-- SCREEN 7: CONFIRM -->
+    <div class="setup-screen" id="setup-s7">
+      <div class="setup-sys-message">▶ PROFILE SUMMARY</div>
+      <div class="setup-title">Confirm your profile.</div>
+      <div class="setup-desc">Review the information below. Your name cannot be changed after confirmation. All other fields can be updated later.</div>
+      <div id="setup-confirm-rows"></div>
+      <div class="setup-warning">⚠ WARNING: Your player name is permanent and cannot be modified after confirmation. All other profile information can be edited later.</div>
+    </div>
+  </div>
+  <div class="setup-footer">
+    <button class="setup-btn-back" id="setup-back-btn" onclick="setupBack()" style="display:none">← BACK</button>
+    <button class="setup-btn-next" id="setup-next-btn" onclick="setupNext()">BEGIN ASSESSMENT ▶</button>
+  </div>
+</div>
 
 <!-- SYSTEM ALERT POPUP -->
 <div id="sys-alert-overlay">
@@ -1722,7 +2063,7 @@
     _ambientStarted = true;
     try {
       _ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const bin = atob(AMBIENT_B64.split(',')[1]);
+      const bin = atob(AMBIENT_B64.includes(',') ? AMBIENT_B64.split(',')[1] : AMBIENT_B64);
       const buf = new ArrayBuffer(bin.length);
       const view = new Uint8Array(buf);
       for (let i = 0; i < bin.length; i++) view[i] = bin.charCodeAt(i);
@@ -1818,9 +2159,14 @@
       startAmbient();
       const splash = document.getElementById('splash');
       splash.classList.add('fade-out');
-      setTimeout(() => { splash.style.display = 'none'; }, 600);
+      setTimeout(() => {
+        splash.style.display = 'none';
+        if (window._needsSetup) {
+          document.getElementById('setup-overlay').classList.add('show');
+          showSetupScreen(1);
+        }
+      }, 600);
     } catch(e) {
-      // Failsafe — always dismiss splash even if something errors
       document.getElementById('splash').style.display = 'none';
     }
   }
@@ -2232,7 +2578,205 @@
     });
   }
 
-  // ── NOTIFICATIONS ─────────────────────────────────────
+  // ── SETUP WIZARD ──────────────────────────────────────
+  let setupScreen = 1;
+  const SETUP_TOTAL = 7;
+  const setupQuests = new Set();
+
+  function setupProgressPct(screen) {
+    return Math.round((screen / SETUP_TOTAL) * 100);
+  }
+
+  function showSetupScreen(n) {
+    document.querySelectorAll('.setup-screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('setup-s' + n).classList.add('active');
+    document.getElementById('setup-progress-fill').style.width = setupProgressPct(n) + '%';
+    const backBtn = document.getElementById('setup-back-btn');
+    const nextBtn = document.getElementById('setup-next-btn');
+    backBtn.style.display = n > 1 ? 'block' : 'none';
+    if (n === 1)             nextBtn.textContent = 'BEGIN ASSESSMENT ▶';
+    else if (n === SETUP_TOTAL) nextBtn.textContent = 'CONFIRM PROFILE ▶';
+    else                     nextBtn.textContent = 'NEXT ▶';
+    setupValidate();
+  }
+
+  function setupValidate() {
+    const btn = document.getElementById('setup-next-btn');
+    let ok = true;
+    if (setupScreen === 2) ok = document.getElementById('setup-name').value.trim().length > 0;
+    if (setupScreen === 3) ok = document.getElementById('setup-job').value.trim().length > 0;
+    if (setupScreen === 4) ok = document.getElementById('setup-income').value !== '';
+    if (setupScreen === 5) ok = document.getElementById('setup-awakening').value.trim().length > 0;
+    if (setupScreen === 6) ok = document.getElementById('sq1').value.trim().length > 0;
+    btn.disabled = !ok;
+  }
+
+  function toggleSetupQuest(el) {
+    const text = el.querySelector('.setup-quest-text').textContent;
+    if (setupQuests.has(text)) {
+      setupQuests.delete(text);
+      el.classList.remove('selected');
+    } else {
+      if (setupQuests.size >= 5) return;
+      setupQuests.add(text);
+      el.classList.add('selected');
+    }
+    document.getElementById('quest-select-count').textContent = setupQuests.size;
+    playSound('counter');
+    setupValidate();
+  }
+
+  function getSetupQuests() {
+    return ['sq1','sq2','sq3','sq4','sq5']
+      .map(id => document.getElementById(id).value.trim())
+      .filter(v => v.length > 0);
+  }
+
+  function buildConfirmScreen() {
+    const quests = getSetupQuests();
+    const rows = [
+      { key: 'NAME',           val: document.getElementById('setup-name').value.trim() },
+      { key: 'JOB',            val: document.getElementById('setup-job').value.trim() },
+      { key: 'STARTING RANK',  val: document.getElementById('setup-income').value },
+      { key: 'AWAKENING GOAL', val: document.getElementById('setup-awakening').value.trim() },
+      { key: 'DAILY QUESTS',   val: quests.join(', ') },
+    ];
+    document.getElementById('setup-confirm-rows').innerHTML = rows.map(r =>
+      `<div class="setup-confirm-row">
+        <div class="setup-confirm-key">${r.key}</div>
+        <div class="setup-confirm-val">${r.val}</div>
+      </div>`
+    ).join('');
+  }
+
+  function setupNext() {
+    playSound('counter');
+    if (setupScreen === SETUP_TOTAL) {
+      finalizeProfile();
+      return;
+    }
+    setupScreen++;
+    if (setupScreen === SETUP_TOTAL) buildConfirmScreen();
+    showSetupScreen(setupScreen);
+  }
+
+  function setupBack() {
+    playSound('counter');
+    if (setupScreen <= 1) return;
+    setupScreen--;
+    showSetupScreen(setupScreen);
+  }
+
+  async function finalizeProfile() {
+    const profile = {
+      playerName:    document.getElementById('setup-name').value.trim(),
+      nameLocked:    true,   // name is permanent
+      job:           document.getElementById('setup-job').value.trim(),
+      startingRank:  document.getElementById('setup-income').value,
+      awakeningGoal: document.getElementById('setup-awakening').value.trim(),
+      dailyQuests:   getSetupQuests(),
+      setupComplete: true,
+      xp: 0, streak: 0, lastDate: '',
+    };
+
+    // Save to Firebase
+    await window._saveToCloud(profile);
+
+    // Apply profile to app
+    applyProfile(profile);
+
+    // Hide setup, show app
+    document.getElementById('setup-overlay').classList.remove('show');
+    showToast('PROFILE ESTABLISHED. ARISE, HUNTER.');
+  }
+
+  function applyProfile(profile) {
+    // Update player name in header and status
+    const nameEl = document.getElementById('player-name');
+    if (nameEl) nameEl.textContent = profile.playerName;
+
+    // Update job in status
+    const jobRows = document.querySelectorAll('.sys-info-val');
+    // Update via info rows — find Job row
+    document.querySelectorAll('.sys-info-row').forEach(row => {
+      if (row.querySelector('.sys-info-key')?.textContent === 'JOB') {
+        row.querySelector('.sys-info-val').textContent = profile.job;
+      }
+      if (row.querySelector('.sys-info-key')?.textContent === 'RANK') {
+        row.querySelector('.sys-info-val').textContent = profile.startingRank;
+      }
+    });
+
+    // Build daily quests from profile
+    if (profile.dailyQuests && profile.dailyQuests.length > 0) {
+      buildQuestsFromProfile(profile.dailyQuests);
+    }
+
+    // Update awakening goal milestone
+    const milestones = document.querySelectorAll('.milestone-sub');
+    if (milestones[0]) milestones[0].textContent = profile.awakeningGoal;
+
+    // Update splash button if profile exists
+    const splashBtn = document.getElementById('splash-btn');
+    if (splashBtn) splashBtn.textContent = '▶ CONTINUE?';
+  }
+
+  function buildQuestsFromProfile(quests) {
+    const section = document.querySelector('.quest-section');
+    if (!section) return;
+    const container = section.querySelector('.quest-section-header').parentElement;
+    // Remove existing quest items
+    container.querySelectorAll('.quest-item').forEach(el => el.remove());
+    // Build new ones
+    quests.forEach((text, i) => {
+      const id = 'q' + (i + 1);
+      const el = document.createElement('div');
+      el.className = 'quest-item';
+      el.id = id;
+      el.setAttribute('onclick', `toggleQuest('${id}')`);
+      el.innerHTML = `
+        <div class="quest-check"><div class="quest-check-inner"></div></div>
+        <div class="quest-text">${text}</div>
+        <div class="quest-xp">+5 XP</div>`;
+      container.appendChild(el);
+      // Re-apply completed state
+      if (completed.has(id)) el.classList.add('completed');
+    });
+    // Update total quest count
+    window.TOTAL_QUESTS_DYNAMIC = quests.length;
+  }
+
+  async function checkProfileAndLaunch() {
+    const data = await loadFromCloud();
+    if (data && data.setupComplete) {
+      // Profile exists — apply it and show normal app
+      applyProfile(data);
+      // Sync saved data
+      if ((data.xp || 0) > 0) {
+        totalXP = data.xp;
+        localStorage.setItem('sys_xp', totalXP);
+      }
+      if (data.streak) {
+        streak = data.streak;
+        localStorage.setItem('sys_streak', streak);
+      }
+      updateXPBar(); updateRankUI(); updateStats();
+      buildAchievements(false); buildChart(); updateDungeonUI(); refreshDisplays();
+      // Mark splash button as Continue
+      const splashBtn = document.getElementById('splash-btn');
+      if (splashBtn) splashBtn.textContent = '▶ CONTINUE?';
+    } else {
+      // No profile — show setup after splash dismissed
+      window._needsSetup = true;
+    }
+  }
+
+  // Run profile check on load
+  checkProfileAndLaunch();
+
+  window.setupNext        = setupNext;
+  window.setupBack        = setupBack;
+  window.setupValidate    = setupValidate;
   function scheduleNotifications(reg) {
     const est = getESTDate();
     const t5  = new Date(est); t5.setHours(17,0,0,0);
