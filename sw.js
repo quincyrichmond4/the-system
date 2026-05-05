@@ -4,7 +4,8 @@ const ASSETS = [
   '/the-system/index.html',
   '/the-system/manifest.json',
   '/the-system/icon-192.png',
-  '/the-system/icon-512.png'
+  '/the-system/icon-512.png',
+  '/the-system/system_sound.mp3'
 ];
 
 self.addEventListener('install', e => {
