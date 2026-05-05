@@ -1,4 +1,5 @@
-const CACHE = 'system-v5';
+const CACHE = 'system-v6';
+const VERSION = '1.0.6';
 const ASSETS = [
   '/the-system/',
   '/the-system/index.html',
@@ -14,9 +15,15 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ));
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    ).then(() => {
+      self.clients.matchAll({ type: 'window' }).then(clients => {
+        clients.forEach(client => client.postMessage({ type: 'SW_UPDATED', version: VERSION }));
+      });
+    })
+  );
   self.clients.claim();
 });
 
@@ -36,53 +43,47 @@ self.addEventListener('fetch', e => {
   );
 });
 
-// NOTIFICATION SCHEDULING
 self.addEventListener('message', e => {
-  if (e.data?.type !== 'SCHEDULE_NOTIFICATIONS') return;
-  const { delay5pm, delay11pm, delayTue, questsDone, dungeonDone } = e.data;
-
-  // 5PM daily reminder
-  if (!questsDone && delay5pm > 0) {
-    setTimeout(() => {
-      self.registration.showNotification('[ The System ]', {
-        body: 'Hunter, your daily quests await. Do not break the chain.',
-        icon: '/the-system/icon-192.png',
-        badge: '/the-system/icon-192.png',
-        tag: 'reminder-5pm',
-        renotify: true,
-        data: { url: '/the-system/' }
-      });
-    }, delay5pm);
-  }
-
-  // 11PM penalty warning
-  if (!questsDone && delay11pm > 0) {
-    setTimeout(() => {
-      self.registration.showNotification('⚠ PENALTY WARNING', {
-        body: 'Less than 1 hour remaining. Complete your daily quests or face the penalty.',
-        icon: '/the-system/icon-192.png',
-        badge: '/the-system/icon-192.png',
-        tag: 'warning-11pm',
-        renotify: true,
-        requireInteraction: true,
-        data: { url: '/the-system/' }
-      });
-    }, delay11pm);
-  }
-
-  // Tuesday 7PM dungeon warning (30 min before deadline)
-  if (!dungeonDone && delayTue > 0) {
-    setTimeout(() => {
-      self.registration.showNotification('⚔ DUNGEON CLOSING SOON', {
-        body: 'The Marketplace closes in 30 minutes. Log your QIs before the deadline.',
-        icon: '/the-system/icon-192.png',
-        badge: '/the-system/icon-192.png',
-        tag: 'dungeon-warning',
-        renotify: true,
-        requireInteraction: true,
-        data: { url: '/the-system/' }
-      });
-    }, delayTue);
+  if (e.data?.type === 'SCHEDULE_NOTIFICATIONS') {
+    const { delay5pm, delay11pm, delayTue, questsDone, dungeonDone } = e.data;
+    if (!questsDone && delay5pm > 0) {
+      setTimeout(() => {
+        self.registration.showNotification('[ The System ]', {
+          body: 'Hunter, your daily quests await. Do not break the chain.',
+          icon: '/the-system/icon-192.png',
+          badge: '/the-system/icon-192.png',
+          tag: 'reminder-5pm',
+          renotify: true,
+          data: { url: '/the-system/' }
+        });
+      }, delay5pm);
+    }
+    if (!questsDone && delay11pm > 0) {
+      setTimeout(() => {
+        self.registration.showNotification('⚠ PENALTY WARNING', {
+          body: 'Less than 1 hour remaining. Complete your daily quests or face the penalty.',
+          icon: '/the-system/icon-192.png',
+          badge: '/the-system/icon-192.png',
+          tag: 'warning-11pm',
+          renotify: true,
+          requireInteraction: true,
+          data: { url: '/the-system/' }
+        });
+      }, delay11pm);
+    }
+    if (!dungeonDone && delayTue > 0) {
+      setTimeout(() => {
+        self.registration.showNotification('⚔ DUNGEON CLOSING SOON', {
+          body: 'The Marketplace closes in 30 minutes. Log your QIs before the deadline.',
+          icon: '/the-system/icon-192.png',
+          badge: '/the-system/icon-192.png',
+          tag: 'dungeon-warning',
+          renotify: true,
+          requireInteraction: true,
+          data: { url: '/the-system/' }
+        });
+      }, delayTue);
+    }
   }
 });
 
@@ -96,4 +97,9 @@ self.addEventListener('notificationclick', e => {
       if (clients.openWindow) return clients.openWindow('/the-system/');
     })
   );
+});
+
+// Allow app to trigger immediate activation
+self.addEventListener('message', e => {
+  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });

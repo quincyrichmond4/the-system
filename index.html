@@ -1077,9 +1077,50 @@
     .sys-content::-webkit-scrollbar { width: 2px; }
     .sys-content::-webkit-scrollbar-track { background: transparent; }
     .sys-content::-webkit-scrollbar-thumb { background: var(--border); }
+
+    /* UPDATE BANNER */
+    .update-banner {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(4,11,20,0.98);
+      border: 1px solid var(--cyan);
+      color: var(--text-bright);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      padding: 10px 16px;
+      letter-spacing: 1px;
+      z-index: 998;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 0 20px var(--blue-glow);
+      white-space: nowrap;
+    }
+
+    .update-banner.show { display: flex; }
+
+    .update-btn {
+      background: var(--cyan);
+      color: #000;
+      border: none;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      padding: 5px 12px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      -webkit-tap-highlight-color: transparent;
+    }
   </style>
 </head>
 <body>
+
+<!-- UPDATE BANNER -->
+<div class="update-banner" id="update-banner">
+  ⬆ System update available
+  <button class="update-btn" onclick="applyUpdate()">UPDATE NOW</button>
+</div>
 
 <!-- SPLASH SCREEN -->
 <div id="splash">
@@ -1510,8 +1551,6 @@
       audio.volume = 0.85;
       const p = audio.play();
       if (p) p.catch(() => {});
-    } catch(e) {}
-  });
     } catch(e) {}
   }
 
@@ -2102,12 +2141,56 @@
 
   window.switchPanel = switchPanel;
 
-  // ── NOTIFICATIONS ─────────────────────────────────────
+  // ── SERVICE WORKER + AUTO-UPDATE ─────────────────────
+  window._showToast = showToast;
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').then(reg => {
       scheduleNotifications(reg);
+
+      // Check for waiting worker (new version installed but not yet active)
+      if (reg.waiting) showUpdateBanner();
+
+      // New worker found
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdateBanner();
+          }
+        });
+      });
     }).catch(() => {});
+
+    // SW sends message when it activates (new version took over)
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data?.type === 'SW_UPDATED') {
+        showUpdateBanner();
+      }
+    });
+
+    // Auto-check for updates every 30 minutes
+    setInterval(() => {
+      navigator.serviceWorker.getRegistration().then(reg => {
+        if (reg) reg.update();
+      });
+    }, 30 * 60 * 1000);
   }
+
+  function showUpdateBanner() {
+    document.getElementById('update-banner').classList.add('show');
+  }
+
+  function applyUpdate() {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg && reg.waiting) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
+    });
+    window.location.reload();
+  }
+
+  window.applyUpdate = applyUpdate;
 
   function scheduleNotifications(reg) {
     const estNow = getESTDate();
