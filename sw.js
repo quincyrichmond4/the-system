@@ -1,4 +1,4 @@
-const CACHE = 'system-v4';
+const CACHE = 'system-v5';
 const ASSETS = [
   '/the-system/',
   '/the-system/index.html',
@@ -19,7 +19,7 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// NETWORK-FIRST: always try network, fall back to cache
+// NETWORK-FIRST
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
@@ -35,40 +35,53 @@ self.addEventListener('fetch', e => {
   );
 });
 
-// Handle scheduled notifications from the app
+// NOTIFICATION SCHEDULING
 self.addEventListener('message', e => {
-  if (e.data?.type === 'SCHEDULE_NOTIFICATIONS') {
-    const { delay5pm, delay11pm, questsDone } = e.data;
+  if (e.data?.type !== 'SCHEDULE_NOTIFICATIONS') return;
+  const { delay5pm, delay11pm, delayTue, questsDone, dungeonDone } = e.data;
 
-    // 5PM reminder
-    if (!questsDone && delay5pm > 0) {
-      setTimeout(() => {
-        self.registration.showNotification('[ The System ]', {
-          body: 'Hunter, your daily quests await. Do not break the chain.',
-          icon: '/the-system/icon-192.png',
-          badge: '/the-system/icon-192.png',
-          tag: 'reminder-5pm',
-          renotify: true,
-          requireInteraction: false,
-          data: { url: '/the-system/' }
-        });
-      }, delay5pm);
-    }
+  // 5PM daily reminder
+  if (!questsDone && delay5pm > 0) {
+    setTimeout(() => {
+      self.registration.showNotification('[ The System ]', {
+        body: 'Hunter, your daily quests await. Do not break the chain.',
+        icon: '/the-system/icon-192.png',
+        badge: '/the-system/icon-192.png',
+        tag: 'reminder-5pm',
+        renotify: true,
+        data: { url: '/the-system/' }
+      });
+    }, delay5pm);
+  }
 
-    // 11PM penalty warning
-    if (!questsDone && delay11pm > 0) {
-      setTimeout(() => {
-        self.registration.showNotification('⚠ PENALTY WARNING', {
-          body: 'You have less than 1 hour to complete your daily quests. Failure will result in penalty.',
-          icon: '/the-system/icon-192.png',
-          badge: '/the-system/icon-192.png',
-          tag: 'warning-11pm',
-          renotify: true,
-          requireInteraction: true,
-          data: { url: '/the-system/' }
-        });
-      }, delay11pm);
-    }
+  // 11PM penalty warning
+  if (!questsDone && delay11pm > 0) {
+    setTimeout(() => {
+      self.registration.showNotification('⚠ PENALTY WARNING', {
+        body: 'Less than 1 hour remaining. Complete your daily quests or face the penalty.',
+        icon: '/the-system/icon-192.png',
+        badge: '/the-system/icon-192.png',
+        tag: 'warning-11pm',
+        renotify: true,
+        requireInteraction: true,
+        data: { url: '/the-system/' }
+      });
+    }, delay11pm);
+  }
+
+  // Tuesday 7PM dungeon warning (30 min before deadline)
+  if (!dungeonDone && delayTue > 0) {
+    setTimeout(() => {
+      self.registration.showNotification('⚔ DUNGEON CLOSING SOON', {
+        body: 'The Marketplace closes in 30 minutes. Log your QIs before the deadline.',
+        icon: '/the-system/icon-192.png',
+        badge: '/the-system/icon-192.png',
+        tag: 'dungeon-warning',
+        renotify: true,
+        requireInteraction: true,
+        data: { url: '/the-system/' }
+      });
+    }, delayTue);
   }
 });
 
@@ -76,8 +89,8 @@ self.addEventListener('notificationclick', e => {
   e.notification.close();
   e.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
-      for (const client of list) {
-        if (client.url.includes('the-system') && 'focus' in client) return client.focus();
+      for (const c of list) {
+        if (c.url.includes('the-system') && 'focus' in c) return c.focus();
       }
       if (clients.openWindow) return clients.openWindow('/the-system/');
     })
