@@ -1546,13 +1546,25 @@
       <div class="setup-field-label">PLAYER NAME</div>
       <input class="setup-input" id="setup-name" type="text" placeholder="Enter your name" maxlength="30" oninput="setupValidate()"/>
     </div>
-    <!-- SCREEN 3: JOB -->
+    <!-- SCREEN 3: PROFESSION -->
     <div class="setup-screen" id="setup-s3">
       <div class="setup-sys-message">▶ QUERY 2 OF 5</div>
-      <div class="setup-title">State your vocation.</div>
-      <div class="setup-desc">Your Job determines the nature of your dungeons and the arena in which you grow.</div>
-      <div class="setup-field-label">JOB / VOCATION</div>
-      <input class="setup-input" id="setup-job" type="text" placeholder="e.g. Entrepreneur" maxlength="40" oninput="setupValidate()"/>
+      <div class="setup-title">State your profession.</div>
+      <div class="setup-desc">Select the field that best describes what you currently do or are pursuing. This shapes your dungeon arenas.</div>
+      <div class="setup-field-label">CATEGORY</div>
+      <select class="setup-select" id="setup-prof-category" onchange="onProfCategoryChange()">
+        <option value="">— Select a category —</option>
+      </select>
+      <div id="setup-prof-specific-wrap" style="display:none">
+        <div class="setup-field-label">PROFESSION</div>
+        <select class="setup-select" id="setup-prof-specific" onchange="setupValidate()">
+          <option value="">— Select your profession —</option>
+        </select>
+      </div>
+      <div style="margin-top:4px">
+        <div class="setup-field-label">OR TYPE YOUR OWN</div>
+        <input class="setup-input" id="setup-prof-custom" type="text" placeholder="e.g. Independent Consultant" maxlength="60" oninput="onProfCustomInput()"/>
+      </div>
     </div>
     <!-- SCREEN 4: INCOME -->
     <div class="setup-screen" id="setup-s4">
@@ -2611,6 +2623,70 @@
     });
   }
 
+  // ── PROFESSION SELECTOR ───────────────────────────────
+  const PROFESSION_DATA = {
+    "Skilled Trades": ["Electrician", "Plumber", "HVAC Technician", "Carpenter", "Welder", "Pipefitter", "Mason / Bricklayer", "Roofer", "Ironworker", "Sheet Metal Worker", "Painter / Decorator", "Flooring Installer", "Glazier", "Boilermaker", "Heavy Equipment Operator", "Crane Operator", "Construction Manager", "Elevator Installer", "Insulation Worker", "Tile Setter"],
+    "Technology": ["Software Engineer", "Web Developer", "Mobile Developer", "Data Scientist", "Machine Learning Engineer", "Cybersecurity Analyst", "Cloud Architect", "DevOps Engineer", "Database Administrator", "IT Manager", "Product Manager", "UX / UI Designer", "Network Engineer", "AI / ML Researcher", "Blockchain Developer", "Game Developer", "Systems Analyst", "Technical Writer", "QA Engineer", "IT Support Specialist"],
+    "Business & Finance": ["Entrepreneur / Business Owner", "Financial Analyst", "Accountant / CPA", "Investment Banker", "Venture Capitalist", "Marketing Manager", "Sales Manager", "Operations Manager", "Supply Chain Manager", "Human Resources Manager", "Real Estate Agent / Broker", "Insurance Agent", "Actuary", "Management Consultant", "Business Development Manager", "Brand Strategist", "E-commerce Manager", "Franchise Owner", "Network Marketer / IBO", "Financial Planner"],
+    "Healthcare & Medicine": ["Physician / Doctor", "Surgeon", "Nurse Practitioner", "Registered Nurse", "Pharmacist", "Physical Therapist", "Occupational Therapist", "Dentist", "Dental Hygienist", "Chiropractor", "Optometrist", "Paramedic / EMT", "Radiologist", "Anesthesiologist", "Psychiatrist / Psychologist", "Medical Laboratory Scientist", "Respiratory Therapist", "Physician Assistant", "Nutritionist / Dietitian", "Veterinarian"],
+    "Engineering & Architecture": ["Civil Engineer", "Mechanical Engineer", "Electrical Engineer", "Chemical Engineer", "Aerospace Engineer", "Industrial Engineer", "Biomedical Engineer", "Environmental Engineer", "Structural Engineer", "Petroleum Engineer", "Nuclear Engineer", "Materials Engineer", "Architect", "Urban Planner", "Interior Designer", "Landscape Architect", "Naval Architect", "Software Architect", "Systems Engineer", "Quality Engineer"],
+    "Science & Research": ["Biologist", "Chemist", "Physicist", "Geologist", "Astronomer", "Neuroscientist", "Geneticist", "Microbiologist", "Ecologist", "Marine Biologist", "Epidemiologist", "Statistician", "Mathematician", "Data Analyst", "Environmental Scientist", "Biochemist", "Food Scientist", "Materials Scientist", "Climate Scientist", "Psychologist"],
+    "Creative Arts & Media": ["Graphic Designer", "Photographer", "Videographer / Filmmaker", "Animator", "Illustrator", "Writer / Author", "Journalist", "Copywriter", "Content Creator / YouTuber", "Musician / Composer", "Actor / Performer", "Art Director", "Fashion Designer", "Interior Stylist", "Game Designer", "Podcast Host", "Social Media Manager", "Motion Graphics Designer", "Brand Identity Designer", "Architect of Experiences"],
+    "Education & Coaching": ["Teacher (K–12)", "College / University Professor", "Corporate Trainer", "Life Coach", "Business Coach", "Athletic / Sports Coach", "Tutor", "School Counselor", "Special Education Teacher", "Curriculum Developer", "Instructional Designer", "Education Administrator", "Career Counselor", "Mentor / Advisor", "Youth Worker", "Montessori Educator", "Online Course Creator", "Language Teacher", "STEM Educator", "Music Teacher"],
+    "Law, Government & Public Service": ["Lawyer / Attorney", "Judge", "Paralegal", "Law Enforcement Officer", "Firefighter", "Military Officer", "Politician / Government Official", "Diplomat", "Social Worker", "Public Policy Analyst", "Urban / City Planner", "Intelligence Analyst", "Corrections Officer", "Customs Officer", "Probation Officer", "Nonprofit Manager", "Community Organizer", "Public Health Official", "Emergency Manager", "Environmental Regulator"],
+    "Trades & Crafts (Artisan)": ["Chef / Culinary Artist", "Baker / Pastry Chef", "Barber / Cosmetologist", "Tattoo Artist", "Jeweler", "Furniture Maker / Woodworker", "Blacksmith", "Glassblower", "Potter / Ceramicist", "Leatherworker", "Seamstress / Tailor", "Watchmaker", "Bookbinder", "Floral Designer", "Brewer / Distiller", "Candle Maker", "Soap Maker", "Instrument Maker", "Custom Car Builder", "Upholsterer"],
+    "Sports, Wellness & Fitness": ["Personal Trainer", "Nutritionist / Dietitian", "Physical Therapist", "Professional Athlete", "Sports Coach", "Yoga Instructor", "Pilates Instructor", "Martial Arts Instructor", "Massage Therapist", "Occupational Therapist", "Strength & Conditioning Coach", "Sports Psychologist", "Dance Instructor", "CrossFit Coach", "Swim Coach", "Sports Agent", "Athletic Director", "Wellness Coach", "Health Educator", "Ergonomics Consultant"],
+    "Real Estate, Hospitality & Services": ["Real Estate Agent", "Real Estate Investor", "Property Manager", "Hotel Manager", "Event Planner", "Travel Agent", "Tour Guide", "Flight Attendant", "Restaurant Owner", "Catering Manager", "Concierge", "Wedding Planner", "AirBnB Host", "Landscaper / Groundskeeper", "Cleaning Services Owner", "Security Consultant", "Logistics Manager", "Truck Driver / Owner-Operator", "Delivery Service Owner", "Rideshare Entrepreneur"],
+  };
+
+  // Populate category dropdown on load
+  function initProfessionSelector() {
+    const catSel = document.getElementById('setup-prof-category');
+    if (!catSel) return;
+    Object.keys(PROFESSION_DATA).forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      catSel.appendChild(opt);
+    });
+  }
+
+  function onProfCategoryChange() {
+    const cat = document.getElementById('setup-prof-category').value;
+    const wrap = document.getElementById('setup-prof-specific-wrap');
+    const specSel = document.getElementById('setup-prof-specific');
+    // Clear custom input
+    document.getElementById('setup-prof-custom').value = '';
+    if (!cat) { wrap.style.display = 'none'; setupValidate(); return; }
+    wrap.style.display = 'block';
+    specSel.innerHTML = '<option value="">— Select your profession —</option>';
+    PROFESSION_DATA[cat].forEach(prof => {
+      const opt = document.createElement('option');
+      opt.value = prof;
+      opt.textContent = prof;
+      specSel.appendChild(opt);
+    });
+    playSound('counter');
+    setupValidate();
+  }
+
+  function onProfCustomInput() {
+    // If typing custom, clear dropdowns
+    const val = document.getElementById('setup-prof-custom').value.trim();
+    if (val.length > 0) {
+      document.getElementById('setup-prof-category').value = '';
+      document.getElementById('setup-prof-specific').innerHTML = '<option value="">— Select your profession —</option>';
+      document.getElementById('setup-prof-specific-wrap').style.display = 'none';
+    }
+    setupValidate();
+  }
+
+  function getProfessionValue() {
+    const custom = document.getElementById('setup-prof-custom')?.value.trim() || '';
+    if (custom.length > 0) return custom;
+    return document.getElementById('setup-prof-specific')?.value || '';
+  }
+
   // ── SETUP WIZARD ──────────────────────────────────────
   let setupScreen = 1;
   const SETUP_TOTAL = 7;
@@ -2627,9 +2703,10 @@
     const backBtn = document.getElementById('setup-back-btn');
     const nextBtn = document.getElementById('setup-next-btn');
     backBtn.style.display = n > 1 ? 'block' : 'none';
-    if (n === 1)             nextBtn.textContent = 'BEGIN ASSESSMENT ▶';
+    if (n === 1)                nextBtn.textContent = 'BEGIN ASSESSMENT ▶';
     else if (n === SETUP_TOTAL) nextBtn.textContent = 'CONFIRM PROFILE ▶';
-    else                     nextBtn.textContent = 'NEXT ▶';
+    else                        nextBtn.textContent = 'NEXT ▶';
+    if (n === 3) initProfessionSelector();
     setupValidate();
   }
 
@@ -2637,7 +2714,7 @@
     const btn = document.getElementById('setup-next-btn');
     let ok = true;
     if (setupScreen === 2) ok = document.getElementById('setup-name').value.trim().length > 0;
-    if (setupScreen === 3) ok = document.getElementById('setup-job').value.trim().length > 0;
+    if (setupScreen === 3) ok = getProfessionValue().length > 0;
     if (setupScreen === 4) ok = document.getElementById('setup-income').value !== '';
     if (setupScreen === 5) ok = document.getElementById('setup-awakening').value.trim().length > 0;
     if (setupScreen === 6) ok = document.getElementById('sq1').value.trim().length > 0;
@@ -2669,7 +2746,7 @@
     const quests = getSetupQuests();
     const rows = [
       { key: 'NAME',           val: document.getElementById('setup-name').value.trim() },
-      { key: 'JOB',            val: document.getElementById('setup-job').value.trim() },
+      { key: 'PROFESSION',     val: getProfessionValue() },
       { key: 'STARTING RANK',  val: document.getElementById('setup-income').value },
       { key: 'AWAKENING GOAL', val: document.getElementById('setup-awakening').value.trim() },
       { key: 'DAILY QUESTS',   val: quests.join(', ') },
@@ -2704,7 +2781,7 @@
     const profile = {
       playerName:    document.getElementById('setup-name').value.trim(),
       nameLocked:    true,   // name is permanent
-      job:           document.getElementById('setup-job').value.trim(),
+      job:           getProfessionValue(),
       startingRank:  document.getElementById('setup-income').value,
       awakeningGoal: document.getElementById('setup-awakening').value.trim(),
       dailyQuests:   getSetupQuests(),
@@ -2814,9 +2891,11 @@
   // Run profile check on load
   checkProfileAndLaunch();
 
-  window.setupNext        = setupNext;
-  window.setupBack        = setupBack;
-  window.setupValidate    = setupValidate;
+  window.setupNext            = setupNext;
+  window.setupBack            = setupBack;
+  window.setupValidate        = setupValidate;
+  window.onProfCategoryChange = onProfCategoryChange;
+  window.onProfCustomInput    = onProfCustomInput;
   function scheduleNotifications(reg) {
     const est = getESTDate();
     const t5  = new Date(est); t5.setHours(17,0,0,0);
