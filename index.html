@@ -1804,15 +1804,23 @@
       <div class="sys-info-card" style="margin-bottom:10px;">
         <div class="sys-info-row">
           <span class="sys-info-key">NAME</span>
-          <span class="sys-info-val">Sung Jin-Woo</span>
+          <span class="sys-info-val" id="status-name">—</span>
         </div>
         <div class="sys-info-row">
           <span class="sys-info-key">JOB</span>
-          <span class="sys-info-val" style="color:var(--cyan)">Entrepreneur</span>
+          <span class="sys-info-val" id="status-job" style="color:var(--cyan)">—</span>
+        </div>
+        <div class="sys-info-row">
+          <span class="sys-info-key">DOMAIN</span>
+          <span class="sys-info-val" id="status-domain" style="color:var(--text-dim)">—</span>
+        </div>
+        <div class="sys-info-row">
+          <span class="sys-info-key">PROFESSION</span>
+          <span class="sys-info-val" id="status-profession" style="color:var(--text)">—</span>
         </div>
         <div class="sys-info-row">
           <span class="sys-info-key">TITLE</span>
-          <span class="sys-info-val" style="color:var(--gold)">The Weakest Hunter</span>
+          <span class="sys-info-val" id="status-title" style="color:var(--gold)">—</span>
         </div>
         <div class="sys-info-row">
           <span class="sys-info-key">RANK</span>
@@ -2240,6 +2248,1407 @@
   function xpNeededForNextLevel(xp)   { const l = getLevelFromXP(xp); return xpForLevel(l+1) - xpForLevel(l); }
   function getDungeonXP(level)        { return 10 * level * level; }
 
+  // ── JOB LIBRARY ──────────────────────────────────────
+  const JOB_LIBRARY = {
+      "Merchant": {
+          "domain": "Business",
+          "description": "Masters of value and exchange. They understand what things are worth, how to move them, and how to build wealth through fair and strategic trade.",
+          "professions": [
+              "Financial Analyst",
+              "Accountant / CPA",
+              "Investment Banker",
+              "Venture Capitalist",
+              "Sales Manager",
+              "Real Estate Agent / Broker",
+              "Insurance Agent",
+              "Actuary",
+              "Financial Planner",
+              "E-commerce Manager",
+              "Franchise Owner",
+              "Trader",
+              "Real Estate Investor",
+              "Property Manager"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Peddler",
+                  "description": "You have entered the marketplace. You are learning the language of value \u2014 what things cost, what they are worth, and the difference between the two.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "INT": "+2 \u2014 Developing the analytical mind required to assess value accurately",
+                      "SEN": "+1 \u2014 Beginning to read people and recognize opportunity in conversation"
+                  },
+                  "signature_skill": "Market Eye \u2014 Recognizes when a deal is favorable before others do"
+              },
+              "T2": {
+                  "name": "Merchant",
+                  "description": "You move value with intention. You negotiate, build relationships, and understand that wealth flows through trust as much as transaction.",
+                  "unlock": "Reach Level 10 + complete a dungeon in your profession's arena",
+                  "stat_buffs": {
+                      "INT": "+4 \u2014 Strategic financial thinking developed through real market experience",
+                      "SEN": "+3 \u2014 Reads people, motives, and timing with increasing precision",
+                      "AGI": "+2 \u2014 Fast execution when opportunity appears \u2014 doesn't hesitate"
+                  },
+                  "signature_skill": "Fair Exchange \u2014 Structures deals where both parties win, building long-term loyalty"
+              },
+              "T3": {
+                  "name": "Merchant King",
+                  "description": "You don't just participate in markets \u2014 you shape them. Others come to you. Your name carries weight. Wealth flows through systems you built.",
+                  "unlock": "Reach Level 25 + complete the Merchant King Job Change Quest",
+                  "stat_buffs": {
+                      "INT": "+8 \u2014 Sees economic systems and moves that most cannot perceive",
+                      "SEN": "+6 \u2014 Reads rooms, people, and markets like open books",
+                      "AGI": "+4 \u2014 Decisive execution \u2014 acts before the window closes",
+                      "STR": "+3 \u2014 The weight of responsibility has built real fortitude"
+                  },
+                  "signature_skill": "Market Dominion \u2014 Controls supply and demand in their domain; others operate within their ecosystem"
+              }
+          }
+      },
+      "Summoner": {
+          "domain": "Business",
+          "description": "Builders of people and systems. They don't just work \u2014 they create forces that work without them. Their power multiplies through others.",
+          "professions": [
+              "Entrepreneur / Business Owner",
+              "Network Marketer / IBO",
+              "Business Development Manager",
+              "Operations Manager",
+              "Human Resources Manager",
+              "Management Consultant",
+              "Marketing Manager",
+              "Brand Strategist",
+              "Supply Chain Manager",
+              "Franchise Owner"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Caller",
+                  "description": "You are beginning to attract people to a vision. You cast a signal into the world and see who responds. The army does not yet exist \u2014 but you are calling it.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "SEN": "+2 \u2014 Developing the ability to identify who belongs in your circle",
+                      "INT": "+1 \u2014 Learning how systems of people function and fail"
+                  },
+                  "signature_skill": "Resonance \u2014 People who share your values are drawn to your vision"
+              },
+              "T2": {
+                  "name": "Binder",
+                  "description": "You don't just attract people \u2014 you build them. Your team functions because you created the systems, culture, and trust that hold it together.",
+                  "unlock": "Reach Level 10 + build and sustain a team of at least 3 active people in your arena",
+                  "stat_buffs": {
+                      "SEN": "+4 \u2014 Deep people-reading \u2014 sees potential, motivation, and risk in individuals",
+                      "INT": "+3 \u2014 Systems thinker \u2014 designs processes others can replicate",
+                      "VIT": "+2 \u2014 Sustained under the pressure of leading and developing others"
+                  },
+                  "signature_skill": "Duplication \u2014 What you do, your team can learn to do. Your effort multiplies."
+              },
+              "T3": {
+                  "name": "Sovereign",
+                  "description": "You command armies. Not through force \u2014 through vision, systems, and the loyalty of people you genuinely developed. Your impact is exponential.",
+                  "unlock": "Reach Level 25 + complete the Sovereign Job Change Quest",
+                  "stat_buffs": {
+                      "SEN": "+7 \u2014 Reads organizations, cultures, and individuals with rare accuracy",
+                      "INT": "+6 \u2014 Architects systems at scale \u2014 sees ten moves ahead",
+                      "VIT": "+5 \u2014 Carries enormous weight without breaking",
+                      "STR": "+4 \u2014 The discipline of leadership has built genuine strength"
+                  },
+                  "signature_skill": "Shadow Army \u2014 Your network operates as an extension of your will. Each member multiplies your reach."
+              }
+          }
+      },
+      "Mage": {
+          "domain": "Knowledge",
+          "description": "Commanders of complex systems and technical knowledge. They turn information into precision. What others call impossible, they solve methodically.",
+          "professions": [
+              "Software Engineer",
+              "Data Scientist",
+              "Machine Learning Engineer",
+              "Systems Analyst",
+              "Cybersecurity Analyst",
+              "Cloud Architect",
+              "DevOps Engineer",
+              "Database Administrator",
+              "Network Engineer",
+              "QA Engineer",
+              "Civil Engineer",
+              "Mechanical Engineer",
+              "Electrical Engineer",
+              "Chemical Engineer",
+              "Aerospace Engineer",
+              "Biomedical Engineer",
+              "Environmental Engineer",
+              "Structural Engineer",
+              "Biologist",
+              "Chemist",
+              "Physicist",
+              "Geologist",
+              "Neuroscientist",
+              "Geneticist",
+              "Microbiologist",
+              "Mathematician",
+              "Statistician"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Apprentice",
+                  "description": "You are learning to read the hidden language of complex systems. The fundamentals are difficult \u2014 but you press through because you understand that mastery is built, not given.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "INT": "+3 \u2014 Systematic problem-solving is rewiring how you think",
+                      "AGI": "+1 \u2014 Learning to work efficiently and avoid wasted motion"
+                  },
+                  "signature_skill": "Pattern Recognition \u2014 Spots recurring structures in problems others treat as unique"
+              },
+              "T2": {
+                  "name": "Mage",
+                  "description": "You command your domain with authority. You solve problems others cannot. Your knowledge is a weapon \u2014 precise, powerful, and deployed with intention.",
+                  "unlock": "Reach Level 10 + complete a technical dungeon in your field",
+                  "stat_buffs": {
+                      "INT": "+6 \u2014 Deep technical knowledge changes how you process all information",
+                      "AGI": "+3 \u2014 Executes complex tasks efficiently without wasted effort",
+                      "SEN": "+2 \u2014 Begins to see systemic issues before they surface"
+                  },
+                  "signature_skill": "Arcane Precision \u2014 Solves complex problems with fewer steps than peers"
+              },
+              "T3": {
+                  "name": "Archmage",
+                  "description": "Your mastery is so deep it looks like intuition. You don't just solve problems \u2014 you reshape systems. Others build on the foundations you create.",
+                  "unlock": "Reach Level 25 + complete the Archmage Job Change Quest",
+                  "stat_buffs": {
+                      "INT": "+10 \u2014 Operates at a level of abstraction most cannot follow",
+                      "AGI": "+5 \u2014 Moves through complexity at speed \u2014 minimal friction",
+                      "SEN": "+5 \u2014 Perceives systemic risks and opportunities before they are visible",
+                      "VIT": "+3 \u2014 Sustained decades of deep intellectual work"
+                  },
+                  "signature_skill": "Grand Theorem \u2014 Solves a class of problems permanently \u2014 others use their framework"
+              }
+          }
+      },
+      "Sage": {
+          "domain": "Knowledge",
+          "description": "Carriers and transmitters of wisdom. They don't just know \u2014 they form minds. Their words outlast them. Knowledge moves through them into the world.",
+          "professions": [
+              "Teacher (K-12)",
+              "College / University Professor",
+              "Curriculum Developer",
+              "Instructional Designer",
+              "Online Course Creator",
+              "Technical Writer",
+              "Writer / Author",
+              "Journalist",
+              "Copywriter",
+              "Education Administrator",
+              "School Counselor",
+              "Career Counselor",
+              "Life Coach",
+              "Business Coach",
+              "STEM Educator",
+              "Language Teacher",
+              "Mentor / Advisor"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Minstrel",
+                  "description": "You are finding your voice. You have something to say \u2014 and you are learning how to say it in a way that actually reaches people.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "INT": "+2 \u2014 Deepening your knowledge base so you have something real to give",
+                      "SEN": "+2 \u2014 Learning to read your audience \u2014 what lands, what doesn't"
+                  },
+                  "signature_skill": "Clear Signal \u2014 Communicates complex ideas simply without losing accuracy"
+              },
+              "T2": {
+                  "name": "Sage",
+                  "description": "You form minds. Students, readers, listeners \u2014 they are different after encountering you. Your knowledge doesn't just inform \u2014 it transforms.",
+                  "unlock": "Reach Level 10 + complete a teaching/communication dungeon",
+                  "stat_buffs": {
+                      "INT": "+5 \u2014 Teaching forces mastery \u2014 you know things at a deeper level",
+                      "SEN": "+4 \u2014 Reads people, rooms, and what they actually need to hear",
+                      "VIT": "+2 \u2014 The long discipline of giving consistently to others"
+                  },
+                  "signature_skill": "Formation \u2014 People you teach carry your influence forward into their own work"
+              },
+              "T3": {
+                  "name": "Oracle",
+                  "description": "Your words shape culture. You don't just teach individuals \u2014 you shift what entire communities believe is possible. Your influence compounds across generations.",
+                  "unlock": "Reach Level 25 + complete the Oracle Job Change Quest",
+                  "stat_buffs": {
+                      "INT": "+9 \u2014 Synthesis of knowledge across domains \u2014 sees connections others miss",
+                      "SEN": "+7 \u2014 Reads the cultural moment \u2014 knows what needs to be said and when",
+                      "VIT": "+4 \u2014 Decades of pouring into others without emptying",
+                      "AGI": "+3 \u2014 Adapts message to audience instantly"
+                  },
+                  "signature_skill": "Living Word \u2014 What you speak becomes what others believe. Your ideas replicate beyond your reach."
+              }
+          }
+      },
+      "Healer": {
+          "domain": "Service",
+          "description": "Restorers of what is broken. They work where others look away \u2014 in pain, illness, loss, and limitation. Their gift is returning people to wholeness.",
+          "professions": [
+              "Physician / Doctor",
+              "Surgeon",
+              "Registered Nurse",
+              "Nurse Practitioner",
+              "Physical Therapist",
+              "Occupational Therapist",
+              "Pharmacist",
+              "Dentist",
+              "Dental Hygienist",
+              "Chiropractor",
+              "Optometrist",
+              "Paramedic / EMT",
+              "Anesthesiologist",
+              "Psychiatrist / Psychologist",
+              "Physician Assistant",
+              "Respiratory Therapist",
+              "Veterinarian",
+              "Massage Therapist",
+              "Social Worker",
+              "Nutritionist / Dietitian",
+              "Wellness Coach",
+              "Health Educator"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Acolyte",
+                  "description": "You are learning the art of restoration. The knowledge is vast and the stakes are real. You press forward because you understand that people need what only you are training to give.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "INT": "+2 \u2014 The depth of medical/therapeutic knowledge is building real cognitive capacity",
+                      "VIT": "+2 \u2014 The demands of service are building endurance you cannot get elsewhere",
+                      "SEN": "+1 \u2014 Beginning to read pain, discomfort, and need in others"
+                  },
+                  "signature_skill": "Triage \u2014 Quickly identifies what is most urgent and addresses it first"
+              },
+              "T2": {
+                  "name": "Cleric",
+                  "description": "You restore. Where others see a broken body, mind, or spirit \u2014 you see a path back. Your skills are real, your presence matters, and people are better for having found you.",
+                  "unlock": "Reach Level 10 + complete a service dungeon in your field",
+                  "stat_buffs": {
+                      "INT": "+5 \u2014 Clinical knowledge is now deeply integrated \u2014 you think diagnostically",
+                      "VIT": "+4 \u2014 Built to sustain \u2014 long hours, high stakes, consistent output",
+                      "SEN": "+4 \u2014 Reads suffering with precision \u2014 physical, emotional, situational"
+                  },
+                  "signature_skill": "Restoration \u2014 Returns people to function faster than expected"
+              },
+              "T3": {
+                  "name": "High Priest",
+                  "description": "You heal at a level that transcends technique. Your presence itself is therapeutic. You carry something that cannot be fully explained \u2014 and people feel it.",
+                  "unlock": "Reach Level 25 + complete the High Priest Job Change Quest",
+                  "stat_buffs": {
+                      "INT": "+8 \u2014 Mastery so deep it operates at the level of intuition",
+                      "VIT": "+7 \u2014 Built for the long war \u2014 sustained without collapse",
+                      "SEN": "+7 \u2014 Perceives what is wrong before it is said or measured",
+                      "STR": "+3 \u2014 The weight of others' suffering has built genuine inner fortitude"
+                  },
+                  "signature_skill": "Divine Intervention \u2014 Achieves outcomes that statistics say are unlikely"
+              }
+          }
+      },
+      "Paladin": {
+          "domain": "Service",
+          "description": "Warriors in service of something greater than themselves. They protect the vulnerable, uphold justice, and lead with conviction rooted in principle \u2014 not opinion.",
+          "professions": [
+              "Law Enforcement Officer",
+              "Firefighter",
+              "Military Officer",
+              "Lawyer / Attorney",
+              "Judge",
+              "Social Worker",
+              "Nonprofit Manager",
+              "Community Organizer",
+              "Public Policy Analyst",
+              "Diplomat",
+              "Youth Worker",
+              "School Counselor",
+              "Emergency Manager",
+              "Public Health Official",
+              "Corrections Officer",
+              "Probation Officer",
+              "Environmental Regulator"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Squire",
+                  "description": "You serve a cause. The work is hard and the recognition is low. You do it anyway \u2014 because something in you cannot look away from what is wrong.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "VIT": "+2 \u2014 Service builds endurance that comfort cannot",
+                      "STR": "+2 \u2014 The weight of responsibility is building real strength",
+                      "INT": "+1 \u2014 Learning the systems of justice, policy, and protection"
+                  },
+                  "signature_skill": "Oath \u2014 Commits fully to a cause \u2014 does not retreat when pressure mounts"
+              },
+              "T2": {
+                  "name": "Paladin",
+                  "description": "You embody your cause. You don't just work in service \u2014 you are the standard. Others follow you because they see that you mean it.",
+                  "unlock": "Reach Level 10 + complete a justice/service dungeon",
+                  "stat_buffs": {
+                      "VIT": "+5 \u2014 Built for sustained pressure without moral compromise",
+                      "STR": "+4 \u2014 The demands of protection and leadership have built genuine toughness",
+                      "INT": "+3 \u2014 Navigates complex ethical and systemic problems with clarity",
+                      "SEN": "+3 \u2014 Reads injustice, deception, and need with sharpened awareness"
+                  },
+                  "signature_skill": "Aegis \u2014 Protects what is under their care \u2014 people feel genuinely safe around them"
+              },
+              "T3": {
+                  "name": "Champion",
+                  "description": "You are the embodiment of a cause. Your presence alone raises the standard around you. People do not just follow you \u2014 they become better because you exist.",
+                  "unlock": "Reach Level 25 + complete the Champion Job Change Quest",
+                  "stat_buffs": {
+                      "VIT": "+8 \u2014 Endurance that outlasts any opposition",
+                      "STR": "+7 \u2014 Strength built through decades of carrying what others dropped",
+                      "INT": "+5 \u2014 Sees the systems that create injustice and knows how to dismantle them",
+                      "SEN": "+5 \u2014 Reads people, power, and moral terrain with rare clarity"
+                  },
+                  "signature_skill": "Rally \u2014 In crisis, others rise to meet the standard you set. Your conviction is contagious."
+              }
+          }
+      },
+      "Warrior": {
+          "domain": "Physical",
+          "description": "Those who build the physical world with their hands and bodies. They endure, produce, and operate where the work is real and the results are visible.",
+          "professions": [
+              "Electrician",
+              "Plumber",
+              "HVAC Technician",
+              "Carpenter",
+              "Welder",
+              "Pipefitter",
+              "Mason / Bricklayer",
+              "Roofer",
+              "Ironworker",
+              "Sheet Metal Worker",
+              "Painter / Decorator",
+              "Flooring Installer",
+              "Glazier",
+              "Boilermaker",
+              "Heavy Equipment Operator",
+              "Crane Operator",
+              "Construction Manager",
+              "Elevator Installer",
+              "Insulation Worker",
+              "Tile Setter",
+              "Military Officer",
+              "Law Enforcement Officer",
+              "Firefighter",
+              "Professional Athlete",
+              "Sports Coach"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Soldier",
+                  "description": "You show up. You do the work. No glamour \u2014 just output. The discipline you are building now is the foundation everything else stands on.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "STR": "+3 \u2014 Physical labor is building real muscular strength and work capacity",
+                      "VIT": "+2 \u2014 Sustained physical output is building endurance from the inside out"
+                  },
+                  "signature_skill": "Iron Discipline \u2014 Shows up and performs regardless of conditions or mood"
+              },
+              "T2": {
+                  "name": "Knight",
+                  "description": "You are proven. The years of work have made you capable in ways that cannot be faked. You carry yourself differently \u2014 because you have earned the right to.",
+                  "unlock": "Reach Level 10 + complete a physical dungeon in your arena",
+                  "stat_buffs": {
+                      "STR": "+6 \u2014 Years of physical work have built functional strength that shows",
+                      "VIT": "+5 \u2014 Endurance built through real sustained output \u2014 not training, life",
+                      "AGI": "+3 \u2014 Efficiency of movement developed through thousands of hours",
+                      "INT": "+2 \u2014 Problem-solving that comes from working with real physical systems"
+                  },
+                  "signature_skill": "Fortitude \u2014 Performs at full capacity in conditions that break others"
+              },
+              "T3": {
+                  "name": "Warlord",
+                  "description": "You command the field. Others look to you because you have been in the work longer, harder, and more honestly than anyone else in the room.",
+                  "unlock": "Reach Level 25 + complete the Warlord Job Change Quest",
+                  "stat_buffs": {
+                      "STR": "+10 \u2014 Peak physical capacity built through a lifetime of real work",
+                      "VIT": "+9 \u2014 Cannot be worn down \u2014 outlasts everything",
+                      "AGI": "+6 \u2014 Moves with the efficiency of a veteran \u2014 no wasted motion",
+                      "INT": "+4 \u2014 Tactical thinking forged under real pressure"
+                  },
+                  "signature_skill": "Iron Authority \u2014 The field falls into order around them. Their experience commands respect without demanding it."
+              }
+          }
+      },
+      "Monk": {
+          "domain": "Physical",
+          "description": "Those who have made the body a practice. Every day is training. Every session is discipline expressed. The body is not a vehicle \u2014 it is the work.",
+          "professions": [
+              "Personal Trainer",
+              "Martial Arts Instructor",
+              "Yoga Instructor",
+              "Pilates Instructor",
+              "Strength & Conditioning Coach",
+              "CrossFit Coach",
+              "Swim Coach",
+              "Dance Instructor",
+              "Athletic Director",
+              "Sports Psychologist",
+              "Physical Therapist",
+              "Ergonomics Consultant"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Disciple",
+                  "description": "You have committed to the discipline. Every day you show up. The results are not yet visible to others \u2014 but the foundation is being laid in your body and mind.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "AGI": "+3 \u2014 Deliberate physical training is building real coordination and mobility",
+                      "STR": "+2 \u2014 Foundational strength developing through consistent practice",
+                      "VIT": "+2 \u2014 The discipline of daily training builds base endurance"
+                  },
+                  "signature_skill": "Empty Mind \u2014 Enters a state of full physical presence \u2014 no distraction during execution"
+              },
+              "T2": {
+                  "name": "Monk",
+                  "description": "The body has become a weapon. The mind has become a fortress. You move with precision. You perform under pressure. The discipline is no longer something you do \u2014 it is what you are.",
+                  "unlock": "Reach Level 10 + complete a physical mastery dungeon",
+                  "stat_buffs": {
+                      "AGI": "+6 \u2014 Movement precision and coordination developed to high levels",
+                      "STR": "+5 \u2014 Functional strength built through years of intentional training",
+                      "VIT": "+5 \u2014 Endurance and recovery capacity built through sustained practice",
+                      "SEN": "+3 \u2014 Heightened body awareness \u2014 reads physical signals with accuracy"
+                  },
+                  "signature_skill": "Iron Body \u2014 Physical resilience is significantly above baseline \u2014 recovers faster, tolerates more"
+              },
+              "T3": {
+                  "name": "Grandmaster",
+                  "description": "The discipline has become identity. You are the art. Others train for years to reach what you embody. Your presence in a room raises the standard without a word.",
+                  "unlock": "Reach Level 25 + complete the Grandmaster Job Change Quest",
+                  "stat_buffs": {
+                      "AGI": "+9 \u2014 Elite movement \u2014 precision, speed, and coordination at peak human levels",
+                      "STR": "+8 \u2014 Strength that reflects decades of intentional physical development",
+                      "VIT": "+8 \u2014 Recovery and endurance that outlasts peers by a significant margin",
+                      "SEN": "+5 \u2014 Physical intuition \u2014 reads the body like a language"
+                  },
+                  "signature_skill": "Perfect Form \u2014 Executes at peak efficiency even under maximum stress"
+              }
+          }
+      },
+      "Ranger": {
+          "domain": "Craft",
+          "description": "Independent operators who have mastered a specific terrain. They move alone, trust their own judgment, and build expertise that cannot be replicated by committee.",
+          "professions": [
+              "Freelancer / Independent Consultant",
+              "Content Creator / YouTuber",
+              "Podcast Host",
+              "Graphic Designer",
+              "Photographer",
+              "Videographer / Filmmaker",
+              "Game Developer",
+              "Mobile Developer",
+              "Web Developer",
+              "UX / UI Designer",
+              "Landscape Architect",
+              "Environmental Scientist",
+              "Geologist",
+              "Hydrologist",
+              "Actuary",
+              "Statistician"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Wanderer",
+                  "description": "You operate outside the conventional path. You are learning the terrain on your own terms \u2014 which means more risk, more freedom, and more growth than the standard route.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "AGI": "+2 \u2014 Independent operators develop fast decision-making and adaptability",
+                      "SEN": "+2 \u2014 Reading terrain, opportunity, and risk with growing accuracy",
+                      "INT": "+1 \u2014 Self-directed learning builds a different kind of intelligence"
+                  },
+                  "signature_skill": "Pathfinder \u2014 Identifies routes others haven't tried \u2014 comfortable in uncharted territory"
+              },
+              "T2": {
+                  "name": "Ranger",
+                  "description": "You know your domain. Precision, self-reliance, and mastery of your specific territory define you. Others may work in groups \u2014 you operate at the same level alone.",
+                  "unlock": "Reach Level 10 + complete a domain mastery dungeon",
+                  "stat_buffs": {
+                      "AGI": "+5 \u2014 Fast, independent execution \u2014 no committee, no waiting",
+                      "SEN": "+4 \u2014 Reads opportunities, threats, and terrain with trained accuracy",
+                      "INT": "+4 \u2014 Deep domain expertise built through self-directed mastery",
+                      "VIT": "+2 \u2014 The self-reliance of independent work builds genuine resilience"
+                  },
+                  "signature_skill": "Dead Eye \u2014 In their specific domain, precision approaches mastery level"
+              },
+              "T3": {
+                  "name": "Sentinel",
+                  "description": "You are the expert others seek. You don't just know your domain \u2014 you guard and define it. When people need to understand your territory, they come to you.",
+                  "unlock": "Reach Level 25 + complete the Sentinel Job Change Quest",
+                  "stat_buffs": {
+                      "AGI": "+7 \u2014 Executes with elite efficiency \u2014 speed and precision in perfect combination",
+                      "SEN": "+7 \u2014 Perceives what others cannot \u2014 domain awareness at rare levels",
+                      "INT": "+7 \u2014 Deep mastery that now borders on intuitive expertise",
+                      "VIT": "+4 \u2014 The independence and self-reliance built over years"
+                  },
+                  "signature_skill": "Guardian's Eye \u2014 Cannot be deceived in their domain. Recognizes problems and solutions before others notice them."
+              }
+          }
+      },
+      "Artisan": {
+          "domain": "Craft",
+          "description": "Makers of things that did not exist before they touched them. They turn raw material into finished beauty. Their hands are their intelligence.",
+          "professions": [
+              "Chef / Culinary Artist",
+              "Baker / Pastry Chef",
+              "Barber / Cosmetologist",
+              "Tattoo Artist",
+              "Jeweler",
+              "Furniture Maker / Woodworker",
+              "Blacksmith",
+              "Glassblower",
+              "Potter / Ceramicist",
+              "Leatherworker",
+              "Seamstress / Tailor",
+              "Watchmaker",
+              "Bookbinder",
+              "Floral Designer",
+              "Brewer / Distiller",
+              "Instrument Maker",
+              "Custom Car Builder",
+              "Upholsterer",
+              "Interior Designer",
+              "Fashion Designer"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Apprentice Maker",
+                  "description": "You are learning the material. Your hands are slow and your waste is high. But every session builds something that cannot be taught \u2014 the feel of the craft.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "AGI": "+3 \u2014 Fine motor development through hands-on craft practice",
+                      "SEN": "+2 \u2014 Touch, sight, and spatial awareness sharpened through making",
+                      "VIT": "+1 \u2014 The patience of craft requires a different kind of endurance"
+                  },
+                  "signature_skill": "Material Sense \u2014 Reads the material's qualities through touch and observation"
+              },
+              "T2": {
+                  "name": "Craftsman",
+                  "description": "Your hands know what to do before your mind tells them. The craft has become fluent. What you make has quality that others can feel \u2014 even if they cannot explain why.",
+                  "unlock": "Reach Level 10 + complete a craft mastery dungeon",
+                  "stat_buffs": {
+                      "AGI": "+6 \u2014 Fine motor control developed to high levels \u2014 precise, controlled, efficient",
+                      "SEN": "+5 \u2014 Perceives quality, flaw, and beauty through multiple senses simultaneously",
+                      "INT": "+3 \u2014 Problem-solving that emerges from deep material understanding",
+                      "VIT": "+3 \u2014 The long hours of making have built patient endurance"
+                  },
+                  "signature_skill": "Master Touch \u2014 What they make carries a quality of finish that stands apart"
+              },
+              "T3": {
+                  "name": "Artisan",
+                  "description": "You are the craft. Your work is sought and kept. Years from now, what you made will still carry your mark. You have built something permanent.",
+                  "unlock": "Reach Level 25 + complete the Artisan Job Change Quest",
+                  "stat_buffs": {
+                      "AGI": "+9 \u2014 Elite fine motor control \u2014 hands as precise as instruments",
+                      "SEN": "+8 \u2014 Perceives at the level of an expert appraiser \u2014 nothing escapes notice",
+                      "INT": "+5 \u2014 Deep material intelligence that transfers across problems",
+                      "VIT": "+5 \u2014 The long patience of the making life"
+                  },
+                  "signature_skill": "Living Legacy \u2014 What they create outlasts trends \u2014 sought, preserved, and passed on"
+              }
+          }
+      },
+      "Bard": {
+          "domain": "Expression",
+          "description": "Those who move people through creative force. Their medium is sound, image, story, or performance \u2014 but the effect is the same: people feel something real.",
+          "professions": [
+              "Musician / Composer",
+              "Actor / Performer",
+              "Animator",
+              "Illustrator",
+              "Motion Graphics Designer",
+              "Game Designer",
+              "Podcast Host",
+              "Social Media Manager",
+              "Brand Identity Designer",
+              "Art Director",
+              "Fashion Designer",
+              "Interior Stylist",
+              "Architect of Experiences",
+              "Wedding Planner",
+              "Event Planner"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Troubadour",
+                  "description": "You are finding your creative voice. The work is raw and unrefined \u2014 but something real is trying to come through. You pursue it anyway.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "SEN": "+3 \u2014 Creative work sharpens perception \u2014 you see and hear more than most",
+                      "AGI": "+1 \u2014 Developing the technical dexterity that creative work demands",
+                      "INT": "+1 \u2014 Learning the craft and discipline behind creative expression"
+                  },
+                  "signature_skill": "Resonance \u2014 Creates work that makes people feel something \u2014 even at early stages"
+              },
+              "T2": {
+                  "name": "Bard",
+                  "description": "You move people. Not accidentally \u2014 intentionally. You understand how emotion works and you know how to evoke it. Your creative output has real effect in the world.",
+                  "unlock": "Reach Level 10 + complete a creative expression dungeon",
+                  "stat_buffs": {
+                      "SEN": "+6 \u2014 Perceives emotional nuance, aesthetic quality, and human response with precision",
+                      "AGI": "+4 \u2014 Technical creative execution \u2014 fast, fluid, and controlled",
+                      "INT": "+3 \u2014 Creative intelligence that bridges emotion and craft",
+                      "VIT": "+2 \u2014 The discipline of consistent creative output"
+                  },
+                  "signature_skill": "Bardic Influence \u2014 Their creative work changes how people feel about a subject, person, or idea"
+              },
+              "T3": {
+                  "name": "Virtuoso",
+                  "description": "Your creative output defines a standard. Others measure themselves against what you do. Your work does not just move individuals \u2014 it enters culture.",
+                  "unlock": "Reach Level 25 + complete the Virtuoso Job Change Quest",
+                  "stat_buffs": {
+                      "SEN": "+9 \u2014 Perceives beauty, emotion, and human response at rare levels",
+                      "AGI": "+7 \u2014 Technical mastery \u2014 executes with precision and speed simultaneously",
+                      "INT": "+5 \u2014 Synthesis of craft, emotion, and strategy at the highest level",
+                      "VIT": "+4 \u2014 The sustained creative discipline of a lifetime"
+                  },
+                  "signature_skill": "Cultural Mark \u2014 Their work enters the shared memory of their audience \u2014 referenced, quoted, remembered"
+              }
+          }
+      },
+      "Scholar": {
+          "domain": "Expression",
+          "description": "Those who think deeply and share what they find. They do not just consume knowledge \u2014 they process it, test it, and put it back into the world in a form others can use.",
+          "professions": [
+              "Researcher",
+              "Journalist",
+              "Writer / Author",
+              "Copywriter",
+              "Public Policy Analyst",
+              "Intelligence Analyst",
+              "Urban / City Planner",
+              "Epidemiologist",
+              "Data Analyst",
+              "Biologist",
+              "Climate Scientist",
+              "Food Scientist",
+              "Materials Scientist",
+              "Economist",
+              "Philosopher",
+              "Historian",
+              "Archaeologist",
+              "Anthropologist"
+          ],
+          "tiers": {
+              "T1": {
+                  "name": "Seeker",
+                  "description": "You are driven by questions. You cannot leave an idea half-understood. This hunger for truth \u2014 even when inconvenient \u2014 is the beginning of real intellectual power.",
+                  "unlock": "First Awakening achieved",
+                  "stat_buffs": {
+                      "INT": "+3 \u2014 Deep inquiry is building analytical depth and critical thinking",
+                      "SEN": "+2 \u2014 Trained to observe carefully before drawing conclusions",
+                      "VIT": "+1 \u2014 The patience of research is building intellectual endurance"
+                  },
+                  "signature_skill": "Truth Seeker \u2014 Presses past surface answers \u2014 finds what is actually true rather than what is convenient"
+              },
+              "T2": {
+                  "name": "Scholar",
+                  "description": "You have earned the right to your conclusions. Your work is rigorous, honest, and useful. Others build on what you produce because it holds up under scrutiny.",
+                  "unlock": "Reach Level 10 + complete an intellectual mastery dungeon",
+                  "stat_buffs": {
+                      "INT": "+7 \u2014 Research depth has built analytical capacity that transfers across domains",
+                      "SEN": "+4 \u2014 Reads data, context, and nuance with precision",
+                      "VIT": "+4 \u2014 Years of sustained intellectual work have built real endurance",
+                      "AGI": "+2 \u2014 Processes and synthesizes information efficiently"
+                  },
+                  "signature_skill": "Iron Logic \u2014 Arguments and analyses are airtight \u2014 conclusions survive challenge"
+              },
+              "T3": {
+                  "name": "Luminary",
+                  "description": "Your work illuminates. You do not just describe what is \u2014 you explain why it matters and what it means. Others orient themselves by your conclusions.",
+                  "unlock": "Reach Level 25 + complete the Luminary Job Change Quest",
+                  "stat_buffs": {
+                      "INT": "+10 \u2014 Operates at the frontier of what is currently understood",
+                      "SEN": "+7 \u2014 Sees what the data is pointing to before others can articulate it",
+                      "VIT": "+6 \u2014 Lifetime of disciplined intellectual production",
+                      "AGI": "+4 \u2014 Synthesizes and deploys complex ideas rapidly"
+                  },
+                  "signature_skill": "Paradigm Shift \u2014 Their work changes how a field understands itself \u2014 before and after exists"
+              }
+          }
+      }
+  };
+
+  // Profession → Job Tree mapping (some professions map to multiple trees)
+  const PROF_TO_JOB = {
+      "Financial Analyst": [
+          "Merchant"
+      ],
+      "Accountant / CPA": [
+          "Merchant"
+      ],
+      "Investment Banker": [
+          "Merchant"
+      ],
+      "Venture Capitalist": [
+          "Merchant"
+      ],
+      "Sales Manager": [
+          "Merchant"
+      ],
+      "Real Estate Agent / Broker": [
+          "Merchant"
+      ],
+      "Insurance Agent": [
+          "Merchant"
+      ],
+      "Actuary": [
+          "Merchant",
+          "Ranger"
+      ],
+      "Financial Planner": [
+          "Merchant"
+      ],
+      "E-commerce Manager": [
+          "Merchant"
+      ],
+      "Franchise Owner": [
+          "Merchant",
+          "Summoner"
+      ],
+      "Trader": [
+          "Merchant"
+      ],
+      "Real Estate Investor": [
+          "Merchant"
+      ],
+      "Property Manager": [
+          "Merchant"
+      ],
+      "Entrepreneur / Business Owner": [
+          "Summoner"
+      ],
+      "Network Marketer / IBO": [
+          "Summoner"
+      ],
+      "Business Development Manager": [
+          "Summoner"
+      ],
+      "Operations Manager": [
+          "Summoner"
+      ],
+      "Human Resources Manager": [
+          "Summoner"
+      ],
+      "Management Consultant": [
+          "Summoner"
+      ],
+      "Marketing Manager": [
+          "Summoner"
+      ],
+      "Brand Strategist": [
+          "Summoner"
+      ],
+      "Supply Chain Manager": [
+          "Summoner"
+      ],
+      "Software Engineer": [
+          "Mage"
+      ],
+      "Data Scientist": [
+          "Mage"
+      ],
+      "Machine Learning Engineer": [
+          "Mage"
+      ],
+      "Systems Analyst": [
+          "Mage"
+      ],
+      "Cybersecurity Analyst": [
+          "Mage"
+      ],
+      "Cloud Architect": [
+          "Mage"
+      ],
+      "DevOps Engineer": [
+          "Mage"
+      ],
+      "Database Administrator": [
+          "Mage"
+      ],
+      "Network Engineer": [
+          "Mage"
+      ],
+      "QA Engineer": [
+          "Mage"
+      ],
+      "Civil Engineer": [
+          "Mage"
+      ],
+      "Mechanical Engineer": [
+          "Mage"
+      ],
+      "Electrical Engineer": [
+          "Mage"
+      ],
+      "Chemical Engineer": [
+          "Mage"
+      ],
+      "Aerospace Engineer": [
+          "Mage"
+      ],
+      "Biomedical Engineer": [
+          "Mage"
+      ],
+      "Environmental Engineer": [
+          "Mage"
+      ],
+      "Structural Engineer": [
+          "Mage"
+      ],
+      "Biologist": [
+          "Mage",
+          "Scholar"
+      ],
+      "Chemist": [
+          "Mage"
+      ],
+      "Physicist": [
+          "Mage"
+      ],
+      "Geologist": [
+          "Mage",
+          "Ranger"
+      ],
+      "Neuroscientist": [
+          "Mage"
+      ],
+      "Geneticist": [
+          "Mage"
+      ],
+      "Microbiologist": [
+          "Mage"
+      ],
+      "Mathematician": [
+          "Mage"
+      ],
+      "Statistician": [
+          "Mage",
+          "Ranger"
+      ],
+      "Teacher (K-12)": [
+          "Sage"
+      ],
+      "College / University Professor": [
+          "Sage"
+      ],
+      "Curriculum Developer": [
+          "Sage"
+      ],
+      "Instructional Designer": [
+          "Sage"
+      ],
+      "Online Course Creator": [
+          "Sage"
+      ],
+      "Technical Writer": [
+          "Sage"
+      ],
+      "Writer / Author": [
+          "Sage",
+          "Scholar"
+      ],
+      "Journalist": [
+          "Sage",
+          "Scholar"
+      ],
+      "Copywriter": [
+          "Sage",
+          "Scholar"
+      ],
+      "Education Administrator": [
+          "Sage"
+      ],
+      "School Counselor": [
+          "Sage",
+          "Paladin"
+      ],
+      "Career Counselor": [
+          "Sage"
+      ],
+      "Life Coach": [
+          "Sage"
+      ],
+      "Business Coach": [
+          "Sage"
+      ],
+      "STEM Educator": [
+          "Sage"
+      ],
+      "Language Teacher": [
+          "Sage"
+      ],
+      "Mentor / Advisor": [
+          "Sage"
+      ],
+      "Physician / Doctor": [
+          "Healer"
+      ],
+      "Surgeon": [
+          "Healer"
+      ],
+      "Registered Nurse": [
+          "Healer"
+      ],
+      "Nurse Practitioner": [
+          "Healer"
+      ],
+      "Physical Therapist": [
+          "Healer",
+          "Monk"
+      ],
+      "Occupational Therapist": [
+          "Healer"
+      ],
+      "Pharmacist": [
+          "Healer"
+      ],
+      "Dentist": [
+          "Healer"
+      ],
+      "Dental Hygienist": [
+          "Healer"
+      ],
+      "Chiropractor": [
+          "Healer"
+      ],
+      "Optometrist": [
+          "Healer"
+      ],
+      "Paramedic / EMT": [
+          "Healer"
+      ],
+      "Anesthesiologist": [
+          "Healer"
+      ],
+      "Psychiatrist / Psychologist": [
+          "Healer"
+      ],
+      "Physician Assistant": [
+          "Healer"
+      ],
+      "Respiratory Therapist": [
+          "Healer"
+      ],
+      "Veterinarian": [
+          "Healer"
+      ],
+      "Massage Therapist": [
+          "Healer"
+      ],
+      "Social Worker": [
+          "Healer",
+          "Paladin"
+      ],
+      "Nutritionist / Dietitian": [
+          "Healer"
+      ],
+      "Wellness Coach": [
+          "Healer"
+      ],
+      "Health Educator": [
+          "Healer"
+      ],
+      "Law Enforcement Officer": [
+          "Paladin",
+          "Warrior"
+      ],
+      "Firefighter": [
+          "Paladin",
+          "Warrior"
+      ],
+      "Military Officer": [
+          "Paladin",
+          "Warrior"
+      ],
+      "Lawyer / Attorney": [
+          "Paladin"
+      ],
+      "Judge": [
+          "Paladin"
+      ],
+      "Nonprofit Manager": [
+          "Paladin"
+      ],
+      "Community Organizer": [
+          "Paladin"
+      ],
+      "Public Policy Analyst": [
+          "Paladin",
+          "Scholar"
+      ],
+      "Diplomat": [
+          "Paladin"
+      ],
+      "Youth Worker": [
+          "Paladin"
+      ],
+      "Emergency Manager": [
+          "Paladin"
+      ],
+      "Public Health Official": [
+          "Paladin"
+      ],
+      "Corrections Officer": [
+          "Paladin"
+      ],
+      "Probation Officer": [
+          "Paladin"
+      ],
+      "Environmental Regulator": [
+          "Paladin"
+      ],
+      "Electrician": [
+          "Warrior"
+      ],
+      "Plumber": [
+          "Warrior"
+      ],
+      "HVAC Technician": [
+          "Warrior"
+      ],
+      "Carpenter": [
+          "Warrior"
+      ],
+      "Welder": [
+          "Warrior"
+      ],
+      "Pipefitter": [
+          "Warrior"
+      ],
+      "Mason / Bricklayer": [
+          "Warrior"
+      ],
+      "Roofer": [
+          "Warrior"
+      ],
+      "Ironworker": [
+          "Warrior"
+      ],
+      "Sheet Metal Worker": [
+          "Warrior"
+      ],
+      "Painter / Decorator": [
+          "Warrior"
+      ],
+      "Flooring Installer": [
+          "Warrior"
+      ],
+      "Glazier": [
+          "Warrior"
+      ],
+      "Boilermaker": [
+          "Warrior"
+      ],
+      "Heavy Equipment Operator": [
+          "Warrior"
+      ],
+      "Crane Operator": [
+          "Warrior"
+      ],
+      "Construction Manager": [
+          "Warrior"
+      ],
+      "Elevator Installer": [
+          "Warrior"
+      ],
+      "Insulation Worker": [
+          "Warrior"
+      ],
+      "Tile Setter": [
+          "Warrior"
+      ],
+      "Professional Athlete": [
+          "Warrior"
+      ],
+      "Sports Coach": [
+          "Warrior"
+      ],
+      "Personal Trainer": [
+          "Monk"
+      ],
+      "Martial Arts Instructor": [
+          "Monk"
+      ],
+      "Yoga Instructor": [
+          "Monk"
+      ],
+      "Pilates Instructor": [
+          "Monk"
+      ],
+      "Strength & Conditioning Coach": [
+          "Monk"
+      ],
+      "CrossFit Coach": [
+          "Monk"
+      ],
+      "Swim Coach": [
+          "Monk"
+      ],
+      "Dance Instructor": [
+          "Monk"
+      ],
+      "Athletic Director": [
+          "Monk"
+      ],
+      "Sports Psychologist": [
+          "Monk"
+      ],
+      "Ergonomics Consultant": [
+          "Monk"
+      ],
+      "Freelancer / Independent Consultant": [
+          "Ranger"
+      ],
+      "Content Creator / YouTuber": [
+          "Ranger"
+      ],
+      "Podcast Host": [
+          "Ranger",
+          "Bard"
+      ],
+      "Graphic Designer": [
+          "Ranger"
+      ],
+      "Photographer": [
+          "Ranger"
+      ],
+      "Videographer / Filmmaker": [
+          "Ranger"
+      ],
+      "Game Developer": [
+          "Ranger"
+      ],
+      "Mobile Developer": [
+          "Ranger"
+      ],
+      "Web Developer": [
+          "Ranger"
+      ],
+      "UX / UI Designer": [
+          "Ranger"
+      ],
+      "Landscape Architect": [
+          "Ranger"
+      ],
+      "Environmental Scientist": [
+          "Ranger"
+      ],
+      "Hydrologist": [
+          "Ranger"
+      ],
+      "Chef / Culinary Artist": [
+          "Artisan"
+      ],
+      "Baker / Pastry Chef": [
+          "Artisan"
+      ],
+      "Barber / Cosmetologist": [
+          "Artisan"
+      ],
+      "Tattoo Artist": [
+          "Artisan"
+      ],
+      "Jeweler": [
+          "Artisan"
+      ],
+      "Furniture Maker / Woodworker": [
+          "Artisan"
+      ],
+      "Blacksmith": [
+          "Artisan"
+      ],
+      "Glassblower": [
+          "Artisan"
+      ],
+      "Potter / Ceramicist": [
+          "Artisan"
+      ],
+      "Leatherworker": [
+          "Artisan"
+      ],
+      "Seamstress / Tailor": [
+          "Artisan"
+      ],
+      "Watchmaker": [
+          "Artisan"
+      ],
+      "Bookbinder": [
+          "Artisan"
+      ],
+      "Floral Designer": [
+          "Artisan"
+      ],
+      "Brewer / Distiller": [
+          "Artisan"
+      ],
+      "Instrument Maker": [
+          "Artisan"
+      ],
+      "Custom Car Builder": [
+          "Artisan"
+      ],
+      "Upholsterer": [
+          "Artisan"
+      ],
+      "Interior Designer": [
+          "Artisan"
+      ],
+      "Fashion Designer": [
+          "Artisan",
+          "Bard"
+      ],
+      "Musician / Composer": [
+          "Bard"
+      ],
+      "Actor / Performer": [
+          "Bard"
+      ],
+      "Animator": [
+          "Bard"
+      ],
+      "Illustrator": [
+          "Bard"
+      ],
+      "Motion Graphics Designer": [
+          "Bard"
+      ],
+      "Game Designer": [
+          "Bard"
+      ],
+      "Social Media Manager": [
+          "Bard"
+      ],
+      "Brand Identity Designer": [
+          "Bard"
+      ],
+      "Art Director": [
+          "Bard"
+      ],
+      "Interior Stylist": [
+          "Bard"
+      ],
+      "Architect of Experiences": [
+          "Bard"
+      ],
+      "Wedding Planner": [
+          "Bard"
+      ],
+      "Event Planner": [
+          "Bard"
+      ],
+      "Researcher": [
+          "Scholar"
+      ],
+      "Intelligence Analyst": [
+          "Scholar"
+      ],
+      "Urban / City Planner": [
+          "Scholar"
+      ],
+      "Epidemiologist": [
+          "Scholar"
+      ],
+      "Data Analyst": [
+          "Scholar"
+      ],
+      "Climate Scientist": [
+          "Scholar"
+      ],
+      "Food Scientist": [
+          "Scholar"
+      ],
+      "Materials Scientist": [
+          "Scholar"
+      ],
+      "Economist": [
+          "Scholar"
+      ],
+      "Philosopher": [
+          "Scholar"
+      ],
+      "Historian": [
+          "Scholar"
+      ],
+      "Archaeologist": [
+          "Scholar"
+      ],
+      "Anthropologist": [
+          "Scholar"
+      ]
+  };
+
+  function assignJob(profession) {
+    // Find matching job trees for this profession
+    const matches = PROF_TO_JOB[profession] || [];
+    if (matches.length === 0) return null;
+    return matches; // Returns array — player may have multiple active trees
+  }
+
+  function getJobTier(jobName, level) {
+    if (!JOB_LIBRARY[jobName]) return null;
+    const tiers = JOB_LIBRARY[jobName].tiers;
+    // Tier 1: Awakened, Tier 2: Level 10+, Tier 3: Level 25+
+    if (level >= 25) return { key: 'T3', ...tiers['T3'] };
+    if (level >= 10) return { key: 'T2', ...tiers['T2'] };
+    return { key: 'T1', ...tiers['T1'] };
+  }
+
+  function applyJobsToStatus(profile, level) {
+    const profession = profile.job || '';
+    const jobs = assignJob(profession);
+
+    // Primary job — first match
+    const primaryJobName = jobs && jobs.length > 0 ? jobs[0] : null;
+    const primaryTier    = primaryJobName ? getJobTier(primaryJobName, level) : null;
+
+    // Secondary jobs — additional matches
+    const secondaryJobs  = jobs && jobs.length > 1 ? jobs.slice(1) : [];
+
+    // Update status window
+    const jobEl = document.getElementById('status-job');
+    const domainEl = document.getElementById('status-domain');
+    const profEl = document.getElementById('status-profession');
+
+    if (primaryJobName && primaryTier) {
+      jobEl.textContent = primaryTier.name;
+
+      // Show secondary if exists
+      if (secondaryJobs.length > 0) {
+        const secTier = getJobTier(secondaryJobs[0], level);
+        jobEl.textContent = primaryTier.name + ' / ' + secTier.name;
+      }
+
+      const domain = JOB_LIBRARY[primaryJobName].domain;
+      domainEl.textContent = domain;
+      domainEl.style.color = 'var(--text)';
+    } else {
+      jobEl.textContent = profile.awakeningGoal ? '[ Unawakened ]' : '—';
+      domainEl.textContent = '—';
+    }
+
+    if (profEl) profEl.textContent = profession || '—';
+  }
+
+  function getActiveStatBuffs(profile, level) {
+    const profession = profile.job || '';
+    const jobs = assignJob(profession);
+    if (!jobs || jobs.length === 0) return {};
+
+    const combined = {};
+    jobs.forEach(jobName => {
+      const tier = getJobTier(jobName, level);
+      if (!tier || !tier.stat_buffs) return;
+      Object.entries(tier.stat_buffs).forEach(([stat, desc]) => {
+        const val = parseInt(desc.match(/[+-]\d+/)?.[0] || '0');
+        combined[stat] = (combined[stat] || 0) + val;
+      });
+    });
+    return combined;
+  }
+
   // ── ACHIEVEMENTS ──────────────────────────────────────
   const ACHIEVEMENTS = [
     { id:'first_blood',    icon:'🔥', name:'First Blood',    desc:'Complete first quest',  check:()=>totalXP>=QUEST_XP },
@@ -2428,6 +3837,8 @@
     document.getElementById('xp-bar').style.width           = pct + '%';
     document.getElementById('xp-display').textContent       = into + ' / ' + needed;
     document.getElementById('total-xp-display').textContent = totalXP;
+    // Refresh job tier whenever level updates
+    if (window._activeProfile) applyJobsToStatus(window._activeProfile, level);
   }
 
   // ── RANK UI ───────────────────────────────────────────
@@ -2808,32 +4219,54 @@
   }
 
   function applyProfile(profile) {
-    // Update player name in header and status
-    const nameEl = document.getElementById('player-name');
-    if (nameEl) nameEl.textContent = profile.playerName;
+    window._activeProfile = profile; // store for job tier refresh on level up
+    const level = getLevelFromXP(totalXP);
 
-    // Update job in status
-    const jobRows = document.querySelectorAll('.sys-info-val');
-    // Update via info rows — find Job row
-    document.querySelectorAll('.sys-info-row').forEach(row => {
-      if (row.querySelector('.sys-info-key')?.textContent === 'JOB') {
-        row.querySelector('.sys-info-val').textContent = profile.job;
+    // Name
+    const nameEl = document.getElementById('status-name');
+    if (nameEl) nameEl.textContent = profile.playerName || '—';
+    const headerName = document.getElementById('player-name');
+    if (headerName) headerName.textContent = profile.playerName || '—';
+
+    // Profession + Job assignment
+    applyJobsToStatus(profile, level);
+
+    // Title
+    const titleEl = document.getElementById('status-title');
+    if (titleEl) {
+      titleEl.textContent = profile.awakened
+        ? (profile.primaryTitle || 'The Awakened')
+        : '[ Unawakened ]';
+      titleEl.style.color = profile.awakened ? 'var(--gold)' : 'var(--text-dim)';
+    }
+
+    // Starting rank — set XP floor if income rank is higher than current
+    if (profile.startingRank) {
+      const rankMap = {
+        'E-Rank': 0, 'D-Rank': 10, 'C-Rank': 25,
+        'B-Rank': 50, 'A-Rank': 100, 'S-Rank': 200, 'National Level': 400
+      };
+      const floor = rankMap[profile.startingRank] || 0;
+      if (totalXP < floor) {
+        totalXP = floor;
+        localStorage.setItem('sys_xp', totalXP);
+        updateXPBar();
+        updateRankUI();
       }
-      if (row.querySelector('.sys-info-key')?.textContent === 'RANK') {
-        row.querySelector('.sys-info-val').textContent = profile.startingRank;
-      }
-    });
+    }
 
     // Build daily quests from profile
     if (profile.dailyQuests && profile.dailyQuests.length > 0) {
       buildQuestsFromProfile(profile.dailyQuests);
     }
 
-    // Update awakening goal milestone
+    // Awakening goal milestone
     const milestones = document.querySelectorAll('.milestone-sub');
-    if (milestones[0]) milestones[0].textContent = profile.awakeningGoal;
+    if (milestones[0] && profile.awakeningGoal) {
+      milestones[0].textContent = profile.awakeningGoal;
+    }
 
-    // Update splash button if profile exists
+    // Splash button
     const splashBtn = document.getElementById('splash-btn');
     if (splashBtn) splashBtn.textContent = '▶ CONTINUE?';
   }
