@@ -1050,6 +1050,97 @@
 
     .sys-toast.show { opacity: 1; }
 
+    /* ── GLITCH TRANSITION SCREEN ───────────────────────── */
+    #glitch-screen {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 1100;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+    }
+
+    #glitch-screen.show { display: flex; }
+
+    .glitch-line1 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--cyan);
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+      opacity: 0;
+    }
+
+    .glitch-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-bright);
+      letter-spacing: 2px;
+      line-height: 1.8;
+      opacity: 0;
+      position: relative;
+      white-space: pre-line;
+      text-align: center;
+    }
+
+    .glitch-title.glitching {
+      animation: glitch-text 0.4s steps(1) infinite;
+    }
+
+    @keyframes glitch-text {
+      0%   { transform: translate(0); color: var(--text-bright); }
+      10%  { transform: translate(-3px, 1px); color: var(--cyan); clip-path: inset(20% 0 60% 0); }
+      20%  { transform: translate(3px, -1px); color: #ff2244; clip-path: inset(60% 0 10% 0); }
+      30%  { transform: translate(0); color: var(--text-bright); clip-path: none; }
+      40%  { transform: translate(-2px, 2px); color: var(--cyan); }
+      50%  { transform: translate(2px, -1px); color: #ff2244; }
+      60%  { transform: translate(0); color: var(--text-bright); }
+      100% { transform: translate(0); color: var(--text-bright); }
+    }
+
+    .glitch-scanline {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,212,255,0.03) 2px, rgba(0,212,255,0.03) 4px
+      );
+      pointer-events: none;
+      animation: scanline-move 8s linear infinite;
+    }
+
+    @keyframes scanline-move {
+      from { background-position: 0 0; }
+      to   { background-position: 0 100px; }
+    }
+
+    .glitch-bar {
+      position: absolute;
+      height: 2px;
+      background: var(--cyan);
+      left: 0; right: 0;
+      opacity: 0;
+      animation: glitch-bar 0.3s steps(1) infinite;
+    }
+
+    @keyframes glitch-bar {
+      0%   { top: 20%; opacity: 0; }
+      25%  { top: 45%; opacity: 0.8; }
+      50%  { top: 70%; opacity: 0; }
+      75%  { top: 10%; opacity: 0.5; }
+      100% { top: 80%; opacity: 0; }
+    }
+
+    @keyframes glitch-screen-flicker {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.85; }
+    }
+
     /* ── BLACK TRANSITION OVERLAY ───────────────────────── */
     #black-overlay {
       position: fixed;
@@ -1389,11 +1480,14 @@
     }
 
     .sys-alert-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 900;
       color: var(--text-bright);
       letter-spacing: 1px;
       margin-bottom: 6px;
+      white-space: pre-line;
+      line-height: 1.6;
+      font-family: 'Share Tech Mono', monospace;
     }
 
     .sys-alert-subtitle {
@@ -1402,7 +1496,8 @@
       color: var(--text-dim);
       letter-spacing: 1px;
       margin-bottom: 16px;
-      line-height: 1.5;
+      line-height: 1.6;
+      white-space: pre-line;
     }
 
     .sys-alert-btn {
@@ -1518,6 +1613,14 @@
   </style>
 </head>
 <body>
+
+<!-- GLITCH TRANSITION SCREEN -->
+<div id="glitch-screen">
+  <div class="glitch-scanline"></div>
+  <div class="glitch-bar"></div>
+  <div class="glitch-line1" id="glitch-line1">[ SYSTEM ]</div>
+  <div class="glitch-title" id="glitch-title">—</div>
+</div>
 
 <!-- BLACK TRANSITION OVERLAY -->
 <div id="black-overlay"></div>
@@ -1658,7 +1761,6 @@
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-title">System</div>
-  <div class="splash-subtitle">Arise, Hunter.</div>
   <button class="splash-btn" id="splash-btn" onclick="startSystem()">▶ PRESS START</button>
 </div>
 
@@ -1711,7 +1813,9 @@
 
       <div class="sys-notification">
         <div class="sys-notification-title">▶ SYSTEM NOTIFICATION</div>
-        <div class="sys-notification-body">The following tasks have been assigned to the Player. Complete all tasks before midnight to avoid penalty.</div>
+        <div class="sys-notification-body">[Daily quests have been assigned.]
+[Complete all tasks before midnight
+or face the penalty.]</div>
       </div>
 
       <div class="sys-progress">
@@ -1787,7 +1891,9 @@
 
       <div class="sys-warning">
         <div class="sys-warning-title">⚠ PENALTY WARNING</div>
-        <div class="sys-warning-body">Failure to complete the Daily Quest before midnight will result in the appropriate penalty being administered without exception.</div>
+        <div class="sys-warning-body">[Failure to complete the Daily Quest before
+midnight will result in a penalty
+without exception.]</div>
       </div>
 
     </div>
@@ -1911,45 +2017,30 @@
     <div class="panel-body">
 
       <div class="mission-block">
-        <div class="mission-label">▶ ULTIMATE OBJECTIVE</div>
-        <div class="mission-title">Become the Strongest</div>
-        <div class="mission-sub">Overcome all limits. Surpass every hunter. Stand alone at the top.</div>
+        <div class="mission-label">▶ DEFINITE MAJOR PURPOSE</div>
+        <div class="mission-title" id="dmp-title">—</div>
+        <div class="mission-sub" id="dmp-sub">Set your Definite Major Purpose to begin.</div>
       </div>
 
       <div class="sys-section">Milestones</div>
 
-      <div class="milestone">
+      <div class="milestone" id="milestone-awakening">
         <div class="milestone-name">First Awakening</div>
-        <div class="milestone-sub">Reach 7-8% body fat — Greek God physique</div>
-        <div class="milestone-effect">↑ All stats unlocked · ↑ Charisma (L)</div>
+        <div class="milestone-sub" id="awakening-goal-text">—</div>
+        <div class="milestone-effect">Unlocks: Player status · Job assignment · Stats · Dungeons</div>
       </div>
-      <div class="milestone">
+
+      <div class="milestone" id="milestone-dqm">
         <div class="milestone-name">Daily Quest Mastery</div>
         <div class="milestone-sub">Complete 7 consecutive daily quests</div>
         <div class="milestone-effect">↑ STR +5 · VIT +5</div>
       </div>
-      <div class="milestone">
-        <div class="milestone-name">Fortress of Solitude</div>
-        <div class="milestone-sub">Secure your own apartment</div>
-        <div class="milestone-effect">↑ Intelligence at home (M)</div>
-      </div>
-      <div class="milestone locked">
+
+      <div class="milestone locked" id="milestone-locked-block">
         <div class="milestone-lock">🔒</div>
-        <div class="milestone-name">Job Change</div>
-        <div class="milestone-sub">Reach B-Rank</div>
-        <div class="milestone-effect" style="color:var(--text-dim)">Effect: 🔒</div>
-      </div>
-      <div class="milestone locked">
-        <div class="milestone-lock">🔒</div>
-        <div class="milestone-name">Diamond Gate</div>
-        <div class="milestone-sub">Achieve Diamondship</div>
-        <div class="milestone-effect" style="color:var(--text-dim)">Effect: 🔒</div>
-      </div>
-      <div class="milestone locked">
-        <div class="milestone-lock">🔒</div>
-        <div class="milestone-name">Shadow Monarch</div>
-        <div class="milestone-sub">Reach S-Rank</div>
-        <div class="milestone-effect" style="color:var(--text-dim)">Effect: 🔒</div>
+        <div class="milestone-name" style="color:var(--text-dim)">Further Milestones</div>
+        <div class="milestone-sub" style="color:var(--text-dim)">Locked until First Awakening is achieved.</div>
+        <div class="milestone-effect" style="color:var(--text-dim)">Arise first. Then the path reveals itself.</div>
       </div>
 
     </div>
@@ -1963,61 +2054,72 @@
     </div>
     <div class="panel-body">
 
-      <div class="sys-section">Items</div>
+      <!-- PRE-AWAKENING LOCK -->
+      <div id="inventory-lock-screen" style="text-align:center;padding:40px 20px;">
+        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
+        <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Items and Skills are locked until the First Awakening is achieved. Prove yourself first.</div>
+      </div>
 
-      <div class="shop-item locked" onclick="showItemPopup('immunity')">
-        <div>
-          <div class="shop-name">🧪 Immunity Potion</div>
-          <div class="shop-req">🔒 Earn through weekly training bonus</div>
+      <!-- POST-AWAKENING CONTENT (hidden until awakened) -->
+      <div id="inventory-content" style="display:none">
+        <div class="sys-section">Items</div>
+
+        <div class="shop-item locked" onclick="showItemPopup('immunity')">
+          <div>
+            <div class="shop-name">🧪 Immunity Potion</div>
+            <div class="shop-req">🔒 Earn through weekly training bonus</div>
+          </div>
+          <div class="shop-status" style="color:var(--text-dim)">0 HELD</div>
         </div>
-        <div class="shop-status" style="color:var(--text-dim)">0 HELD</div>
-      </div>
 
-      <div class="shop-item locked">
-        <div>
-          <div class="shop-name">⚗️ Health Potion</div>
-          <div class="shop-req">🔒 Complete 3 consecutive daily quests</div>
+        <div class="shop-item locked">
+          <div>
+            <div class="shop-name">⚗️ Health Potion</div>
+            <div class="shop-req">🔒 Complete 3 consecutive daily quests</div>
+          </div>
+          <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
-        <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
-      </div>
 
-      <div class="shop-item locked">
-        <div>
-          <div class="shop-name">⚔️ Demon King's Longsword</div>
-          <div class="shop-req">🔒 Reach A-Rank</div>
+        <div class="shop-item locked">
+          <div>
+            <div class="shop-name">⚔️ Demon King's Longsword</div>
+            <div class="shop-req">🔒 Reach A-Rank</div>
+          </div>
+          <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
-        <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
-      </div>
 
-      <div class="shop-item locked">
-        <div>
-          <div class="shop-name">🧤 Ruler's Gloves</div>
-          <div class="shop-req">🔒 Shadow Monarch milestone</div>
+        <div class="shop-item locked">
+          <div>
+            <div class="shop-name">🧤 Ruler's Gloves</div>
+            <div class="shop-req">🔒 Second Awakening</div>
+          </div>
+          <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
-        <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
-      </div>
 
-      <div class="sys-section">Skills</div>
+        <div class="sys-section">Skills</div>
 
-      <div class="skill-item" onclick="showSkillPopup('sprint')">
-        <div class="skill-name">Sprint</div>
-        <div class="skill-unlocked">ACTIVE ▶</div>
-      </div>
-      <div class="skill-item" onclick="showSkillPopup('dash')">
-        <div class="skill-name">Dash</div>
-        <div class="skill-unlocked">ACTIVE ▶</div>
-      </div>
-      <div class="skill-item locked" onclick="showSkillPopup('stealth')">
-        <div class="skill-name">Stealth</div>
-        <div class="skill-locked-tag">🔒 B-Rank</div>
-      </div>
-      <div class="skill-item locked" onclick="showSkillPopup('ruler')">
-        <div class="skill-name">Ruler's Authority</div>
-        <div class="skill-locked-tag">🔒 S-Rank</div>
-      </div>
-      <div class="skill-item locked" onclick="showSkillPopup('shadow')">
-        <div class="skill-name">Shadow Extraction</div>
-        <div class="skill-locked-tag">🔒 Shadow Monarch</div>
+        <div class="skill-item" onclick="showSkillPopup('sprint')">
+          <div class="skill-name">Sprint</div>
+          <div class="skill-unlocked">ACTIVE ▶</div>
+        </div>
+        <div class="skill-item" onclick="showSkillPopup('dash')">
+          <div class="skill-name">Dash</div>
+          <div class="skill-unlocked">ACTIVE ▶</div>
+        </div>
+        <div class="skill-item locked" onclick="showSkillPopup('stealth')">
+          <div class="skill-name">Stealth</div>
+          <div class="skill-locked-tag">🔒 B-Rank</div>
+        </div>
+        <div class="skill-item locked" onclick="showSkillPopup('ruler')">
+          <div class="skill-name">Ruler's Authority</div>
+          <div class="skill-locked-tag">🔒 S-Rank</div>
+        </div>
+        <div class="skill-item locked" onclick="showSkillPopup('shadow')">
+          <div class="skill-name">Shadow Extraction</div>
+          <div class="skill-locked-tag">🔒 Second Awakening</div>
+        </div>
       </div>
 
     </div>
@@ -2199,28 +2301,45 @@
   // ── SPLASH ────────────────────────────────────────────
   function startSystem() {
     try {
-      playSystemSound();
+      playSystemSound(); // notification sound on press start
       startAmbient();
       const splash = document.getElementById('splash');
       const blackOverlay = document.getElementById('black-overlay');
 
-      if (window._needsSetup) {
-        // New player — fade splash to black, then show setup on black
-        blackOverlay.classList.add('show');
-        setTimeout(() => {
-          splash.style.display = 'none';
-          document.getElementById('setup-overlay').classList.add('show');
-          showSetupScreen(1);
-          // Keep black overlay up — fade it away once setup is visible
-          setTimeout(() => blackOverlay.classList.remove('show'), 100);
-        }, 400);
-      } else {
-        // Returning player — normal fade out
-        splash.classList.add('fade-out');
-        setTimeout(() => { splash.style.display = 'none'; }, 600);
-      }
+      // Fade splash, drop black overlay immediately to hide UI
+      splash.classList.add('fade-out');
+      blackOverlay.classList.add('show');
+
+      setTimeout(() => {
+        splash.style.display = 'none';
+
+        if (window._needsSetup) {
+          // New player — black drops, glitch fires on top
+          showGlitchScreen(
+            '[ SYSTEM ]',
+            'You have acquired the qualifications\nto be a Player.\n\nWill you accept?',
+            3800,
+            () => {
+              blackOverlay.classList.remove('show');
+              document.getElementById('setup-overlay').classList.add('show');
+              showSetupScreen(1);
+            }
+          );
+        } else {
+          // Returning player — brief glitch then remove black
+          showGlitchScreen(
+            '[ SYSTEM ]',
+            '[Welcome back, Player.]\n[The System is online.]',
+            2200,
+            () => {
+              blackOverlay.classList.remove('show');
+            }
+          );
+        }
+      }, 600);
     } catch(e) {
       document.getElementById('splash').style.display = 'none';
+      document.getElementById('black-overlay').classList.remove('show');
     }
   }
 
@@ -4009,7 +4128,8 @@
     _updatePending = false;
   }
 
-  window.acceptUpdate  = acceptUpdate;
+  window.showGlitchScreen = showGlitchScreen;
+  window.acceptUpdate     = acceptUpdate;
   window.declineUpdate = declineUpdate;
 
   if ('serviceWorker' in navigator) {
@@ -4096,6 +4216,42 @@
     const custom = document.getElementById('setup-prof-custom')?.value.trim() || '';
     if (custom.length > 0) return custom;
     return document.getElementById('setup-prof-specific')?.value || '';
+  }
+
+  // ── GLITCH TRANSITION ─────────────────────────────────
+  function showGlitchScreen(line1, title, duration, callback) {
+    const screen   = document.getElementById('glitch-screen');
+    const l1El     = document.getElementById('glitch-line1');
+    const titleEl  = document.getElementById('glitch-title');
+
+    l1El.textContent    = line1;
+    titleEl.textContent = title;
+    l1El.style.opacity  = '0';
+    titleEl.style.opacity = '0';
+    screen.classList.add('show');
+
+    // Fade in line 1
+    setTimeout(() => {
+      l1El.style.transition = 'opacity 0.3s';
+      l1El.style.opacity = '1';
+    }, 100);
+
+    // Fade in title with glitch
+    setTimeout(() => {
+      titleEl.style.transition = 'opacity 0.3s';
+      titleEl.style.opacity = '1';
+      titleEl.classList.add('glitching');
+    }, 500);
+
+    // Stop glitch, hold, then call callback
+    setTimeout(() => {
+      titleEl.classList.remove('glitching');
+    }, duration - 600);
+
+    setTimeout(() => {
+      screen.classList.remove('show');
+      if (callback) callback();
+    }, duration);
   }
 
   // ── SETUP WIZARD ──────────────────────────────────────
@@ -4189,6 +4345,7 @@
   }
 
   async function finalizeProfile() {
+    playSystemSound(); // notification sound on profile confirm
     const profile = {
       playerName:    document.getElementById('setup-name').value.trim(),
       nameLocked:    true,   // name is permanent
@@ -4206,21 +4363,35 @@
     // Apply profile to app
     applyProfile(profile);
 
-    // Fade to black, hide setup, reveal app
+    // Fade setup away then show glitch screens
     const blackOverlay = document.getElementById('black-overlay');
     blackOverlay.classList.add('show');
     setTimeout(() => {
       document.getElementById('setup-overlay').classList.remove('show');
-      setTimeout(() => {
-        blackOverlay.classList.remove('show');
-        showToast('PROFILE ESTABLISHED. ARISE, HUNTER.');
-      }, 300);
+      blackOverlay.classList.remove('show');
+
+      // Glitch screen → profile complete + first quest notification
+      showGlitchScreen(
+        '[ SYSTEM ]',
+        "[You've become a Player.]\n[Daily Quest: Strength Training\nhas arrived.]",
+        3800,
+        () => {
+          // Show system notification popup after glitch
+          showAlert({
+            label:    '[ SYSTEM NOTIFICATION ]',
+            icon:     '📋',
+            title:    "[Daily Quest: Strength Training\nhas arrived.]",
+            subtitle: 'Complete your daily training quests to earn EXP and prove your discipline to the System.'
+          });
+        }
+      );
     }, 400);
   }
 
   function applyProfile(profile) {
-    window._activeProfile = profile; // store for job tier refresh on level up
-    const level = getLevelFromXP(totalXP);
+    window._activeProfile = profile;
+    const level   = getLevelFromXP(totalXP);
+    const awakened = profile.awakened || false;
 
     // Name
     const nameEl = document.getElementById('status-name');
@@ -4234,13 +4405,27 @@
     // Title
     const titleEl = document.getElementById('status-title');
     if (titleEl) {
-      titleEl.textContent = profile.awakened
-        ? (profile.primaryTitle || 'The Awakened')
-        : '[ Unawakened ]';
-      titleEl.style.color = profile.awakened ? 'var(--gold)' : 'var(--text-dim)';
+      titleEl.textContent  = awakened ? (profile.primaryTitle || 'The Awakened') : '[ Unawakened ]';
+      titleEl.style.color  = awakened ? 'var(--gold)' : 'var(--text-dim)';
     }
 
-    // Starting rank — set XP floor if income rank is higher than current
+    // DMP
+    const dmpTitle = document.getElementById('dmp-title');
+    const dmpSub   = document.getElementById('dmp-sub');
+    if (dmpTitle) dmpTitle.textContent = profile.dmp || '—';
+    if (dmpSub)   dmpSub.textContent   = profile.dmpSub || (profile.dmp ? '' : 'Set your Definite Major Purpose to begin.');
+
+    // Awakening goal
+    const awGoalEl = document.getElementById('awakening-goal-text');
+    if (awGoalEl) awGoalEl.textContent = profile.awakeningGoal || '—';
+
+    // Inventory lock
+    const lockScreen = document.getElementById('inventory-lock-screen');
+    const invContent = document.getElementById('inventory-content');
+    if (lockScreen) lockScreen.style.display = awakened ? 'none'  : 'block';
+    if (invContent) invContent.style.display  = awakened ? 'block' : 'none';
+
+    // Starting rank floor
     if (profile.startingRank) {
       const rankMap = {
         'E-Rank': 0, 'D-Rank': 10, 'C-Rank': 25,
@@ -4255,15 +4440,9 @@
       }
     }
 
-    // Build daily quests from profile
+    // Daily quests from profile
     if (profile.dailyQuests && profile.dailyQuests.length > 0) {
       buildQuestsFromProfile(profile.dailyQuests);
-    }
-
-    // Awakening goal milestone
-    const milestones = document.querySelectorAll('.milestone-sub');
-    if (milestones[0] && profile.awakeningGoal) {
-      milestones[0].textContent = profile.awakeningGoal;
     }
 
     // Splash button

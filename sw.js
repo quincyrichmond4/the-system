@@ -49,7 +49,7 @@ self.addEventListener('message', e => {
     if (!questsDone && delay5pm > 0) {
       setTimeout(() => {
         self.registration.showNotification('[ The System ]', {
-          body: 'Hunter, your daily quests await. Do not break the chain.',
+          body: '[Hunter, your daily quests await.] [Do not break the chain.]',
           icon: '/the-system/icon-192.png',
           badge: '/the-system/icon-192.png',
           tag: 'reminder-5pm',
@@ -61,7 +61,7 @@ self.addEventListener('message', e => {
     if (!questsDone && delay11pm > 0) {
       setTimeout(() => {
         self.registration.showNotification('⚠ PENALTY WARNING', {
-          body: 'Less than 1 hour remaining. Complete your daily quests or face the penalty.',
+          body: '[Less than 1 hour remaining.] [Complete your daily quests or face the penalty.]',
           icon: '/the-system/icon-192.png',
           badge: '/the-system/icon-192.png',
           tag: 'warning-11pm',
@@ -74,7 +74,7 @@ self.addEventListener('message', e => {
     if (!dungeonDone && delayTue > 0) {
       setTimeout(() => {
         self.registration.showNotification('⚔ DUNGEON CLOSING SOON', {
-          body: 'The Marketplace closes in 30 minutes. Log your QIs before the deadline.',
+          body: '[The Marketplace closes in 30 minutes.] [Log your QIs before the deadline.]',
           icon: '/the-system/icon-192.png',
           badge: '/the-system/icon-192.png',
           tag: 'dungeon-warning',
