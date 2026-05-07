@@ -1620,6 +1620,10 @@
   <div class="glitch-bar"></div>
   <div class="glitch-line1" id="glitch-line1">[ SYSTEM ]</div>
   <div class="glitch-title" id="glitch-title">—</div>
+  <div id="glitch-btns" style="display:none;gap:16px;margin-top:32px;justify-content:center;flex-wrap:wrap;">
+    <button class="update-btn-yes" onclick="glitchAccept()" style="padding:12px 36px;font-size:12px;letter-spacing:3px;">YES</button>
+    <button class="update-btn-no"  onclick="glitchDecline()" style="padding:12px 36px;font-size:12px;letter-spacing:3px;">NO</button>
+  </div>
 </div>
 
 <!-- BLACK TRANSITION OVERLAY -->
@@ -2314,16 +2318,17 @@ without exception.]</div>
         splash.style.display = 'none';
 
         if (window._needsSetup) {
-          // New player — black drops, glitch fires on top
+          // New player — qualification glitch with Yes/No buttons
           showGlitchScreen(
             '[ SYSTEM ]',
             'You have acquired the qualifications\nto be a Player.\n\nWill you accept?',
-            3800,
+            0,
             () => {
               blackOverlay.classList.remove('show');
               document.getElementById('setup-overlay').classList.add('show');
               showSetupScreen(1);
-            }
+            },
+            true // show Yes/No buttons
           );
         } else {
           // Returning player — brief glitch then remove black
@@ -4219,16 +4224,25 @@ without exception.]</div>
   }
 
   // ── GLITCH TRANSITION ─────────────────────────────────
-  function showGlitchScreen(line1, title, duration, callback) {
-    const screen   = document.getElementById('glitch-screen');
-    const l1El     = document.getElementById('glitch-line1');
-    const titleEl  = document.getElementById('glitch-title');
+  let _glitchAcceptCb  = null;
+  let _glitchDeclineCb = null;
+
+  function showGlitchScreen(line1, title, duration, callback, showButtons) {
+    const screen  = document.getElementById('glitch-screen');
+    const l1El    = document.getElementById('glitch-line1');
+    const titleEl = document.getElementById('glitch-title');
+    const btnsEl  = document.getElementById('glitch-btns');
 
     l1El.textContent    = line1;
     titleEl.textContent = title;
     l1El.style.opacity  = '0';
     titleEl.style.opacity = '0';
+    btnsEl.style.display  = 'none';
     screen.classList.add('show');
+
+    // Store callbacks for buttons
+    _glitchAcceptCb  = callback;
+    _glitchDeclineCb = null;
 
     // Fade in line 1
     setTimeout(() => {
@@ -4243,16 +4257,49 @@ without exception.]</div>
       titleEl.classList.add('glitching');
     }, 500);
 
-    // Stop glitch, hold, then call callback
+    // Stop glitch
     setTimeout(() => {
       titleEl.classList.remove('glitching');
-    }, duration - 600);
+      // Show buttons if requested
+      if (showButtons) {
+        btnsEl.style.display = 'flex';
+      }
+    }, showButtons ? 1200 : duration - 600);
 
-    setTimeout(() => {
-      screen.classList.remove('show');
-      if (callback) callback();
-    }, duration);
+    // Auto-advance only if no buttons
+    if (!showButtons) {
+      setTimeout(() => {
+        screen.classList.remove('show');
+        if (callback) callback();
+      }, duration);
+    }
   }
+
+  function glitchAccept() {
+    playSound('counter');
+    const screen = document.getElementById('glitch-screen');
+    screen.classList.remove('show');
+    document.getElementById('glitch-btns').style.display = 'none';
+    if (_glitchAcceptCb) _glitchAcceptCb();
+  }
+
+  function glitchDecline() {
+    playSound('counter');
+    // System dismisses the candidate
+    document.getElementById('glitch-title').textContent = '[Qualification declined.]\n[The System will be waiting.]';
+    document.getElementById('glitch-btns').style.display = 'none';
+    setTimeout(() => {
+      document.getElementById('glitch-screen').classList.remove('show');
+      document.getElementById('black-overlay').classList.remove('show');
+      // Show splash again so they can try again
+      const splash = document.getElementById('splash');
+      splash.style.display = 'flex';
+      splash.classList.remove('fade-out');
+    }, 2500);
+  }
+
+  window.glitchAccept  = glitchAccept;
+  window.glitchDecline = glitchDecline;
 
   // ── SETUP WIZARD ──────────────────────────────────────
   let setupScreen = 1;
