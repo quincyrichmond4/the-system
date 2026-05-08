@@ -1698,9 +1698,24 @@
       <div class="setup-field-label">AWAKENING GOAL</div>
       <input class="setup-input" id="setup-awakening" type="text" placeholder="e.g. Reach 7-8% body fat" maxlength="80" oninput="setupValidate()"/>
     </div>
-    <!-- SCREEN 6: DAILY QUESTS -->
+    <!-- SCREEN 6: WORK CYCLE -->
     <div class="setup-screen" id="setup-s6">
-      <div class="setup-sys-message">▶ QUERY 5 OF 5</div>
+      <div class="setup-sys-message">▶ QUERY 5 OF 6</div>
+      <div class="setup-title">Confirm your work cycle.</div>
+      <div class="setup-desc">The System uses this to determine when dungeons open and close. Select the cycle that best matches your primary work rhythm.</div>
+      <div class="setup-field-label">PRIMARY WORK CYCLE</div>
+      <select class="setup-select" id="setup-cycle" onchange="setupValidate()">
+        <option value="">— Select your cycle —</option>
+        <option value="Daily">Daily — tasks reset and repeat every day</option>
+        <option value="Weekly">Weekly — goals and activity tracked week by week</option>
+        <option value="Monthly">Monthly — performance measured in monthly cycles</option>
+        <option value="Project-Based">Project-Based — work is tied to specific deliverables with variable timelines</option>
+      </select>
+    </div>
+
+    <!-- SCREEN 7: DAILY QUESTS -->
+    <div class="setup-screen" id="setup-s7">
+      <div class="setup-sys-message">▶ QUERY 6 OF 6</div>
       <div class="setup-title">Define your Daily Quests.</div>
       <div class="setup-desc">Enter up to 5 daily training tasks. At least 1 is required. These will be your daily obligations until the First Awakening is achieved.</div>
       <div class="setup-field-label">QUEST 1 — REQUIRED</div>
@@ -1714,8 +1729,8 @@
       <div class="setup-field-label">QUEST 5</div>
       <input class="setup-input" id="sq5" type="text" placeholder="Optional" maxlength="60"/>
     </div>
-    <!-- SCREEN 7: CONFIRM -->
-    <div class="setup-screen" id="setup-s7">
+    <!-- SCREEN 8: CONFIRM -->
+    <div class="setup-screen" id="setup-s8">
       <div class="setup-sys-message">▶ PROFILE SUMMARY</div>
       <div class="setup-title">Confirm your profile.</div>
       <div class="setup-desc">Review the information below. Your name cannot be changed after confirmation. All other fields can be updated later.</div>
@@ -1817,9 +1832,7 @@
 
       <div class="sys-notification">
         <div class="sys-notification-title">▶ SYSTEM NOTIFICATION</div>
-        <div class="sys-notification-body">[Daily quests have been assigned.]
-[Complete all tasks before midnight
-or face the penalty.]</div>
+        <div class="sys-notification-body">[Daily quests have been assigned. Complete all tasks before midnight or face the penalty.]</div>
       </div>
 
       <div class="sys-progress">
@@ -2167,6 +2180,17 @@ without exception.]</div>
   window._saveToCloud = async (data) => {
     try { await setDoc(ref, data, { merge: true }); }
     catch(e) { console.warn('Save failed:', e); }
+  };
+
+  window._resetCloud = async () => {
+    try {
+      await setDoc(ref, {
+        xp: 0, streak: 0, lastDate: '',
+        achievements: [], setupComplete: false,
+        playerName: '', job: '', startingRank: '',
+        awakeningGoal: '', dailyQuests: [],
+      });
+    } catch(e) { console.warn('Reset failed:', e); }
   };
 
   window._loadFromCloud = async () => {
@@ -3855,6 +3879,25 @@ without exception.]</div>
   }
 
 
+  // ── DATA RESET ────────────────────────────────────────
+  async function resetAllData() {
+    // Clear all localStorage keys belonging to the system
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('sys_')) keysToRemove.push(key);
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+
+    // Full overwrite of Firestore — not merge
+    if (window._resetCloud) await window._resetCloud();
+
+    // Reload fresh
+    window.location.reload(true);
+  }
+
+  window.resetAllData = resetAllData;
+
   // ── QUEST TOGGLE ──────────────────────────────────────
   function toggleQuest(id) {
     playSound('counter');
@@ -4163,7 +4206,7 @@ without exception.]</div>
   const PROFESSION_DATA = {
     "Skilled Trades": ["Electrician", "Plumber", "HVAC Technician", "Carpenter", "Welder", "Pipefitter", "Mason / Bricklayer", "Roofer", "Ironworker", "Sheet Metal Worker", "Painter / Decorator", "Flooring Installer", "Glazier", "Boilermaker", "Heavy Equipment Operator", "Crane Operator", "Construction Manager", "Elevator Installer", "Insulation Worker", "Tile Setter"],
     "Technology": ["Software Engineer", "Web Developer", "Mobile Developer", "Data Scientist", "Machine Learning Engineer", "Cybersecurity Analyst", "Cloud Architect", "DevOps Engineer", "Database Administrator", "IT Manager", "Product Manager", "UX / UI Designer", "Network Engineer", "AI / ML Researcher", "Blockchain Developer", "Game Developer", "Systems Analyst", "Technical Writer", "QA Engineer", "IT Support Specialist"],
-    "Business & Finance": ["Entrepreneur / Business Owner", "Financial Analyst", "Accountant / CPA", "Investment Banker", "Venture Capitalist", "Marketing Manager", "Sales Manager", "Operations Manager", "Supply Chain Manager", "Human Resources Manager", "Real Estate Agent / Broker", "Insurance Agent", "Actuary", "Management Consultant", "Business Development Manager", "Brand Strategist", "E-commerce Manager", "Franchise Owner", "Network Marketer / IBO", "Financial Planner"],
+    "Business & Finance": ["Entrepreneur / Business Owner", "Network Marketer / IBO", "Financial Analyst", "Accountant / CPA", "Investment Banker", "Venture Capitalist", "Marketing Manager", "Sales Manager", "Operations Manager", "Supply Chain Manager", "Human Resources Manager", "Real Estate Agent / Broker", "Insurance Agent", "Actuary", "Management Consultant", "Business Development Manager", "Brand Strategist", "E-commerce Manager", "Franchise Owner", "Financial Planner"],
     "Healthcare & Medicine": ["Physician / Doctor", "Surgeon", "Nurse Practitioner", "Registered Nurse", "Pharmacist", "Physical Therapist", "Occupational Therapist", "Dentist", "Dental Hygienist", "Chiropractor", "Optometrist", "Paramedic / EMT", "Radiologist", "Anesthesiologist", "Psychiatrist / Psychologist", "Medical Laboratory Scientist", "Respiratory Therapist", "Physician Assistant", "Nutritionist / Dietitian", "Veterinarian"],
     "Engineering & Architecture": ["Civil Engineer", "Mechanical Engineer", "Electrical Engineer", "Chemical Engineer", "Aerospace Engineer", "Industrial Engineer", "Biomedical Engineer", "Environmental Engineer", "Structural Engineer", "Petroleum Engineer", "Nuclear Engineer", "Materials Engineer", "Architect", "Urban Planner", "Interior Designer", "Landscape Architect", "Naval Architect", "Software Architect", "Systems Engineer", "Quality Engineer"],
     "Science & Research": ["Biologist", "Chemist", "Physicist", "Geologist", "Astronomer", "Neuroscientist", "Geneticist", "Microbiologist", "Ecologist", "Marine Biologist", "Epidemiologist", "Statistician", "Mathematician", "Data Analyst", "Environmental Scientist", "Biochemist", "Food Scientist", "Materials Scientist", "Climate Scientist", "Psychologist"],
@@ -4303,7 +4346,7 @@ without exception.]</div>
 
   // ── SETUP WIZARD ──────────────────────────────────────
   let setupScreen = 1;
-  const SETUP_TOTAL = 7;
+  const SETUP_TOTAL = 8;
   const setupQuests = new Set();
 
   function setupProgressPct(screen) {
@@ -4321,6 +4364,7 @@ without exception.]</div>
     else if (n === SETUP_TOTAL) nextBtn.textContent = 'CONFIRM PROFILE ▶';
     else                        nextBtn.textContent = 'NEXT ▶';
     if (n === 3) initProfessionSelector();
+    if (n === SETUP_TOTAL) buildConfirmScreen();
     setupValidate();
   }
 
@@ -4331,7 +4375,8 @@ without exception.]</div>
     if (setupScreen === 3) ok = getProfessionValue().length > 0;
     if (setupScreen === 4) ok = document.getElementById('setup-income').value !== '';
     if (setupScreen === 5) ok = document.getElementById('setup-awakening').value.trim().length > 0;
-    if (setupScreen === 6) ok = document.getElementById('sq1').value.trim().length > 0;
+    if (setupScreen === 6) ok = document.getElementById('setup-cycle').value !== '';
+    if (setupScreen === 7) ok = document.getElementById('sq1').value.trim().length > 0;
     btn.disabled = !ok;
   }
 
@@ -4363,6 +4408,7 @@ without exception.]</div>
       { key: 'PROFESSION',     val: getProfessionValue() },
       { key: 'STARTING RANK',  val: document.getElementById('setup-income').value },
       { key: 'AWAKENING GOAL', val: document.getElementById('setup-awakening').value.trim() },
+      { key: 'WORK CYCLE',     val: document.getElementById('setup-cycle').value },
       { key: 'DAILY QUESTS',   val: quests.join(', ') },
     ];
     document.getElementById('setup-confirm-rows').innerHTML = rows.map(r =>
@@ -4400,6 +4446,7 @@ without exception.]</div>
       job:           getProfessionValue(),
       startingRank:  document.getElementById('setup-income').value,
       awakeningGoal: document.getElementById('setup-awakening').value.trim(),
+      workCycle:     document.getElementById('setup-cycle').value,
       dailyQuests:   getSetupQuests(),
       setupComplete: true,
       xp: 0, streak: 0, lastDate: '',
