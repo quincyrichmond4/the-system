@@ -4392,10 +4392,11 @@ without exception.]</div>
   }
 
   async function finalizeProfile() {
-    playSystemSound(); // notification sound on profile confirm
+    playSystemSound(); // notification sound fires immediately on confirm
+
     const profile = {
       playerName:    document.getElementById('setup-name').value.trim(),
-      nameLocked:    true,   // name is permanent
+      nameLocked:    true,
       job:           getProfessionValue(),
       startingRank:  document.getElementById('setup-income').value,
       awakeningGoal: document.getElementById('setup-awakening').value.trim(),
@@ -4404,35 +4405,32 @@ without exception.]</div>
       xp: 0, streak: 0, lastDate: '',
     };
 
-    // Save to Firebase
-    await window._saveToCloud(profile);
+    // Save to Firebase in background — don't await so glitch fires immediately
+    window._saveToCloud(profile);
 
     // Apply profile to app
     applyProfile(profile);
 
-    // Fade setup away then show glitch screens
+    // Fade setup away then glitch — no delay
     const blackOverlay = document.getElementById('black-overlay');
     blackOverlay.classList.add('show');
     setTimeout(() => {
       document.getElementById('setup-overlay').classList.remove('show');
       blackOverlay.classList.remove('show');
-
-      // Glitch screen → profile complete + first quest notification
       showGlitchScreen(
         '[ SYSTEM ]',
         "[You've become a Player.]\n[Daily Quest: Strength Training\nhas arrived.]",
         3800,
         () => {
-          // Show system notification popup after glitch
           showAlert({
             label:    '[ SYSTEM NOTIFICATION ]',
             icon:     '📋',
             title:    "[Daily Quest: Strength Training\nhas arrived.]",
-            subtitle: 'Complete your daily training quests to earn EXP and prove your discipline to the System.'
+            subtitle: '[Complete your daily training quests\nto earn EXP and prove your discipline\nto the System.]'
           });
         }
       );
-    }, 400);
+    }, 300);
   }
 
   function applyProfile(profile) {
