@@ -1780,7 +1780,7 @@
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-title">System</div>
-  <button class="splash-btn" id="splash-btn" onclick="startSystem()">▶ PRESS START</button>
+  <button class="splash-btn" id="splash-btn" onclick="startSystem()" disabled style="opacity:0.4">▶ LOADING...</button>
 </div>
 
 <!-- DETAIL POPUP -->
@@ -4568,11 +4568,18 @@ without exception.]</div>
   }
 
   async function checkProfileAndLaunch() {
+    // Disable splash button while checking — prevent pressing before data loads
+    const splashBtn = document.getElementById('splash-btn');
+    if (splashBtn) {
+      splashBtn.disabled = true;
+      splashBtn.textContent = '▶ LOADING...';
+    }
+
     const data = await loadFromCloud();
+
     if (data && data.setupComplete) {
       // Profile exists — apply it and show normal app
       applyProfile(data);
-      // Sync saved data
       if ((data.xp || 0) > 0) {
         totalXP = data.xp;
         localStorage.setItem('sys_xp', totalXP);
@@ -4583,12 +4590,20 @@ without exception.]</div>
       }
       updateXPBar(); updateRankUI(); updateStats();
       buildAchievements(false); buildChart(); updateDungeonUI(); refreshDisplays();
-      // Mark splash button as Continue
-      const splashBtn = document.getElementById('splash-btn');
-      if (splashBtn) splashBtn.textContent = '▶ CONTINUE?';
+      window._needsSetup = false;
+      if (splashBtn) {
+        splashBtn.disabled = false;
+        splashBtn.style.opacity = '1';
+        splashBtn.textContent = '▶ CONTINUE?';
+      }
     } else {
-      // No profile — show setup after splash dismissed
+      // No profile found — new player flow
       window._needsSetup = true;
+      if (splashBtn) {
+        splashBtn.disabled = false;
+        splashBtn.style.opacity = '1';
+        splashBtn.textContent = '▶ PRESS START';
+      }
     }
   }
 
