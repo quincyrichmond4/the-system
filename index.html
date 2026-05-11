@@ -1744,6 +1744,39 @@
   </div>
 </div>
 
+<!-- FACTORY RESET CONFIRMATION -->
+<div id="reset-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:950;display:none;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:rgba(4,11,20,0.99);border:1px solid rgba(204,34,51,0.5);width:100%;max-width:320px;box-shadow:0 0 40px rgba(204,34,51,0.2);animation:alert-window-in 0.25s ease;">
+    <div style="background:rgba(204,34,51,0.1);border-bottom:1px solid rgba(204,34,51,0.3);padding:10px 14px;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--danger);letter-spacing:3px;">[ SYSTEM — FACTORY RESET ]</div>
+    </div>
+    <div style="padding:20px 16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:10px;">⚠️</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.8;">[All player data will be permanently deleted.]</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:20px;line-height:1.6;">[XP, quests, profile, progress — everything. This cannot be undone. Are you certain?]</div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="executeFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;background:var(--danger);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">YES</button>
+        <button onclick="cancelFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT QUESTS MODAL -->
+<div id="edit-quests-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:950;display:none;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:rgba(4,11,20,0.99);border:1px solid var(--border2);width:100%;max-width:360px;max-height:85vh;overflow-y:auto;box-shadow:0 0 40px var(--blue-glow);animation:alert-window-in 0.25s ease;">
+    <div style="background:rgba(30,111,255,0.12);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:3px;">[ EDIT DAILY QUESTS ]</div>
+      <button onclick="closeEditQuests()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:2px 8px;cursor:pointer;">✕</button>
+    </div>
+    <div style="padding:16px;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:14px;line-height:1.6;">[Edit your daily quests below. Changes take effect immediately. Up to 5 quests.]</div>
+      <div id="edit-quest-fields"></div>
+      <button onclick="saveEditedQuests()" style="width:100%;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--cyan);border:none;padding:12px;cursor:pointer;letter-spacing:2px;">[ SAVE QUESTS ]</button>
+    </div>
+  </div>
+</div>
+
 <!-- AWAKENING CONFIRMATION POPUP -->
 <div id="awakening-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:950;display:none;align-items:center;justify-content:center;padding:20px;">
   <div style="background:rgba(4,11,20,0.99);border:1px solid var(--border2);width:100%;max-width:320px;box-shadow:0 0 40px var(--blue-glow);animation:alert-window-in 0.25s ease;">
@@ -1866,43 +1899,11 @@
         </div>
       </div>
 
-      <!-- WEEKLY DUNGEON -->
-      <div class="dungeon-card" id="dungeon-card">
-        <div class="dungeon-label">⚔ WEEKLY DUNGEON</div>
-        <div class="dungeon-title">The Marketplace</div>
-        <div class="dungeon-desc">Enter the arena, Hunter. Conduct your qualifying interviews and expand your network. The dungeon closes Tuesday at 7:30 PM.</div>
-        <div class="dungeon-meta">
-          <div class="dungeon-meta-item">
-            <div class="dungeon-meta-key">OBJECTIVE</div>
-            <div class="dungeon-meta-val">2 QIs</div>
-          </div>
-          <div class="dungeon-meta-item">
-            <div class="dungeon-meta-key">PROGRESS</div>
-            <div class="dungeon-meta-val" id="dungeon-progress">0 / 2</div>
-          </div>
-          <div class="dungeon-meta-item">
-            <div class="dungeon-meta-key">REWARD</div>
-            <div class="dungeon-meta-val" id="dungeon-xp-reward">— XP</div>
-          </div>
-          <div class="dungeon-meta-item">
-            <div class="dungeon-meta-key">DEADLINE</div>
-            <div class="dungeon-meta-val" id="dungeon-deadline">TUE 7:30PM</div>
-          </div>
-        </div>
-        <div class="dungeon-progress-track">
-          <div class="dungeon-progress-fill" id="dungeon-bar" style="width:0%"></div>
-        </div>
-        <div id="dungeon-complete-label"></div>
-        <div style="display:flex;gap:8px;margin-top:12px;">
-          <button onclick="logQI(-1)" style="flex:1;padding:8px;background:rgba(204,34,51,0.1);border:1px solid rgba(204,34,51,0.3);color:#e06070;font-family:'Share Tech Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;">− QI</button>
-          <button onclick="logQI(1)"  style="flex:1;padding:8px;background:rgba(30,111,255,0.1);border:1px solid var(--border2);color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:10px;cursor:pointer;letter-spacing:1px;">+ LOG QI</button>
-        </div>
-      </div>
-
       <div class="quest-section">
         <div class="quest-section-header">
           <div class="quest-section-icon">⚔️</div>
           <div class="quest-section-title">Daily Training</div>
+          <button onclick="openEditQuests()" style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">✎ EDIT</button>
         </div>
         <div class="quest-item" id="q1" onclick="toggleQuest('q1')">
           <div class="quest-check"><div class="quest-check-inner"></div></div>
@@ -2166,6 +2167,25 @@ without exception.]</div>
     </div>
   </div>
 
+  <!-- SETTINGS -->
+  <div class="sys-panel" id="panel-settings">
+    <div class="panel-header">
+      <div class="panel-header-label">[ SYSTEM SETTINGS ]</div>
+      <div class="panel-header-title">Settings</div>
+    </div>
+    <div class="panel-body">
+
+      <div class="sys-section">Account</div>
+
+      <div style="background:rgba(6,18,38,0.6);border:1px solid var(--border);padding:14px;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Factory Reset</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.6;margin-bottom:12px;font-weight:300;">[Clears all player data, progress, and profile. The System will restart completely. This cannot be undone.]</div>
+        <button onclick="promptFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--danger);background:rgba(204,34,51,0.08);border:1px solid rgba(204,34,51,0.4);padding:10px 16px;cursor:pointer;letter-spacing:2px;width:100%;-webkit-tap-highlight-color:transparent;">[ FACTORY RESET ]</button>
+      </div>
+
+    </div>
+  </div>
+
 </div><!-- end sys-content -->
 
 <nav class="sys-nav">
@@ -2180,6 +2200,9 @@ without exception.]</div>
   </button>
   <button class="sys-nav-btn" onclick="switchPanel('inventory', this)">
     <div class="sys-nav-icon">🎒</div><span>ITEMS</span>
+  </button>
+  <button class="sys-nav-btn" onclick="switchPanel('settings', this)">
+    <div class="sys-nav-icon">⚙️</div><span>SETTINGS</span>
   </button>
 </nav>
 
@@ -3996,15 +4019,21 @@ without exception.]</div>
   }
 
   // ── PROGRESS ──────────────────────────────────────────
+  function getTotalQuests() {
+    return window.TOTAL_QUESTS_DYNAMIC || TOTAL_QUESTS;
+  }
+
   function updateProgress() {
-    const count = completed.size, pct = Math.round((count/TOTAL_QUESTS)*100);
-    document.getElementById('quest-count').textContent = count + '/' + TOTAL_QUESTS;
+    const total = getTotalQuests();
+    const count = completed.size, pct = Math.round((count/total)*100);
+    document.getElementById('quest-count').textContent = count + '/' + total;
     document.getElementById('quest-bar').style.width   = pct + '%';
     document.getElementById('quest-pct').textContent   = pct + '%';
   }
 
   function checkComplete() {
-    if (completed.size === TOTAL_QUESTS && !alreadyCelebrated) {
+    const total = getTotalQuests();
+    if (completed.size === total && !alreadyCelebrated) {
       alreadyCelebrated = true;
       localStorage.setItem('sys_celebrated_' + todayKey, '1');
       streak++; lastDate = todayKey;
@@ -4367,6 +4396,107 @@ without exception.]</div>
 
   window.glitchAccept  = glitchAccept;
   window.glitchDecline = glitchDecline;
+
+  // ── FACTORY RESET ─────────────────────────────────────
+  function promptFactoryReset() {
+    playSound('counter');
+    document.getElementById('reset-overlay').style.display = 'flex';
+  }
+
+  function cancelFactoryReset() {
+    playSound('counter');
+    document.getElementById('reset-overlay').style.display = 'none';
+  }
+
+  async function executeFactoryReset() {
+    playSound('counter');
+    document.getElementById('reset-overlay').style.display = 'none';
+
+    // Clear all localStorage sys_ keys
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('sys_')) keysToRemove.push(key);
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+
+    // Full overwrite of Firestore
+    if (window._resetCloud) await window._resetCloud();
+
+    // Glitch screen then reload
+    showGlitchScreen(
+      '[ SYSTEM ]',
+      '[All data has been erased.]\n[The System resets.]',
+      2500,
+      () => window.location.reload(true)
+    );
+  }
+
+  window.promptFactoryReset  = promptFactoryReset;
+  window.cancelFactoryReset  = cancelFactoryReset;
+  window.executeFactoryReset = executeFactoryReset;
+
+  // ── EDIT QUESTS ───────────────────────────────────────
+  function openEditQuests() {
+    playSound('counter');
+    const profile = window._activeProfile || {};
+    const currentQuests = profile.dailyQuests || [];
+    const fields = document.getElementById('edit-quest-fields');
+    fields.innerHTML = '';
+
+    for (let i = 0; i < 5; i++) {
+      const label = document.createElement('div');
+      label.style.cssText = 'font-family:Share Tech Mono,monospace;font-size:9px;color:var(--text-dim);letter-spacing:2px;margin-bottom:5px;';
+      label.textContent = i === 0 ? 'QUEST 1 — REQUIRED' : 'QUEST ' + (i + 1);
+
+      const input = document.createElement('input');
+      input.id = 'eq' + (i + 1);
+      input.type = 'text';
+      input.maxLength = 60;
+      input.placeholder = i === 0 ? 'Required' : 'Optional';
+      input.value = currentQuests[i] || '';
+      input.className = 'setup-input';
+      input.style.marginBottom = '12px';
+
+      fields.appendChild(label);
+      fields.appendChild(input);
+    }
+
+    document.getElementById('edit-quests-overlay').style.display = 'flex';
+  }
+
+  function closeEditQuests() {
+    playSound('counter');
+    document.getElementById('edit-quests-overlay').style.display = 'none';
+  }
+
+  async function saveEditedQuests() {
+    const q1 = document.getElementById('eq1').value.trim();
+    if (!q1) { showToast('[Quest 1 is required.]'); return; }
+
+    const quests = [1,2,3,4,5]
+      .map(i => document.getElementById('eq' + i).value.trim())
+      .filter(v => v.length > 0);
+
+    playSound('counter');
+    document.getElementById('edit-quests-overlay').style.display = 'none';
+
+    // Update profile
+    const profile = window._activeProfile || {};
+    profile.dailyQuests = quests;
+    window._activeProfile = profile;
+
+    // Save to Firebase
+    if (window._saveToCloud) window._saveToCloud({ dailyQuests: quests });
+
+    // Rebuild quest UI
+    buildQuestsFromProfile(quests);
+    showToast('[Daily quests updated.]');
+  }
+
+  window.openEditQuests   = openEditQuests;
+  window.closeEditQuests  = closeEditQuests;
+  window.saveEditedQuests = saveEditedQuests;
 
   // ── FIRST AWAKENING ───────────────────────────────────
   function promptFirstAwakening() {
