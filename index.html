@@ -1744,6 +1744,26 @@
   </div>
 </div>
 
+<!-- AWAKENING CONFIRMATION POPUP -->
+<div id="awakening-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:950;display:none;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:rgba(4,11,20,0.99);border:1px solid var(--border2);width:100%;max-width:320px;box-shadow:0 0 40px var(--blue-glow);animation:alert-window-in 0.25s ease;">
+    <div style="background:rgba(30,111,255,0.12);border-bottom:1px solid var(--border);padding:10px 14px;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:3px;">[ SYSTEM — MILESTONE VERIFICATION ]</div>
+    </div>
+    <div style="padding:20px 16px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:10px;">⚡</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[First Awakening milestone detected.]</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:6px;line-height:1.6;">Have you achieved your goal?</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:1px;margin-bottom:20px;padding:8px;border:1px solid var(--border);background:var(--blue-dim);" id="awakening-goal-confirm">—</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--danger);letter-spacing:1px;margin-bottom:20px;line-height:1.6;">[This cannot be undone. The System accepts your word.]</div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="confirmFirstAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--cyan);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">YES</button>
+        <button onclick="cancelFirstAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SYSTEM ALERT POPUP -->
 <div id="sys-alert-overlay">
   <div class="sys-alert-window">
@@ -2045,6 +2065,10 @@ without exception.]</div>
         <div class="milestone-name">First Awakening</div>
         <div class="milestone-sub" id="awakening-goal-text">—</div>
         <div class="milestone-effect">Unlocks: Player status · Job assignment · Stats · Dungeons</div>
+        <div id="awakening-btn-wrap" style="margin-top:10px;display:none">
+          <button onclick="promptFirstAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">[ MARK AS ACHIEVED ]</button>
+        </div>
+        <div id="awakening-complete-label" style="display:none;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;">✓ FIRST AWAKENING COMPLETE</div>
       </div>
 
       <div class="milestone" id="milestone-dqm">
@@ -4344,6 +4368,76 @@ without exception.]</div>
   window.glitchAccept  = glitchAccept;
   window.glitchDecline = glitchDecline;
 
+  // ── FIRST AWAKENING ───────────────────────────────────
+  function promptFirstAwakening() {
+    playSound('counter');
+    const goal = document.getElementById('awakening-goal-text')?.textContent || '—';
+    document.getElementById('awakening-goal-confirm').textContent = goal;
+    document.getElementById('awakening-overlay').style.display = 'flex';
+  }
+
+  function cancelFirstAwakening() {
+    playSound('counter');
+    document.getElementById('awakening-overlay').style.display = 'none';
+  }
+
+  async function confirmFirstAwakening() {
+    playSound('counter');
+    document.getElementById('awakening-overlay').style.display = 'none';
+
+    // Mark awakened in Firebase
+    const profile = window._activeProfile || {};
+    profile.awakened = true;
+    profile.primaryTitle = 'The Awakened';
+    window._activeProfile = profile;
+    if (window._saveToCloud) window._saveToCloud({ awakened: true, primaryTitle: 'The Awakened' });
+
+    // Update UI immediately
+    document.getElementById('awakening-btn-wrap').style.display = 'none';
+    document.getElementById('awakening-complete-label').style.display = 'block';
+    document.getElementById('milestone-awakening').style.borderColor = 'rgba(26,154,90,0.5)';
+
+    // Unlock inventory
+    const lockScreen = document.getElementById('inventory-lock-screen');
+    const invContent = document.getElementById('inventory-content');
+    if (lockScreen) lockScreen.style.display = 'none';
+    if (invContent) invContent.style.display = 'block';
+
+    // Update title in status
+    const titleEl = document.getElementById('status-title');
+    if (titleEl) {
+      titleEl.textContent = 'The Awakened';
+      titleEl.style.color = 'var(--gold)';
+    }
+
+    // Apply job assignment now that player is awakened
+    applyJobsToStatus(profile, getLevelFromXP(totalXP));
+
+    // Play notification sound then fire glitch sequence
+    playSystemSound();
+    setTimeout(() => {
+      showGlitchScreen(
+        '[ SYSTEM ]',
+        '[First Awakening complete.]\n[You are now a Player.]\n[The System recognizes you.]',
+        4000,
+        () => {
+          // Notification popup after glitch
+          showAlert({
+            label:    '[ SYSTEM NOTIFICATION ]',
+            icon:     '⚡',
+            title:    '[You are now a Player.]',
+            subtitle: '[Job assigned. Stats unlocked.\nThe System is now fully active.]'
+          });
+          showToast('FIRST AWAKENING COMPLETE');
+        }
+      );
+    }, 300);
+  }
+
+  window.promptFirstAwakening  = promptFirstAwakening;
+  window.cancelFirstAwakening  = cancelFirstAwakening;
+  window.confirmFirstAwakening = confirmFirstAwakening;
+
   // ── SETUP WIZARD ──────────────────────────────────────
   let setupScreen = 1;
   const SETUP_TOTAL = 8;
@@ -4510,6 +4604,14 @@ without exception.]</div>
     // Awakening goal
     const awGoalEl = document.getElementById('awakening-goal-text');
     if (awGoalEl) awGoalEl.textContent = profile.awakeningGoal || '—';
+
+    // Show/hide awakening button and complete label
+    const btnWrap   = document.getElementById('awakening-btn-wrap');
+    const doneLabel = document.getElementById('awakening-complete-label');
+    const awMilestone = document.getElementById('milestone-awakening');
+    if (btnWrap)   btnWrap.style.display   = awakened ? 'none'  : (profile.awakeningGoal ? 'block' : 'none');
+    if (doneLabel) doneLabel.style.display = awakened ? 'block' : 'none';
+    if (awMilestone && awakened) awMilestone.style.borderColor = 'rgba(26,154,90,0.5)';
 
     // Inventory lock
     const lockScreen = document.getElementById('inventory-lock-screen');
