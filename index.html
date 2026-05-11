@@ -2376,20 +2376,18 @@ without exception.]</div>
   // ── SPLASH ────────────────────────────────────────────
   function startSystem() {
     try {
-      playSystemSound(); // notification sound on press start
+      playSystemSound(); // notification sound fires on press start
       startAmbient();
-      const splash = document.getElementById('splash');
+      const splash       = document.getElementById('splash');
       const blackOverlay = document.getElementById('black-overlay');
 
-      // Fade splash, drop black overlay immediately to hide UI
       splash.classList.add('fade-out');
-      blackOverlay.classList.add('show');
 
-      setTimeout(() => {
-        splash.style.display = 'none';
-
-        if (window._needsSetup) {
-          // New player — qualification glitch with Yes/No buttons
+      if (window._needsSetup) {
+        // New player — drop black then show qualification glitch
+        blackOverlay.classList.add('show');
+        setTimeout(() => {
+          splash.style.display = 'none';
           showGlitchScreen(
             '[ SYSTEM ]',
             'You have acquired the qualifications\nto be a Player.\n\nWill you accept?',
@@ -2399,20 +2397,15 @@ without exception.]</div>
               document.getElementById('setup-overlay').classList.add('show');
               showSetupScreen(1);
             },
-            true // show Yes/No buttons
+            true
           );
-        } else {
-          // Returning player — brief glitch then remove black
-          showGlitchScreen(
-            '[ SYSTEM ]',
-            '[Welcome back, Player.]\n[The System is online.]',
-            2200,
-            () => {
-              blackOverlay.classList.remove('show');
-            }
-          );
-        }
-      }, 600);
+        }, 600);
+      } else {
+        // Returning player — fade splash, go straight into the app
+        setTimeout(() => {
+          splash.style.display = 'none';
+        }, 600);
+      }
     } catch(e) {
       document.getElementById('splash').style.display = 'none';
       document.getElementById('black-overlay').classList.remove('show');
