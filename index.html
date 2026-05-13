@@ -58,13 +58,12 @@
       position: fixed;
       inset: 0;
       background: #000;
-      z-index: 1000;
+      z-index: 1200;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 0;
-      cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -1831,7 +1830,7 @@
 </div>
 
 <!-- SPLASH SCREEN -->
-<div id="splash">
+<div id="splash" style="display:flex">
   <div class="splash-title">System</div>
   <button class="splash-btn" id="splash-btn" onclick="startSystem()" disabled style="opacity:0.4">▶ LOADING...</button>
 </div>
@@ -2256,10 +2255,15 @@ without exception.]</div>
 <script>
   // ── GLOBAL ERROR CATCH ────────────────────────────────
   window.onerror = function(msg, src, line, col, err) {
-    // If something crashes, still let the splash dismiss
     console.error('JS Error:', msg, 'line:', line);
-    const splash = document.getElementById('splash');
-    if (splash) splash.style.display = 'none';
+    // Only hide splash as last resort after 5 seconds
+    // so it doesn't vanish on non-critical errors
+    setTimeout(() => {
+      const splash = document.getElementById('splash');
+      if (splash && splash.style.display !== 'none') {
+        splash.style.display = 'none';
+      }
+    }, 5000);
     return false;
   };
 
