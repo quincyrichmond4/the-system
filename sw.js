@@ -1,5 +1,5 @@
-const CACHE = 'system-v6';
-const VERSION = '1.0.6';
+const CACHE = 'system-v7';
+const VERSION = '1.0.7';
 const ASSETS = [
   '/the-system/',
   '/the-system/index.html',
