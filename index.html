@@ -31,6 +31,19 @@
       --gold-dim:    rgba(200, 168, 75, 0.15);
       --danger:      #cc2233;
       --success:     #1a9a5a;
+      --purple:      #9b4dff;
+      --purple-glow: rgba(155, 77, 255, 0.3);
+    }
+
+    /* SECOND AWAKENING THEME SHIFT (activates when body has .awakened class) */
+    body.awakened {
+      --blue:      #9b4dff;
+      --cyan:      #c478ff;
+      --blue-dim:  rgba(155, 77, 255, 0.08);
+      --blue-glow: rgba(155, 77, 255, 0.3);
+      --cyan-dim:  rgba(196, 120, 255, 0.1);
+      --border:    rgba(155, 77, 255, 0.3);
+      --border2:   rgba(155, 77, 255, 0.6);
     }
 
     html, body {
@@ -48,12 +61,10 @@
       margin: 0 auto;
       position: relative;
       background: var(--bg);
+      transition: --blue 0.6s, --cyan 0.6s;
     }
 
-    /* ── ANIMATED BACKGROUND ────────────────────────────── */
-    /* (removed) */
-
-    /* ── SPLASH SCREEN ─────────────────────────────────── */
+    /* ── SPLASH ───────────────────────────────────────── */
     #splash {
       position: fixed;
       inset: 0;
@@ -66,24 +77,8 @@
       gap: 0;
       -webkit-tap-highlight-color: transparent;
     }
-
-    #splash.fade-out {
-      animation: splash-out 0.6s ease forwards;
-    }
-
-    @keyframes splash-out {
-      to { opacity: 0; pointer-events: none; visibility: hidden; }
-    }
-
-    .splash-logo {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: rgba(30,111,255,0.6);
-      letter-spacing: 6px;
-      margin-bottom: 40px;
-      opacity: 0;
-      animation: splash-fade-in 0.3s ease 0.1s forwards;
-    }
+    #splash.fade-out { animation: splash-out 0.6s ease forwards; }
+    @keyframes splash-out { to { opacity: 0; pointer-events: none; visibility: hidden; } }
 
     .splash-title {
       font-size: 32px;
@@ -95,17 +90,6 @@
       animation: splash-fade-in 0.3s ease 0.2s forwards;
       text-shadow: 0 0 30px rgba(30,111,255,0.5);
     }
-
-    .splash-subtitle {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-      letter-spacing: 3px;
-      margin-top: 8px;
-      opacity: 0;
-      animation: splash-fade-in 0.3s ease 0.3s forwards;
-    }
-
     .splash-btn {
       position: absolute;
       bottom: 80px;
@@ -123,104 +107,17 @@
       box-shadow: 0 0 16px var(--blue-glow);
       transition: transform 0.1s, border-color 0.2s, color 0.2s;
     }
-
     .splash-btn:active {
       transform: scale(0.96);
       border-color: var(--cyan);
       color: var(--cyan);
     }
-
     @keyframes splash-fade-in {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ── SYSTEM NOTIFICATION POPUP ──────────────────────── */
-    #sys-popup-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 900;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    #sys-popup-overlay.show { display: flex; }
-
-    .sys-popup {
-      background: rgba(4,11,20,0.98);
-      border: 1px solid var(--border2);
-      width: 100%;
-      max-width: 360px;
-      box-shadow: 0 0 40px var(--blue-glow);
-      animation: popup-in 0.3s ease;
-    }
-
-    @keyframes popup-in {
-      from { opacity: 0; transform: scale(0.95) translateY(10px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .sys-popup-header {
-      background: rgba(30,111,255,0.1);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .sys-popup-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--cyan);
-      letter-spacing: 3px;
-    }
-
-    .sys-popup-close {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--text-dim);
-      cursor: pointer;
-      padding: 2px 6px;
-      border: 1px solid var(--border);
-      background: transparent;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .sys-popup-body { padding: 16px; }
-
-    .sys-popup-title {
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--text-bright);
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-
-    .sys-popup-desc {
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.6;
-      margin-bottom: 12px;
-      font-weight: 300;
-    }
-
-    .sys-popup-stat {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(30,111,255,0.08);
-      font-size: 12px;
-    }
-
-    .sys-popup-stat:last-child { border-bottom: none; }
-    .sys-popup-stat-key { color: var(--text-dim); font-size: 10px; letter-spacing: 1px; }
-    .sys-popup-stat-val { color: var(--text-bright); font-weight: 700; }
-
-    /* ── HEADER ─────────────────────────────────────────── */
+    /* ── HEADER ───────────────────────────────────────── */
     .sys-header {
       position: relative;
       z-index: 10;
@@ -229,1386 +126,284 @@
       background: linear-gradient(180deg, rgba(6,18,38,0.98) 0%, rgba(2,5,9,0.95) 100%);
       flex-shrink: 0;
     }
-
-    .sys-header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .sys-title-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--blue);
-      letter-spacing: 4px;
-      margin-bottom: 2px;
-    }
-
-    .sys-title-name {
-      font-size: 11px;
-      font-weight: 900;
-      color: var(--text-bright);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
+    .sys-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .sys-title-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--blue); letter-spacing: 4px; margin-bottom: 2px; }
+    .sys-title-name { font-size: 11px; font-weight: 900; color: var(--text-bright); letter-spacing: 3px; text-transform: uppercase; }
     .sys-level-block { text-align: right; }
+    .sys-level-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; }
+    .sys-level-val { font-family: 'Share Tech Mono', monospace; font-size: 22px; color: var(--cyan); font-weight: 700; line-height: 1; }
+    .sys-xp-row { display: flex; align-items: center; gap: 8px; }
+    .sys-xp-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 1px; flex-shrink: 0; }
+    .sys-xp-track { flex: 1; height: 4px; background: rgba(30,111,255,0.1); overflow: hidden; }
+    .sys-xp-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.6s ease; }
+    .sys-xp-val { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--cyan); flex-shrink: 0; min-width: 70px; text-align: right; }
+    .sys-datebar { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; text-align: center; padding: 4px 16px; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(30,111,255,0.1); flex-shrink: 0; position: relative; z-index: 10; }
 
-    .sys-level-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-    }
-
-    .sys-level-val {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 22px;
-      color: var(--cyan);
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .sys-xp-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .sys-xp-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-      flex-shrink: 0;
-    }
-
-    .sys-xp-track {
-      flex: 1;
-      height: 4px;
-      background: rgba(30,111,255,0.1);
-      overflow: hidden;
-    }
-
-    .sys-xp-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      transition: width 0.6s ease;
-    }
-
-    .sys-xp-val {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--cyan);
-      flex-shrink: 0;
-      min-width: 70px;
-      text-align: right;
-    }
-
-    .sys-datebar {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      text-align: center;
-      padding: 4px 16px;
-      background: rgba(0,0,0,0.3);
-      border-bottom: 1px solid rgba(30,111,255,0.1);
-      flex-shrink: 0;
-      position: relative;
-      z-index: 10;
-    }
-
-    /* ── CONTENT ─────────────────────────────────────────── */
-    .sys-content {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      position: relative;
-      z-index: 5;
-      -webkit-overflow-scrolling: touch;
-    }
-
+    /* ── CONTENT ──────────────────────────────────────── */
+    .sys-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; z-index: 5; -webkit-overflow-scrolling: touch; }
     .sys-panel { display: none; animation: panel-open 0.25s ease forwards; }
     .sys-panel.active { display: block; }
-
-    @keyframes panel-open {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .panel-header {
-      padding: 14px 16px 10px;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(6,18,38,0.6) 0%, transparent 100%);
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      backdrop-filter: blur(10px);
-    }
-
-    .panel-header-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--blue);
-      letter-spacing: 4px;
-      margin-bottom: 2px;
-    }
-
-    .panel-header-title {
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--text-bright);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
+    @keyframes panel-open { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .panel-header { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(6,18,38,0.6) 0%, transparent 100%); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(10px); }
+    .panel-header-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--blue); letter-spacing: 4px; margin-bottom: 2px; }
+    .panel-header-title { font-size: 18px; font-weight: 900; color: var(--text-bright); letter-spacing: 1px; text-transform: uppercase; }
     .panel-body { padding: 14px 16px; }
 
-    /* ── NOTIFICATION BOX ───────────────────────────────── */
-    .sys-notification {
-      border: 1px solid var(--border2);
-      background: var(--blue-dim);
-      padding: 12px 14px;
-      margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
-    }
+    /* ── NOTIFICATIONS ────────────────────────────────── */
+    .sys-notification { border: 1px solid var(--border2); background: var(--blue-dim); padding: 12px 14px; margin-bottom: 14px; position: relative; overflow: hidden; }
+    .sys-notification::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--blue); }
+    .sys-notification-title { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); letter-spacing: 3px; margin-bottom: 6px; }
+    .sys-notification-body { font-size: 13px; color: var(--text-bright); line-height: 1.5; font-weight: 300; }
+    .sys-warning { border: 1px solid rgba(204,34,51,0.5); background: rgba(204,34,51,0.05); padding: 12px 14px; margin-bottom: 14px; position: relative; overflow: hidden; }
+    .sys-warning::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--danger); }
+    .sys-warning-title { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--danger); letter-spacing: 3px; margin-bottom: 6px; }
+    .sys-warning-body { font-size: 12px; color: #e06070; line-height: 1.5; }
 
-    .sys-notification::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--blue);
-    }
-
-    .sys-notification-title {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--cyan);
-      letter-spacing: 3px;
-      margin-bottom: 6px;
-    }
-
-    .sys-notification-body {
-      font-size: 13px;
-      color: var(--text-bright);
-      line-height: 1.5;
-      font-weight: 300;
-    }
-
-    /* ── WARNING ────────────────────────────────────────── */
-    .sys-warning {
-      border: 1px solid rgba(204,34,51,0.5);
-      background: rgba(204,34,51,0.05);
-      padding: 12px 14px;
-      margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .sys-warning::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--danger);
-    }
-
-    .sys-warning-title {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--danger);
-      letter-spacing: 3px;
-      margin-bottom: 6px;
-    }
-
-    .sys-warning-body {
-      font-size: 12px;
-      color: #e06070;
-      line-height: 1.5;
-    }
-
-    /* ── PROGRESS ───────────────────────────────────────── */
-    .sys-progress {
-      background: rgba(6,18,38,0.8);
-      border: 1px solid var(--border);
-      padding: 12px 14px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .sys-progress-count {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 26px;
-      color: var(--blue);
-      font-weight: 700;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-
+    /* ── PROGRESS ─────────────────────────────────────── */
+    .sys-progress { background: rgba(6,18,38,0.8); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
+    .sys-progress-count { font-family: 'Share Tech Mono', monospace; font-size: 26px; color: var(--blue); font-weight: 700; line-height: 1; flex-shrink: 0; }
     .sys-progress-right { flex: 1; }
+    .sys-progress-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 5px; }
+    .sys-progress-track { height: 4px; background: rgba(30,111,255,0.1); overflow: hidden; }
+    .sys-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.4s ease; }
+    .sys-progress-pct { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); margin-top: 3px; }
 
-    .sys-progress-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      margin-bottom: 5px;
-    }
-
-    .sys-progress-track {
-      height: 4px;
-      background: rgba(30,111,255,0.1);
-      overflow: hidden;
-    }
-
-    .sys-progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      transition: width 0.4s ease;
-    }
-
-    .sys-progress-pct {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      margin-top: 3px;
-    }
-
-    /* ── QUEST ITEMS ────────────────────────────────────── */
+    /* ── QUESTS ───────────────────────────────────────── */
     .quest-section { margin-bottom: 16px; }
-
-    .quest-section-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border);
-    }
-
+    .quest-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
     .quest-section-icon { font-size: 14px; }
-
-    .quest-section-title {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: var(--cyan);
-      letter-spacing: 3px;
-    }
-
-    .quest-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px;
-      margin-bottom: 3px;
-      background: rgba(6,18,38,0.6);
-      border: 1px solid rgba(30,111,255,0.12);
-      cursor: pointer;
-      transition: all 0.15s;
-      position: relative;
-      overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
-    .quest-item::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0;
-      width: 2px; height: 100%;
-      background: var(--border2);
-      transition: background 0.2s;
-    }
-
+    .quest-section-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 3px; }
+    .quest-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; margin-bottom: 3px; background: rgba(6,18,38,0.6); border: 1px solid rgba(30,111,255,0.12); cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; user-select: none; }
+    .quest-item::before { content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 100%; background: var(--border2); transition: background 0.2s; }
     .quest-item:active { background: rgba(30,111,255,0.06); }
-
-    .quest-item.completed {
-      border-color: rgba(26,154,90,0.3);
-      background: rgba(26,154,90,0.04);
-    }
-
+    .quest-item.completed { border-color: rgba(26,154,90,0.3); background: rgba(26,154,90,0.04); }
     .quest-item.completed::before { background: var(--success); }
-
-    .quest-check {
-      width: 18px; height: 18px;
-      border: 1px solid var(--border2);
-      flex-shrink: 0;
-      margin-top: 1px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
-    }
-
-    .quest-item.completed .quest-check {
-      background: var(--success);
-      border-color: var(--success);
-    }
-
-    .quest-check-inner {
-      width: 10px; height: 10px;
-      background: white;
-      display: none;
-      clip-path: polygon(20% 50%, 45% 75%, 80% 20%, 90% 30%, 45% 88%, 10% 60%);
-    }
-
+    .quest-check { width: 18px; height: 18px; border: 1px solid var(--border2); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .quest-item.completed .quest-check { background: var(--success); border-color: var(--success); }
+    .quest-check-inner { width: 10px; height: 10px; background: white; display: none; clip-path: polygon(20% 50%, 45% 75%, 80% 20%, 90% 30%, 45% 88%, 10% 60%); }
     .quest-item.completed .quest-check-inner { display: block; }
+    .quest-text { flex: 1; font-size: 13px; color: var(--text); line-height: 1.4; }
+    .quest-item.completed .quest-text { color: var(--text-dim); text-decoration: line-through; }
+    .quest-xp { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
 
-    .quest-text {
-      flex: 1;
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.4;
-    }
+    /* ── DUNGEONS ─────────────────────────────────────── */
+    .dungeon-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+    .dungeon-tab { flex: 1; padding: 9px 6px; font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--text-dim); background: rgba(6,18,38,0.6); border: 1px solid var(--border); cursor: pointer; -webkit-tap-highlight-color: transparent; text-align: center; transition: all 0.15s; }
+    .dungeon-tab.active { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); }
 
-    .quest-item.completed .quest-text {
-      color: var(--text-dim);
-      text-decoration: line-through;
-    }
+    .dungeon-boss { background: rgba(6,18,38,0.7); border: 1px solid rgba(200,168,75,0.4); padding: 12px 14px; margin-bottom: 14px; position: relative; overflow: hidden; }
+    .dungeon-boss::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); }
+    .dungeon-boss-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
+    .dungeon-boss-title { font-size: 14px; font-weight: 900; color: var(--text-bright); margin-bottom: 4px; }
+    .dungeon-boss-sub { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; }
+    .dungeon-boss-track { height: 4px; background: rgba(200,168,75,0.15); overflow: hidden; margin: 6px 0 4px; }
+    .dungeon-boss-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #f0d080); transition: width 0.4s ease; }
+    .dungeon-boss-meta { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); display: flex; justify-content: space-between; }
 
-    .quest-xp {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--gold);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
+    .dungeon-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .dungeon-action-btn { padding: 12px 8px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--cyan); background: rgba(0,212,255,0.05); border: 1px solid var(--border2); cursor: pointer; -webkit-tap-highlight-color: transparent; text-align: center; line-height: 1.4; transition: all 0.15s; }
+    .dungeon-action-btn.ibo { color: var(--gold); border-color: rgba(200,168,75,0.4); background: var(--gold-dim); }
+    .dungeon-action-btn:active { transform: scale(0.97); }
 
-    /* ── DUNGEON CARD ───────────────────────────────────── */
-    .dungeon-card {
-      border: 1px solid rgba(200,168,75,0.4);
-      background: var(--gold-dim);
-      padding: 14px;
-      margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
-    }
+    .counter-section { margin-bottom: 14px; }
+    .counter-section-header { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); letter-spacing: 3px; padding-bottom: 6px; margin-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; }
+    .counter-section-total { color: var(--gold); font-size: 9px; }
+    .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .counter-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; -webkit-tap-highlight-color: transparent; }
+    .counter-label { font-size: 11px; color: var(--text); line-height: 1.2; flex: 1; }
+    .counter-controls { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .counter-btn { width: 22px; height: 22px; background: transparent; border: 1px solid var(--border2); color: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size: 12px; line-height: 1; cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; padding: 0; }
+    .counter-btn:active { background: var(--cyan-dim); }
+    .counter-val { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--text-bright); min-width: 22px; text-align: center; font-weight: 700; }
 
-    .dungeon-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--gold);
-    }
+    .dungeon-sales-log { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 10px 12px; margin-bottom: 14px; }
+    .dungeon-sales-log-header { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .dungeon-sale-entry { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-bottom: 1px solid rgba(30,111,255,0.06); }
+    .dungeon-sale-entry:last-child { border-bottom: none; }
+    .dungeon-sale-pv { color: var(--text); font-family: 'Share Tech Mono', monospace; }
+    .dungeon-sale-tier { color: var(--gold); font-family: 'Share Tech Mono', monospace; font-size: 9px; }
+    .dungeon-sale-xp { color: var(--cyan); font-family: 'Share Tech Mono', monospace; }
+    .dungeon-sales-log-empty { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); text-align: center; padding: 8px 0; }
 
-    .dungeon-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--gold);
-      letter-spacing: 3px;
-      margin-bottom: 6px;
-    }
+    /* ── STATUS STATS ─────────────────────────────────── */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .stat-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px; position: relative; overflow: hidden; }
+    .stat-card::after { content: ''; position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; background: radial-gradient(circle at bottom right, var(--blue-glow), transparent 70%); }
+    .stat-name { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 4px; }
+    .stat-val { font-size: 22px; font-weight: 900; color: var(--text-bright); line-height: 1; margin-bottom: 6px; }
+    .stat-bar { height: 2px; background: rgba(30,111,255,0.1); overflow: hidden; }
+    .stat-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.8s ease; }
 
-    .dungeon-title {
-      font-size: 15px;
-      font-weight: 900;
-      color: var(--text-bright);
-      margin-bottom: 4px;
-    }
-
-    .dungeon-desc {
-      font-size: 12px;
-      color: var(--text);
-      line-height: 1.5;
-      margin-bottom: 10px;
-      font-weight: 300;
-    }
-
-    .dungeon-meta {
-      display: flex;
-      gap: 16px;
-    }
-
-    .dungeon-meta-item { }
-
-    .dungeon-meta-key {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-      margin-bottom: 2px;
-    }
-
-    .dungeon-meta-val {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--gold);
-      font-weight: 700;
-    }
-
-    .dungeon-progress-track {
-      height: 3px;
-      background: rgba(200,168,75,0.15);
-      margin-top: 10px;
-      overflow: hidden;
-    }
-
-    .dungeon-progress-fill {
-      height: 100%;
-      background: var(--gold);
-      transition: width 0.4s ease;
-    }
-
-    .dungeon-complete {
-      display: inline-block;
-      margin-top: 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--success);
-      letter-spacing: 2px;
-    }
-
-    /* ── STATUS STATS ───────────────────────────────────── */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .stat-card {
-      background: rgba(6,18,38,0.6);
-      border: 1px solid var(--border);
-      padding: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; right: 0;
-      width: 40px; height: 40px;
-      background: radial-gradient(circle at bottom right, var(--blue-glow), transparent 70%);
-    }
-
-    .stat-name {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-    }
-
-    .stat-val {
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--text-bright);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-bar {
-      height: 2px;
-      background: rgba(30,111,255,0.1);
-      overflow: hidden;
-    }
-
-    .stat-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      transition: width 0.8s ease;
-    }
-
-    /* ── INFO CARD ──────────────────────────────────────── */
-    .sys-info-card {
-      background: rgba(6,18,38,0.6);
-      border: 1px solid var(--border);
-      margin-bottom: 10px;
-    }
-
-    .sys-info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 14px;
-      border-bottom: 1px solid rgba(30,111,255,0.08);
-      font-size: 13px;
-    }
-
+    /* ── INFO ─────────────────────────────────────────── */
+    .sys-info-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); margin-bottom: 10px; }
+    .sys-info-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; border-bottom: 1px solid rgba(30,111,255,0.08); font-size: 13px; }
     .sys-info-row:last-child { border-bottom: none; }
     .sys-info-key { color: var(--text-dim); font-size: 11px; letter-spacing: 0.5px; }
     .sys-info-val { font-weight: 700; color: var(--text-bright); }
 
-    /* ── RANK BAR ───────────────────────────────────────── */
-    .rank-block {
-      background: rgba(6,18,38,0.6);
-      border: 1px solid var(--border);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
+    /* ── RANK ─────────────────────────────────────────── */
+    .rank-block { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 10px; }
+    .rank-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .rank-name { font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: 700; color: var(--gold); }
+    .rank-next { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
+    .rank-confirm-btn { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); background: transparent; border: 1px solid rgba(200,168,75,0.4); padding: 6px 12px; cursor: pointer; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; margin-top: 8px; width: 100%; }
+    .rank-confirm-btn:active { background: var(--gold-dim); }
 
-    .rank-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
-    }
-
-    .rank-name {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--gold);
-    }
-
-    .rank-next {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-    }
-
-    .rank-track {
-      height: 5px;
-      background: rgba(30,111,255,0.1);
-      overflow: hidden;
-      margin-bottom: 4px;
-    }
-
-    .rank-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--gold), #f0d080);
-      transition: width 0.6s ease;
-    }
-
-    .rank-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-    }
-
-    /* ── ACHIEVEMENTS ───────────────────────────────────── */
-    .achievement-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    .achievement {
-      background: rgba(6,18,38,0.6);
-      border: 1px solid var(--border);
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .achievement.unlocked {
-      border-color: rgba(200,168,75,0.4);
-      background: var(--gold-dim);
-    }
-
+    /* ── ACHIEVEMENTS ─────────────────────────────────── */
+    .achievement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
+    .achievement { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 10px; display: flex; align-items: center; gap: 8px; }
+    .achievement.unlocked { border-color: rgba(200,168,75,0.4); background: var(--gold-dim); }
     .achievement.locked { opacity: 0.3; }
     .achievement-icon { font-size: 18px; flex-shrink: 0; }
     .achievement-info { flex: 1; min-width: 0; }
-
-    .achievement-name {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-bright);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
+    .achievement-name { font-size: 11px; font-weight: 700; color: var(--text-bright); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .achievement.locked .achievement-name { color: var(--text-dim); }
+    .achievement-desc { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); margin-top: 2px; }
+    .achievement-tag { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--gold); margin-top: 2px; }
 
-    .achievement-desc {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      margin-top: 2px;
-    }
-
-    .achievement-tag {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--gold);
-      margin-top: 2px;
-    }
-
-    /* ── WEEKLY CHART ───────────────────────────────────── */
-    .chart-wrap {
-      background: rgba(6,18,38,0.6);
-      border: 1px solid var(--border);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
-
-    .chart-title {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-
-    .chart-bars {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      height: 60px;
-      gap: 4px;
-      margin-bottom: 6px;
-    }
-
-    .chart-col {
-      flex: 1;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      height: 100%;
-    }
-
-    .chart-bar {
-      width: 100%;
-      min-height: 2px;
-      border-radius: 1px;
-      background: rgba(30,111,255,0.15);
-      transition: height 0.5s ease;
-    }
-
+    /* ── WEEKLY CHART ─────────────────────────────────── */
+    .chart-wrap { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 10px; }
+    .chart-title { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px; }
+    .chart-bars { display: flex; align-items: flex-end; justify-content: space-between; height: 60px; gap: 4px; margin-bottom: 6px; }
+    .chart-col { flex: 1; display: flex; align-items: flex-end; justify-content: center; height: 100%; }
+    .chart-bar { width: 100%; min-height: 2px; border-radius: 1px; background: rgba(30,111,255,0.15); transition: height 0.5s ease; }
     .chart-bar.today { background: linear-gradient(180deg, var(--cyan), var(--blue)); }
-    .chart-bar.done  { background: linear-gradient(180deg, #2aff8a, var(--success)); }
+    .chart-bar.done { background: linear-gradient(180deg, #2aff8a, var(--success)); }
+    .chart-day { font-family: 'Share Tech Mono', monospace; font-size: 7px; color: var(--text-dim); }
 
-    .chart-day {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 7px;
-      color: var(--text-dim);
-    }
+    .sys-section { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 3px; padding: 10px 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
 
-    /* ── SECTION DIVIDER ────────────────────────────────── */
-    .sys-section {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--text-dim);
-      letter-spacing: 3px;
-      padding: 10px 0 6px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 10px;
-    }
+    /* ── MISSION ──────────────────────────────────────── */
+    .mission-block { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 14px; margin-bottom: 10px; position: relative; overflow: hidden; }
+    .mission-block::after { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: radial-gradient(circle, var(--gold-dim), transparent 70%); }
+    .mission-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
+    .mission-title { font-size: 16px; font-weight: 900; color: var(--text-bright); margin-bottom: 4px; }
+    .mission-sub { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
 
-    /* ── MISSION ────────────────────────────────────────── */
-    .mission-block {
-      background: rgba(6,18,38,0.6);
-      border: 1px solid var(--border);
-      padding: 14px;
-      margin-bottom: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .mission-block::after {
-      content: '';
-      position: absolute;
-      top: -20px; right: -20px;
-      width: 80px; height: 80px;
-      background: radial-gradient(circle, var(--gold-dim), transparent 70%);
-    }
-
-    .mission-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      color: var(--gold);
-      letter-spacing: 3px;
-      margin-bottom: 6px;
-    }
-
-    .mission-title {
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--text-bright);
-      margin-bottom: 4px;
-    }
-
-    .mission-sub {
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.4;
-    }
-
-    /* ── MILESTONE ──────────────────────────────────────── */
-    .milestone {
-      padding: 10px 14px;
-      margin-bottom: 4px;
-      border: 1px solid var(--border);
-      background: rgba(6,18,38,0.4);
-      position: relative;
-    }
-
+    .milestone { padding: 10px 14px; margin-bottom: 4px; border: 1px solid var(--border); background: rgba(6,18,38,0.4); position: relative; }
     .milestone.locked { opacity: 0.4; }
     .milestone-name { font-size: 13px; font-weight: 700; color: var(--text-bright); margin-bottom: 2px; }
-    .milestone-sub  { font-size: 11px; color: var(--text-dim); margin-bottom: 3px; }
+    .milestone-sub { font-size: 11px; color: var(--text-dim); margin-bottom: 3px; }
     .milestone-effect { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); }
     .milestone-lock { position: absolute; top: 8px; right: 10px; font-size: 12px; opacity: 0.5; }
 
-    /* ── SHOP ───────────────────────────────────────────── */
-    .shop-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      margin-bottom: 4px;
-      border: 1px solid var(--border);
-      background: rgba(6,18,38,0.4);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    /* ── INVENTORY ────────────────────────────────────── */
+    .shop-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; margin-bottom: 4px; border: 1px solid var(--border); background: rgba(6,18,38,0.4); cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .shop-item:active { background: var(--blue-dim); }
     .shop-item.locked { opacity: 0.35; cursor: default; }
     .shop-name { font-size: 13px; color: var(--text); font-weight: 700; }
-    .shop-req  { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); margin-top: 2px; }
+    .shop-req { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); margin-top: 2px; }
     .shop-status { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 1px; }
-
-    /* ── SKILL ──────────────────────────────────────────── */
-    .skill-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      margin-bottom: 4px;
-      border: 1px solid var(--border);
-      background: rgba(6,18,38,0.4);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    .skill-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; margin-bottom: 4px; border: 1px solid var(--border); background: rgba(6,18,38,0.4); cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .skill-item:active { background: var(--blue-dim); }
     .skill-item.locked { opacity: 0.35; cursor: default; }
     .skill-name { font-size: 13px; color: var(--text); font-weight: 700; }
     .skill-unlocked { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--success); }
     .skill-locked-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
 
-    /* ── BOTTOM NAV ─────────────────────────────────────── */
-    .sys-nav {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      background: rgba(4,11,20,0.97);
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .sys-nav-btn {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 4px 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 1px;
-      color: var(--text-dim);
-      background: transparent;
-      border: none;
-      border-top: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-      gap: 4px;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    /* ── NAV ──────────────────────────────────────────── */
+    .sys-nav { position: relative; z-index: 10; display: flex; background: rgba(4,11,20,0.97); border-top: 1px solid var(--border); flex-shrink: 0; }
+    .sys-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 4px 8px; font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 1px; color: var(--text-dim); background: transparent; border: none; border-top: 2px solid transparent; cursor: pointer; transition: all 0.2s; gap: 4px; -webkit-tap-highlight-color: transparent; }
     .sys-nav-icon { font-size: 16px; line-height: 1; }
+    .sys-nav-btn.active { color: var(--cyan); border-top-color: var(--cyan); background: var(--cyan-dim); }
 
-    .sys-nav-btn.active {
-      color: var(--cyan);
-      border-top-color: var(--cyan);
-      background: var(--cyan-dim);
-    }
-
-    /* ── TOAST ──────────────────────────────────────────── */
-    .sys-toast {
-      position: fixed;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(6,18,38,0.96);
-      border: 1px solid var(--border2);
-      color: var(--cyan);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      padding: 8px 20px;
-      letter-spacing: 1px;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      z-index: 999;
-      white-space: nowrap;
-      box-shadow: 0 0 20px var(--blue-glow);
-    }
-
+    /* ── TOAST ────────────────────────────────────────── */
+    .sys-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: rgba(6,18,38,0.96); border: 1px solid var(--border2); color: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 8px 20px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; box-shadow: 0 0 20px var(--blue-glow); }
     .sys-toast.show { opacity: 1; }
 
-    /* ── GLITCH TRANSITION SCREEN ───────────────────────── */
-    #glitch-screen {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 1100;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 30px;
-      text-align: center;
-    }
-
+    /* ── GLITCH ───────────────────────────────────────── */
+    #glitch-screen { position: fixed; inset: 0; background: #000; z-index: 1100; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; }
     #glitch-screen.show { display: flex; }
-
-    .glitch-line1 {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: var(--cyan);
-      letter-spacing: 4px;
-      margin-bottom: 20px;
-      opacity: 0;
-    }
-
-    .glitch-title {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-bright);
-      letter-spacing: 2px;
-      line-height: 1.8;
-      opacity: 0;
-      position: relative;
-      white-space: pre-line;
-      text-align: center;
-    }
-
-    .glitch-title.glitching {
-      animation: glitch-text 0.4s steps(1) infinite;
-    }
-
+    .glitch-line1 { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 4px; margin-bottom: 20px; opacity: 0; }
+    .glitch-title { font-family: 'Share Tech Mono', monospace; font-size: 18px; font-weight: 700; color: var(--text-bright); letter-spacing: 2px; line-height: 1.8; opacity: 0; position: relative; white-space: pre-line; text-align: center; }
+    .glitch-title.glitching { animation: glitch-text 0.4s steps(1) infinite; }
     @keyframes glitch-text {
-      0%   { transform: translate(0); color: var(--text-bright); }
-      10%  { transform: translate(-3px, 1px); color: var(--cyan); clip-path: inset(20% 0 60% 0); }
-      20%  { transform: translate(3px, -1px); color: #ff2244; clip-path: inset(60% 0 10% 0); }
-      30%  { transform: translate(0); color: var(--text-bright); clip-path: none; }
-      40%  { transform: translate(-2px, 2px); color: var(--cyan); }
-      50%  { transform: translate(2px, -1px); color: #ff2244; }
-      60%  { transform: translate(0); color: var(--text-bright); }
+      0% { transform: translate(0); color: var(--text-bright); }
+      10% { transform: translate(-3px, 1px); color: var(--cyan); clip-path: inset(20% 0 60% 0); }
+      20% { transform: translate(3px, -1px); color: #ff2244; clip-path: inset(60% 0 10% 0); }
+      30% { transform: translate(0); color: var(--text-bright); clip-path: none; }
+      40% { transform: translate(-2px, 2px); color: var(--cyan); }
+      50% { transform: translate(2px, -1px); color: #ff2244; }
+      60% { transform: translate(0); color: var(--text-bright); }
       100% { transform: translate(0); color: var(--text-bright); }
     }
+    .glitch-scanline { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.03) 2px, rgba(0,212,255,0.03) 4px); pointer-events: none; animation: scanline-move 8s linear infinite; }
+    @keyframes scanline-move { from { background-position: 0 0; } to { background-position: 0 100px; } }
+    .glitch-bar { position: absolute; height: 2px; background: var(--cyan); left: 0; right: 0; opacity: 0; animation: glitch-bar 0.3s steps(1) infinite; }
+    @keyframes glitch-bar { 0% { top: 20%; opacity: 0; } 25% { top: 45%; opacity: 0.8; } 50% { top: 70%; opacity: 0; } 75% { top: 10%; opacity: 0.5; } 100% { top: 80%; opacity: 0; } }
 
-    .glitch-scanline {
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 2px,
-        rgba(0,212,255,0.03) 2px, rgba(0,212,255,0.03) 4px
-      );
-      pointer-events: none;
-      animation: scanline-move 8s linear infinite;
-    }
+    #black-overlay { position: fixed; inset: 0; background: #000; z-index: 980; pointer-events: none; opacity: 0; transition: opacity 0.4s ease; }
+    #black-overlay.show { opacity: 1; pointer-events: all; }
+    #black-overlay.fade-out { opacity: 0; pointer-events: none; }
 
-    @keyframes scanline-move {
-      from { background-position: 0 0; }
-      to   { background-position: 0 100px; }
-    }
+    /* ── MODALS ───────────────────────────────────────── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 950; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.show { display: flex; }
+    .modal-window { background: rgba(4,11,20,0.99); border: 1px solid var(--border2); width: 100%; max-width: 360px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 40px var(--blue-glow); animation: alert-window-in 0.25s ease; }
+    @keyframes alert-window-in { from { opacity: 0; transform: scale(0.92) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-header { background: rgba(30,111,255,0.12); border-bottom: 1px solid var(--border); padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; }
+    .modal-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); letter-spacing: 3px; }
+    .modal-close-btn { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); background: transparent; border: 1px solid var(--border); padding: 2px 8px; cursor: pointer; }
+    .modal-body { padding: 16px; }
 
-    .glitch-bar {
-      position: absolute;
-      height: 2px;
-      background: var(--cyan);
-      left: 0; right: 0;
-      opacity: 0;
-      animation: glitch-bar 0.3s steps(1) infinite;
-    }
+    .modal-field-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 6px; }
+    .modal-input { width: 100%; background: rgba(6,18,38,0.8); border: 1px solid var(--border2); color: var(--text-bright); font-family: 'Lato', sans-serif; font-size: 15px; padding: 12px 14px; margin-bottom: 14px; outline: none; -webkit-appearance: none; }
+    .modal-input:focus { border-color: var(--cyan); }
+    .modal-tier-display { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); padding: 10px 12px; background: var(--gold-dim); border: 1px solid rgba(200,168,75,0.3); margin-bottom: 14px; text-align: center; line-height: 1.7; }
+    .modal-submit-btn { width: 100%; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #000; background: var(--cyan); border: none; padding: 12px; cursor: pointer; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
+    .modal-info { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); line-height: 1.6; padding: 12px; background: var(--blue-dim); border: 1px solid var(--border); margin-bottom: 14px; }
 
-    @keyframes glitch-bar {
-      0%   { top: 20%; opacity: 0; }
-      25%  { top: 45%; opacity: 0.8; }
-      50%  { top: 70%; opacity: 0; }
-      75%  { top: 10%; opacity: 0.5; }
-      100% { top: 80%; opacity: 0; }
-    }
-
-    @keyframes glitch-screen-flicker {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.85; }
-    }
-
-    /* ── BLACK TRANSITION OVERLAY ───────────────────────── */
-    #black-overlay {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 980;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    #black-overlay.show {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    #black-overlay.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* ── SETUP WIZARD ───────────────────────────────────── */
-    #setup-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      z-index: 990;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
+    /* ── SETUP WIZARD ─────────────────────────────────── */
+    #setup-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 990; display: none; flex-direction: column; overflow: hidden; }
     #setup-overlay.show { display: flex; }
-
-    .setup-header {
-      padding: 16px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(6,18,38,0.8);
-      flex-shrink: 0;
-    }
-
-    .setup-header-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--blue);
-      letter-spacing: 4px;
-      margin-bottom: 4px;
-    }
-
-    .setup-progress {
-      height: 2px;
-      background: rgba(30,111,255,0.1);
-      margin-top: 10px;
-      overflow: hidden;
-    }
-
-    .setup-progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      transition: width 0.4s ease;
-    }
-
-    .setup-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 24px 16px;
-      -webkit-overflow-scrolling: touch;
-    }
-
+    .setup-header { padding: 16px; border-bottom: 1px solid var(--border); background: rgba(6,18,38,0.8); flex-shrink: 0; }
+    .setup-header-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--blue); letter-spacing: 4px; margin-bottom: 4px; }
+    .setup-progress { height: 2px; background: rgba(30,111,255,0.1); margin-top: 10px; overflow: hidden; }
+    .setup-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.4s ease; }
+    .setup-body { flex: 1; overflow-y: auto; padding: 24px 16px; -webkit-overflow-scrolling: touch; }
     .setup-screen { display: none; }
     .setup-screen.active { display: block; }
-
-    .setup-sys-message {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: var(--cyan);
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-
-    .setup-title {
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--text-bright);
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-
-    .setup-desc {
-      font-size: 13px;
-      color: var(--text-dim);
-      line-height: 1.6;
-      margin-bottom: 24px;
-      font-weight: 300;
-    }
-
-    .setup-field-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      margin-bottom: 6px;
-    }
-
-    .setup-input {
-      width: 100%;
-      background: rgba(6,18,38,0.8);
-      border: 1px solid var(--border2);
-      color: var(--text-bright);
-      font-family: 'Lato', sans-serif;
-      font-size: 15px;
-      padding: 12px 14px;
-      margin-bottom: 20px;
-      outline: none;
-      -webkit-appearance: none;
-    }
-
+    .setup-sys-message { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 8px; }
+    .setup-title { font-size: 20px; font-weight: 900; color: var(--text-bright); letter-spacing: 1px; margin-bottom: 6px; }
+    .setup-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; margin-bottom: 24px; font-weight: 300; }
+    .setup-field-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 6px; }
+    .setup-input { width: 100%; background: rgba(6,18,38,0.8); border: 1px solid var(--border2); color: var(--text-bright); font-family: 'Lato', sans-serif; font-size: 15px; padding: 12px 14px; margin-bottom: 20px; outline: none; -webkit-appearance: none; }
     .setup-input:focus { border-color: var(--cyan); }
-
-    .setup-select {
-      width: 100%;
-      background: rgba(6,18,38,0.8);
-      border: 1px solid var(--border2);
-      color: var(--text-bright);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
-      padding: 12px 14px;
-      margin-bottom: 20px;
-      outline: none;
-      -webkit-appearance: none;
-      appearance: none;
-      cursor: pointer;
-    }
-
+    .setup-select { width: 100%; background: rgba(6,18,38,0.8); border: 1px solid var(--border2); color: var(--text-bright); font-family: 'Share Tech Mono', monospace; font-size: 12px; padding: 12px 14px; margin-bottom: 20px; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
     .setup-select option { background: #040b14; }
+    .setup-confirm-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(30,111,255,0.08); }
+    .setup-confirm-key { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 1px; }
+    .setup-confirm-val { font-size: 13px; font-weight: 700; color: var(--text-bright); max-width: 60%; text-align: right; }
+    .setup-warning { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--danger); letter-spacing: 1px; margin: 16px 0; padding: 10px 12px; border: 1px solid rgba(204,34,51,0.3); background: rgba(204,34,51,0.05); line-height: 1.6; }
+    .setup-footer { padding: 14px 16px; border-top: 1px solid var(--border); background: rgba(4,11,20,0.97); display: flex; gap: 10px; flex-shrink: 0; }
+    .setup-btn-next { flex: 1; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #000; background: var(--cyan); border: none; padding: 14px; cursor: pointer; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
+    .setup-btn-back { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); background: transparent; border: 1px solid var(--border); padding: 14px 20px; cursor: pointer; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; }
+    .setup-btn-next:disabled { opacity: 0.35; cursor: default; }
 
-    .setup-quest-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-
-    .setup-quest-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      border: 1px solid var(--border);
-      background: rgba(6,18,38,0.6);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      transition: border-color 0.15s;
-    }
-
-    .setup-quest-item.selected {
-      border-color: var(--cyan);
-      background: var(--cyan-dim);
-    }
-
-    .setup-quest-check {
-      width: 16px;
-      height: 16px;
-      border: 1px solid var(--border2);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .setup-quest-item.selected .setup-quest-check {
-      background: var(--cyan);
-      border-color: var(--cyan);
-    }
-
-    .setup-quest-check-inner {
-      width: 8px;
-      height: 8px;
-      background: #000;
-      display: none;
-      clip-path: polygon(20% 50%, 45% 75%, 80% 20%, 90% 30%, 45% 88%, 10% 60%);
-    }
-
-    .setup-quest-item.selected .setup-quest-check-inner { display: block; }
-
-    .setup-quest-text {
-      font-size: 13px;
-      color: var(--text);
-      flex: 1;
-    }
-
-    .setup-quest-limit {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-      margin-bottom: 16px;
-      letter-spacing: 1px;
-    }
-
-    .setup-quest-limit span {
-      color: var(--cyan);
-    }
-
-    .setup-confirm-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(30,111,255,0.08);
-    }
-
-    .setup-confirm-key {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-    }
-
-    .setup-confirm-val {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-bright);
-      max-width: 60%;
-      text-align: right;
-    }
-
-    .setup-warning {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--danger);
-      letter-spacing: 1px;
-      margin: 16px 0;
-      padding: 10px 12px;
-      border: 1px solid rgba(204,34,51,0.3);
-      background: rgba(204,34,51,0.05);
-      line-height: 1.6;
-    }
-
-    .setup-footer {
-      padding: 14px 16px;
-      border-top: 1px solid var(--border);
-      background: rgba(4,11,20,0.97);
-      display: flex;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    .setup-btn-next {
-      flex: 1;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: #000;
-      background: var(--cyan);
-      border: none;
-      padding: 14px;
-      cursor: pointer;
-      letter-spacing: 2px;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .setup-btn-back {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--text-dim);
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 14px 20px;
-      cursor: pointer;
-      letter-spacing: 1px;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .setup-btn-next:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    /* SYSTEM ALERT POPUP */
-    #sys-alert-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 950;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      animation: alert-bg-in 0.2s ease;
-    }
-
+    /* ── ALERT ────────────────────────────────────────── */
+    #sys-alert-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 950; display: none; align-items: center; justify-content: center; padding: 20px; animation: alert-bg-in 0.2s ease; }
     #sys-alert-overlay.show { display: flex; }
+    @keyframes alert-bg-in { from { opacity: 0; } to { opacity: 1; } }
+    .sys-alert-window { background: rgba(4,11,20,0.98); border: 1px solid var(--border2); width: 100%; max-width: 320px; box-shadow: 0 0 40px var(--blue-glow); animation: alert-window-in 0.25s ease; }
+    .sys-alert-header { background: rgba(30,111,255,0.12); border-bottom: 1px solid var(--border); padding: 10px 14px; }
+    .sys-alert-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); letter-spacing: 3px; }
+    .sys-alert-body { padding: 20px 16px; text-align: center; }
+    .sys-alert-icon { font-size: 36px; margin-bottom: 10px; }
+    .sys-alert-title { font-size: 14px; font-weight: 900; color: var(--text-bright); letter-spacing: 1px; margin-bottom: 6px; white-space: pre-line; line-height: 1.6; font-family: 'Share Tech Mono', monospace; }
+    .sys-alert-subtitle { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 16px; line-height: 1.6; white-space: pre-line; }
+    .sys-alert-btn { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); background: transparent; border: 1px solid var(--border2); padding: 8px 24px; cursor: pointer; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
+    .sys-alert-btn:active { border-color: var(--cyan); color: #fff; }
 
-    @keyframes alert-bg-in {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    .sys-alert-window {
-      background: rgba(4,11,20,0.98);
-      border: 1px solid var(--border2);
-      width: 100%;
-      max-width: 320px;
-      box-shadow: 0 0 40px var(--blue-glow);
-      animation: alert-window-in 0.25s ease;
-    }
-
-    @keyframes alert-window-in {
-      from { opacity: 0; transform: scale(0.92) translateY(-10px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .sys-alert-header {
-      background: rgba(30,111,255,0.12);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .sys-alert-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--cyan);
-      letter-spacing: 3px;
-    }
-
-    .sys-alert-body {
-      padding: 20px 16px;
-      text-align: center;
-    }
-
-    .sys-alert-icon {
-      font-size: 36px;
-      margin-bottom: 10px;
-    }
-
-    .sys-alert-title {
-      font-size: 14px;
-      font-weight: 900;
-      color: var(--text-bright);
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-      white-space: pre-line;
-      line-height: 1.6;
-      font-family: 'Share Tech Mono', monospace;
-    }
-
-    .sys-alert-subtitle {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-      margin-bottom: 16px;
-      line-height: 1.6;
-      white-space: pre-line;
-    }
-
-    .sys-alert-btn {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--cyan);
-      background: transparent;
-      border: 1px solid var(--border2);
-      padding: 8px 24px;
-      cursor: pointer;
-      letter-spacing: 2px;
-      -webkit-tap-highlight-color: transparent;
-      transition: border-color 0.15s, color 0.15s;
-    }
-
-    .sys-alert-btn:active {
-      border-color: var(--cyan);
-      color: #fff;
-    }
-
-    /* UPDATE POPUP */
-    #update-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 960;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    #update-overlay.show { display: flex; }
-
-    .update-window {
-      background: rgba(4,11,20,0.99);
-      border: 1px solid var(--border2);
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 0 40px var(--blue-glow);
-      animation: alert-window-in 0.25s ease;
-    }
-
-    .update-window-header {
-      background: rgba(30,111,255,0.12);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 14px;
-    }
-
-    .update-window-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--cyan);
-      letter-spacing: 3px;
-    }
-
-    .update-window-body {
-      padding: 18px 16px;
-      text-align: center;
-    }
-
-    .update-window-icon {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .update-window-title {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
-      color: var(--text-bright);
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-      line-height: 1.5;
-    }
-
-    .update-window-sub {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-      margin-bottom: 18px;
-    }
-
-    .update-window-btns {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .update-btn-yes {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: #000;
-      background: var(--cyan);
-      border: none;
-      padding: 9px 28px;
-      cursor: pointer;
-      letter-spacing: 2px;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .update-btn-no {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--text-dim);
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 9px 28px;
-      cursor: pointer;
-      letter-spacing: 2px;
-      -webkit-tap-highlight-color: transparent;
-    }
+    /* ── DETAIL POPUP ─────────────────────────────────── */
+    #sys-popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 900; display: none; align-items: center; justify-content: center; padding: 20px; }
+    #sys-popup-overlay.show { display: flex; }
+    .sys-popup { background: rgba(4,11,20,0.98); border: 1px solid var(--border2); width: 100%; max-width: 360px; box-shadow: 0 0 40px var(--blue-glow); animation: alert-window-in 0.3s ease; }
+    .sys-popup-header { background: rgba(30,111,255,0.1); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+    .sys-popup-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); letter-spacing: 3px; }
+    .sys-popup-close { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); cursor: pointer; padding: 2px 6px; border: 1px solid var(--border); background: transparent; }
+    .sys-popup-body { padding: 16px; }
+    .sys-popup-title { font-size: 16px; font-weight: 900; color: var(--text-bright); letter-spacing: 1px; margin-bottom: 10px; }
+    .sys-popup-desc { font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 12px; font-weight: 300; }
   </style>
 </head>
 <body>
@@ -1620,20 +415,169 @@
   <div class="glitch-line1" id="glitch-line1">[ SYSTEM ]</div>
   <div class="glitch-title" id="glitch-title">—</div>
   <div id="glitch-btns" style="display:none;gap:16px;margin-top:32px;justify-content:center;flex-wrap:wrap;">
-    <button class="update-btn-yes" onclick="glitchAccept()" style="padding:12px 36px;font-size:12px;letter-spacing:3px;">YES</button>
-    <button class="update-btn-no"  onclick="glitchDecline()" style="padding:12px 36px;font-size:12px;letter-spacing:3px;">NO</button>
+    <button class="sys-alert-btn" style="color:#000;background:var(--cyan);border:none;padding:12px 36px;font-size:12px;letter-spacing:3px;" onclick="glitchAccept()">YES</button>
+    <button class="sys-alert-btn" style="padding:12px 36px;font-size:12px;letter-spacing:3px;" onclick="glitchDecline()">NO</button>
   </div>
 </div>
 
 <!-- BLACK TRANSITION OVERLAY -->
 <div id="black-overlay"></div>
 
+<!-- SPLASH SCREEN -->
+<div id="splash" style="display:flex">
+  <div class="splash-title">System</div>
+  <button class="splash-btn" id="splash-btn" onclick="pressStart()">▶ PRESS START</button>
+</div>
+
+<!-- SYSTEM ALERT POPUP -->
+<div id="sys-alert-overlay">
+  <div class="sys-alert-window">
+    <div class="sys-alert-header">
+      <div class="sys-alert-label" id="alert-label">[ SYSTEM ]</div>
+    </div>
+    <div class="sys-alert-body">
+      <div class="sys-alert-icon" id="alert-icon">⚡</div>
+      <div class="sys-alert-title" id="alert-title">LEVEL UP</div>
+      <div class="sys-alert-subtitle" id="alert-subtitle">You have grown stronger.</div>
+      <button class="sys-alert-btn" onclick="closeAlert()">CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL POPUP -->
+<div id="sys-popup-overlay" onclick="closePopup(event)">
+  <div class="sys-popup">
+    <div class="sys-popup-header">
+      <div class="sys-popup-label" id="popup-label">[ SYSTEM ]</div>
+      <button class="sys-popup-close" onclick="closePopupDirect()">✕ CLOSE</button>
+    </div>
+    <div class="sys-popup-body" id="popup-body"></div>
+  </div>
+</div>
+
+<div class="sys-toast" id="toast"></div>
+
+<!-- FACTORY RESET CONFIRMATION -->
+<div id="reset-overlay" class="modal-overlay">
+  <div class="modal-window" style="border-color:rgba(204,34,51,0.5);box-shadow:0 0 40px rgba(204,34,51,0.2);">
+    <div class="modal-header" style="background:rgba(204,34,51,0.1);border-color:rgba(204,34,51,0.3);">
+      <div class="modal-label" style="color:var(--danger);">[ SYSTEM — FACTORY RESET ]</div>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div style="font-size:28px;margin-bottom:10px;">⚠️</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.8;">[All player data will be permanently deleted.]</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:20px;line-height:1.6;">[XP, quests, dungeons, profile — everything. This cannot be undone. Are you certain?]</div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="executeFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;background:var(--danger);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">YES</button>
+        <button onclick="cancelFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT QUESTS MODAL -->
+<div id="edit-quests-overlay" class="modal-overlay">
+  <div class="modal-window">
+    <div class="modal-header">
+      <div class="modal-label">[ EDIT DAILY QUESTS ]</div>
+      <button onclick="closeEditQuests()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">[Edit your daily quests below. Changes take effect immediately. Up to 5 quests.]</div>
+      <div id="edit-quest-fields"></div>
+      <button onclick="saveEditedQuests()" class="modal-submit-btn">[ SAVE QUESTS ]</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECOND AWAKENING CONFIRMATION -->
+<div id="awakening-overlay" class="modal-overlay">
+  <div class="modal-window" style="max-width:320px;">
+    <div class="modal-header">
+      <div class="modal-label">[ SYSTEM — MILESTONE VERIFICATION ]</div>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div style="font-size:28px;margin-bottom:10px;">⚡</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[Second Awakening milestone detected.]</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:6px;line-height:1.6;">Have you achieved your goal?</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:1px;margin-bottom:20px;padding:8px;border:1px solid var(--border);background:var(--blue-dim);" id="awakening-goal-confirm">—</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--danger);letter-spacing:1px;margin-bottom:20px;line-height:1.6;">[This cannot be undone. The System accepts your word.]</div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="confirmSecondAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--cyan);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">YES</button>
+        <button onclick="cancelSecondAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">NO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG SALE MODAL (NEW) -->
+<div id="log-sale-overlay" class="modal-overlay">
+  <div class="modal-window">
+    <div class="modal-header">
+      <div class="modal-label">[ LOG SALE ]</div>
+      <button onclick="closeLogSale()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field-label">PV AMOUNT</div>
+      <input class="modal-input" id="sale-pv-input" type="number" inputmode="numeric" placeholder="Enter PV" min="1" oninput="updateSalePreview()"/>
+      <div class="modal-tier-display" id="sale-tier-display">
+        Tier: —<br>XP: —
+      </div>
+      <div class="modal-info" style="margin-bottom:14px;">[Tier 1: &lt;50 PV × 1 &nbsp;·&nbsp; Tier 2: 51–99 PV × 2 &nbsp;·&nbsp; Tier 3: 100+ PV × 3]</div>
+      <button onclick="submitSale()" class="modal-submit-btn">[ LOG SALE ]</button>
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCH IBO MODAL (NEW) -->
+<div id="launch-ibo-overlay" class="modal-overlay">
+  <div class="modal-window" style="max-width:320px;">
+    <div class="modal-header">
+      <div class="modal-label" style="color:var(--gold);">[ LAUNCH IBO ]</div>
+      <button onclick="closeLaunchIBO()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div style="font-size:28px;margin-bottom:10px;">⚔️</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[New IBO launched?]</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:14px;line-height:1.6;">A new soldier joins the army.</div>
+      <div class="modal-tier-display" style="margin-bottom:16px;">
+        Reward: <span style="color:var(--text-bright);">+500 Sponsoring XP</span>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="submitIBOLaunch()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--gold);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">CONFIRM</button>
+        <button onclick="closeLaunchIBO()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RANK CONFIRM MODAL (NEW) -->
+<div id="rank-confirm-overlay" class="modal-overlay">
+  <div class="modal-window" style="max-width:340px;">
+    <div class="modal-header">
+      <div class="modal-label" style="color:var(--gold);">[ RANK ADVANCEMENT ]</div>
+      <button onclick="closeRankConfirm()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div style="font-size:28px;margin-bottom:10px;">🏅</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[Confirm next rank pin?]</div>
+      <div class="modal-tier-display" id="rank-confirm-target" style="margin-bottom:14px;">→ —</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:18px;line-height:1.6;">[Only confirm a rank that has been officially recognized. The System accepts your word.]</div>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="submitRankUp()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--gold);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">CONFIRM</button>
+        <button onclick="closeRankConfirm()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- SETUP WIZARD -->
 <div id="setup-overlay">
   <div class="setup-header">
     <div class="setup-header-label">[ SYSTEM — INITIAL ASSESSMENT ]</div>
     <div class="setup-progress">
-      <div class="setup-progress-fill" id="setup-progress-fill" style="width:14%"></div>
+      <div class="setup-progress-fill" id="setup-progress-fill" style="width:12%"></div>
     </div>
   </div>
   <div class="setup-body">
@@ -1642,11 +586,11 @@
       <div class="setup-sys-message">▶ NEW PLAYER DETECTED</div>
       <div class="setup-title">Identification Required.</div>
       <div class="setup-desc">The System has no record of this Player. A profile must be established before access is granted. Your name is permanent and cannot be changed. All other profile information can be updated later.</div>
-      <div class="setup-desc" style="color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;margin-top:-12px;">All stats are locked until the First Awakening is achieved.</div>
+      <div class="setup-desc" style="color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;margin-top:-12px;">Completing this assessment is your First Awakening. The full System unlocks at the Second Awakening.</div>
     </div>
     <!-- SCREEN 2: NAME -->
     <div class="setup-screen" id="setup-s2">
-      <div class="setup-sys-message">▶ QUERY 1 OF 5</div>
+      <div class="setup-sys-message">▶ QUERY 1 OF 6</div>
       <div class="setup-title">State your name.</div>
       <div class="setup-desc">Enter the name by which the System will address you. This is the only field that cannot be changed after confirmation.</div>
       <div class="setup-field-label">PLAYER NAME</div>
@@ -1654,69 +598,64 @@
     </div>
     <!-- SCREEN 3: PROFESSION -->
     <div class="setup-screen" id="setup-s3">
-      <div class="setup-sys-message">▶ QUERY 2 OF 5</div>
+      <div class="setup-sys-message">▶ QUERY 2 OF 6</div>
       <div class="setup-title">State your profession.</div>
-      <div class="setup-desc">Select the field that best describes what you currently do or are pursuing. This shapes your dungeon arenas.</div>
-      <div class="setup-field-label">CATEGORY</div>
-      <select class="setup-select" id="setup-prof-category" onchange="onProfCategoryChange()">
-        <option value="">— Select a category —</option>
-      </select>
-      <div id="setup-prof-specific-wrap" style="display:none">
-        <div class="setup-field-label">PROFESSION</div>
-        <select class="setup-select" id="setup-prof-specific" onchange="setupValidate()">
-          <option value="">— Select your profession —</option>
-        </select>
-      </div>
-      <div style="margin-top:4px">
-        <div class="setup-field-label">OR TYPE YOUR OWN</div>
-        <input class="setup-input" id="setup-prof-custom" type="text" placeholder="e.g. Independent Consultant" maxlength="60" oninput="onProfCustomInput()"/>
-      </div>
+      <div class="setup-desc">What you currently do or are pursuing. Shapes your dungeon arenas.</div>
+      <div class="setup-field-label">PROFESSION</div>
+      <input class="setup-input" id="setup-profession" type="text" placeholder="e.g. Independent Business Owner" maxlength="60" oninput="setupValidate()"/>
     </div>
-    <!-- SCREEN 4: INCOME -->
+    <!-- SCREEN 4: STARTING RANK -->
     <div class="setup-screen" id="setup-s4">
-      <div class="setup-sys-message">▶ QUERY 3 OF 5</div>
-      <div class="setup-title">State your current income.</div>
-      <div class="setup-desc">Income determines your starting Rank. This reflects your current resource level — not your ceiling.</div>
-      <div class="setup-field-label">ANNUAL INCOME</div>
-      <select class="setup-select" id="setup-income" onchange="setupValidate()">
-        <option value="">— Select income range —</option>
-        <option value="E-Rank">Under $30,000  →  E-Rank</option>
-        <option value="D-Rank">$30,000 – $55,999  →  D-Rank</option>
-        <option value="C-Rank">$56,000 – $83,999  →  C-Rank</option>
-        <option value="B-Rank">$84,000 – $169,999  →  B-Rank</option>
-        <option value="A-Rank">$170,000 – $499,999  →  A-Rank</option>
-        <option value="S-Rank">$500,000 – $999,999  →  S-Rank</option>
-        <option value="National Level">$1,000,000+  →  National Level</option>
+      <div class="setup-sys-message">▶ QUERY 3 OF 6</div>
+      <div class="setup-title">Confirm your starting rank.</div>
+      <div class="setup-desc">Your rank is determined by structure, not income. Select the highest you've earned and held. You can advance manually when each new rank is recognized.</div>
+      <div class="setup-field-label">CURRENT RANK</div>
+      <select class="setup-select" id="setup-rank" onchange="setupValidate()">
+        <option value="">— Select rank —</option>
+        <option value="0">IBO — pre-PBS</option>
+        <option value="1">3% PBS</option>
+        <option value="2">6% PBS</option>
+        <option value="3">9% PBS</option>
+        <option value="4">12% PBS</option>
+        <option value="5">15% PBS</option>
+        <option value="6">18% PBS</option>
+        <option value="7">21% PBS</option>
+        <option value="8">25% PBS</option>
+        <option value="9">Platinum</option>
+        <option value="10">Ruby</option>
+        <option value="11">Sapphire</option>
+        <option value="12">Emerald</option>
+        <option value="13">Diamond</option>
+        <option value="14">Crown</option>
       </select>
     </div>
-    <!-- SCREEN 5: AWAKENING GOAL -->
+    <!-- SCREEN 5: SECOND AWAKENING GOAL -->
     <div class="setup-screen" id="setup-s5">
-      <div class="setup-sys-message">▶ QUERY 4 OF 5</div>
-      <div class="setup-title">Define your First Awakening.</div>
-      <div class="setup-desc">Your Awakening is the physical milestone that unlocks the full System. State your fitness goal. Be specific. The System holds you to it.</div>
-      <div class="setup-field-label">AWAKENING GOAL</div>
+      <div class="setup-sys-message">▶ QUERY 4 OF 6</div>
+      <div class="setup-title">Define your Second Awakening.</div>
+      <div class="setup-desc">Your Second Awakening is the physical milestone that unlocks the full System. State your fitness goal. Be specific. The System holds you to it.</div>
+      <div class="setup-field-label">SECOND AWAKENING GOAL</div>
       <input class="setup-input" id="setup-awakening" type="text" placeholder="e.g. Reach 7-8% body fat" maxlength="80" oninput="setupValidate()"/>
     </div>
     <!-- SCREEN 6: WORK CYCLE -->
     <div class="setup-screen" id="setup-s6">
       <div class="setup-sys-message">▶ QUERY 5 OF 6</div>
       <div class="setup-title">Confirm your work cycle.</div>
-      <div class="setup-desc">The System uses this to determine when dungeons open and close. Select the cycle that best matches your primary work rhythm.</div>
+      <div class="setup-desc">Used to determine when dungeons open and close. Select the cycle that best matches your primary work rhythm.</div>
       <div class="setup-field-label">PRIMARY WORK CYCLE</div>
       <select class="setup-select" id="setup-cycle" onchange="setupValidate()">
         <option value="">— Select your cycle —</option>
         <option value="Daily">Daily — tasks reset and repeat every day</option>
         <option value="Weekly">Weekly — goals and activity tracked week by week</option>
         <option value="Monthly">Monthly — performance measured in monthly cycles</option>
-        <option value="Project-Based">Project-Based — work is tied to specific deliverables with variable timelines</option>
+        <option value="Project-Based">Project-Based — work is tied to specific deliverables</option>
       </select>
     </div>
-
     <!-- SCREEN 7: DAILY QUESTS -->
     <div class="setup-screen" id="setup-s7">
       <div class="setup-sys-message">▶ QUERY 6 OF 6</div>
       <div class="setup-title">Define your Daily Quests.</div>
-      <div class="setup-desc">Enter up to 5 daily training tasks. At least 1 is required. These will be your daily obligations until the First Awakening is achieved.</div>
+      <div class="setup-desc">Enter up to 5 daily training tasks. At least 1 is required. These are your foundational daily obligations.</div>
       <div class="setup-field-label">QUEST 1 — REQUIRED</div>
       <input class="setup-input" id="sq1" type="text" placeholder="e.g. 100 Push-ups" maxlength="60" oninput="setupValidate()"/>
       <div class="setup-field-label">QUEST 2</div>
@@ -1732,7 +671,7 @@
     <div class="setup-screen" id="setup-s8">
       <div class="setup-sys-message">▶ PROFILE SUMMARY</div>
       <div class="setup-title">Confirm your profile.</div>
-      <div class="setup-desc">Review the information below. Your name cannot be changed after confirmation. All other fields can be updated later.</div>
+      <div class="setup-desc">Review the information below. Your name cannot be changed after confirmation.</div>
       <div id="setup-confirm-rows"></div>
       <div class="setup-warning">⚠ WARNING: Your player name is permanent and cannot be modified after confirmation. All other profile information can be edited later.</div>
     </div>
@@ -1743,117 +682,13 @@
   </div>
 </div>
 
-<!-- FACTORY RESET CONFIRMATION -->
-<div id="reset-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:950;display:none;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:rgba(4,11,20,0.99);border:1px solid rgba(204,34,51,0.5);width:100%;max-width:320px;box-shadow:0 0 40px rgba(204,34,51,0.2);animation:alert-window-in 0.25s ease;">
-    <div style="background:rgba(204,34,51,0.1);border-bottom:1px solid rgba(204,34,51,0.3);padding:10px 14px;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--danger);letter-spacing:3px;">[ SYSTEM — FACTORY RESET ]</div>
-    </div>
-    <div style="padding:20px 16px;text-align:center;">
-      <div style="font-size:28px;margin-bottom:10px;">⚠️</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.8;">[All player data will be permanently deleted.]</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:20px;line-height:1.6;">[XP, quests, profile, progress — everything. This cannot be undone. Are you certain?]</div>
-      <div style="display:flex;gap:10px;justify-content:center;">
-        <button onclick="executeFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;background:var(--danger);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">YES</button>
-        <button onclick="cancelFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">NO</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- EDIT QUESTS MODAL -->
-<div id="edit-quests-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:950;display:none;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:rgba(4,11,20,0.99);border:1px solid var(--border2);width:100%;max-width:360px;max-height:85vh;overflow-y:auto;box-shadow:0 0 40px var(--blue-glow);animation:alert-window-in 0.25s ease;">
-    <div style="background:rgba(30,111,255,0.12);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:3px;">[ EDIT DAILY QUESTS ]</div>
-      <button onclick="closeEditQuests()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:2px 8px;cursor:pointer;">✕</button>
-    </div>
-    <div style="padding:16px;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:14px;line-height:1.6;">[Edit your daily quests below. Changes take effect immediately. Up to 5 quests.]</div>
-      <div id="edit-quest-fields"></div>
-      <button onclick="saveEditedQuests()" style="width:100%;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--cyan);border:none;padding:12px;cursor:pointer;letter-spacing:2px;">[ SAVE QUESTS ]</button>
-    </div>
-  </div>
-</div>
-
-<!-- AWAKENING CONFIRMATION POPUP -->
-<div id="awakening-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:950;display:none;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:rgba(4,11,20,0.99);border:1px solid var(--border2);width:100%;max-width:320px;box-shadow:0 0 40px var(--blue-glow);animation:alert-window-in 0.25s ease;">
-    <div style="background:rgba(30,111,255,0.12);border-bottom:1px solid var(--border);padding:10px 14px;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:3px;">[ SYSTEM — MILESTONE VERIFICATION ]</div>
-    </div>
-    <div style="padding:20px 16px;text-align:center;">
-      <div style="font-size:28px;margin-bottom:10px;">⚡</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[First Awakening milestone detected.]</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:6px;line-height:1.6;">Have you achieved your goal?</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:1px;margin-bottom:20px;padding:8px;border:1px solid var(--border);background:var(--blue-dim);" id="awakening-goal-confirm">—</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--danger);letter-spacing:1px;margin-bottom:20px;line-height:1.6;">[This cannot be undone. The System accepts your word.]</div>
-      <div style="display:flex;gap:10px;justify-content:center;">
-        <button onclick="confirmFirstAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--cyan);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">YES</button>
-        <button onclick="cancelFirstAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">NO</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SYSTEM ALERT POPUP -->
-<div id="sys-alert-overlay">
-  <div class="sys-alert-window">
-    <div class="sys-alert-header">
-      <div class="sys-alert-label" id="alert-label">[ SYSTEM ]</div>
-    </div>
-    <div class="sys-alert-body">
-      <div class="sys-alert-icon" id="alert-icon">⚡</div>
-      <div class="sys-alert-title" id="alert-title">LEVEL UP</div>
-      <div class="sys-alert-subtitle" id="alert-subtitle">You have grown stronger, Hunter.</div>
-      <button class="sys-alert-btn" onclick="closeAlert()">CONFIRM</button>
-    </div>
-  </div>
-</div>
-
-<!-- UPDATE POPUP -->
-<div id="update-overlay">
-  <div class="update-window">
-    <div class="update-window-header">
-      <div class="update-window-label">[ SYSTEM UPDATE ]</div>
-    </div>
-    <div class="update-window-body">
-      <div class="update-window-icon">⬆</div>
-      <div class="update-window-title">An update has appeared.<br>Do you accept?</div>
-      <div class="update-window-sub">The System will restart to apply.</div>
-      <div class="update-window-btns">
-        <button class="update-btn-yes" onclick="acceptUpdate()">YES</button>
-        <button class="update-btn-no"  onclick="declineUpdate()">NO</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SPLASH SCREEN -->
-<div id="splash" style="display:flex">
-  <div class="splash-title">System</div>
-  <button class="splash-btn" id="splash-btn" onclick="document.getElementById('splash').style.display='none'; if(window.startSystem) window.startSystem();">▶ PRESS START</button>
-</div>
-
-<!-- DETAIL POPUP -->
-<div id="sys-popup-overlay" onclick="closePopup(event)">
-  <div class="sys-popup" id="sys-popup">
-    <div class="sys-popup-header">
-      <div class="sys-popup-label" id="popup-label">[ SYSTEM ]</div>
-      <button class="sys-popup-close" onclick="closePopupDirect()">✕ CLOSE</button>
-    </div>
-    <div class="sys-popup-body" id="popup-body"></div>
-  </div>
-</div>
-
-<div class="sys-toast" id="toast"></div>
 
 <!-- HEADER -->
 <div class="sys-header">
   <div class="sys-header-top">
     <div class="sys-title-block">
       <div class="sys-title-label">[ SYSTEM INTERFACE ]</div>
-      <div class="sys-title-name" id="player-name">Sung Jin-Woo</div>
+      <div class="sys-title-name" id="player-name">Hunter</div>
     </div>
     <div class="sys-level-block">
       <div class="sys-level-label">LEVEL</div>
@@ -1862,81 +697,117 @@
   </div>
   <div class="sys-xp-row">
     <div class="sys-xp-label">EXP</div>
-    <div class="sys-xp-track">
-      <div class="sys-xp-fill" id="xp-bar" style="width:0%"></div>
-    </div>
+    <div class="sys-xp-track"><div class="sys-xp-fill" id="xp-bar" style="width:0%"></div></div>
     <div class="sys-xp-val" id="xp-display">0 / 50</div>
   </div>
 </div>
-
 <div class="sys-datebar" id="datebar"></div>
 
 <!-- CONTENT -->
 <div class="sys-content">
 
-  <!-- QUEST LOG -->
+  <!-- QUESTS -->
   <div class="sys-panel active" id="panel-quests">
     <div class="panel-header">
       <div class="panel-header-label">[ DAILY QUEST ]</div>
       <div class="panel-header-title">Quest Log</div>
     </div>
     <div class="panel-body">
-
       <div class="sys-notification">
         <div class="sys-notification-title">▶ SYSTEM NOTIFICATION</div>
         <div class="sys-notification-body">[Daily quests have been assigned. Complete all tasks before midnight or face the penalty.]</div>
       </div>
-
       <div class="sys-progress">
-        <div class="sys-progress-count" id="quest-count">0/4</div>
+        <div class="sys-progress-count" id="quest-count">0/0</div>
         <div class="sys-progress-right">
           <div class="sys-progress-label">QUEST COMPLETION</div>
-          <div class="sys-progress-track">
-            <div class="sys-progress-fill" id="quest-bar" style="width:0%"></div>
-          </div>
+          <div class="sys-progress-track"><div class="sys-progress-fill" id="quest-bar" style="width:0%"></div></div>
           <div class="sys-progress-pct" id="quest-pct">0%</div>
         </div>
       </div>
-
       <div class="quest-section">
         <div class="quest-section-header">
           <div class="quest-section-icon">⚔️</div>
           <div class="quest-section-title">Daily Training</div>
           <button onclick="openEditQuests()" style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">✎ EDIT</button>
         </div>
-        <div class="quest-item" id="q1" onclick="toggleQuest('q1')">
-          <div class="quest-check"><div class="quest-check-inner"></div></div>
-          <div class="quest-text">100 Push-ups</div>
-          <div class="quest-xp">+5 XP</div>
-        </div>
-        <div class="quest-item" id="q2" onclick="toggleQuest('q2')">
-          <div class="quest-check"><div class="quest-check-inner"></div></div>
-          <div class="quest-text">100 Sit-ups</div>
-          <div class="quest-xp">+5 XP</div>
-        </div>
-        <div class="quest-item" id="q3" onclick="toggleQuest('q3')">
-          <div class="quest-check"><div class="quest-check-inner"></div></div>
-          <div class="quest-text">100 Squats</div>
-          <div class="quest-xp">+5 XP</div>
-        </div>
-        <div class="quest-item" id="q4" onclick="toggleQuest('q4')">
-          <div class="quest-check"><div class="quest-check-inner"></div></div>
-          <div class="quest-text">10km Run</div>
-          <div class="quest-xp">+5 XP</div>
-        </div>
+        <div id="quest-list"></div>
       </div>
-
       <div class="sys-warning">
         <div class="sys-warning-title">⚠ PENALTY WARNING</div>
-        <div class="sys-warning-body">[Failure to complete the Daily Quest before
-midnight will result in a penalty
-without exception.]</div>
+        <div class="sys-warning-body">[Failure to complete the Daily Quest before midnight will result in a penalty without exception.]</div>
       </div>
-
     </div>
   </div>
 
-  <!-- STATUS -->
+  <!-- DUNGEONS (NEW) -->
+  <div class="sys-panel" id="panel-dungeons">
+    <div class="panel-header">
+      <div class="panel-header-label">[ DUNGEON ]</div>
+      <div class="panel-header-title">Dungeons</div>
+    </div>
+    <div class="panel-body">
+
+      <!-- PRE-AWAKENING LOCK -->
+      <div id="dungeons-lock-screen" style="text-align:center;padding:40px 20px;">
+        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
+        <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Dungeons Sealed</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Dungeons are sealed until the Second Awakening is achieved. Train first. Then the gates open.</div>
+      </div>
+
+      <!-- POST-AWAKENING CONTENT -->
+      <div id="dungeons-content" style="display:none;">
+        <div class="dungeon-tabs">
+          <div class="dungeon-tab active" data-period="daily" onclick="switchDungeon('daily')">DAILY</div>
+          <div class="dungeon-tab" data-period="weekly" onclick="switchDungeon('weekly')">WEEKLY</div>
+          <div class="dungeon-tab" data-period="monthly" onclick="switchDungeon('monthly')">MONTHLY</div>
+        </div>
+
+        <div class="dungeon-boss">
+          <div class="dungeon-boss-label" id="boss-label">▶ DAILY BOSS</div>
+          <div class="dungeon-boss-title" id="boss-title">Boss Encounter</div>
+          <div class="dungeon-boss-sub" id="boss-sub">Defeat by hitting today's PV target.</div>
+          <div class="dungeon-boss-track"><div class="dungeon-boss-fill" id="boss-fill" style="width:0%"></div></div>
+          <div class="dungeon-boss-meta">
+            <span id="boss-progress">0 / 100 PV</span>
+            <span id="boss-time-left">—</span>
+          </div>
+        </div>
+
+        <div class="dungeon-action-row">
+          <button class="dungeon-action-btn" onclick="openLogSale()">⚔️ LOG SALE</button>
+          <button class="dungeon-action-btn ibo" onclick="openLaunchIBO()">🏛️ LAUNCH IBO</button>
+        </div>
+
+        <div class="counter-section">
+          <div class="counter-section-header">
+            <span>SALES ACTIVITY</span>
+            <span class="counter-section-total" id="sales-counter-total">0 XP</span>
+          </div>
+          <div class="counter-grid" id="sales-counter-grid"></div>
+        </div>
+
+        <div class="counter-section">
+          <div class="counter-section-header">
+            <span>SPONSORING ACTIVITY</span>
+            <span class="counter-section-total" id="sponsoring-counter-total">0 XP</span>
+          </div>
+          <div class="counter-grid" id="sponsoring-counter-grid"></div>
+        </div>
+
+        <div class="dungeon-sales-log">
+          <div class="dungeon-sales-log-header">
+            <span>SALES LOG</span>
+            <span id="sales-log-summary">— PV · — XP</span>
+          </div>
+          <div id="sales-log-entries"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS (MODIFIED — 2 stats, new rank system) -->
   <div class="sys-panel" id="panel-status">
     <div class="panel-header">
       <div class="panel-header-label">[ STATUS WINDOW ]</div>
@@ -1944,83 +815,35 @@ without exception.]</div>
     </div>
     <div class="panel-body">
 
-      <div class="sys-info-card" style="margin-bottom:10px;">
-        <div class="sys-info-row">
-          <span class="sys-info-key">NAME</span>
-          <span class="sys-info-val" id="status-name">—</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">JOB</span>
-          <span class="sys-info-val" id="status-job" style="color:var(--cyan)">—</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">DOMAIN</span>
-          <span class="sys-info-val" id="status-domain" style="color:var(--text-dim)">—</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">PROFESSION</span>
-          <span class="sys-info-val" id="status-profession" style="color:var(--text)">—</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">TITLE</span>
-          <span class="sys-info-val" id="status-title" style="color:var(--gold)">—</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">RANK</span>
-          <span class="sys-info-val" id="rank-display" style="color:var(--cyan)">E-Rank</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">LEVEL</span>
-          <span class="sys-info-val" id="status-level" style="color:var(--cyan)">1</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">STREAK</span>
-          <span class="sys-info-val" id="streak-display" style="color:var(--gold)">0 Days</span>
-        </div>
-        <div class="sys-info-row">
-          <span class="sys-info-key">TOTAL EXP</span>
-          <span class="sys-info-val" id="total-xp-display" style="color:var(--blue)">0</span>
-        </div>
+      <div class="sys-info-card">
+        <div class="sys-info-row"><span class="sys-info-key">NAME</span><span class="sys-info-val" id="status-name">—</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">PROFESSION</span><span class="sys-info-val" id="status-profession" style="color:var(--text)">—</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">RANK</span><span class="sys-info-val" id="rank-display" style="color:var(--gold)">IBO</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">LEVEL</span><span class="sys-info-val" id="status-level" style="color:var(--cyan)">1</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">STREAK</span><span class="sys-info-val" id="streak-display" style="color:var(--gold)">0 Days</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">TOTAL EXP</span><span class="sys-info-val" id="total-xp-display" style="color:var(--blue)">0</span></div>
       </div>
 
       <div class="rank-block">
         <div class="rank-header">
-          <div class="rank-name" id="rank-name-display">E-Rank</div>
-          <div class="rank-next" id="rank-next-display">— EXP to D-Rank</div>
+          <div class="rank-name" id="rank-name-display">IBO</div>
+          <div class="rank-next" id="rank-next-display">→ 3% PBS</div>
         </div>
-        <div class="rank-track">
-          <div class="rank-fill" id="rank-fill" style="width:0%"></div>
-        </div>
-        <div class="rank-label" id="rank-label">0 / 10 EXP</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;line-height:1.6;" id="rank-structure-hint">Structure-driven. Climb by hitting confirmed pin requirements.</div>
+        <button class="rank-confirm-btn" id="rank-confirm-trigger" onclick="openRankConfirm()">[ CONFIRM NEW PIN ]</button>
       </div>
 
       <div class="sys-section">Stats</div>
-
       <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-name">STRENGTH</div>
-          <div class="stat-val" id="stat-str">1</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="bar-str" style="width:2%"></div></div>
+        <div class="stat-card" onclick="showStatPopup('sales')">
+          <div class="stat-name">SALES</div>
+          <div class="stat-val" id="stat-sales">0</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-sales" style="width:0%"></div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-name">AGILITY</div>
-          <div class="stat-val" id="stat-agi">1</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="bar-agi" style="width:2%"></div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-name">VITALITY</div>
-          <div class="stat-val" id="stat-vit">1</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="bar-vit" style="width:2%"></div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-name">INTELLIGENCE</div>
-          <div class="stat-val" id="stat-int">1</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="bar-int" style="width:2%"></div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-name">SENSE</div>
-          <div class="stat-val" id="stat-sen">1</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="bar-sen" style="width:2%"></div></div>
+        <div class="stat-card" onclick="showStatPopup('sponsoring')">
+          <div class="stat-name">SPONSORING</div>
+          <div class="stat-val" id="stat-sponsoring">0</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-sponsoring" style="width:0%"></div></div>
         </div>
       </div>
 
@@ -2029,19 +852,12 @@ without exception.]</div>
         <div class="chart-title">EXP EARNED THIS WEEK</div>
         <div class="chart-bars" id="weekly-chart"></div>
         <div style="display:flex;justify-content:space-between;margin-top:4px;">
-          <span class="chart-day">MON</span>
-          <span class="chart-day">TUE</span>
-          <span class="chart-day">WED</span>
-          <span class="chart-day">THU</span>
-          <span class="chart-day">FRI</span>
-          <span class="chart-day">SAT</span>
-          <span class="chart-day">SUN</span>
+          <span class="chart-day">MON</span><span class="chart-day">TUE</span><span class="chart-day">WED</span><span class="chart-day">THU</span><span class="chart-day">FRI</span><span class="chart-day">SAT</span><span class="chart-day">SUN</span>
         </div>
       </div>
 
       <div class="sys-section">Achievements</div>
       <div class="achievement-grid" id="achievements-grid"></div>
-
     </div>
   </div>
 
@@ -2061,29 +877,34 @@ without exception.]</div>
 
       <div class="sys-section">Milestones</div>
 
-      <div class="milestone" id="milestone-awakening">
+      <div class="milestone" id="milestone-first">
         <div class="milestone-name">First Awakening</div>
+        <div class="milestone-sub">Complete the System assessment and establish your profile</div>
+        <div class="milestone-effect" id="first-awakening-status">✓ COMPLETE</div>
+      </div>
+
+      <div class="milestone" id="milestone-second">
+        <div class="milestone-name">Second Awakening</div>
         <div class="milestone-sub" id="awakening-goal-text">—</div>
-        <div class="milestone-effect">Unlocks: Player status · Job assignment · Stats · Dungeons</div>
+        <div class="milestone-effect">Unlocks: Stats · Dungeons · Items · Skills</div>
         <div id="awakening-btn-wrap" style="margin-top:10px;display:none">
-          <button onclick="promptFirstAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">[ MARK AS ACHIEVED ]</button>
+          <button onclick="promptSecondAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">[ MARK AS ACHIEVED ]</button>
         </div>
-        <div id="awakening-complete-label" style="display:none;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;">✓ FIRST AWAKENING COMPLETE</div>
+        <div id="awakening-complete-label" style="display:none;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;">✓ SECOND AWAKENING COMPLETE</div>
       </div>
 
       <div class="milestone" id="milestone-dqm">
         <div class="milestone-name">Daily Quest Mastery</div>
         <div class="milestone-sub">Complete 7 consecutive daily quests</div>
-        <div class="milestone-effect">↑ STR +5 · VIT +5</div>
+        <div class="milestone-effect">↑ Streak bonus</div>
       </div>
 
       <div class="milestone locked" id="milestone-locked-block">
         <div class="milestone-lock">🔒</div>
         <div class="milestone-name" style="color:var(--text-dim)">Further Milestones</div>
-        <div class="milestone-sub" style="color:var(--text-dim)">Locked until First Awakening is achieved.</div>
+        <div class="milestone-sub" style="color:var(--text-dim)">Locked until Second Awakening is achieved.</div>
         <div class="milestone-effect" style="color:var(--text-dim)">Arise first. Then the path reveals itself.</div>
       </div>
-
     </div>
   </div>
 
@@ -2094,75 +915,33 @@ without exception.]</div>
       <div class="panel-header-title">Items & Skills</div>
     </div>
     <div class="panel-body">
-
-      <!-- PRE-AWAKENING LOCK -->
       <div id="inventory-lock-screen" style="text-align:center;padding:40px 20px;">
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
         <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Items and Skills are locked until the First Awakening is achieved. Prove yourself first.</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Items and Skills are locked until the Second Awakening is achieved. Prove yourself first.</div>
       </div>
-
-      <!-- POST-AWAKENING CONTENT (hidden until awakened) -->
       <div id="inventory-content" style="display:none">
         <div class="sys-section">Items</div>
-
-        <div class="shop-item locked" onclick="showItemPopup('immunity')">
-          <div>
-            <div class="shop-name">🧪 Immunity Potion</div>
-            <div class="shop-req">🔒 Earn through weekly training bonus</div>
-          </div>
-          <div class="shop-status" style="color:var(--text-dim)">0 HELD</div>
-        </div>
-
         <div class="shop-item locked">
-          <div>
-            <div class="shop-name">⚗️ Health Potion</div>
-            <div class="shop-req">🔒 Complete 3 consecutive daily quests</div>
-          </div>
+          <div><div class="shop-name">⚗️ Health Potion</div><div class="shop-req">🔒 Complete 3 consecutive daily quests</div></div>
           <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
-
         <div class="shop-item locked">
-          <div>
-            <div class="shop-name">⚔️ Demon King's Longsword</div>
-            <div class="shop-req">🔒 Reach A-Rank</div>
-          </div>
+          <div><div class="shop-name">⚔️ Demon King's Longsword</div><div class="shop-req">🔒 Reach Diamond rank</div></div>
           <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
-
         <div class="shop-item locked">
-          <div>
-            <div class="shop-name">🧤 Ruler's Gloves</div>
-            <div class="shop-req">🔒 Second Awakening</div>
-          </div>
+          <div><div class="shop-name">🧤 Ruler's Gloves</div><div class="shop-req">🔒 Reach Crown rank</div></div>
           <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
-
         <div class="sys-section">Skills</div>
-
-        <div class="skill-item" onclick="showSkillPopup('sprint')">
-          <div class="skill-name">Sprint</div>
-          <div class="skill-unlocked">ACTIVE ▶</div>
-        </div>
-        <div class="skill-item" onclick="showSkillPopup('dash')">
-          <div class="skill-name">Dash</div>
-          <div class="skill-unlocked">ACTIVE ▶</div>
-        </div>
-        <div class="skill-item locked" onclick="showSkillPopup('stealth')">
-          <div class="skill-name">Stealth</div>
-          <div class="skill-locked-tag">🔒 B-Rank</div>
-        </div>
-        <div class="skill-item locked" onclick="showSkillPopup('ruler')">
-          <div class="skill-name">Ruler's Authority</div>
-          <div class="skill-locked-tag">🔒 S-Rank</div>
-        </div>
-        <div class="skill-item locked" onclick="showSkillPopup('shadow')">
-          <div class="skill-name">Shadow Extraction</div>
-          <div class="skill-locked-tag">🔒 Second Awakening</div>
-        </div>
+        <div class="skill-item"><div class="skill-name">Customer Acquisition</div><div class="skill-unlocked">ACTIVE ▶</div></div>
+        <div class="skill-item"><div class="skill-name">Sponsoring Mastery</div><div class="skill-unlocked">ACTIVE ▶</div></div>
+        <div class="skill-item locked"><div class="skill-name">Leadership</div><div class="skill-locked-tag">🔒 Platinum</div></div>
+        <div class="skill-item locked"><div class="skill-name">Ruler's Authority</div><div class="skill-locked-tag">🔒 Diamond</div></div>
+        <div class="skill-item locked"><div class="skill-name">Shadow Extraction</div><div class="skill-locked-tag">🔒 Crown</div></div>
       </div>
-
     </div>
   </div>
 
@@ -2173,37 +952,26 @@ without exception.]</div>
       <div class="panel-header-title">Settings</div>
     </div>
     <div class="panel-body">
-
       <div class="sys-section">Account</div>
-
       <div style="background:rgba(6,18,38,0.6);border:1px solid var(--border);padding:14px;margin-bottom:10px;">
         <div style="font-size:13px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Factory Reset</div>
         <div style="font-size:12px;color:var(--text-dim);line-height:1.6;margin-bottom:12px;font-weight:300;">[Clears all player data, progress, and profile. The System will restart completely. This cannot be undone.]</div>
         <button onclick="promptFactoryReset()" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--danger);background:rgba(204,34,51,0.08);border:1px solid rgba(204,34,51,0.4);padding:10px 16px;cursor:pointer;letter-spacing:2px;width:100%;-webkit-tap-highlight-color:transparent;">[ FACTORY RESET ]</button>
       </div>
-
     </div>
   </div>
 
 </div><!-- end sys-content -->
 
 <nav class="sys-nav">
-  <button class="sys-nav-btn active" onclick="switchPanel('quests', this)">
-    <div class="sys-nav-icon">📋</div><span>QUESTS</span>
-  </button>
-  <button class="sys-nav-btn" onclick="switchPanel('status', this)">
-    <div class="sys-nav-icon">⚔️</div><span>STATUS</span>
-  </button>
-  <button class="sys-nav-btn" onclick="switchPanel('mission', this)">
-    <div class="sys-nav-icon">🎯</div><span>MISSION</span>
-  </button>
-  <button class="sys-nav-btn" onclick="switchPanel('inventory', this)">
-    <div class="sys-nav-icon">🎒</div><span>ITEMS</span>
-  </button>
-  <button class="sys-nav-btn" onclick="switchPanel('settings', this)">
-    <div class="sys-nav-icon">⚙️</div><span>SETTINGS</span>
-  </button>
+  <button class="sys-nav-btn active" onclick="switchPanel('quests', this)"><div class="sys-nav-icon">📋</div><span>QUESTS</span></button>
+  <button class="sys-nav-btn" onclick="switchPanel('dungeons', this)"><div class="sys-nav-icon">🗡️</div><span>DUNGEON</span></button>
+  <button class="sys-nav-btn" onclick="switchPanel('status', this)"><div class="sys-nav-icon">⚔️</div><span>STATUS</span></button>
+  <button class="sys-nav-btn" onclick="switchPanel('mission', this)"><div class="sys-nav-icon">🎯</div><span>MISSION</span></button>
+  <button class="sys-nav-btn" onclick="switchPanel('inventory', this)"><div class="sys-nav-icon">🎒</div><span>ITEMS</span></button>
+  <button class="sys-nav-btn" onclick="switchPanel('settings', this)"><div class="sys-nav-icon">⚙️</div><span>SET</span></button>
 </nav>
+
 
 <!-- FIREBASE MODULE -->
 <script type="module">
@@ -2224,19 +992,8 @@ without exception.]</div>
   const ref = doc(db, 'players', 'strive');
 
   window._saveToCloud = async (data) => {
-    try { await setDoc(ref, data, { merge: true }); }
+    try { await setDoc(ref, data, { merge: false }); }
     catch(e) { console.warn('Save failed:', e); }
-  };
-
-  window._resetCloud = async () => {
-    try {
-      await setDoc(ref, {
-        xp: 0, streak: 0, lastDate: '',
-        achievements: [], setupComplete: false,
-        playerName: '', job: '', startingRank: '',
-        awakeningGoal: '', dailyQuests: [],
-      });
-    } catch(e) { console.warn('Reset failed:', e); }
   };
 
   window._loadFromCloud = async () => {
@@ -2247,66 +1004,1103 @@ without exception.]</div>
     return null;
   };
 
+  window._resetCloud = async () => {
+    try { await setDoc(ref, { _wiped: Date.now() }); }
+    catch(e) { console.warn('Reset failed:', e); }
+  };
+
   window._firebaseReady = true;
   if (window._onFirebaseReady) window._onFirebaseReady();
 </script>
 
 <!-- MAIN APP -->
 <script>
-  // ── GLOBAL ERROR CATCH ────────────────────────────────
-  window.onerror = function(msg, src, line, col, err) {
-    console.error('JS Error:', msg, 'line:', line);
-    // Only hide splash as last resort after 5 seconds
-    // so it doesn't vanish on non-critical errors
-    setTimeout(() => {
-      const splash = document.getElementById('splash');
-      if (splash && splash.style.display !== 'none') {
-        splash.style.display = 'none';
-      }
-    }, 5000);
-    return false;
-  };
+'use strict';
 
-  const QUEST_XP     = 5;
-  const TOTAL_QUESTS = 4;
+// ============================================================
+// GLOBAL ERROR FALLBACK — never trap user behind splash
+// ============================================================
+window.onerror = function(msg, src, line) {
+  console.error('JS Error:', msg, 'line:', line);
+  setTimeout(() => {
+    const s = document.getElementById('splash');
+    if (s && s.style.display !== 'none') s.style.display = 'none';
+  }, 5000);
+  return false;
+};
 
-  // ── HELPERS ───────────────────────────────────────────
-  function saveToCloud(data) { if (window._saveToCloud) window._saveToCloud(data); }
+// ============================================================
+// CONSTANTS
+// ============================================================
+const RANKS = [
+  'IBO',         // 0
+  '3% PBS',      // 1
+  '6% PBS',      // 2
+  '9% PBS',      // 3
+  '12% PBS',     // 4
+  '15% PBS',     // 5
+  '18% PBS',     // 6
+  '21% PBS',     // 7
+  '25% PBS',     // 8
+  'Platinum',    // 9
+  'Ruby',        // 10
+  'Sapphire',    // 11
+  'Emerald',     // 12
+  'Diamond',     // 13
+  'Crown'        // 14
+];
 
-  function loadFromCloud() {
-    return new Promise((resolve) => {
-      function tryLoad() {
-        if (window._loadFromCloud) {
-          window._loadFromCloud().then(resolve).catch(() => resolve(null));
-        } else {
-          resolve(null);
-        }
-      }
-      // If Firebase already ready, load immediately
-      if (window._firebaseReady) {
-        tryLoad();
-      } else {
-        // Poll until Firebase ready — max 6 seconds
-        let attempts = 0;
-        const interval = setInterval(() => {
-          attempts++;
-          if (window._firebaseReady) {
-            clearInterval(interval);
-            tryLoad();
-          } else if (attempts > 60) {
-            clearInterval(interval);
-            resolve(null);
-          }
-        }, 100);
+const RANK_HINTS = [
+  'Pre-PBS. Build daily activity. Complete training quests. Earn your first 3%.',
+  'First Performance Bonus bracket. ~100 PV/mo. Keep stacking volume.',
+  '~300 PV/mo. Sharper consistency. Customers retain.',
+  '3 frontline / 10 total. ~1500 PV group. Lead emerging.',
+  '4–5 frontline. Group depth showing.',
+  'Refined leadership. Multiple legs activating.',
+  'Wider base, broader influence.',
+  'Approaching Platinum threshold. Hold the line.',
+  'Final bracket before pin. Six months of 7500 PV ahead.',
+  '6/25 with Core+ IBOs or 6/50 with Core. ~7500 PV. First pin recognized.',
+  'Multiple Platinum legs. Network solidifying.',
+  '9/75 structure. Top 1% household income territory.',
+  '12/100 structure. Wealth class.',
+  'Symbol of Peace. Top 0.1% individual income. $1M+ tier.',
+  'Beyond measurement. Mythical.'
+];
+
+const SALES_COUNTERS = [
+  ['leads',         'Customer Leads'],
+  ['followups',     'Follow-Ups'],
+  ['salesCalls',    'Sales Calls'],
+  ['cnas',          'CNAs'],
+  ['samples',       'Qualified Samples'],
+  ['gcards',        'Gratitude Cards'],
+  ['firstSales',    '1st-Time Sales'],
+  ['newProdSales',  'New Product Sales'],
+  ['repeatSales',   'Repeat Sales'],
+  ['newRegCust',    'New Reg. Customers']
+];
+
+const SPONSORING_COUNTERS = [
+  ['btis',          'BTIs'],
+  ['convos',        'Conversations'],
+  ['msas',          'MSAs'],
+  ['dtms',          'DTMs'],
+  ['contacts',      'Contacts'],
+  ['sponsFollowups','Follow-Ups'],
+  ['qis',           'QIs'],
+  ['bizOverviews',  'Biz Overviews'],
+  ['guests1',       '1st-Time Guests'],
+  ['guests2',       '2nd-Time Guests'],
+  ['roadmaps',      'Roadmap Overviews'],
+  ['finalReviews',  'Final Reviews'],
+  ['newIBOs',       'New IBOs']
+];
+
+// Each tick on these counters gives this much XP toward Sales or Sponsoring
+const COUNTER_XP = 5;   // small XP per tick (low-friction tracking)
+const IBO_LAUNCH_XP = 500;
+
+const ACHIEVEMENTS = [
+  { id:'first',  icon:'🎯', name:'First Awakening',  desc:'Profile complete',          check:s => s.setupComplete },
+  { id:'second', icon:'⚡', name:'Second Awakening',  desc:'Fitness goal achieved',     check:s => s.secondAwakeningComplete },
+  { id:'pbs',    icon:'🥉', name:'First Pin',         desc:'Reach 3% PBS',              check:s => s.rankIndex >= 1 },
+  { id:'plat',   icon:'🥈', name:'Platinum',          desc:'Reach Platinum',            check:s => s.rankIndex >= 9 },
+  { id:'diam',   icon:'💎', name:'Diamond',           desc:'Top 0.1% income',           check:s => s.rankIndex >= 13 },
+  { id:'streak7',icon:'🔥', name:'Iron Will',         desc:'7-day quest streak',        check:s => s.streak >= 7 },
+  { id:'lvl10',  icon:'⭐', name:'Awakened',          desc:'Reach Level 10',            check:s => s.level >= 10 },
+  { id:'lvl50',  icon:'🌟', name:'Hunter',            desc:'Reach Level 50',            check:s => s.level >= 50 }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+function emptyDungeonPeriod() {
+  const c = {};
+  [...SALES_COUNTERS, ...SPONSORING_COUNTERS].forEach(([k]) => c[k] = 0);
+  return { counters: c, sales: [], ibos: 0, totalPV: 0, salesXP: 0, sponsXP: 0, key: '' };
+}
+
+const DEFAULT_STATE = {
+  // Setup
+  setupComplete: false,
+  playerName: '',
+  profession: '',
+  awakeningGoal: '',
+  workCycle: '',
+  dailyQuests: [],
+
+  // Awakenings
+  firstAwakeningComplete: false,    // = setup complete
+  secondAwakeningComplete: false,   // = fitness goal achieved
+
+  // Progress
+  level: 1,
+  xp: 0,
+  totalXp: 0,
+  streak: 0,
+  lastQuestDate: '',
+
+  // Stats — Sales & Sponsoring only
+  stats: { sales: 0, sponsoring: 0 },
+
+  // Rank
+  rankIndex: 0,
+
+  // Dungeons — three periods
+  dungeons: {
+    daily: null,
+    weekly: null,
+    monthly: null
+  },
+
+  // Weekly chart (Mon–Sun)
+  weeklyXp: [0,0,0,0,0,0,0],
+  weekStartKey: '',
+
+  // DMP
+  dmpTitle: '',
+  dmpSub: ''
+};
+
+let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+state.dungeons.daily   = emptyDungeonPeriod();
+state.dungeons.weekly  = emptyDungeonPeriod();
+state.dungeons.monthly = emptyDungeonPeriod();
+
+// ============================================================
+// HELPERS
+// ============================================================
+const $ = (id) => document.getElementById(id);
+
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+function todayKey(d = new Date()) {
+  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+}
+
+// Monday-start week
+function weekStartKey(d = new Date()) {
+  const x = new Date(d);
+  const day = x.getDay(); // 0=Sun, 1=Mon
+  const diff = (day === 0 ? 6 : day - 1);
+  x.setDate(x.getDate() - diff);
+  return todayKey(x);
+}
+
+function monthStartKey(d = new Date()) {
+  return d.getFullYear() + '-' + pad(d.getMonth()+1);
+}
+
+function dayOfWeekIndex(d = new Date()) {
+  // 0 = Mon, 6 = Sun
+  const day = d.getDay();
+  return day === 0 ? 6 : day - 1;
+}
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+// ============================================================
+// PERSISTENCE
+// ============================================================
+function saveState() {
+  try { localStorage.setItem('sys_state', JSON.stringify(state)); } catch(e){}
+  if (window._saveToCloud) window._saveToCloud(state);
+}
+
+function migrate(old) {
+  // From old schema (5 stats, E-Rank, awakeningComplete) to new
+  const out = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  out.dungeons.daily   = emptyDungeonPeriod();
+  out.dungeons.weekly  = emptyDungeonPeriod();
+  out.dungeons.monthly = emptyDungeonPeriod();
+  if (!old || typeof old !== 'object') return out;
+
+  if (old.setupComplete)      out.setupComplete = true;
+  if (old.playerName)         out.playerName = old.playerName;
+  if (old.profession)         out.profession = old.profession;
+  if (old.job && !old.profession) out.profession = old.job;
+  if (old.awakeningGoal)      out.awakeningGoal = old.awakeningGoal;
+  if (old.workCycle)          out.workCycle = old.workCycle;
+
+  // Quests — may be array of strings or {text, completed}
+  if (Array.isArray(old.dailyQuests)) {
+    out.dailyQuests = old.dailyQuests.map(q => typeof q === 'string' ? {text:q, completed:false} : {text:q.text||'', completed:!!q.completed});
+  }
+
+  // Awakenings
+  out.firstAwakeningComplete = !!old.setupComplete;
+  out.secondAwakeningComplete = !!(old.awakeningComplete || old.secondAwakeningComplete);
+
+  // Progress
+  out.xp = +old.xp || 0;
+  out.totalXp = +old.totalXp || out.xp;
+  out.streak = +old.streak || 0;
+  out.lastQuestDate = old.lastQuestDate || old.lastDate || '';
+
+  // Level — derive from totalXp if missing
+  out.level = +old.level || levelFromTotalXp(out.totalXp);
+
+  // Stats — discard old 5-stat structure, start fresh
+  out.stats = { sales: +(old.stats && old.stats.sales) || 0, sponsoring: +(old.stats && old.stats.sponsoring) || 0 };
+
+  // Rank — old startingRank string → IBO=0 by default
+  if (typeof old.rankIndex === 'number') out.rankIndex = old.rankIndex;
+  else out.rankIndex = 0;
+
+  // Dungeons — copy if present, else fresh
+  if (old.dungeons) {
+    ['daily','weekly','monthly'].forEach(p => {
+      if (old.dungeons[p]) {
+        const merged = emptyDungeonPeriod();
+        Object.assign(merged.counters, old.dungeons[p].counters || {});
+        merged.sales = Array.isArray(old.dungeons[p].sales) ? old.dungeons[p].sales : [];
+        merged.ibos = +old.dungeons[p].ibos || 0;
+        merged.totalPV = +old.dungeons[p].totalPV || 0;
+        merged.salesXP = +old.dungeons[p].salesXP || 0;
+        merged.sponsXP = +old.dungeons[p].sponsXP || 0;
+        merged.key = old.dungeons[p].key || '';
+        out.dungeons[p] = merged;
       }
     });
   }
 
-  // ── SOUND SYSTEM ──────────────────────────────────────
-  // Ambient drone
-  const AMBIENT_B64 = 'SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAABOAABAfAAGCQwQEBMWGR0dICMmJiotMDMzNzo9PUBER0pKTVBUVFdaXWFhZGdqam5xdHd3e36BhISIi46OkZWYm5ueoqWlqKuusrK1uLu7v8LFyMjMz9LS1dnc39/i5unp7O/z9vb5/P8AAAAATGF2YzYwLjMxAAAAAAAAAAAAAAAAJAQ4AAAAAAAAQHyWlnEnAAAAAAAAAAAAAAAAAAAAAP/7UGQAAAF3BNBVMGAAFaMYwaAcAAfIk0IZpoAAeg5jwwMQAQAAIAAn/AEc/SCACAHBEJiwPg+D4Pg4CBTicHwf8oD4Pg/8oD73/nOX85y/u6fdEH//qeZ8wcB4A8B4PxuOBAEwfP7ukHxmDGPTMnN8qBRZTGslnooDaj7DJhUL1O2dRO2dSISCoFrrCaF7Mue6YwI8ksIhDhUyj3GUkktEfyl4unJX9/M/Ul6S0f0Ui8NbUXeSQNoC4i8tELhh4fCPMbYwlQAHoDwNTR2TDGj/+1JkBQHx+SBNJ25AABZDKIDgTAAHYIM1reZjgEkMYcABYlAFnmBj44FmNgjbOVGVyrhlEPL6Kg1DEuLpoepGyT9IPaAgo4Sdb+xqxMg0sZorf+tEohfkb3///rRJkipVGNAWSAz4TsVjVX/X9n3gAaMbgADGR/ZgCYFRkIyiIBE8FuQK503KopS0zgmCS0Hs23JrVl2Wh0CHgNqK7f89hFZU//qC3BMpQ36fp4USasSBGtYr/2/6fp/9X1oABshUG1dp2dOBO5jUQNhBQ0aI6//7UmQKAfH2IMujeqBwE2MoYABPeAe0gzGuamGAVAxhgBA2SJDW4fijfW6R2zIFU46SkicrwepHRSFdA0wAdqTf1EtUET4hn/6ZcBu4UZm/v/t+DEmhExGNF3Z3Re/7baf1AATELAADGXIYZBSAAkn2EGBTqkB5tznsmG6s7rXWyFRhJM0zxadnZ9R0SoGrTi/9RawlUOA//UWQm0iCMGc/8vL66/rSMgbgKg1f+/t2V1bf/6oACth8AAYAAGK7w6TpMD3aapgU4VVG2cP5TwdO//tSZA4D8dEgTWt4kOIQAyhwBBJ0B0CBMI3qgcBYjKGAEFD42nZMY2o9uzUq4+h0B1gH8V2/1HsJSHAf/3D5CInY/+vx+v+bqSBKgdBq/3v39AADRCwNzgQfsGDoHmFgyBojQNmgeboKm6j7mILrPsUkrlfHZSOyRAQGJBIu39RawkRCgz/9ZQAeEGL8/8k6QIFAUQHnu+jd+9Vv/33c/7jqKgAOyHgABgAAIf8mphhEMXCRqwEEI01Gtw3YheV2DBzkq25qVXZ2S1LF8AnMl/7/+1JkFwPxzyDNa3iA0BZjGGAEFJIG+IMyjSZOQFOMYYAFaTij2EsKn/86De5kjDmi/+X8v8banBBACiEtP7nr/9dyf//6AAJ0HwdZeb2WIzQH/jjNMcTDN+4kMLBu7y1DpiQK4b640RXLNh0BawPSJ9D/UewkoVT/+mHujRdL9/r//+zhGnRioREbH+pH2fu/91sACNBwgAQAAGEQRkZoVAMSakBCt4GSrVEjHhWAf4Gqt0eJ9X06+5VCoef/U2KyHm//qEuN6F/t//+mKnTBLP/7UmQfA/GoIE9rb4FUFcMYYAQUSAZggTyNDa5YYAxhgBBQOMINNHi3+7+6r///9KgAG0FQZOYaxSKmy0RbpYgkhijL3/hiRZXWxDgSm8xIkxmUV1j8A60v+psR4NX/+F3Lzsi6vf19Wx0TNkwS7Bv5o3/++mhmS/Z/s6UAAJZgSQAAADN2TaJB1ongZazAIPajNNSvfatOqrHB3UyoyqZ26h/A9k/+psXQRP/6wtpY///b/7XmYQ7XSCCFjOo3q7Luh3qV9Fu5QAEkEyBAoWjm//tSZCqB8Z8gT3NYaGAYgxhgAbtOBlR/Q609p1BTjGGAEFT4ZIvKVmGKsvQOtkIOQ5z6gsAf4nrn2BPqOl64l7koD63/VysVv/6hNGwWM//keIux0IEYBY3ofVv9jfdT1e3QAAkYdAINAABwgCQEABspYJAIkCzPVYacyxdZ8jpa/SITuVNeZA20v+rnQ1f/2EWPJ2X5ZfI8TVE6EvQFx4rTs7fF//0/Tv+0AAHZgSQAARfgVCGCic5f9UgQJnAPmZgMvjGIOcdHTKjlSNuoig3/+1JkNwHxjyBQawZrlhXjCHAEFEwGEIE9zTGmgFqMIcAQUPjl/9XWCJ//WFCUJdfx9iasYhP0BeGeej6U2fu//9Gpn9MAjaGUgg0AAAoQPyrcPLQQuMGXseCIICTeOwDvBGXOjxXs+n18gAhb/p0Dn/+BISvx/z9fq+P4mSJiEPYC/MyarIf/X/7f+tO4AAJVQaQEAwd0lJO2PRiAMyNB7NnD8W5DYqt2QYnvoiE7lPXmQEvP/9XKgjf/1CXFJlN//F0MyNKQtguP5f6v/d+1av/7UmRGAfGIIFHrD1FWF8MYcAQUZgYYgT/NGa5AR4xhwAbuUAAJIHQCRQAAAKTFZLAKIzNnlIhLwflcgLESMIAyQPbQkKc76+ViCL/6nxmBE//rFmhLW///9fxDikjVHWAbR7Qb////Zv//9wAGbEoBCpgQGGokqpBJ16ie4GGecy1HgHeLrH7xXqvT6/MAuLf9T5UL3/9wnAyTsVv1//+3dsEYRG0oynDbPax///6P0e79itMAAHdQayEAABHEGR60R5YmA3xQTo3klElu6qvE//tSZFaB8ZEgUOssadQWAxhwAbtcBfyBRay9pVhjjKHABW04npPexEJ2Wc7sXgJ8//1PjMK3/9Qmx/4qjcjVGTgfg5539f/93/zvs29ICRQ7m0EmjTrFoRQzRZj9OzJnLC0RKUVYxB1JraMYKXXlHzoRRH/qfFwVv/8d6UtrrFUeSNkVHCOXnjP+m////t/aAA3Q3AjkTMwsUeL2hdNTw+LJnnlb1RLO5BYwfL8JZD8D3n36xoAB6af9T4aAav/6YXkg+sVTJrKaRTR0Zn/T/q//+1JkZIHxkiBQc0ZrkBNjGHABu7AF8IFX56WucEsMYcAG7sDv/pt0AARoOkACHBY6MdILrTBUCQl2odysvfaqvsXkkXKEIp2MrW7FsGZ9v++KwKr/+oSo3o//P9YrJcWiBUCgxolsz/u/////qgAHEFAABAAAYr8b9tDo1qITT7hz6RupKG7tdsW38L5OZmuMFPV1HqGkAHhr/1PhEBq//sFrJZoMvqv7P/FZIhYConB2eLbv/////pAAqIVBqfx6soFjBcRokmEKbhUCvnQ1pP/7UmR3AfGZIE4jeWhwEgMYcAG7sAYsgT2sJg5QUQxhwBBVoBjcesYlhvDC3P8ffUdFMAE5cT/1H8IoPD/+ozBuiN73/isjQWgCEigtjiuZ/Rt//////ZUACRh8AAYAAGn5m0uDJ0vQCEKlQCowJD8rlEiv0rhGAFNC4wkF2WduxFwLuK7f6j+F4CY//zgIAGKUN/zVtFNFsoAhLoKXo3a/9FQAGzB4AA5hEuZ+ygw0NkMB4GgHKHAzyx52Vn5U7sGGExS2mYGFBakekOkAvCq///tSZIgD8cEgzmtJa5QTYxhwBBUeBtCBMo1mIcBRjGHAEFT4/P4XgMH/+gJ+Hc5Xr/FiKHQ6vj5Vbd6//+v//v+lAAZAMAAEAABrDUBYoQBhPSZksYIicU047kRink2NxspBHgOphbo+P61HQyQCGSgtX9RbwjITH/9RHgguLYL38ZxQe4Qto2FA5b/1XgAZsPAACiLsNzHTAKjRBySaKBzpBm1baAYagT6VcxkCyeV65AMM5IqTQ6Ax4AVId6D/5bwiMGz//SAMADMmzhb+NIb/+1JkkwHx1yDNa0abkBADKHAEFT4HOIE1reZBgEiMYgAG7ohNwl7jeILf////agCEMAA0eJjuQtNPiOCLNoqMu0OZBXY5cPyx87UrXIa98NFIfp4hKOstSKkkS8HIgdoYKKVmf+S9YRVDt/+gZkAAw5YM1/XL4+Q8yRwIUmBZtBY/rq//0AEgYAZjW8mmUUMFhOZmTwAACjswlPKEUEdl+dAo2I3dmNTCjk/H0qzIjQhDAYVmQ4xV/kvWEVBf//UP4D14xhOjFlf29X//4+g1Pf/7UmSeAfH3IEtrephyDQMIgAG7sAgAgy+t6oHINwwiAAbqwMKsuLUwt+t//////00ACIhUAAUAAGfPojpQuPI1Rk45gEJiU0BuBFJO5uGL/GYKItXqkdiOSKqGswEZgacYO9BP/LeESQ9//sbhaQINOxv1f//8fQakqxUlxZuurX/+7///6toByGGWJ4aTmwEUTMQYzo5GiMfcEsG3huCJrkrUoMpTBYQh+niEYzUtS7omwskA+IJiW2f9ZL1hNMHj/+ozHQAaqDtmzL/7lYMq//tSZKeB8iUgScOaoHASQwhwBBVaCESDJy5ugchWjCHABu04VYgkRYyxZ///7sUrANAwAwAM33DIOkUlm0JCD0MtjAvWxNLgeQudboGMgnGw24xsVmfSopFEGoADPpRzkVf1lvCZwOD//lEAEyKCJ1JF5/6ImKRkDTqIBGrNH////qAATIEBsNie9gAYLGuEy8VAQyAzZUbqRh23drWXGOxImSnKklmf3+ev/cwh+c8T94Z//1lvCegoP/6aBNgZChtKX/y+whqReBL+GFDV//7/+1JkpoPyDCBLa3qgchVjGHABu2oIgIUnDm6BwESMYcAG7ojf/3ev6FIACtB8AAUAAGA/nnflpAyCAFYhGmOHRF0IpPPlYp3QMCYZpbJggA2Ha+5UBfpLO39Z/C8BM//1nAgMT52l6/7BlSyHOI8ksnjX/v7NX9qMf7tX1AAOAGgACHp0fAQjYHkTM4CoR2AraO/G38cbdx6Qa3cXTGxWZ6KWkYiMgPKyJI/6z+EyBp//9gbxiljcuu1qf/3zgmKRkCDmC1Aqv/6f2/329X0VAP/7UmSnA/IPIUpLeqBiEKMYgAQUPggcgyiN5mfATQxhwBBRaAoYFAp6HLswATCzM0qYxR45qdrzdZHZkcDSFfwGkFAqcMCyUa0E21lANHA0+Iugv+st4TYFJ//WgQ8Ay4izP/2v/v6jgwXSBKeFJh53f///p3fjwAJCHwABhKWfKuW2DnYqzKoU2YR+3IjEbdXCvAAFONpbJggRsW19MgADeSQdv63w7wXX//nAKCJlKG6+n/rr/6DwIpkOdlKN5+V+O///v296AAcIVBhNeY7G//tSZKoB8eQgTOtGm5IWYxhwAbqiB2yBL6zqZQhcjKGAEFDoPGVtzLAjAiTjDnVl2MaaZS1m6gFm03Ji8TzPWlpIivAaUGRJF/6z+GuCgv/9MuBbIT8jT/p7/+gZ9HKScW8/Z+7V////+lYABKBoAApmh6afQiiEBMjBwAAUNsXa5G6ekkU/eg8mUIx2DAsln21nA8oQyLKl/1vhkwUf/+ophBEdiM0//1GqkwSqC8TR/Z//9X/+7VUACsg4AAYAAGKTRiEMQi5fgwctRMNHAXn/+1JkrYHx+SDKo3qYYBUjKHAEFJIHUIMzrRpuQFeMYcAD5TifKYmYfrV3gApQ0y24AIMjS9MYwAPpIJt/W+JcDC//0gbqDhGY/EHsgGPRwD3//5e/1f/+gAAHDNZQzOHMAbEzBqGJlUZrVTE4xSU8ms1m6mNip82tyqXcetVFI1EJgOGBGkef+dfESCi//6kyGACjhA31+3y8P+fz8ZhlICXGA/37P+r/9v21KgAFCDgABAAAaDXnjDRgwg+sC1xwQfYY7A829TubsRcIckwOcv/7UmSxgfHfIMujeqBgFAMYcAD5ageIgy+t6mGARQyhwBBM+KR+h0tnNalmQZKBgwTKl/zr4+gZH/9RZAjUlDVJOXe///8zPsdQBG1Cyf/X9H/939vHAAVALAADGISJyYEYDgRyERmIYCF4g1uH7ELyuwQFbHEzt0k51nQT1JihAOhScT/19IGH//ZMPCLCdivX//lN0TElALS2L+zR2u/7OhOv0/1VAAbINAAFAABvsxkrIqmMaDMBHGgZS+Yu4kQgvf1nRMSpV7lQICI+zdiJ//tSZLkD8ekgTGtjm5IPYxhwADiwB6yBKw3qgcBZDGGAEL04AixkKef+vkeDBv/6ygCEcNN6Pl2/6Wv9imkxifAt/Dl3/0/tq/X+n+wACpB0AAQV3DH5oqBgtPmZoYKIIckroRSjeyzYd81AUo7EogOJ6XdHWZB/QPuJ1L/W2L8GX//RANMZo1fLT6f/8LnG1V9jZPL3fpV6FQAEQBAbOWnOb5jTIP1GvbAJwB/qcDL33iFrVdogNpM4p87E51nQfUUwwYB66QRND+dbDXhVz///+1JkvwHyCyFLa3qYcBTDGGAEERoHSIExreZhyFgMIYAQUHitAmwADh2e9X/kegxqDUKCrc2M9iPZ//2/eABkguAAMYTXmNMwhZFpgvqMBGebTSWesyfOs6JhqtB7uapuJMtXYnwV8S7P/W2JeF5//rOA0MX0ob+vwVFg7VGUI/3tO//V3dHu2//0qgAGkBgABgAAZ4lnOtJhFpmABEwBxsBimhuJDErnfsP+YwOq+wgZmdNkkdZkK6B0ITqX+s9hrwoL/+wb+Mkbl+rf//rH8v/7UmTCAfHiIEvrQ6OQFsMIYAQUKAeYhS+t5kOIPgxhwAPp4EEUQTXgvnPmbv/9P6P//7rgAGQDAY+iBko1EA8/wAK2AQNN8adWeu1pNYrtgFYz6V87FF1nZ9R0MkAAyTCav6z2EzhR3/6BHgOmKg3/JfV/8lR4WiCbkKzz7v6P+zV//Z/6agANKHwABgAAZXoHFgsUH8mCqXEAZsCLrduMQNTypW0wSWg93NSrj01dAh4Daiu3/bDhiZf/1BbgmUoS6//h6EC8GbJX7vuo/R69//tSZMiB8ewgSqN6mHATIxhwBBQuBzyDM63mYcBOjGGAA+qI3/3dncoACtAYGjz51iaYPhkEmZCAij5HeZvIhMyO3SO2ZR6o7CBmZ3ZSOikMaAPwkXb+s9hEomX/6ZgFzwtzZb//3/+P4qFgQ7wfuPt+r//2V/0VAAjAVAAFAABgnGbqsCjADkwtCC4U1Y5+2uQ5L3lwuwYVGEkzTPFp2dn1HRKga6cX/z2EXG1/+oshPSIG5f5/5fv6yVECUAQoMFm8bhn/d/f9u//R7wAG0Bj/+1Jkz4Px9SBMa3qYYhbjGHAEFDgHbIMsjmphwFmMYgAQUSAbAhGvyq0ykOIkIBEJqQE1F55XJIpZpnJMRE08b9DBtidNaAr4GlCETQf/LWERpW//uFhgpUZjt9/bbap24+gyPgOyY9jW0/5D//9XagAKkFgYEhxgRPCNmC0QpDIRBlib+M7h+xCp+kcMxBdZ9iklcr4mtSOyRAQGJBIu3+ewiHJD/9ZQAeEGK+1X9f/j6CAfQ7RjVFb5/t///9H/rAArANAAFNZSjSoclrmIJP/7UmTSA/HYIM1rWZhwFAMYcAFalAdEgzCN5mGAUQyhwBBQYGURAo0D27QmoRCOxvV18BR0+23PFV2dktRiH+AwxLyP/LWEWiof/zoD2kONXjP8/zEPA5wGqXBEXjdX//3////9NQAKoHgZz/nFHQXGQNwGPQBDQKtH4All+DoOizETNFVpv14KiW1M6GtAUOBzMT6H+o9hE4eD/9SYb6Lal8xAqJXCW5FjY+////s/o6LugABwAQAGZ4rp2ElmXGR8gSDXcIDR84Vpe+bbs6Fe//tSZNmD8ecgTGt6kGIYIxhwBBWSB1yBLo2OjkhXDGHABu2okaWY8ijQPLKSV0/HRUu7HxogqoFUfZ/zhaqCRsHIP/qTHwCFMJ/NmRf+f/r/u1guskZBNfiUjNQ7///fr/7PoQAMwDQABAAAbFxDoeKJxnQWGgmaoFXYaazLp1z7VV6gpw723NSq7JMlpGIkQHNpPI/6j2EihRn/9EG0xcRq+X/T6v7mAXWSMgiwQJBwW/1/6rf//qAAcQNBhe6GG0kQXjtiwTegMJvMXdSIPXL/+1Jk3QHx3SBMI5qgcBUjKHABu3gHoIMvrephiE6MogAQVTCbE86oH0IUCVzMlClUztrMA64G+xF0F/zh6oJHCpP/0CbAISJjvdav9l/ygF1kikEC/AsZDE9/1//2P//9agAM4HgABgAAaqgnNOZhYEEcZzeYlmp0OuNKZc9lLEE9wBtt7FJK5fx6l9ycAvkkHb+psREKM//nASIU0ob/8//z9RxLHKaILkWpKuv/0//1fWAA2AYAAKYn6o6ujApHAV6MZNBoA/AtZjT33eCBu//7UmTigfHdIMwjeZjgEeMIcAG7sAi8hSmOboHAXYyhwADU8FW7GCmLWquXSddnRSopGIcUBsSY4jV/5w9hooUiN/9M0BwcPeNYMr7X//jQCBSlQ5Xi2xZNf2f7v6oAgDAANoN87bETDTJMOkgzXwyLg9L1OqGZdLXv7fhIO5lZCL15JHt2dqjpKBCHAwbIh5gtX5YRuH9CnRv/WYDrAWWhzDV/jQBxSrDlGNglk9//////ppAARAMABmbuAFGQBDWayDQCdGGHnnML/fiUSuQ8//tSZOOD8fkhS+t5mNIVYwhwBBVYB6yBLI5qYUBiDGHAEFSoqN3MZHTXpKSNy/j1L2NxHAG+CjQN2f85zUKUG//MgBCAsk2Rxv///6viEBApUwxVjaxO91pttVo3X+v/6fTVAAsIXBkmEGAhOCgIGWUCSyqPOQOdWGpa/zQOVW7GAYMmxypZb2zlVptJEWcAFTHpn/nHxqAww3/0y4DfhRm///r/EcFKlWGH8fQJ3L/9f/qAAYIEABmpaCdOGpg9CGlg+aZgYk0c5K0x343SSLP/+1Jk5IHx6iDM63iY4BQjKHAEG1oIkIMrrmqDQEuMYcAG7hi/CBaUUDJ8zKBYqujUssBnoCyAoqX/OG+GiAxQ3/1EqCZ8cw1dNX//+/UI4PKVoYaSNUnTVX6v9fR+pQAK0FQABgAAYOtJq8WAzcbcqY90FAB1wbfN5HI7F7cwvsCNWn0lJL5fx9eozE8AaAORBNv5w/hngUWt/+4WwFhOxk6+AeErrQoolK5Oj/+r7/t0f/uAAQIEBso2GsWODSAcRCpn9pgGJuWzD3Yik/CaSf/7UmTmgfIsIUnDmqDgEQMYcAG7sAgohSuOaoOIZYyhgAbtcJWCMtOQis6lMt6yS1UUjUUEAWnFSPO35wr4QFgpZb/1JkMANPB41u+aXi6Hak4IBuFLCWnT7ulP/6//1egAC6B8AAcAAGDcBhrIOioZbFxWDiyxByPY0gwRY6EANRWXhtjZ8V3XWoWIAJEVf6nwPgC7//WBKy8jCr//b//9ARCz6MDZOs2DX//7v/0f/uAEBw2nBDjUPMR1zU04wGKCiIYUkrQa3D8ge6nmFtmC//tSZOQB8e4gS6OaoPASgyhwAbtqCGSFK45qg0BUjGHABu2oOKg8opIvA956taimCQIDbKRcBfQT/OELWEC4HVW/9NAi4GKAhayV/5e/1r1/+sHiHmMAI++2D+z6OoV+r9uTvR9tKgANmFwABwAAZvwm1IAjLQNMGBg7FShyhbTIw+8A1qrcgIIN9yBQE1lnYtgy5Lt/qP4SIGm//rOBMRPvMv/6f/9/DIn5rwHzGwf/p/3f/v//1gAVwLAADGbdJ1aWTDo+KmZKCTQQhH2GP5P/+1Jk5gPyFCBL65qgchLDGHABe7AIeIEojmqDiFgMocAQVPjvZJpexABJLctmZQKFVJHWkLSB0ROpf6j+EsDgf/7BiscSMOU//oDA3bZAGDYjY76f/rr/6gCAMAA4V2DOJYMJLI4wJTOJgwcQPQDULHHjcojU3HE7wJEqZyixL5Hx6D1nCPBoKA0jsZQzQT/UMWsJTgWOof9SZgOWBhlIUAt8MhPNukBILithpv/V/b/3I/o/cABkwsAAMDZMYpGwiJhgkEm0QEQcXyp65fekc//7UmTlA/HZIM3rb2nQFWMYcAFbTgjQgScOboHIbYxhgBVuGNStKMkGLc1M0vUVLV2IuBPRJs/+W8IuGz//OAgIUUob+BwNa6VEw3FCKf///6ftAEEBsCN518r5juZBuGKpgqcIXEE0DDwMAtyIw/78yyNrCGsqgkgOPG3QfTPW8scsqWGhAEnAHCfMux7/3E1Y6EehGq/60C+OYApCAkWJ1KNXX6/3iUHTapYaC7m4139P/X///WABkAYDHfHAKMMChcI2RkDRgSZwDjisSjMu//tSZOIB8d8gzWtjm5AVAxhwAVtOB5iDM63mQ0BFjKHABW5QeTG42UgjwHUQPltn3rUdDJAIGSgtX+S9YRTCj//qI8EBcWwXb//r//ioGtVKtA3aK////+j//soAAlAQAGABp6Em72+CE2ZvGRmaBjDh4j6uHfjcYkVHLVzGeTEQaiUUS7RrVplwTeBvRA0zRNv1kLWE1wOB//zIAAUJ1NkcZzV/+v/65YHpjEIVQIqKX/r2Tuj7v197tflgAI0FQZkqhkdZADWeAoAYoiCHJHv/+1Jk6QHySSDJQ5ug4BODGGABW7AHbIMzrmJjgDwMIcAD6sBtAs1GXnrU7SDHmE4KeniEo61SOikLNAGqDy7f1lusJmgcH//TKABoAVJP//T/lA0bVHfDXcgl/p7/V3U/T850VQAGyFgABQAAZP5GCHYECxcUNQcxRTfKft3IxG4OxuPiQzx3THy2z76jopwD3Ml/6y3hPAof/86CblA3fr/8wMXEdMzW079Tf+t3///WABIQqDTblObBYwOXDXQNFMSE08gZirnyV0m0+y/xmP/7UmTsA/KBIUgru6H2FEMYYAFahgewgSyOaoNITowhwAPlOCiLV6pBMRyRUtDWYCMwNOMHegn/OlusJnAcrf/7G4WkCDTsacq1Ofuu//l+YBBZAUH6Myr7Ke1mEd/7kU+UAAhIVAiw5p8BgQ8CgfNsUyjjYZfh343SSfKu6BmwKQp6eIRjrLUvZIgoErg8n2/nS3hMgFFf/6ygBUcMN6/3//T4QtQXY159f6vT7NP/1gDgYARuoLmp1WBUYcXFpij+LGQDX0Y3UiDR4vnQKOgV//tSZOeD8jIhSuOaoNIaQxhgBBQYB9CBLo5qgcBYjGGAA+Go1WFuMViSZ9JkTIog1CAadeM0Yq/lkkqIQqAd7f/8mQMGhEpE6ki9+T/S39RUWwIeh4j5lNH6+z6f/2fvzJe9AAyQOBiyoGZ0gWASDqMAMASSF1JW5EOW4OvWYeATihV5AsmNHbWYChwNqCfQ/zp/CYgqt//qMwuFFt30/8wEOA7m/V8z/Pez7v/+zVtAAAwAzYNsOiQsyW/OzPjSzIMZBdhHgRx4biGWFOyAyNX/+1Jk4wPx2yBM63mQ0hGDGHAAuJQIZIEsjmqDiGgMYUAQsTiFgiH6eURjNql3Y+MgBeSJgW2f8slaiEJQKj3/9Sx8AkwFllYWLmdfK+f5/zgtjoAnVDjDcz1PI6f68hNdX/0UKgAKgFQABQAAZZgZoY6BWeboIOxSAQBSs1Dc/Zg/O5BIVWu7pjYrM9aWoxFDAcyk8j/nXxEgZl//2C5sZI3Ldf//IA0fRDJHigW///TR/9IAAJAgMwfk4q6TFQ9OCAQyMEAUVzSYCRLfiUROW//7UmTkgfHoIMujmaDgEeMocABPagjMhScuboNIYgxhgBBOEKsvMdgBQtIKklmf3zvP1uYJQTPohupnr/llLDrAx+//rQIeAQdDwMev/6/1coCoOYA1xgWqGbmXf/Xpf///6AAO0HwABQAAdbsal8DDgblEbAQAzIDJS9FFag6xXbgBTjaWyYIEbFxfTIAA3kkHb+d5kDJ//zgFBEylM/HwVnrFW2NcM///q/+zV/9YAgGGAlvGdIUGNahpiOZnAmTCB3RGNADjxuURavNKKmMv//tSZOQB8dQgTCOZmNASwxhgAPmUCNCDJy5ugchpjGFAEFJIpemmxl0W47LSZFImQsuA8KERsVX/kqhYV8Ksn/9BMgAASIEQY1VPmu3/9XH4TFzII7QLwFs/R9rPYm7bV7xaAA0geAAHAABpIgdUSmDlhoYCAElsj2WLRW5SwujonzKEKfsGBKlmu7a1C7CZHVf62x9gy//1HQkZONNfGgVnrElsXoYr6u77f//pAASAMABmMMDmE5KGAoDDUHDMIFRM3ciWu7kYjbq0k2zAw9b/+1Jk4wPx7iBMa5qYYhEjCHABWoYIkIMojmaHwF6MYYAQUDASQjdPGIp1k0F6BfDoAOMRFsN0E/yyewhChTc//2NgMIID1S8aLllL//vr0NRymiBlFygJNR6mt9evvf7f6G0K0QAGgDgbR9m53oysnBiBlICYsFmqCTNXvlc1FMazwmEnKvcpJBWUznaRqLOAG3jaPP/OnsJgwpC//TJgA0UJl9vhgGp1YgejfzE9//////H1ECgAzQVgNNvgwIhTDgcMdtBpg5idrjlxuWPNP//7UmTkA/HfIMzrRpuQEMMYcAG6sAjwhSUO7oHAYoxhgBBQqGIHB0kmFywwKZZrZ2pLKQZyBhEBMpL/nS1hMaFJT//UWQHnR+NThnoCINTqYcORtIskL6fb////+5UABsA0AAUAAGKagYIR5gIimngYaBwZEQeMSv58qB9X71XboBYDLKe3STnWdBPUZh+AGiHkQTQ/nT2ExoUZf/oG4ZkQadjf/f0//wRCFOrDBGPtE6e//b3fR3P1fxUAClBUG3u58ywBRwFmJn0GAmbbUNtI//tSZOQB8dsgzWt4kNAPoxhwAbqwCRiDKY7ug4hsjCGAEGz4hy3Jp2mZCZNKzctyqNcetW7ESBFjIU8/86ewmLCh7/9ZQBCOGm//z9fi6J1IyBABwWvhq/9P//3e3/t6FQALKDgABQAAKxkziOQJINUTELsv6EnG9e6ZfaHJXDidYGOp52DApmdbUdZkJCBxBOpf6z2EXClf/0QsGQYXl/O3F0ukK0B1UPGv//9n//p/pAMAw9JxMtVzAaY6snA0gZShGIKbVHri84589JVUDBb/+1Jk4wnx9SBLI2ajkBGDGIABWqIIYIMrjmqDSEiMYcAFbsAZMSN08skHed5n+7kfHCD03a5T4Z9+dISoJtwdO/+mYDlgYwyCwVT/8//f+1QlRPpJAQDwU6BVAtNvcj9v3f+u9+n9ygAKwDgABQAAYmgBoMzITBvcAXT6FdFzm8jkdr8yiJhzaze7rU3HZat2J8EU4hWf+s9hEWGnf/rLAJCibGY+oVBlqvihsUyNF3u/////coAAIJARwAA5qdh6qIBLh3oz1BBwsqUuVDtqTf/7UmTmg/IpIEtrmqDiF+MYcAFbXAd8gy6N5oOAWYyhwBBV2GaRrYCKxexKIDieC6kekM6AOhVf/WewiYmX/9hOY7kYV/X1CnC33AoUgdhSoa///6v/2foRADAgADZfvNvWQwuxMDJjRH8xMAPuESIIfuVrIdbKSpOA2gUoiduQQi+zs7LOD7BoQAy0sWYZoJ/nRvVBGSCx7/rUmYCvgYB+DgBq5lv+X9bon//hiBf1xFJDfjOW0/09n+m9FbgAMiDQABTIv02unMAMzVgYwBGB//tSZOUD8fUgTGuakGISIxiABBU+CMSDJQ3mjsByDGGAANTwowf+v83F+pa+fcn1N+04b+5qm4q6t0BlwCqw9mj/5awiRGF//MgFhBATZwur///f+I4M/MYfhtVsB7R/6f///t/oAASAMBxFkZnoBwALupMnGFB5xYspNxIYfd5fpHbMmLR4PikoicTwTZSNJEvB0IHGHC2mzf5LVBFOLd/9SZMAfAbUj/LrjWEDsdBJHAimpp/6v/6v///UABEABRFKjP45MQ0OYNMFVFTZxDj/+1Bk4YHx6yBMa5qgchDjKHABu7AHcIM17WJDgFCMYcAQVPjuwVOy57MLrZCpGgyumeLTs7PWo6HCBPJYWr/LWEbpf/qKYTyOA1eM+NQR2ukEINcNg/////9n1ABAMAMADXIsPgAczGMMrGTNGow8wOgOURGvxuMPNXpmsmen48SyevHolipk0NMmAsvA76IRuTiaH8hKgk5Fs//YrAZAUFppPAxJ/39X4+g4NE6ECkAs2Qiv2fX/2f/6QALCDgYfh5mEeEiYPnmdcGAHHbJt//tSZOiB8lshSMOboHAZYyhQBbuiB+iDL63ihUhYDGHABu1wtDtNDLb36RwzKJ0g5ZSSuV8TZRjsbDKgHcBsn2/y1hEqMD/9MmAEjhNXf3//kcGVY6ElUBZQiv/7/3f/7P6KAAjQNAAFAABnTyKwoXBlLYwMcUKmzMO+ziHIu3tJQqPCjp9tualV2dktRiH+AwxJpH/nsItFQ//nQHtIcavGP///9fsTgZkbpVkhZRCrP////I6gDkcAMyakNTkhAjBToWSlxwOUe1s8rj0OWbT/+1Jk4gXyFSDKI3SMQBRDKHAEFT4HhIMtrmphiD+MYgAG7sD+mNCq0368emt2dtZgKHA5mJ9D/UewicTD/9BMN9FtShv8uX3/+ZBwSJiEKqAsITz/Hf/7f/bVANAwAwAMq04y5OSR9NOKDBaIwJMNGU0vET2JwIxaXyhaZmDCJDcOUkNxvidSN2KwtoI9gixbPP+cJaoJLQcc/+ozGcAq6D3ysLVv6///1XArIykhvmx0wLfp2bW2/r/V/6d7QAHgDQABTP284yCLrkUyYiSpmP/7UmTnA/JOIMlLm6ByFYMIcAQVSgfYgyyOaoHAUgwhwBBUeB2G1eBKRu7S8rr1BQ4d7eojdzcrUYiRAc2k8j/qPYSOGmf/0QbTFxGrxnf/r/60wZkapDNDQ3axt3///b/SAARQFBhXCc6/mEBQGkTa3MmEQzOm7EYn4OnZ51TdBKAZ9MsGVJnbWYB1wN9iLoL/qPYSWFCf/oE2AQkTHX///+dBmaqOxw0n03P0AiCa4TBpw0GATsBkqYobgVAgSOR4KOPG3ggqbhhGczyXCCd3//tSZOQB8fkgy+t6mGIUYwiAAbtcB3CDMS3qYdBUjCHAEFVYIw7b/2O/resr0+oIdADpQSOxntXlghKggZg7A3/qOi6AApCeyJGqQv6//L/MxMkTUE/wKbzZ3/6P6/d//dqqAAsQWAAGAAAWpDZywKKCzYdUYRxgryR04fkDQ6aZZ8DKnGxcuk67JIpaSIrwHkZEkf9R7DWgwH/9AO2LEjCvyeKSOI7sJw9p3/093/u6vZWAAWgKAAIamGHwSpiIUBpsRNYFBzgQJX8OSh94dsX/+1Jk6AHyUiDJS5ugchkDGGABu2oHnIMvrZpuSE8MocAG7eAbmh5ZWNP16Cg/WPefrdAi+CYJXrf/84ewkcKg/+tAjwIdFEF73/bulKxSXiM6ilfacM/9/6fs/c3/sroADQh4AAUAAGF/mTxPWRRjNQElOjIzBk5PN5jUgMEfbfCkjcv49SfTIAArEkHb+psS0Ly//pBZIRU7H/5fLI2lsCcYKkj7fb/0/+n/GACNENc1LhxAymjjhosgZoZHqGocGNfht9IValKZRkkcGBVLlP/7UmTkgfHkIEsjeZjQDqMocAG7agmEhyCubofIWAxhwBBSEGYdyaikiikRULJgP2fD7FV2/LBVwgHhTY3/WgZjkAZU4Cg4l4Py8/6/LI9UAQvgeiPtz/uV/s/6FV+6/qoADTB4AAYAAGLRgMjCwqhABexQQ7zX6fmVRlv41A6Zg88oRblcESTatHWcEtAphir/U2L0GJ/+osg1siiLwlv//p/6hEG6HYCPa/s7st+7/9//+1gAIGAGaDrGm5ZhBSEXhowmZeSnBlyI7uSiG3yx//tSZOQB8fUgzGt5mGARgxhwAbqwCFyBK63mZ8haDGGABupQmFlmHNqOcYIBYXj6egTYXoA5h8WA3QT/ONh/QYmb/6BuAMYDBJeFi3/q/mJs6ANSgKajczt/rudu1Vf//121AAcANBn8qeEaGBgA9MCNeCgKawIM1hdC6TQOVXiMKNlJY0RCdynrc1HOAY5jaPP/OcjQYQ/+pMoALkBU3/8+vv51JzgQkBH5NP7dP/Z8p9HpAAQIEABmJH+LgIyTg3wM1rUziA6S9gjlxukg+/b/+1Jk5YPx1CBM61iY4hJjKHAEFFoI+IEirm6B2GOMoYAQUkjdQ1oYmKRczIwoVI0aSJSBoBAyyYc0yX/OcwBh5v/qKIAp0WcTpwx5v+XvPhuQU4ClDFU9ez/yvZ+rTs/1KgAGgBAcbEay2I1BhQJlI4KNHlCsebSISWfzqNjBENr9IgsWT/UZhqAHyZBE0P5x8agMh/+gXwbGRGqXl8v/r/QZI4GgEgOxb9O21nv/+v6wCAMAIVzxn2YBY0DyMyCeMVNzQ0xY7XIcl7m2JSvIy//7UmTlAfHyIMxreZByFaMYcAC5XAiEgyctmo4IWYxhgBBQuJkFhadyiMZ6iparOWhhg/cIuWj6Cvlg/hAACl1v/UZjUCF4IBlYWqqOXM/+/zC5kHUBHAJf/u//9lMAAkgUAAQAAGukJz22YaDjWUZmKByCEfiiD9yuOYXrbuHGgRES+vMTH4Y5Y/rGsm6cjD85b//nD+GsCqW/+5qBhCI+NUsif+EObIkAG0AlfZ/2ft2s///uAAhAMBivqZJVA1KNZiG+VCgWSxB/5fehVuo2//tSZOQB8eYgyyNmo5AUQxhgBBNYCICDKY5qgYhYjGGAAL3gMQRXbqYW5/j76jMNwBouRRNX9R/DPApn/9AmwDGiY/qq3/8oG7mQJFgVIGoc936ulP2f/+z6lQAAMAIADTCxOqxsyJ/MgIjUjoidhuaKA91JRH6talYEZorCw9O3IjGckVLVZyoHxgfMIIeVDdD84W6wgMA6K3/1j6AAaC0k8iE/f/7y+RhJpGwIFQKsDU9zuY4v9vp//+z1AANQHgADGNUBliQVSQfoBaAoKBD/+1Jk5IHx1SDLI0ObgBTjKGAEDZII3IMlLm6ByEoMIYAQThDpTc5ak0gl7DDHGW5bTMDCgtRjrSGdAHQVX/1PhkgcD//QD7DSNy6frv/5KD3MgQQAfENUq0Vevs/+r60AB0hUAAYAAGQxQcfggMHpTAtUDAky5j9yt4H+zuNjJGMfwQPltn31HRKgQaYL/1H8JAHA//qKYJWOxyV//r6CMG53RiQUsL3Xf/8d/+//5sACEAQAGZ9iJyo8mETMZGC55Rm7Ef+bLn5uUr3z1K7Rzf/7UmTmg/IsIUrreZnyEoMIcABZogc8gSyN6mHAXYxhgBBQ6IDx1FqZlOS1LVplwP3A5IwW80TQ/UW6wkYBwX/+XgMEQEES8aL/56slBhqcEFwKsTz/7f/7v0//+XUAAoAQGILSbnThgA0GWwaVEMFQSaHCyk3clETfmkp3ANK0Ghkvp5RKO4b1v8saZgJzBDe2uf/1EvWEuB2f/qTIYBjgG9ef/v/f1/8qFPmMcCdTY7vZ9+319vf/r9IAEYBoAApqycaDIppB3Wb5ZmHnso6s//tSZOgB8kshSUuboHIYwxhgBBSEB0yBM63mYYhVDKGAEFCwKuyp5Mbj4jvcA4IHy2z6Wo6HeATMpLV/n8IqKv/6iyCGJMGrxnX/+VBnbMcgh6VsPR9P/f/937fQAAbINAAFAABgKmGCGkF2IT6MFRC4o6BdpjX4bhh5r9l/jMFEWr1SZlOkVJoazARmBpxg70E/8t1hEgRP/9jcLSBBp2P/+UvykIHmYJJIFDqaGv////+fAAhAEABnFoxv3GIYMw8oMaXjEyA30jVicWNRmB//+1Jk5YHx3iBMa3qQYBSDKHABWoYIwIMpjmaDiFEMYcAQUTAq7SDIT4aCJevODj6bmz/PBSAqkFRPs/6yXrCJ4O3/9SY6AF0Qh4zV/fzIGdq5BPDSTY7//6P///RRAAZAEABgAZh1puBHGAyiaiCBrWBkEZ12DE2sRiXvbZmmMgnGw24xsVmetKikUQagAM+lHORV/WS9YTOA4P//KIAJkUETqWVT9v7rv/WzgL7XSDEEhmw1v1yX//jv/9NwAGSAoMrN84KQwcOAygiK2IhJ6P/7UmTmgfIlIEojmpnwGEMocAW6ogdogy+t5mNITwxhwAbuUAzNWnQzKopuy4wHpAUEVECyY0VJtrMA1MDzQg6Cf9ZbrCbAcf/9AmwbBohqR/95/y//TDg0ToQLAPXMP7f/puR/0//0KgAMyHwABgAAZ5WIGjBQDnkFkAKDY+YeOLzj59rwAYcM0t08ojHUE1He5UBfpLO39Z/DXBp//6zgQGJ87X+v/n+ZhddE6EloBYdnG////o/7vrAAkAWAAFMT/DD1oYiGTBgFwtATRudA//tSZOcB8h8gS2uaoHITIxhwBBV2CJSBKY2yjohJDKHABu6IkxBMv/UEhVa7umNisz1pajEUMBzKTyP+s/hrgov/+wXNjJG5fJ4FZGqVbIWf8v/9P9e3/RZ1VQCEIAA4vLT81vMono6GNTK6RMUF0xuZZL4SaRNRsTrNjoDih1AkxBsd0u7Oo6RgNSIGjkCzzBNC/lkrMiDU0DwaX/UmYCvgYZyFAitf//9X7x/ArIzJDXC13WT//9n//UABIQsAAKYBkZhM6BUFj0CMMVXGRoX/+1Jk5oPyNyFKY5qg0hjDGGABu2oH+IMsjmpjAF8MocAA1PCzPPE4MrfXeAwKRklunpJZ1lqX0yAAMSSQdv63xLgob//nAIBiZNnC/v+PsPEiYg1RwImWDPq/////1AACABAbuVJ4WfmFGuaNKAIUAJKBpa6wUByOQudTzSipmfpemmxjUW5lrGtjjlKUEQHhQiNiql/LJtRDHgqDf/0EyAABIgRBjVX/R//k/6/9vWq7GqOzQuN0x3//Vd9SP9P+sABxA0AAUyBUjAycEVk7RP/7UmThAfHhIEzreJjiFWMYcAQVhAdUgTGt6mGISAxhwAbuwAyYMviC3TU4ElEBvzq9B5MoQJ2DAslnu2s4HlCGRZUv+d6QMq//1FMIIjsF7r//xZg/I0ozGDaHaV//d9H///TVAAxQWAAFAABoOEYYYgQBJyAxuRCibykMtwhFqTWJtmAFoaZbp6SWdZ0E+mMYAH0kE2/r4+wZF//0gbqDhOx+IcKZGqMvA+v2glq//93//u/rAARAMBpetnOgyYJNBr4ImenAEcfQmvx+5XKI//tSZOgB8l8gSMOaoVIUgxhwAbtcB7yDMa5qg4hKjCIAEFT4tXrN1MbFT5yxlUu49aVFI1EJgOGBGkav/Otho4MSv/6kyGACjhA3/5fxdipImoFTEC13KyoACMgQAGABiRI5quIhgoZgXDk2tAySo/LVazqzUMrPkU425uAJMjilSP0OloOi6RiRwQBwMcyICZL/lkqYQkQpuf/6iVANWjcJ0YM+CMFRuIqlE8HPGU//Zp9+j/9AADQCwAAx6Lxy8IqyP6JCr0sCzbjHHdyMU8X/+1Jk5gHyRyFJI5qhcBmjGHAEG5IHiIEvrmphiE2MYcAG7lBwrwQFVjiZpkBm5eXqTFCAdCk4m39Z7CYQpp//0w8IsKUJc/9YrI7p4CouBjDLba//dX///+oA0DADAAwqqAxHUYAhiajgAZcAGJjJyxIpFs8rmn4pZUyEyFZFgm1uVRrjqWqikai4gG5YmRadvzpLYQpQdef/1GY6AHrg+5s5Xf//9desVSWXeFRQnvqPmn9n1fbz/2+8XAAcwnAAGOrAP1xAMk344wbAYUbRrv/7UmTjA/HyIExreZjiEsMYcAG7sAg0gSqOaoOAOQxhwBBVoeOXG4cc5534R/BSK47EogOP6Wzo60hQoHIXUv9Z7CdCm//ohZOQZGHM9X/9/F2YLQIUFrsWzO/6//7m/t/vAAiAVBmPMmpkUBdp3CRlXpcQ9YNqTySiZjda62AKxHIp6eWSDrOz6jMOoByqRRND+stYT2Drf/oE2AIMSVf//4MjTgOg5GXW7v+//s/9//pAEAwAzVXlPPtUyAQznQAOZRNO7NbEUHZw/kbeydpm//tSZOkB8logyeO6oOISYxhwAVuwB5CDMa0abkBPjKHAEFT4kmpnjQ2e3Ko1x61Wc0FxgMyhMyo7fnSEqCbsFkyf/qWPwEGAy5PC1fnz9/8/+vvB0TOA6Sj6Nb5////q7//TkgALGBgABQAAbJyGLlwIKg0VMAPqMaoHsdeVySUV6RnZhgOq+wgcP0mXWkK6B0ITqX/LWE5iZf/0A38ZI3JfA0GPohWj/o///V//1hCMTdSMgSiMEkOMVhVDLMzROEDGvB243FGhy6SpSA2gUoj/+1Jk6IHyTCDJy7ug4hhDKGABu2oHuIMzrWYjgFYMYcAQVHCduQQi+zs7InB9g0IAZaWLMM0E/1iqdQTvhsS/+pMwFfAwD8HADV28MQ0e4Swxv8Dnb7/6f6a//7vZAAVQFABgAa7Pp2RPmWvh2JSImMs2Ghyz3clC8315TLlMdLSIBv7mqbiTLQ3NBCcDggBpmjt/ISoIrSc//lIAgoMqbI499//4Ygk9wq1xf01ozT6u7y3/mP1ddlwAGJAwML1sxGXkrianmBMDTTEWiLYJBf/7UmTkgfHqIEsjmphwEwMYgAFbhgjYgycuaoOIYAyhwBVuwPkGOENmUeqOwgZmddJHRSGNAH4SL/8tYRqLZ/+mYBc8Ld8aRRSrFi2Lxrq+vqq9On2e3Z0/12IAADADAA3BEzmslEFufWfGeqRlAkdUIiwA78biE9lQqNEjs1Sbt0Um6zs7InCVCYYCrMjjql/nBvVBKCCxxf/rQH2ELEToajBn+e11/q8jRgpGQQWQLkjFRL/UpP9P6fkvXFdQAErDwBJmwAAFQFCQ5qkZC7DO//tSZOOD8eggTGtjm5IN4wiAAPqwCRyFIq7ug4BMjCHABWrA5evd00x1J08NtLf+c8uDgOMiX3MOszDnf/ZAvhRicGn/1IDkLOntQQbWnkmXywAIiGB7/4I8fDD+ADgD//9SGtzpLEMFxhFCBIkXTcH/9VkAACQAAADSAAA4NbzaghBoGTz/zJJiTme3L/FA+YwC9Wa/wM0nCzBNG+RYBBUDTH2X4NjBIkHCEQ6Syl4GQVgNMQ1UK2Ick6P8AEoHyh6Qnsri4UknRX/Dkg6IRuL/+1Jk5oPyIyFK45ugcheDCGABWoYHEIEwjmZjQFUMYYAG6sBiGXReCg+rX/IMMqPxgO4ipASKE///+XjEwY2MQAAAAwEAAEX9P9k/wqJlTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UmToAPJFIMnLm6ByGwMoYAQUSAnEp0m1loAYUIyigoFAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//tSZNuAA8pCSU5ygAAOQvl0wAgAQAABpBwAACAAADSDgAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=';
-  let _ambientCtx     = null;
-  let _ambientBuffer  = null;
-  let _ambientStarted = false;
-  let _counterBuffer  = null;
-  const _counterB64   = 'data:audio/mp3;base64,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
+  // Weekly chart
+  if (Array.isArray(old.weeklyXp) && old.weeklyXp.length === 7) out.weeklyXp = old.weeklyXp.map(n => +n||0);
+  out.weekStartKey = old.weekStartKey || '';
+
+  out.dmpTitle = old.dmpTitle || '';
+  out.dmpSub = old.dmpSub || '';
+
+  return out;
+}
+
+function loadState() {
+  return new Promise((resolve) => {
+    // Try Firebase first, fall back to localStorage
+    const tryLoad = () => {
+      if (window._loadFromCloud) {
+        window._loadFromCloud().then(data => {
+          if (data && !data._wiped) {
+            state = migrate(data);
+            resolve();
+          } else {
+            // Fall back to localStorage
+            const local = localStorage.getItem('sys_state');
+            if (local) {
+              try { state = migrate(JSON.parse(local)); } catch(e) {}
+            }
+            resolve();
+          }
+        }).catch(() => resolve());
+      } else {
+        const local = localStorage.getItem('sys_state');
+        if (local) {
+          try { state = migrate(JSON.parse(local)); } catch(e) {}
+        }
+        resolve();
+      }
+    };
+    if (window._firebaseReady) tryLoad();
+    else {
+      let attempts = 0;
+      const iv = setInterval(() => {
+        attempts++;
+        if (window._firebaseReady) { clearInterval(iv); tryLoad(); }
+        else if (attempts > 60) { clearInterval(iv); tryLoad(); }
+      }, 100);
+    }
+  });
+}
+
+// ============================================================
+// XP / LEVEL
+// ============================================================
+// Total XP needed to reach a given level (cumulative)
+function totalXpForLevel(lvl) {
+  // 50 + 60 + 70 + ... — quadratic-ish curve
+  let total = 0;
+  for (let i = 1; i < lvl; i++) total += 50 + 10 * (i - 1);
+  return total;
+}
+function xpForNextLevel(lvl) { return 50 + 10 * (lvl - 1); }
+function levelFromTotalXp(total) {
+  let lvl = 1, acc = 0;
+  while (acc + xpForNextLevel(lvl) <= total) { acc += xpForNextLevel(lvl); lvl++; }
+  return lvl;
+}
+
+// Daily Quest XP — diminishing as level grows
+function getQuestXP() {
+  return +(5 / (1 + state.level / 10)).toFixed(2);
+}
+
+function addXP(amount) {
+  amount = +amount;
+  if (!isFinite(amount) || amount <= 0) return;
+  state.xp += amount;
+  state.totalXp += amount;
+  // Weekly chart
+  const wk = weekStartKey();
+  if (state.weekStartKey !== wk) {
+    state.weeklyXp = [0,0,0,0,0,0,0];
+    state.weekStartKey = wk;
+  }
+  state.weeklyXp[dayOfWeekIndex()] += amount;
+  // Level up?
+  let needed = xpForNextLevel(state.level);
+  let leveled = false;
+  while (state.xp >= needed) {
+    state.xp -= needed;
+    state.level++;
+    leveled = true;
+    needed = xpForNextLevel(state.level);
+  }
+  if (leveled) {
+    showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
+  }
+}
+
+function addLevels(n) {
+  for (let i = 0; i < n; i++) {
+    state.level++;
+  }
+}
+
+// ============================================================
+// PANEL SWITCHING
+// ============================================================
+function switchPanel(name, btn) {
+  document.querySelectorAll('.sys-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sys-nav-btn').forEach(b => b.classList.remove('active'));
+  const panel = $('panel-' + name);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+  // Refresh dungeon view when entering
+  if (name === 'dungeons') {
+    checkPeriodRollovers();
+    renderDungeonView();
+  }
+  if (name === 'status') {
+    renderStatus();
+  }
+  if (name === 'quests') {
+    renderQuests();
+  }
+  if (name === 'mission') {
+    renderMission();
+  }
+}
+
+// ============================================================
+// HEADER / DATEBAR
+// ============================================================
+function updateHeader() {
+  $('player-name').textContent = state.playerName || 'Hunter';
+  $('level-display').textContent = state.level;
+  const needed = xpForNextLevel(state.level);
+  $('xp-display').textContent = Math.floor(state.xp) + ' / ' + needed;
+  $('xp-bar').style.width = clamp(state.xp / needed * 100, 0, 100) + '%';
+}
+
+function updateDatebar() {
+  const d = new Date();
+  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  $('datebar').textContent = days[d.getDay()] + ' · ' + months[d.getMonth()] + ' ' + d.getDate() + ' · ' + d.getFullYear();
+}
+
+// ============================================================
+// QUESTS
+// ============================================================
+function renderQuests() {
+  const list = $('quest-list');
+  if (!list) return;
+  // Daily reset check
+  const today = todayKey();
+  if (state.lastQuestDate !== today) {
+    state.dailyQuests.forEach(q => q.completed = false);
+    state.lastQuestDate = today;
+  }
+  if (!state.dailyQuests.length) {
+    list.innerHTML = '<div style="color:var(--text-dim);font-size:12px;padding:14px;text-align:center;">No quests set. Tap EDIT to add some.</div>';
+  } else {
+    list.innerHTML = state.dailyQuests.map((q, i) => `
+      <div class="quest-item ${q.completed ? 'completed' : ''}" onclick="toggleQuest(${i})">
+        <div class="quest-check"><div class="quest-check-inner"></div></div>
+        <div class="quest-text">${escapeHtml(q.text)}</div>
+        <div class="quest-xp">+${getQuestXP()} XP</div>
+      </div>
+    `).join('');
+  }
+  // Progress
+  const total = state.dailyQuests.length;
+  const done = state.dailyQuests.filter(q => q.completed).length;
+  $('quest-count').textContent = done + '/' + total;
+  const pct = total ? (done / total * 100) : 0;
+  $('quest-bar').style.width = pct + '%';
+  $('quest-pct').textContent = Math.round(pct) + '%';
+  if (total && done === total) {
+    // streak
+    const today = todayKey();
+    if (state.lastQuestDate === today && state._streakAwardedToday !== today) {
+      state.streak++;
+      state._streakAwardedToday = today;
+    }
+  }
+}
+
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+function toggleQuest(i) {
+  if (i < 0 || i >= state.dailyQuests.length) return;
+  const q = state.dailyQuests[i];
+  if (!q.completed) {
+    q.completed = true;
+    addXP(getQuestXP());
+  } else {
+    q.completed = false;
+  }
+  renderQuests();
+  updateHeader();
+  saveState();
+}
+
+function openEditQuests() {
+  const wrap = $('edit-quest-fields');
+  let html = '';
+  for (let i = 0; i < 5; i++) {
+    const val = state.dailyQuests[i] ? state.dailyQuests[i].text : '';
+    const label = i === 0 ? 'QUEST 1 — REQUIRED' : 'QUEST ' + (i+1);
+    html += `<div class="modal-field-label">${label}</div>`;
+    html += `<input class="modal-input" id="edit-q${i}" type="text" maxlength="60" value="${escapeHtml(val)}" placeholder="${i===0?'Required':'Optional'}"/>`;
+  }
+  wrap.innerHTML = html;
+  $('edit-quests-overlay').classList.add('show');
+}
+function closeEditQuests() { $('edit-quests-overlay').classList.remove('show'); }
+function saveEditedQuests() {
+  const out = [];
+  for (let i = 0; i < 5; i++) {
+    const v = ($('edit-q' + i) ? $('edit-q' + i).value.trim() : '');
+    if (v) {
+      const existing = state.dailyQuests[i];
+      out.push({ text: v, completed: existing ? existing.completed : false });
+    }
+  }
+  if (!out.length) { showToast('AT LEAST 1 QUEST REQUIRED'); return; }
+  state.dailyQuests = out;
+  closeEditQuests();
+  renderQuests();
+  saveState();
+}
+
+// ============================================================
+// DUNGEONS
+// ============================================================
+let currentDungeonPeriod = 'daily';
+
+function ensurePeriodKey(period) {
+  const d = state.dungeons[period];
+  let key;
+  if (period === 'daily')   key = todayKey();
+  if (period === 'weekly')  key = weekStartKey();
+  if (period === 'monthly') key = monthStartKey();
+  if (d.key !== key) {
+    // Rollover: reset this period
+    state.dungeons[period] = emptyDungeonPeriod();
+    state.dungeons[period].key = key;
+  }
+}
+
+function checkPeriodRollovers() {
+  ['daily','weekly','monthly'].forEach(ensurePeriodKey);
+}
+
+function renderCountersGrid(period) {
+  const d = state.dungeons[period];
+  const salesGrid = $('sales-counter-grid');
+  const sponsGrid = $('sponsoring-counter-grid');
+  if (!salesGrid || !sponsGrid) return;
+
+  salesGrid.innerHTML = SALES_COUNTERS.map(([k, label]) => `
+    <div class="counter-card">
+      <div class="counter-label">${label}</div>
+      <div class="counter-controls">
+        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',-1)">−</button>
+        <div class="counter-val" id="cnt-${period}-${k}">${d.counters[k] || 0}</div>
+        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',1)">+</button>
+      </div>
+    </div>
+  `).join('');
+
+  sponsGrid.innerHTML = SPONSORING_COUNTERS.map(([k, label]) => `
+    <div class="counter-card">
+      <div class="counter-label">${label}</div>
+      <div class="counter-controls">
+        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',-1)">−</button>
+        <div class="counter-val" id="cnt-${period}-${k}">${d.counters[k] || 0}</div>
+        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',1)">+</button>
+      </div>
+    </div>
+  `).join('');
+
+  updateCounterTotals(period);
+}
+
+function updateCounterTotals(period) {
+  const d = state.dungeons[period];
+  let salesTotal = 0, sponsTotal = 0;
+  SALES_COUNTERS.forEach(([k]) => salesTotal += (d.counters[k] || 0) * COUNTER_XP);
+  SPONSORING_COUNTERS.forEach(([k]) => sponsTotal += (d.counters[k] || 0) * COUNTER_XP);
+  // Plus sales XP from logged sales + IBO XP
+  salesTotal += d.salesXP || 0;
+  sponsTotal += (d.sponsXP || 0) + (d.ibos || 0) * IBO_LAUNCH_XP;
+  $('sales-counter-total').textContent = salesTotal + ' XP';
+  $('sponsoring-counter-total').textContent = sponsTotal + ' XP';
+}
+
+function adjustCounter(period, key, delta) {
+  const d = state.dungeons[period];
+  if (!d) return;
+  const prev = d.counters[key] || 0;
+  const next = Math.max(0, prev + delta);
+  d.counters[key] = next;
+  // Only award XP on increment (not decrement) — decrement is for fixing mistakes
+  const change = next - prev;
+  if (change > 0) {
+    // Which stat does this counter feed?
+    const isSales = SALES_COUNTERS.some(([k]) => k === key);
+    if (isSales) state.stats.sales += COUNTER_XP * change;
+    else state.stats.sponsoring += COUNTER_XP * change;
+    // Also player XP — half rate
+    addXP(COUNTER_XP * change * 0.5);
+  } else if (change < 0) {
+    // Decrement undoes stat too
+    const isSales = SALES_COUNTERS.some(([k]) => k === key);
+    if (isSales) state.stats.sales = Math.max(0, state.stats.sales + COUNTER_XP * change);
+    else state.stats.sponsoring = Math.max(0, state.stats.sponsoring + COUNTER_XP * change);
+  }
+  const el = $('cnt-' + period + '-' + key);
+  if (el) el.textContent = next;
+  updateCounterTotals(period);
+  updateBoss();
+  updateHeader();
+  saveState();
+}
+
+function switchDungeon(period) {
+  currentDungeonPeriod = period;
+  document.querySelectorAll('.dungeon-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.period === period);
+  });
+  renderDungeonView();
+}
+
+function renderDungeonView() {
+  if (!state.secondAwakeningComplete) {
+    $('dungeons-lock-screen').style.display = 'block';
+    $('dungeons-content').style.display = 'none';
+    return;
+  }
+  $('dungeons-lock-screen').style.display = 'none';
+  $('dungeons-content').style.display = 'block';
+  ensurePeriodKey(currentDungeonPeriod);
+  renderCountersGrid(currentDungeonPeriod);
+  renderSalesLog(currentDungeonPeriod);
+  updateBoss();
+}
+
+function updateBoss() {
+  const p = currentDungeonPeriod;
+  const d = state.dungeons[p];
+  if (!d) return;
+  const targets = bossTarget(p);
+  $('boss-label').textContent = '▶ ' + p.toUpperCase() + ' BOSS';
+  $('boss-title').textContent = targets.name;
+  $('boss-sub').textContent = targets.sub;
+  const pct = clamp(d.totalPV / targets.pv * 100, 0, 100);
+  $('boss-fill').style.width = pct + '%';
+  $('boss-progress').textContent = d.totalPV + ' / ' + targets.pv + ' PV';
+  $('boss-time-left').textContent = targets.timeLeft;
+}
+
+function bossTarget(period) {
+  // PV targets scale with rank — IBO=100, 3%=300, 6%=600, 9%=1500, 12%=3000, ..., Platinum=7500
+  const rankPV = [100, 300, 600, 1500, 3000, 4500, 6000, 7000, 7500, 7500, 8500, 10000, 12000, 15000, 25000];
+  const monthlyPV = rankPV[state.rankIndex] || 100;
+  const weeklyPV = Math.round(monthlyPV / 4.3);
+  const dailyPV  = Math.round(monthlyPV / 30);
+  const now = new Date();
+  if (period === 'daily') {
+    const end = new Date(now); end.setHours(24,0,0,0);
+    return { name: 'Daily PV Target', sub:'Hit today\u2019s sales mark.', pv: dailyPV, timeLeft: fmtTimeLeft(end - now) };
+  }
+  if (period === 'weekly') {
+    const end = new Date(now);
+    const day = end.getDay() === 0 ? 7 : end.getDay(); // Mon=1..Sun=7
+    end.setDate(end.getDate() + (7 - day));
+    end.setHours(24,0,0,0);
+    return { name: 'Weekly PV Target', sub:'Hit the week\u2019s sales mark.', pv: weeklyPV, timeLeft: fmtTimeLeft(end - now) };
+  }
+  // monthly
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  return { name: 'Monthly Group PV', sub:'Defeat by reaching next PBS bracket.', pv: monthlyPV, timeLeft: fmtTimeLeft(end - now) };
+}
+
+function fmtTimeLeft(ms) {
+  if (ms <= 0) return 'RESET';
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  if (h >= 24) {
+    const d = Math.floor(h / 24);
+    return d + 'd ' + (h % 24) + 'h';
+  }
+  return h + 'h ' + m + 'm';
+}
+
+// Sales logging
+function openLogSale() {
+  $('sale-pv-input').value = '';
+  updateSalePreview();
+  $('log-sale-overlay').classList.add('show');
+  setTimeout(() => $('sale-pv-input').focus(), 100);
+}
+function closeLogSale() { $('log-sale-overlay').classList.remove('show'); }
+function saleTierOf(pv) { return pv < 50 ? 1 : pv < 100 ? 2 : 3; }
+function saleXP(pv) { return pv * saleTierOf(pv); }
+function updateSalePreview() {
+  const pv = +$('sale-pv-input').value || 0;
+  if (pv <= 0) {
+    $('sale-tier-display').innerHTML = 'Tier: —<br>XP: —';
+    return;
+  }
+  const tier = saleTierOf(pv);
+  const xp = saleXP(pv);
+  $('sale-tier-display').innerHTML = 'Tier ' + tier + ' (×' + tier + ')<br>+' + xp + ' Sales XP';
+}
+function submitSale() {
+  const pv = +$('sale-pv-input').value || 0;
+  if (pv <= 0) { showToast('ENTER A VALID PV'); return; }
+  const tier = saleTierOf(pv);
+  const xp = saleXP(pv);
+  // Log to ALL three periods (since a sale today counts for the week + month too)
+  ['daily','weekly','monthly'].forEach(period => {
+    ensurePeriodKey(period);
+    const d = state.dungeons[period];
+    d.sales.push({ pv, tier, xp, t: Date.now() });
+    d.totalPV += pv;
+    d.salesXP += xp;
+  });
+  state.stats.sales += xp;
+  addXP(xp);
+  closeLogSale();
+  showToast('+' + xp + ' SALES XP');
+  renderDungeonView();
+  updateHeader();
+  saveState();
+}
+
+// IBO launch
+function openLaunchIBO() { $('launch-ibo-overlay').classList.add('show'); }
+function closeLaunchIBO() { $('launch-ibo-overlay').classList.remove('show'); }
+function submitIBOLaunch() {
+  ['daily','weekly','monthly'].forEach(period => {
+    ensurePeriodKey(period);
+    const d = state.dungeons[period];
+    d.ibos += 1;
+    d.sponsXP += IBO_LAUNCH_XP;
+    // Also increment the New IBOs counter
+    d.counters.newIBOs = (d.counters.newIBOs || 0) + 1;
+  });
+  state.stats.sponsoring += IBO_LAUNCH_XP;
+  addXP(IBO_LAUNCH_XP);
+  closeLaunchIBO();
+  showAlert('NEW IBO\nLAUNCHED', 'A new soldier joins the army.\n+' + IBO_LAUNCH_XP + ' Sponsoring XP', '⚔️');
+  renderDungeonView();
+  updateHeader();
+  saveState();
+}
+
+function renderSalesLog(period) {
+  const d = state.dungeons[period];
+  const wrap = $('sales-log-entries');
+  if (!wrap) return;
+  if (!d.sales.length) {
+    wrap.innerHTML = '<div class="dungeon-sales-log-empty">No sales logged this period.</div>';
+    $('sales-log-summary').textContent = '0 PV · 0 XP';
+    return;
+  }
+  // Show most recent first, limit to 10
+  const recent = d.sales.slice(-10).reverse();
+  wrap.innerHTML = recent.map(s => `
+    <div class="dungeon-sale-entry">
+      <span class="dungeon-sale-pv">${s.pv} PV</span>
+      <span class="dungeon-sale-tier">T${s.tier}</span>
+      <span class="dungeon-sale-xp">+${s.xp}</span>
+    </div>
+  `).join('');
+  $('sales-log-summary').textContent = d.totalPV + ' PV · ' + d.salesXP + ' XP';
+}
+
+// ============================================================
+// STATUS / RANK
+// ============================================================
+function renderStatus() {
+  $('status-name').textContent = state.playerName || '—';
+  $('status-profession').textContent = state.profession || '—';
+  $('rank-display').textContent = RANKS[state.rankIndex];
+  $('status-level').textContent = state.level;
+  $('streak-display').textContent = state.streak + ' Days';
+  $('total-xp-display').textContent = Math.floor(state.totalXp);
+
+  // Rank block
+  $('rank-name-display').textContent = RANKS[state.rankIndex];
+  const next = state.rankIndex < RANKS.length - 1 ? RANKS[state.rankIndex + 1] : '— MAX —';
+  $('rank-next-display').textContent = state.rankIndex < RANKS.length - 1 ? '→ ' + next : next;
+  $('rank-structure-hint').textContent = RANK_HINTS[state.rankIndex] || '';
+  $('rank-confirm-trigger').style.display = state.rankIndex < RANKS.length - 1 ? '' : 'none';
+  $('rank-confirm-trigger').textContent = state.rankIndex < RANKS.length - 1 ? '[ CONFIRM ' + RANKS[state.rankIndex + 1] + ' ]' : '';
+
+  // Stats — gate on second awakening
+  const statVis = state.secondAwakeningComplete ? 1 : 0.4;
+  document.querySelectorAll('.stat-card').forEach(c => c.style.opacity = statVis);
+  $('stat-sales').textContent = Math.floor(state.stats.sales);
+  $('stat-sponsoring').textContent = Math.floor(state.stats.sponsoring);
+  // Bars: relative to current rank's "expected" level
+  const maxStat = Math.max(1000, state.stats.sales, state.stats.sponsoring);
+  $('bar-sales').style.width = clamp(state.stats.sales / maxStat * 100, 2, 100) + '%';
+  $('bar-sponsoring').style.width = clamp(state.stats.sponsoring / maxStat * 100, 2, 100) + '%';
+
+  // Weekly chart
+  const chart = $('weekly-chart');
+  const wkMax = Math.max(...state.weeklyXp, 10);
+  const today = dayOfWeekIndex();
+  chart.innerHTML = state.weeklyXp.map((v, i) => {
+    const h = clamp(v / wkMax * 100, 2, 100);
+    const cls = i === today ? 'chart-bar today' : (v > 0 ? 'chart-bar done' : 'chart-bar');
+    return `<div class="chart-col"><div class="${cls}" style="height:${h}%"></div></div>`;
+  }).join('');
+
+  // Achievements
+  renderAchievements();
+}
+
+function showStatPopup(stat) {
+  if (stat === 'sales') {
+    showPopup('[ STAT — SALES ]', 'Sales',
+      'Your sword. Grown by logging actual sales and customer-side activity. Tier multipliers reward higher-PV products: Tier 1 (&lt;50 PV) ×1, Tier 2 (51–99) ×2, Tier 3 (100+) ×3.<br><br>Current: <b>' + Math.floor(state.stats.sales) + '</b>');
+  } else {
+    showPopup('[ STAT — SPONSORING ]', 'Sponsoring',
+      'Multiplies your damage. Every IBO launched adds another sword to the army. +500 Sponsoring XP per launch. Sponsoring activity counters (BTIs, MSAs, DTMs, etc.) also add XP per tick.<br><br>Current: <b>' + Math.floor(state.stats.sponsoring) + '</b>');
+  }
+}
+
+function openRankConfirm() {
+  if (state.rankIndex >= RANKS.length - 1) return;
+  const next = RANKS[state.rankIndex + 1];
+  $('rank-confirm-target').innerHTML = '→ ' + next;
+  $('rank-confirm-overlay').classList.add('show');
+}
+function closeRankConfirm() { $('rank-confirm-overlay').classList.remove('show'); }
+function submitRankUp() {
+  if (state.rankIndex >= RANKS.length - 1) return;
+  state.rankIndex++;
+  // Per design: new pin = +5 levels, +50 to each stat (compressed for new scale)
+  for (let i = 0; i < 5; i++) state.level++;
+  state.stats.sales += 50;
+  state.stats.sponsoring += 50;
+  closeRankConfirm();
+  showAlert('RANK UP\n' + RANKS[state.rankIndex], '+5 Levels · +50 to all stats.', '🏅');
+  renderStatus();
+  updateHeader();
+  saveState();
+}
+
+// ============================================================
+// AWAKENING
+// ============================================================
+function promptSecondAwakening() {
+  $('awakening-goal-confirm').textContent = state.awakeningGoal || '—';
+  $('awakening-overlay').classList.add('show');
+}
+function cancelSecondAwakening() { $('awakening-overlay').classList.remove('show'); }
+function confirmSecondAwakening() {
+  state.secondAwakeningComplete = true;
+  $('awakening-overlay').classList.remove('show');
+  applyAwakenedTheme();
+  renderMission();
+  renderDungeonView();
+  renderStatus();
+  showAlert('ARISE.', 'The Second Awakening is complete.\nDungeons unlocked.\nStats unlocked.', '⚡');
+  saveState();
+}
+
+function applyAwakenedTheme() {
+  if (state.secondAwakeningComplete) {
+    document.body.classList.add('awakened');
+  } else {
+    document.body.classList.remove('awakened');
+  }
+}
+
+// ============================================================
+// MISSION
+// ============================================================
+function renderMission() {
+  $('dmp-title').textContent = state.dmpTitle || 'Not yet defined.';
+  $('dmp-sub').textContent = state.dmpSub || 'Set your Definite Major Purpose to begin.';
+  $('awakening-goal-text').textContent = state.awakeningGoal || '—';
+  if (state.secondAwakeningComplete) {
+    $('awakening-btn-wrap').style.display = 'none';
+    $('awakening-complete-label').style.display = 'block';
+    $('milestone-second').classList.remove('locked');
+    $('milestone-locked-block').style.display = 'none';
+  } else {
+    $('awakening-btn-wrap').style.display = 'block';
+    $('awakening-complete-label').style.display = 'none';
+  }
+}
+
+// ============================================================
+// ACHIEVEMENTS
+// ============================================================
+function renderAchievements() {
+  const grid = $('achievements-grid');
+  if (!grid) return;
+  grid.innerHTML = ACHIEVEMENTS.map(a => {
+    const unlocked = a.check(state);
+    return `<div class="achievement ${unlocked?'unlocked':'locked'}">
+      <div class="achievement-icon">${a.icon}</div>
+      <div class="achievement-info">
+        <div class="achievement-name">${a.name}</div>
+        <div class="achievement-desc">${a.desc}</div>
+        <div class="achievement-tag">${unlocked?'✓ UNLOCKED':'LOCKED'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// ALERTS / POPUPS / TOAST
+// ============================================================
+let _alertTimer = null;
+function showAlert(title, subtitle, icon) {
+  $('alert-title').textContent = title;
+  $('alert-subtitle').textContent = subtitle || '';
+  $('alert-icon').textContent = icon || '⚡';
+  $('sys-alert-overlay').classList.add('show');
+}
+function closeAlert() { $('sys-alert-overlay').classList.remove('show'); }
+
+function showToast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  if (_alertTimer) clearTimeout(_alertTimer);
+  _alertTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function showPopup(label, title, body) {
+  $('popup-label').textContent = label;
+  $('sys-popup-overlay').querySelector('.sys-popup-body').innerHTML =
+    '<div class="sys-popup-title">' + title + '</div><div class="sys-popup-desc">' + body + '</div>';
+  $('sys-popup-overlay').classList.add('show');
+}
+function closePopup(e) { if (e.target.id === 'sys-popup-overlay') $('sys-popup-overlay').classList.remove('show'); }
+function closePopupDirect() { $('sys-popup-overlay').classList.remove('show'); }
+
+// Glitch transition (used at boot and on awakening)
+function showGlitchTransition(text, cb) {
+  const screen = $('glitch-screen');
+  const title = $('glitch-title');
+  title.textContent = text;
+  title.classList.add('glitching');
+  title.style.opacity = '1';
+  $('glitch-line1').style.opacity = '1';
+  screen.classList.add('show');
+  setTimeout(() => {
+    title.classList.remove('glitching');
+    setTimeout(() => {
+      screen.classList.remove('show');
+      title.style.opacity = '0';
+      $('glitch-line1').style.opacity = '0';
+      if (cb) cb();
+    }, 800);
+  }, 1800);
+}
+function glitchAccept() {}
+function glitchDecline() {}
+
+// ============================================================
+// FACTORY RESET
+// ============================================================
+function promptFactoryReset() { $('reset-overlay').classList.add('show'); }
+function cancelFactoryReset() { $('reset-overlay').classList.remove('show'); }
+function executeFactoryReset() {
+  try { localStorage.removeItem('sys_state'); localStorage.removeItem('sys_setupComplete'); } catch(e){}
+  if (window._resetCloud) window._resetCloud();
+  setTimeout(() => location.reload(), 200);
+}
+
+// ============================================================
+// SETUP WIZARD
+// ============================================================
+let setupStep = 1;
+const SETUP_TOTAL_SCREENS = 8;
+
+function showSetupScreen(n) {
+  for (let i = 1; i <= SETUP_TOTAL_SCREENS; i++) {
+    const el = $('setup-s' + i);
+    if (el) el.classList.toggle('active', i === n);
+  }
+  $('setup-progress-fill').style.width = (n / SETUP_TOTAL_SCREENS * 100) + '%';
+  $('setup-back-btn').style.display = n > 1 ? '' : 'none';
+  $('setup-next-btn').textContent = n === SETUP_TOTAL_SCREENS ? 'CONFIRM ▶' : (n === 1 ? 'BEGIN ASSESSMENT ▶' : 'NEXT ▶');
+  setupValidate();
+  if (n === SETUP_TOTAL_SCREENS) fillSetupConfirm();
+}
+
+function setupValidate() {
+  const n = setupStep;
+  let ok = true;
+  if (n === 2) ok = $('setup-name').value.trim().length > 0;
+  if (n === 3) ok = $('setup-profession').value.trim().length > 0;
+  if (n === 4) ok = $('setup-rank').value !== '';
+  if (n === 5) ok = $('setup-awakening').value.trim().length > 0;
+  if (n === 6) ok = $('setup-cycle').value !== '';
+  if (n === 7) ok = $('sq1').value.trim().length > 0;
+  $('setup-next-btn').disabled = !ok;
+}
+
+function setupBack() {
+  if (setupStep > 1) { setupStep--; showSetupScreen(setupStep); }
+}
+
+function setupNext() {
+  if (setupStep < SETUP_TOTAL_SCREENS) {
+    setupStep++;
+    showSetupScreen(setupStep);
+  } else {
+    completeSetup();
+  }
+}
+
+function fillSetupConfirm() {
+  const rows = [
+    ['NAME',          $('setup-name').value.trim()],
+    ['PROFESSION',    $('setup-profession').value.trim()],
+    ['RANK',          RANKS[+$('setup-rank').value]],
+    ['2ND AWAKENING', $('setup-awakening').value.trim()],
+    ['CYCLE',         $('setup-cycle').value],
+    ['QUESTS',        [$('sq1'), $('sq2'), $('sq3'), $('sq4'), $('sq5')].map(x=>x.value.trim()).filter(Boolean).length + ' set']
+  ];
+  $('setup-confirm-rows').innerHTML = rows.map(([k,v]) =>
+    '<div class="setup-confirm-row"><div class="setup-confirm-key">' + k + '</div><div class="setup-confirm-val">' + escapeHtml(v||'—') + '</div></div>'
+  ).join('');
+}
+
+function completeSetup() {
+  state.playerName  = $('setup-name').value.trim();
+  state.profession  = $('setup-profession').value.trim();
+  state.rankIndex   = +$('setup-rank').value || 0;
+  state.awakeningGoal = $('setup-awakening').value.trim();
+  state.workCycle   = $('setup-cycle').value;
+  state.dailyQuests = [];
+  ['sq1','sq2','sq3','sq4','sq5'].forEach(id => {
+    const v = $(id).value.trim();
+    if (v) state.dailyQuests.push({ text: v, completed: false });
+  });
+  state.setupComplete = true;
+  state.firstAwakeningComplete = true;
+  try { localStorage.setItem('sys_setupComplete', '1'); } catch(e){}
+  saveState();
+  $('setup-overlay').classList.remove('show');
+  showGlitchTransition('FIRST AWAKENING\nCOMPLETE', () => {
+    renderAll();
+  });
+}
+
+// ============================================================
+// SPLASH / BOOT
+// ============================================================
+async function pressStart() {
+  const splash = $('splash');
+  splash.classList.add('fade-out');
+  setTimeout(() => splash.style.display = 'none', 600);
+  await loadState();
+  bootSystem();
+}
+window.startSystem = pressStart;
+
+function bootSystem() {
+  if (!state.setupComplete) {
+    setupStep = 1;
+    showSetupScreen(1);
+    $('setup-overlay').classList.add('show');
+    return;
+  }
+  applyAwakenedTheme();
+  renderAll();
+}
+
+function renderAll() {
+  updateHeader();
+  updateDatebar();
+  checkPeriodRollovers();
+  renderQuests();
+  renderStatus();
+  renderMission();
+  renderDungeonView();
+}
+
+// Update header/datebar each minute
+setInterval(() => {
+  updateDatebar();
+  if (currentDungeonPeriod) updateBoss();
+}, 60000);
+
+// On page load: just wait for press-start
+document.addEventListener('DOMContentLoaded', () => {
+  // Nothing — splash is visible and waits for tap
+});
+
+// Expose for inline handlers
+window.switchPanel = switchPanel;
+window.toggleQuest = toggleQuest;
+window.openEditQuests = openEditQuests;
+window.closeEditQuests = closeEditQuests;
+window.saveEditedQuests = saveEditedQuests;
+window.switchDungeon = switchDungeon;
+window.adjustCounter = adjustCounter;
+window.openLogSale = openLogSale;
+window.closeLogSale = closeLogSale;
+window.updateSalePreview = updateSalePreview;
+window.submitSale = submitSale;
+window.openLaunchIBO = openLaunchIBO;
+window.closeLaunchIBO = closeLaunchIBO;
+window.submitIBOLaunch = submitIBOLaunch;
+window.openRankConfirm = openRankConfirm;
+window.closeRankConfirm = closeRankConfirm;
+window.submitRankUp = submitRankUp;
+window.promptSecondAwakening = promptSecondAwakening;
+window.cancelSecondAwakening = cancelSecondAwakening;
+window.confirmSecondAwakening = confirmSecondAwakening;
+window.promptFactoryReset = promptFactoryReset;
+window.cancelFactoryReset = cancelFactoryReset;
+window.executeFactoryReset = executeFactoryReset;
+window.closeAlert = closeAlert;
+window.closePopup = closePopup;
+window.closePopupDirect = closePopupDirect;
+window.glitchAccept = glitchAccept;
+window.glitchDecline = glitchDecline;
+window.setupNext = setupNext;
+window.setupBack = setupBack;
+window.setupValidate = setupValidate;
+window.showStatPopup = showStatPopup;
+window.pressStart = pressStart;
+
+</script>
+
+</body>
+</html>
