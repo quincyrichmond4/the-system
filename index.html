@@ -572,90 +572,30 @@
 </div>
 
 
-<!-- SETUP WIZARD -->
+<!-- SETUP WIZARD — Now just Name + Daily Quests -->
 <div id="setup-overlay">
   <div class="setup-header">
-    <div class="setup-header-label">[ SYSTEM — INITIAL ASSESSMENT ]</div>
+    <div class="setup-header-label">[ SYSTEM — PLAYER REGISTRATION ]</div>
     <div class="setup-progress">
-      <div class="setup-progress-fill" id="setup-progress-fill" style="width:12%"></div>
+      <div class="setup-progress-fill" id="setup-progress-fill" style="width:50%"></div>
     </div>
   </div>
   <div class="setup-body">
-    <!-- SCREEN 1: WELCOME -->
+
+    <!-- SCREEN 1: NAME -->
     <div class="setup-screen active" id="setup-s1">
-      <div class="setup-sys-message">▶ NEW PLAYER DETECTED</div>
-      <div class="setup-title">Identification Required.</div>
-      <div class="setup-desc">The System has no record of this Player. A profile must be established before access is granted. Your name is permanent and cannot be changed. All other profile information can be updated later.</div>
-      <div class="setup-desc" style="color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;margin-top:-12px;">Completing this assessment is your First Awakening. The full System unlocks at the Second Awakening.</div>
-    </div>
-    <!-- SCREEN 2: NAME -->
-    <div class="setup-screen" id="setup-s2">
-      <div class="setup-sys-message">▶ QUERY 1 OF 6</div>
+      <div class="setup-sys-message">▶ QUERY 1 OF 2</div>
       <div class="setup-title">State your name.</div>
-      <div class="setup-desc">Enter the name by which the System will address you. This is the only field that cannot be changed after confirmation.</div>
+      <div class="setup-desc">The name by which the System will address you. This is permanent and cannot be changed.</div>
       <div class="setup-field-label">PLAYER NAME</div>
       <input class="setup-input" id="setup-name" type="text" placeholder="Enter your name" maxlength="30" oninput="setupValidate()"/>
     </div>
-    <!-- SCREEN 3: PROFESSION -->
-    <div class="setup-screen" id="setup-s3">
-      <div class="setup-sys-message">▶ QUERY 2 OF 6</div>
-      <div class="setup-title">State your profession.</div>
-      <div class="setup-desc">What you currently do or are pursuing. Shapes your dungeon arenas.</div>
-      <div class="setup-field-label">PROFESSION</div>
-      <input class="setup-input" id="setup-profession" type="text" placeholder="e.g. Independent Business Owner" maxlength="60" oninput="setupValidate()"/>
-    </div>
-    <!-- SCREEN 4: STARTING RANK -->
-    <div class="setup-screen" id="setup-s4">
-      <div class="setup-sys-message">▶ QUERY 3 OF 6</div>
-      <div class="setup-title">Confirm your starting rank.</div>
-      <div class="setup-desc">Your rank is determined by structure, not income. Select the highest you've earned and held. You can advance manually when each new rank is recognized.</div>
-      <div class="setup-field-label">CURRENT RANK</div>
-      <select class="setup-select" id="setup-rank" onchange="setupValidate()">
-        <option value="">— Select rank —</option>
-        <option value="0">IBO — pre-PBS</option>
-        <option value="1">3% PBS</option>
-        <option value="2">6% PBS</option>
-        <option value="3">9% PBS</option>
-        <option value="4">12% PBS</option>
-        <option value="5">15% PBS</option>
-        <option value="6">18% PBS</option>
-        <option value="7">21% PBS</option>
-        <option value="8">25% PBS</option>
-        <option value="9">Platinum</option>
-        <option value="10">Ruby</option>
-        <option value="11">Sapphire</option>
-        <option value="12">Emerald</option>
-        <option value="13">Diamond</option>
-        <option value="14">Crown</option>
-      </select>
-    </div>
-    <!-- SCREEN 5: SECOND AWAKENING GOAL -->
-    <div class="setup-screen" id="setup-s5">
-      <div class="setup-sys-message">▶ QUERY 4 OF 6</div>
-      <div class="setup-title">Define your Second Awakening.</div>
-      <div class="setup-desc">Your Second Awakening is the physical milestone that unlocks the full System. State your fitness goal. Be specific. The System holds you to it.</div>
-      <div class="setup-field-label">SECOND AWAKENING GOAL</div>
-      <input class="setup-input" id="setup-awakening" type="text" placeholder="e.g. Reach 7-8% body fat" maxlength="80" oninput="setupValidate()"/>
-    </div>
-    <!-- SCREEN 6: WORK CYCLE -->
-    <div class="setup-screen" id="setup-s6">
-      <div class="setup-sys-message">▶ QUERY 5 OF 6</div>
-      <div class="setup-title">Confirm your work cycle.</div>
-      <div class="setup-desc">Used to determine when dungeons open and close. Select the cycle that best matches your primary work rhythm.</div>
-      <div class="setup-field-label">PRIMARY WORK CYCLE</div>
-      <select class="setup-select" id="setup-cycle" onchange="setupValidate()">
-        <option value="">— Select your cycle —</option>
-        <option value="Daily">Daily — tasks reset and repeat every day</option>
-        <option value="Weekly">Weekly — goals and activity tracked week by week</option>
-        <option value="Monthly">Monthly — performance measured in monthly cycles</option>
-        <option value="Project-Based">Project-Based — work is tied to specific deliverables</option>
-      </select>
-    </div>
-    <!-- SCREEN 7: DAILY QUESTS -->
-    <div class="setup-screen" id="setup-s7">
-      <div class="setup-sys-message">▶ QUERY 6 OF 6</div>
+
+    <!-- SCREEN 2: DAILY QUESTS -->
+    <div class="setup-screen" id="setup-s2">
+      <div class="setup-sys-message">▶ QUERY 2 OF 2</div>
       <div class="setup-title">Define your Daily Quests.</div>
-      <div class="setup-desc">Enter up to 5 daily training tasks. At least 1 is required. These are your foundational daily obligations.</div>
+      <div class="setup-desc">Up to 5 daily training tasks. At least 1 is required. These are your foundational daily obligations. They can be edited later.</div>
       <div class="setup-field-label">QUEST 1 — REQUIRED</div>
       <input class="setup-input" id="sq1" type="text" placeholder="e.g. 100 Push-ups" maxlength="60" oninput="setupValidate()"/>
       <div class="setup-field-label">QUEST 2</div>
@@ -667,18 +607,11 @@
       <div class="setup-field-label">QUEST 5</div>
       <input class="setup-input" id="sq5" type="text" placeholder="Optional" maxlength="60"/>
     </div>
-    <!-- SCREEN 8: CONFIRM -->
-    <div class="setup-screen" id="setup-s8">
-      <div class="setup-sys-message">▶ PROFILE SUMMARY</div>
-      <div class="setup-title">Confirm your profile.</div>
-      <div class="setup-desc">Review the information below. Your name cannot be changed after confirmation.</div>
-      <div id="setup-confirm-rows"></div>
-      <div class="setup-warning">⚠ WARNING: Your player name is permanent and cannot be modified after confirmation. All other profile information can be edited later.</div>
-    </div>
+
   </div>
   <div class="setup-footer">
     <button class="setup-btn-back" id="setup-back-btn" onclick="setupBack()" style="display:none">← BACK</button>
-    <button class="setup-btn-next" id="setup-next-btn" onclick="setupNext()">BEGIN ASSESSMENT ▶</button>
+    <button class="setup-btn-next" id="setup-next-btn" onclick="setupNext()">NEXT ▶</button>
   </div>
 </div>
 
@@ -1018,7 +951,7 @@
 'use strict';
 
 // ============================================================
-// GLOBAL ERROR FALLBACK — never trap user behind splash
+// GLOBAL ERROR FALLBACK
 // ============================================================
 window.onerror = function(msg, src, line) {
   console.error('JS Error:', msg, 'line:', line);
@@ -1033,21 +966,9 @@ window.onerror = function(msg, src, line) {
 // CONSTANTS
 // ============================================================
 const RANKS = [
-  'IBO',         // 0
-  '3% PBS',      // 1
-  '6% PBS',      // 2
-  '9% PBS',      // 3
-  '12% PBS',     // 4
-  '15% PBS',     // 5
-  '18% PBS',     // 6
-  '21% PBS',     // 7
-  '25% PBS',     // 8
-  'Platinum',    // 9
-  'Ruby',        // 10
-  'Sapphire',    // 11
-  'Emerald',     // 12
-  'Diamond',     // 13
-  'Crown'        // 14
+  'IBO', '3% PBS', '6% PBS', '9% PBS', '12% PBS', '15% PBS',
+  '18% PBS', '21% PBS', '25% PBS',
+  'Platinum', 'Ruby', 'Sapphire', 'Emerald', 'Diamond', 'Crown'
 ];
 
 const RANK_HINTS = [
@@ -1097,8 +1018,7 @@ const SPONSORING_COUNTERS = [
   ['newIBOs',       'New IBOs']
 ];
 
-// Each tick on these counters gives this much XP toward Sales or Sponsoring
-const COUNTER_XP = 5;   // small XP per tick (low-friction tracking)
+const COUNTER_XP = 5;
 const IBO_LAUNCH_XP = 500;
 
 const ACHIEVEMENTS = [
@@ -1122,6 +1042,9 @@ function emptyDungeonPeriod() {
 }
 
 const DEFAULT_STATE = {
+  // === Courage of the Weak acceptance ===
+  playerAccepted: false,
+
   // Setup
   setupComplete: false,
   playerName: '',
@@ -1131,8 +1054,8 @@ const DEFAULT_STATE = {
   dailyQuests: [],
 
   // Awakenings
-  firstAwakeningComplete: false,    // = setup complete
-  secondAwakeningComplete: false,   // = fitness goal achieved
+  firstAwakeningComplete: false,
+  secondAwakeningComplete: false,
 
   // Progress
   level: 1,
@@ -1141,20 +1064,16 @@ const DEFAULT_STATE = {
   streak: 0,
   lastQuestDate: '',
 
-  // Stats — Sales & Sponsoring only
+  // Stats
   stats: { sales: 0, sponsoring: 0 },
 
-  // Rank
+  // Rank — IBO by default, user advances manually
   rankIndex: 0,
 
-  // Dungeons — three periods
-  dungeons: {
-    daily: null,
-    weekly: null,
-    monthly: null
-  },
+  // Dungeons
+  dungeons: { daily: null, weekly: null, monthly: null },
 
-  // Weekly chart (Mon–Sun)
+  // Weekly chart
   weeklyXp: [0,0,0,0,0,0,0],
   weekStartKey: '',
 
@@ -1172,33 +1091,27 @@ state.dungeons.monthly = emptyDungeonPeriod();
 // HELPERS
 // ============================================================
 const $ = (id) => document.getElementById(id);
-
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
-
 function todayKey(d = new Date()) {
   return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
 }
-
-// Monday-start week
 function weekStartKey(d = new Date()) {
   const x = new Date(d);
-  const day = x.getDay(); // 0=Sun, 1=Mon
+  const day = x.getDay();
   const diff = (day === 0 ? 6 : day - 1);
   x.setDate(x.getDate() - diff);
   return todayKey(x);
 }
-
 function monthStartKey(d = new Date()) {
   return d.getFullYear() + '-' + pad(d.getMonth()+1);
 }
-
 function dayOfWeekIndex(d = new Date()) {
-  // 0 = Mon, 6 = Sun
   const day = d.getDay();
   return day === 0 ? 6 : day - 1;
 }
-
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ============================================================
 // PERSISTENCE
@@ -1209,12 +1122,14 @@ function saveState() {
 }
 
 function migrate(old) {
-  // From old schema (5 stats, E-Rank, awakeningComplete) to new
   const out = JSON.parse(JSON.stringify(DEFAULT_STATE));
   out.dungeons.daily   = emptyDungeonPeriod();
   out.dungeons.weekly  = emptyDungeonPeriod();
   out.dungeons.monthly = emptyDungeonPeriod();
   if (!old || typeof old !== 'object') return out;
+
+  // If they had setup complete previously, they already accepted (implicitly)
+  out.playerAccepted = !!(old.playerAccepted || old.setupComplete);
 
   if (old.setupComplete)      out.setupComplete = true;
   if (old.playerName)         out.playerName = old.playerName;
@@ -1223,32 +1138,21 @@ function migrate(old) {
   if (old.awakeningGoal)      out.awakeningGoal = old.awakeningGoal;
   if (old.workCycle)          out.workCycle = old.workCycle;
 
-  // Quests — may be array of strings or {text, completed}
   if (Array.isArray(old.dailyQuests)) {
     out.dailyQuests = old.dailyQuests.map(q => typeof q === 'string' ? {text:q, completed:false} : {text:q.text||'', completed:!!q.completed});
   }
 
-  // Awakenings
   out.firstAwakeningComplete = !!old.setupComplete;
   out.secondAwakeningComplete = !!(old.awakeningComplete || old.secondAwakeningComplete);
 
-  // Progress
   out.xp = +old.xp || 0;
   out.totalXp = +old.totalXp || out.xp;
   out.streak = +old.streak || 0;
   out.lastQuestDate = old.lastQuestDate || old.lastDate || '';
-
-  // Level — derive from totalXp if missing
   out.level = +old.level || levelFromTotalXp(out.totalXp);
-
-  // Stats — discard old 5-stat structure, start fresh
   out.stats = { sales: +(old.stats && old.stats.sales) || 0, sponsoring: +(old.stats && old.stats.sponsoring) || 0 };
+  out.rankIndex = (typeof old.rankIndex === 'number') ? old.rankIndex : 0;
 
-  // Rank — old startingRank string → IBO=0 by default
-  if (typeof old.rankIndex === 'number') out.rankIndex = old.rankIndex;
-  else out.rankIndex = 0;
-
-  // Dungeons — copy if present, else fresh
   if (old.dungeons) {
     ['daily','weekly','monthly'].forEach(p => {
       if (old.dungeons[p]) {
@@ -1265,39 +1169,29 @@ function migrate(old) {
     });
   }
 
-  // Weekly chart
   if (Array.isArray(old.weeklyXp) && old.weeklyXp.length === 7) out.weeklyXp = old.weeklyXp.map(n => +n||0);
   out.weekStartKey = old.weekStartKey || '';
-
   out.dmpTitle = old.dmpTitle || '';
   out.dmpSub = old.dmpSub || '';
-
   return out;
 }
 
 function loadState() {
   return new Promise((resolve) => {
-    // Try Firebase first, fall back to localStorage
     const tryLoad = () => {
       if (window._loadFromCloud) {
         window._loadFromCloud().then(data => {
           if (data && !data._wiped) {
             state = migrate(data);
-            resolve();
           } else {
-            // Fall back to localStorage
             const local = localStorage.getItem('sys_state');
-            if (local) {
-              try { state = migrate(JSON.parse(local)); } catch(e) {}
-            }
-            resolve();
+            if (local) { try { state = migrate(JSON.parse(local)); } catch(e) {} }
           }
+          resolve();
         }).catch(() => resolve());
       } else {
         const local = localStorage.getItem('sys_state');
-        if (local) {
-          try { state = migrate(JSON.parse(local)); } catch(e) {}
-        }
+        if (local) { try { state = migrate(JSON.parse(local)); } catch(e) {} }
         resolve();
       }
     };
@@ -1316,9 +1210,7 @@ function loadState() {
 // ============================================================
 // XP / LEVEL
 // ============================================================
-// Total XP needed to reach a given level (cumulative)
 function totalXpForLevel(lvl) {
-  // 50 + 60 + 70 + ... — quadratic-ish curve
   let total = 0;
   for (let i = 1; i < lvl; i++) total += 50 + 10 * (i - 1);
   return total;
@@ -1329,25 +1221,19 @@ function levelFromTotalXp(total) {
   while (acc + xpForNextLevel(lvl) <= total) { acc += xpForNextLevel(lvl); lvl++; }
   return lvl;
 }
-
-// Daily Quest XP — diminishing as level grows
-function getQuestXP() {
-  return +(5 / (1 + state.level / 10)).toFixed(2);
-}
+function getQuestXP() { return +(5 / (1 + state.level / 10)).toFixed(2); }
 
 function addXP(amount) {
   amount = +amount;
   if (!isFinite(amount) || amount <= 0) return;
   state.xp += amount;
   state.totalXp += amount;
-  // Weekly chart
   const wk = weekStartKey();
   if (state.weekStartKey !== wk) {
     state.weeklyXp = [0,0,0,0,0,0,0];
     state.weekStartKey = wk;
   }
   state.weeklyXp[dayOfWeekIndex()] += amount;
-  // Level up?
   let needed = xpForNextLevel(state.level);
   let leveled = false;
   while (state.xp >= needed) {
@@ -1356,15 +1242,7 @@ function addXP(amount) {
     leveled = true;
     needed = xpForNextLevel(state.level);
   }
-  if (leveled) {
-    showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
-  }
-}
-
-function addLevels(n) {
-  for (let i = 0; i < n; i++) {
-    state.level++;
-  }
+  if (leveled) showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
 }
 
 // ============================================================
@@ -1376,20 +1254,10 @@ function switchPanel(name, btn) {
   const panel = $('panel-' + name);
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
-  // Refresh dungeon view when entering
-  if (name === 'dungeons') {
-    checkPeriodRollovers();
-    renderDungeonView();
-  }
-  if (name === 'status') {
-    renderStatus();
-  }
-  if (name === 'quests') {
-    renderQuests();
-  }
-  if (name === 'mission') {
-    renderMission();
-  }
+  if (name === 'dungeons') { checkPeriodRollovers(); renderDungeonView(); }
+  if (name === 'status')   renderStatus();
+  if (name === 'quests')   renderQuests();
+  if (name === 'mission')  renderMission();
 }
 
 // ============================================================
@@ -1402,7 +1270,6 @@ function updateHeader() {
   $('xp-display').textContent = Math.floor(state.xp) + ' / ' + needed;
   $('xp-bar').style.width = clamp(state.xp / needed * 100, 0, 100) + '%';
 }
-
 function updateDatebar() {
   const d = new Date();
   const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
@@ -1416,7 +1283,6 @@ function updateDatebar() {
 function renderQuests() {
   const list = $('quest-list');
   if (!list) return;
-  // Daily reset check
   const today = todayKey();
   if (state.lastQuestDate !== today) {
     state.dailyQuests.forEach(q => q.completed = false);
@@ -1433,7 +1299,6 @@ function renderQuests() {
       </div>
     `).join('');
   }
-  // Progress
   const total = state.dailyQuests.length;
   const done = state.dailyQuests.filter(q => q.completed).length;
   $('quest-count').textContent = done + '/' + total;
@@ -1441,26 +1306,19 @@ function renderQuests() {
   $('quest-bar').style.width = pct + '%';
   $('quest-pct').textContent = Math.round(pct) + '%';
   if (total && done === total) {
-    // streak
-    const today = todayKey();
-    if (state.lastQuestDate === today && state._streakAwardedToday !== today) {
+    const td = todayKey();
+    if (state.lastQuestDate === td && state._streakAwardedToday !== td) {
       state.streak++;
-      state._streakAwardedToday = today;
+      state._streakAwardedToday = td;
     }
   }
 }
 
-function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
-
 function toggleQuest(i) {
   if (i < 0 || i >= state.dailyQuests.length) return;
   const q = state.dailyQuests[i];
-  if (!q.completed) {
-    q.completed = true;
-    addXP(getQuestXP());
-  } else {
-    q.completed = false;
-  }
+  if (!q.completed) { q.completed = true; addXP(getQuestXP()); }
+  else q.completed = false;
   renderQuests();
   updateHeader();
   saveState();
@@ -1507,15 +1365,11 @@ function ensurePeriodKey(period) {
   if (period === 'weekly')  key = weekStartKey();
   if (period === 'monthly') key = monthStartKey();
   if (d.key !== key) {
-    // Rollover: reset this period
     state.dungeons[period] = emptyDungeonPeriod();
     state.dungeons[period].key = key;
   }
 }
-
-function checkPeriodRollovers() {
-  ['daily','weekly','monthly'].forEach(ensurePeriodKey);
-}
+function checkPeriodRollovers() { ['daily','weekly','monthly'].forEach(ensurePeriodKey); }
 
 function renderCountersGrid(period) {
   const d = state.dungeons[period];
@@ -1531,8 +1385,7 @@ function renderCountersGrid(period) {
         <div class="counter-val" id="cnt-${period}-${k}">${d.counters[k] || 0}</div>
         <button class="counter-btn" onclick="adjustCounter('${period}','${k}',1)">+</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
   sponsGrid.innerHTML = SPONSORING_COUNTERS.map(([k, label]) => `
     <div class="counter-card">
@@ -1542,8 +1395,7 @@ function renderCountersGrid(period) {
         <div class="counter-val" id="cnt-${period}-${k}">${d.counters[k] || 0}</div>
         <button class="counter-btn" onclick="adjustCounter('${period}','${k}',1)">+</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
   updateCounterTotals(period);
 }
@@ -1553,7 +1405,6 @@ function updateCounterTotals(period) {
   let salesTotal = 0, sponsTotal = 0;
   SALES_COUNTERS.forEach(([k]) => salesTotal += (d.counters[k] || 0) * COUNTER_XP);
   SPONSORING_COUNTERS.forEach(([k]) => sponsTotal += (d.counters[k] || 0) * COUNTER_XP);
-  // Plus sales XP from logged sales + IBO XP
   salesTotal += d.salesXP || 0;
   sponsTotal += (d.sponsXP || 0) + (d.ibos || 0) * IBO_LAUNCH_XP;
   $('sales-counter-total').textContent = salesTotal + ' XP';
@@ -1566,17 +1417,13 @@ function adjustCounter(period, key, delta) {
   const prev = d.counters[key] || 0;
   const next = Math.max(0, prev + delta);
   d.counters[key] = next;
-  // Only award XP on increment (not decrement) — decrement is for fixing mistakes
   const change = next - prev;
   if (change > 0) {
-    // Which stat does this counter feed?
     const isSales = SALES_COUNTERS.some(([k]) => k === key);
     if (isSales) state.stats.sales += COUNTER_XP * change;
     else state.stats.sponsoring += COUNTER_XP * change;
-    // Also player XP — half rate
     addXP(COUNTER_XP * change * 0.5);
   } else if (change < 0) {
-    // Decrement undoes stat too
     const isSales = SALES_COUNTERS.some(([k]) => k === key);
     if (isSales) state.stats.sales = Math.max(0, state.stats.sales + COUNTER_XP * change);
     else state.stats.sponsoring = Math.max(0, state.stats.sponsoring + COUNTER_XP * change);
@@ -1591,9 +1438,7 @@ function adjustCounter(period, key, delta) {
 
 function switchDungeon(period) {
   currentDungeonPeriod = period;
-  document.querySelectorAll('.dungeon-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.period === period);
-  });
+  document.querySelectorAll('.dungeon-tab').forEach(t => t.classList.toggle('active', t.dataset.period === period));
   renderDungeonView();
 }
 
@@ -1626,7 +1471,6 @@ function updateBoss() {
 }
 
 function bossTarget(period) {
-  // PV targets scale with rank — IBO=100, 3%=300, 6%=600, 9%=1500, 12%=3000, ..., Platinum=7500
   const rankPV = [100, 300, 600, 1500, 3000, 4500, 6000, 7000, 7500, 7500, 8500, 10000, 12000, 15000, 25000];
   const monthlyPV = rankPV[state.rankIndex] || 100;
   const weeklyPV = Math.round(monthlyPV / 4.3);
@@ -1638,12 +1482,11 @@ function bossTarget(period) {
   }
   if (period === 'weekly') {
     const end = new Date(now);
-    const day = end.getDay() === 0 ? 7 : end.getDay(); // Mon=1..Sun=7
+    const day = end.getDay() === 0 ? 7 : end.getDay();
     end.setDate(end.getDate() + (7 - day));
     end.setHours(24,0,0,0);
     return { name: 'Weekly PV Target', sub:'Hit the week\u2019s sales mark.', pv: weeklyPV, timeLeft: fmtTimeLeft(end - now) };
   }
-  // monthly
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
   return { name: 'Monthly Group PV', sub:'Defeat by reaching next PBS bracket.', pv: monthlyPV, timeLeft: fmtTimeLeft(end - now) };
 }
@@ -1659,7 +1502,6 @@ function fmtTimeLeft(ms) {
   return h + 'h ' + m + 'm';
 }
 
-// Sales logging
 function openLogSale() {
   $('sale-pv-input').value = '';
   updateSalePreview();
@@ -1671,10 +1513,7 @@ function saleTierOf(pv) { return pv < 50 ? 1 : pv < 100 ? 2 : 3; }
 function saleXP(pv) { return pv * saleTierOf(pv); }
 function updateSalePreview() {
   const pv = +$('sale-pv-input').value || 0;
-  if (pv <= 0) {
-    $('sale-tier-display').innerHTML = 'Tier: —<br>XP: —';
-    return;
-  }
+  if (pv <= 0) { $('sale-tier-display').innerHTML = 'Tier: —<br>XP: —'; return; }
   const tier = saleTierOf(pv);
   const xp = saleXP(pv);
   $('sale-tier-display').innerHTML = 'Tier ' + tier + ' (×' + tier + ')<br>+' + xp + ' Sales XP';
@@ -1684,7 +1523,6 @@ function submitSale() {
   if (pv <= 0) { showToast('ENTER A VALID PV'); return; }
   const tier = saleTierOf(pv);
   const xp = saleXP(pv);
-  // Log to ALL three periods (since a sale today counts for the week + month too)
   ['daily','weekly','monthly'].forEach(period => {
     ensurePeriodKey(period);
     const d = state.dungeons[period];
@@ -1701,7 +1539,6 @@ function submitSale() {
   saveState();
 }
 
-// IBO launch
 function openLaunchIBO() { $('launch-ibo-overlay').classList.add('show'); }
 function closeLaunchIBO() { $('launch-ibo-overlay').classList.remove('show'); }
 function submitIBOLaunch() {
@@ -1710,7 +1547,6 @@ function submitIBOLaunch() {
     const d = state.dungeons[period];
     d.ibos += 1;
     d.sponsXP += IBO_LAUNCH_XP;
-    // Also increment the New IBOs counter
     d.counters.newIBOs = (d.counters.newIBOs || 0) + 1;
   });
   state.stats.sponsoring += IBO_LAUNCH_XP;
@@ -1731,15 +1567,13 @@ function renderSalesLog(period) {
     $('sales-log-summary').textContent = '0 PV · 0 XP';
     return;
   }
-  // Show most recent first, limit to 10
   const recent = d.sales.slice(-10).reverse();
   wrap.innerHTML = recent.map(s => `
     <div class="dungeon-sale-entry">
       <span class="dungeon-sale-pv">${s.pv} PV</span>
       <span class="dungeon-sale-tier">T${s.tier}</span>
       <span class="dungeon-sale-xp">+${s.xp}</span>
-    </div>
-  `).join('');
+    </div>`).join('');
   $('sales-log-summary').textContent = d.totalPV + ' PV · ' + d.salesXP + ' XP';
 }
 
@@ -1754,7 +1588,6 @@ function renderStatus() {
   $('streak-display').textContent = state.streak + ' Days';
   $('total-xp-display').textContent = Math.floor(state.totalXp);
 
-  // Rank block
   $('rank-name-display').textContent = RANKS[state.rankIndex];
   const next = state.rankIndex < RANKS.length - 1 ? RANKS[state.rankIndex + 1] : '— MAX —';
   $('rank-next-display').textContent = state.rankIndex < RANKS.length - 1 ? '→ ' + next : next;
@@ -1762,17 +1595,14 @@ function renderStatus() {
   $('rank-confirm-trigger').style.display = state.rankIndex < RANKS.length - 1 ? '' : 'none';
   $('rank-confirm-trigger').textContent = state.rankIndex < RANKS.length - 1 ? '[ CONFIRM ' + RANKS[state.rankIndex + 1] + ' ]' : '';
 
-  // Stats — gate on second awakening
   const statVis = state.secondAwakeningComplete ? 1 : 0.4;
   document.querySelectorAll('.stat-card').forEach(c => c.style.opacity = statVis);
   $('stat-sales').textContent = Math.floor(state.stats.sales);
   $('stat-sponsoring').textContent = Math.floor(state.stats.sponsoring);
-  // Bars: relative to current rank's "expected" level
   const maxStat = Math.max(1000, state.stats.sales, state.stats.sponsoring);
   $('bar-sales').style.width = clamp(state.stats.sales / maxStat * 100, 2, 100) + '%';
   $('bar-sponsoring').style.width = clamp(state.stats.sponsoring / maxStat * 100, 2, 100) + '%';
 
-  // Weekly chart
   const chart = $('weekly-chart');
   const wkMax = Math.max(...state.weeklyXp, 10);
   const today = dayOfWeekIndex();
@@ -1782,7 +1612,6 @@ function renderStatus() {
     return `<div class="chart-col"><div class="${cls}" style="height:${h}%"></div></div>`;
   }).join('');
 
-  // Achievements
   renderAchievements();
 }
 
@@ -1792,7 +1621,7 @@ function showStatPopup(stat) {
       'Your sword. Grown by logging actual sales and customer-side activity. Tier multipliers reward higher-PV products: Tier 1 (&lt;50 PV) ×1, Tier 2 (51–99) ×2, Tier 3 (100+) ×3.<br><br>Current: <b>' + Math.floor(state.stats.sales) + '</b>');
   } else {
     showPopup('[ STAT — SPONSORING ]', 'Sponsoring',
-      'Multiplies your damage. Every IBO launched adds another sword to the army. +500 Sponsoring XP per launch. Sponsoring activity counters (BTIs, MSAs, DTMs, etc.) also add XP per tick.<br><br>Current: <b>' + Math.floor(state.stats.sponsoring) + '</b>');
+      'Multiplies your damage. Every IBO launched adds another sword to the army. +500 Sponsoring XP per launch. Sponsoring activity counters also add XP per tick.<br><br>Current: <b>' + Math.floor(state.stats.sponsoring) + '</b>');
   }
 }
 
@@ -1806,7 +1635,6 @@ function closeRankConfirm() { $('rank-confirm-overlay').classList.remove('show')
 function submitRankUp() {
   if (state.rankIndex >= RANKS.length - 1) return;
   state.rankIndex++;
-  // Per design: new pin = +5 levels, +50 to each stat (compressed for new scale)
   for (let i = 0; i < 5; i++) state.level++;
   state.stats.sales += 50;
   state.stats.sponsoring += 50;
@@ -1821,7 +1649,7 @@ function submitRankUp() {
 // AWAKENING
 // ============================================================
 function promptSecondAwakening() {
-  $('awakening-goal-confirm').textContent = state.awakeningGoal || '—';
+  $('awakening-goal-confirm').textContent = state.awakeningGoal || 'No goal set — proceed by your own word.';
   $('awakening-overlay').classList.add('show');
 }
 function cancelSecondAwakening() { $('awakening-overlay').classList.remove('show'); }
@@ -1835,13 +1663,8 @@ function confirmSecondAwakening() {
   showAlert('ARISE.', 'The Second Awakening is complete.\nDungeons unlocked.\nStats unlocked.', '⚡');
   saveState();
 }
-
 function applyAwakenedTheme() {
-  if (state.secondAwakeningComplete) {
-    document.body.classList.add('awakened');
-  } else {
-    document.body.classList.remove('awakened');
-  }
+  document.body.classList.toggle('awakened', !!state.secondAwakeningComplete);
 }
 
 // ============================================================
@@ -1850,7 +1673,7 @@ function applyAwakenedTheme() {
 function renderMission() {
   $('dmp-title').textContent = state.dmpTitle || 'Not yet defined.';
   $('dmp-sub').textContent = state.dmpSub || 'Set your Definite Major Purpose to begin.';
-  $('awakening-goal-text').textContent = state.awakeningGoal || '—';
+  $('awakening-goal-text').textContent = state.awakeningGoal || 'Goal not yet defined.';
   if (state.secondAwakeningComplete) {
     $('awakening-btn-wrap').style.display = 'none';
     $('awakening-complete-label').style.display = 'block';
@@ -1892,7 +1715,6 @@ function showAlert(title, subtitle, icon) {
   $('sys-alert-overlay').classList.add('show');
 }
 function closeAlert() { $('sys-alert-overlay').classList.remove('show'); }
-
 function showToast(msg) {
   const t = $('toast');
   t.textContent = msg;
@@ -1900,7 +1722,6 @@ function showToast(msg) {
   if (_alertTimer) clearTimeout(_alertTimer);
   _alertTimer = setTimeout(() => t.classList.remove('show'), 2000);
 }
-
 function showPopup(label, title, body) {
   $('popup-label').textContent = label;
   $('sys-popup-overlay').querySelector('.sys-popup-body').innerHTML =
@@ -1910,27 +1731,139 @@ function showPopup(label, title, body) {
 function closePopup(e) { if (e.target.id === 'sys-popup-overlay') $('sys-popup-overlay').classList.remove('show'); }
 function closePopupDirect() { $('sys-popup-overlay').classList.remove('show'); }
 
-// Glitch transition (used at boot and on awakening)
-function showGlitchTransition(text, cb) {
+// ============================================================
+// COURAGE OF THE WEAK — Opening sequence
+// Plays once per profile. Faithful to the manhwa/anime.
+// ============================================================
+let _resolveOpening = null;
+
+async function playCourageOfTheWeak() {
+  return new Promise((resolve) => {
+    _resolveOpening = resolve;
+
+    const screen = $('glitch-screen');
+    const line1  = $('glitch-line1');
+    const title  = $('glitch-title');
+    const btns   = $('glitch-btns');
+
+    // Ensure transitions
+    line1.style.transition = 'opacity 0.5s ease';
+    title.style.transition = 'opacity 0.5s ease';
+
+    // Reset
+    line1.style.opacity = '0';
+    title.style.opacity = '0';
+    btns.style.display = 'none';
+    title.classList.remove('glitching');
+    line1.style.color = '';
+
+    // PHASE 1: "[ SECRET QUEST ]" + "Courage of the Weak"
+    screen.classList.add('show');
+
+    setTimeout(() => {
+      line1.textContent = '[ SECRET QUEST ]';
+      line1.style.opacity = '1';
+    }, 400);
+
+    setTimeout(() => {
+      title.textContent = 'Courage of the Weak';
+      title.style.opacity = '1';
+      title.classList.add('glitching');
+    }, 900);
+
+    setTimeout(() => {
+      title.classList.remove('glitching');
+    }, 1900);
+
+    setTimeout(() => {
+      line1.textContent = '✓ COMPLETED';
+      line1.style.color = 'var(--success)';
+    }, 2300);
+
+    // PHASE 2: transition to the qualifications message + YES/NO
+    setTimeout(() => {
+      title.style.opacity = '0';
+      line1.style.opacity = '0';
+    }, 3400);
+
+    setTimeout(() => {
+      line1.textContent = '▶ NOTIFICATION';
+      line1.style.color = '';
+      line1.style.opacity = '1';
+      title.textContent = 'You have acquired the qualifications\nto be a Player.\n\nWill you accept?';
+      title.style.opacity = '1';
+      title.classList.add('glitching');
+    }, 4000);
+
+    setTimeout(() => {
+      title.classList.remove('glitching');
+    }, 4700);
+
+    setTimeout(() => {
+      btns.style.display = 'flex';
+      btns.style.opacity = '0';
+      btns.style.transition = 'opacity 0.4s ease';
+      requestAnimationFrame(() => { btns.style.opacity = '1'; });
+    }, 5000);
+  });
+}
+
+function glitchAccept() {
   const screen = $('glitch-screen');
-  const title = $('glitch-title');
-  title.textContent = text;
+  const line1  = $('glitch-line1');
+  const title  = $('glitch-title');
+  const btns   = $('glitch-btns');
+
+  btns.style.display = 'none';
   title.classList.add('glitching');
-  title.style.opacity = '1';
-  $('glitch-line1').style.opacity = '1';
-  screen.classList.add('show');
+  line1.textContent = '▶ ACCEPTED';
+  line1.style.color = 'var(--cyan)';
+  title.textContent = 'ARISE.';
+
   setTimeout(() => {
     title.classList.remove('glitching');
-    setTimeout(() => {
-      screen.classList.remove('show');
-      title.style.opacity = '0';
-      $('glitch-line1').style.opacity = '0';
-      if (cb) cb();
-    }, 800);
+  }, 800);
+
+  setTimeout(() => {
+    line1.style.opacity = '0';
+    title.style.opacity = '0';
   }, 1800);
+
+  setTimeout(() => {
+    screen.classList.remove('show');
+    state.playerAccepted = true;
+    saveState();
+    if (_resolveOpening) { _resolveOpening(); _resolveOpening = null; }
+  }, 2400);
 }
-function glitchAccept() {}
-function glitchDecline() {}
+
+function glitchDecline() {
+  // The System does not accept refusal.
+  const line1 = $('glitch-line1');
+  const title = $('glitch-title');
+  const btns  = $('glitch-btns');
+
+  btns.style.display = 'none';
+  title.classList.add('glitching');
+  const prevLine = line1.textContent;
+  const prevTitle = title.textContent;
+
+  line1.style.color = 'var(--danger)';
+  line1.textContent = '⚠ REFUSAL DENIED';
+  title.textContent = 'The System does not accept refusal.';
+
+  setTimeout(() => { title.classList.remove('glitching'); }, 700);
+
+  setTimeout(() => {
+    // Return to the qualifications prompt
+    title.classList.add('glitching');
+    line1.style.color = '';
+    line1.textContent = '▶ NOTIFICATION';
+    title.textContent = 'You have acquired the qualifications\nto be a Player.\n\nWill you accept?';
+    setTimeout(() => { title.classList.remove('glitching'); }, 600);
+    setTimeout(() => { btns.style.display = 'flex'; }, 800);
+  }, 2500);
+}
 
 // ============================================================
 // FACTORY RESET
@@ -1944,10 +1877,10 @@ function executeFactoryReset() {
 }
 
 // ============================================================
-// SETUP WIZARD
+// SETUP WIZARD — 2 screens only (name + daily quests)
 // ============================================================
 let setupStep = 1;
-const SETUP_TOTAL_SCREENS = 8;
+const SETUP_TOTAL_SCREENS = 2;
 
 function showSetupScreen(n) {
   for (let i = 1; i <= SETUP_TOTAL_SCREENS; i++) {
@@ -1956,20 +1889,15 @@ function showSetupScreen(n) {
   }
   $('setup-progress-fill').style.width = (n / SETUP_TOTAL_SCREENS * 100) + '%';
   $('setup-back-btn').style.display = n > 1 ? '' : 'none';
-  $('setup-next-btn').textContent = n === SETUP_TOTAL_SCREENS ? 'CONFIRM ▶' : (n === 1 ? 'BEGIN ASSESSMENT ▶' : 'NEXT ▶');
+  $('setup-next-btn').textContent = n === SETUP_TOTAL_SCREENS ? 'BEGIN ▶' : 'NEXT ▶';
   setupValidate();
-  if (n === SETUP_TOTAL_SCREENS) fillSetupConfirm();
 }
 
 function setupValidate() {
   const n = setupStep;
   let ok = true;
-  if (n === 2) ok = $('setup-name').value.trim().length > 0;
-  if (n === 3) ok = $('setup-profession').value.trim().length > 0;
-  if (n === 4) ok = $('setup-rank').value !== '';
-  if (n === 5) ok = $('setup-awakening').value.trim().length > 0;
-  if (n === 6) ok = $('setup-cycle').value !== '';
-  if (n === 7) ok = $('sq1').value.trim().length > 0;
+  if (n === 1) ok = $('setup-name') && $('setup-name').value.trim().length > 0;
+  if (n === 2) ok = $('sq1') && $('sq1').value.trim().length > 0;
   $('setup-next-btn').disabled = !ok;
 }
 
@@ -1986,26 +1914,8 @@ function setupNext() {
   }
 }
 
-function fillSetupConfirm() {
-  const rows = [
-    ['NAME',          $('setup-name').value.trim()],
-    ['PROFESSION',    $('setup-profession').value.trim()],
-    ['RANK',          RANKS[+$('setup-rank').value]],
-    ['2ND AWAKENING', $('setup-awakening').value.trim()],
-    ['CYCLE',         $('setup-cycle').value],
-    ['QUESTS',        [$('sq1'), $('sq2'), $('sq3'), $('sq4'), $('sq5')].map(x=>x.value.trim()).filter(Boolean).length + ' set']
-  ];
-  $('setup-confirm-rows').innerHTML = rows.map(([k,v]) =>
-    '<div class="setup-confirm-row"><div class="setup-confirm-key">' + k + '</div><div class="setup-confirm-val">' + escapeHtml(v||'—') + '</div></div>'
-  ).join('');
-}
-
 function completeSetup() {
   state.playerName  = $('setup-name').value.trim();
-  state.profession  = $('setup-profession').value.trim();
-  state.rankIndex   = +$('setup-rank').value || 0;
-  state.awakeningGoal = $('setup-awakening').value.trim();
-  state.workCycle   = $('setup-cycle').value;
   state.dailyQuests = [];
   ['sq1','sq2','sq3','sq4','sq5'].forEach(id => {
     const v = $(id).value.trim();
@@ -2013,12 +1923,42 @@ function completeSetup() {
   });
   state.setupComplete = true;
   state.firstAwakeningComplete = true;
+  // Profession, rank (0=IBO), awakeningGoal, workCycle all left at defaults
   try { localStorage.setItem('sys_setupComplete', '1'); } catch(e){}
   saveState();
   $('setup-overlay').classList.remove('show');
   showGlitchTransition('FIRST AWAKENING\nCOMPLETE', () => {
     renderAll();
   });
+}
+
+// Quick glitch effect used after setup completion
+function showGlitchTransition(text, cb) {
+  const screen = $('glitch-screen');
+  const line1  = $('glitch-line1');
+  const title  = $('glitch-title');
+  const btns   = $('glitch-btns');
+
+  line1.style.transition = 'opacity 0.4s ease';
+  title.style.transition = 'opacity 0.4s ease';
+  btns.style.display = 'none';
+  line1.style.color = '';
+  line1.textContent = '[ SYSTEM ]';
+  title.textContent = text;
+  title.classList.add('glitching');
+  line1.style.opacity = '1';
+  title.style.opacity = '1';
+  screen.classList.add('show');
+
+  setTimeout(() => { title.classList.remove('glitching'); }, 800);
+  setTimeout(() => {
+    line1.style.opacity = '0';
+    title.style.opacity = '0';
+  }, 1800);
+  setTimeout(() => {
+    screen.classList.remove('show');
+    if (cb) cb();
+  }, 2400);
 }
 
 // ============================================================
@@ -2029,9 +1969,16 @@ async function pressStart() {
   splash.classList.add('fade-out');
   setTimeout(() => splash.style.display = 'none', 600);
   await loadState();
+
+  // If player has not accepted the Courage of the Weak yet, play the opening sequence
+  if (!state.playerAccepted) {
+    // Wait for splash fade to finish before sequence
+    await sleep(700);
+    await playCourageOfTheWeak();
+  }
+
   bootSystem();
 }
-window.startSystem = pressStart;
 
 function bootSystem() {
   if (!state.setupComplete) {
@@ -2054,18 +2001,14 @@ function renderAll() {
   renderDungeonView();
 }
 
-// Update header/datebar each minute
 setInterval(() => {
   updateDatebar();
   if (currentDungeonPeriod) updateBoss();
 }, 60000);
 
-// On page load: just wait for press-start
-document.addEventListener('DOMContentLoaded', () => {
-  // Nothing — splash is visible and waits for tap
-});
-
-// Expose for inline handlers
+// ============================================================
+// EXPOSE FOR INLINE HANDLERS
+// ============================================================
 window.switchPanel = switchPanel;
 window.toggleQuest = toggleQuest;
 window.openEditQuests = openEditQuests;
