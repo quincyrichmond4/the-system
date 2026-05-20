@@ -109,6 +109,34 @@
     .quest-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
     .quest-section-icon { font-size: 14px; }
     .quest-section-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 3px; }
+
+    .awakening-goal-card {
+      background: rgba(155, 77, 255, 0.06);
+      border: 1px solid rgba(155, 77, 255, 0.3);
+      padding: 12px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .awakening-goal-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 3px; height: 100%;
+      background: var(--purple);
+    }
+    .awakening-goal-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--purple);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .awakening-goal-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.5;
+    }
     .quest-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; margin-bottom: 3px; background: rgba(6,18,38,0.6); border: 1px solid rgba(30,111,255,0.12); cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; user-select: none; }
     .quest-item::before { content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 100%; background: var(--border2); transition: background 0.2s; }
     .quest-item:active { background: rgba(30,111,255,0.06); }
@@ -472,6 +500,40 @@
   </div>
 </div>
 
+<!-- EDIT FIRST GOAL MODAL -->
+<div id="edit-goal-overlay" class="modal-overlay">
+  <div class="modal-window">
+    <div class="modal-header">
+      <div class="modal-label">[ EDIT FIRST GOAL ]</div>
+      <button onclick="closeEditGoal()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">[This is the goal that unlocks your Second Awakening. Achieve it, then mark it complete.]</div>
+      <div class="modal-field-label">FIRST GOAL</div>
+      <input class="modal-input" id="edit-goal-input" type="text" maxlength="80" placeholder="e.g. Reach my first PV target"/>
+      <button onclick="saveEditedGoal()" class="modal-submit-btn">[ SAVE GOAL ]</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT DEFINITE MAJOR PURPOSE MODAL -->
+<div id="edit-dmp-overlay" class="modal-overlay">
+  <div class="modal-window">
+    <div class="modal-header">
+      <div class="modal-label">[ DEFINITE MAJOR PURPOSE ]</div>
+      <button onclick="closeEditDMP()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">[Your Definite Major Purpose — the single overarching aim that directs everything. State it clearly.]</div>
+      <div class="modal-field-label">PURPOSE</div>
+      <input class="modal-input" id="edit-dmp-title" type="text" maxlength="80" placeholder="e.g. Reach Diamond and build an empire of impact"/>
+      <div class="modal-field-label">WHY IT MATTERS</div>
+      <input class="modal-input" id="edit-dmp-sub" type="text" maxlength="120" placeholder="Optional — the reason behind it"/>
+      <button onclick="saveEditedDMP()" class="modal-submit-btn">[ SAVE PURPOSE ]</button>
+    </div>
+  </div>
+</div>
+
 <!-- LOG SALE MODAL -->
 <div id="log-sale-overlay" class="modal-overlay">
   <div class="modal-window">
@@ -534,31 +596,40 @@
 </div>
 
 
-<!-- SETUP WIZARD — Now just Name + Daily Quests -->
+<!-- SETUP WIZARD — Name + First Goal + Daily Quests -->
 <div id="setup-overlay">
   <div class="setup-header">
     <div class="setup-header-label">[ SYSTEM — PLAYER REGISTRATION ]</div>
     <div class="setup-progress">
-      <div class="setup-progress-fill" id="setup-progress-fill" style="width:50%"></div>
+      <div class="setup-progress-fill" id="setup-progress-fill" style="width:33%"></div>
     </div>
   </div>
   <div class="setup-body">
 
     <!-- SCREEN 1: NAME -->
     <div class="setup-screen active" id="setup-s1">
-      <div class="setup-sys-message">▶ QUERY 1 OF 2</div>
+      <div class="setup-sys-message">&#9654; QUERY 1 OF 3</div>
       <div class="setup-title">State your name.</div>
       <div class="setup-desc">The name by which the System will address you. This is permanent and cannot be changed.</div>
       <div class="setup-field-label">PLAYER NAME</div>
       <input class="setup-input" id="setup-name" type="text" placeholder="Enter your name" maxlength="30" oninput="setupValidate()"/>
     </div>
 
-    <!-- SCREEN 2: DAILY QUESTS -->
+    <!-- SCREEN 2: FIRST GOAL (Second Awakening condition) -->
     <div class="setup-screen" id="setup-s2">
-      <div class="setup-sys-message">▶ QUERY 2 OF 2</div>
+      <div class="setup-sys-message">&#9654; QUERY 2 OF 3</div>
+      <div class="setup-title">Name your first goal.</div>
+      <div class="setup-desc">The goal that will unlock your Second Awakening. Achieve it, and the System recognizes your awakening &mdash; Stats, Dungeons, Items and Skills unlock. Choose something real. It can be edited later.</div>
+      <div class="setup-field-label">FIRST GOAL</div>
+      <input class="setup-input" id="setup-goal" type="text" placeholder="e.g. Reach my first PV target" maxlength="80" oninput="setupValidate()"/>
+    </div>
+
+    <!-- SCREEN 3: DAILY QUESTS -->
+    <div class="setup-screen" id="setup-s3">
+      <div class="setup-sys-message">&#9654; QUERY 3 OF 3</div>
       <div class="setup-title">Define your Daily Quests.</div>
       <div class="setup-desc">Up to 5 daily training tasks. At least 1 is required. These are your foundational daily obligations. They can be edited later.</div>
-      <div class="setup-field-label">QUEST 1 — REQUIRED</div>
+      <div class="setup-field-label">QUEST 1 &mdash; REQUIRED</div>
       <input class="setup-input" id="sq1" type="text" placeholder="e.g. 100 Push-ups" maxlength="60" oninput="setupValidate()"/>
       <div class="setup-field-label">QUEST 2</div>
       <input class="setup-input" id="sq2" type="text" placeholder="Optional" maxlength="60"/>
@@ -572,8 +643,8 @@
 
   </div>
   <div class="setup-footer">
-    <button class="setup-btn-back" id="setup-back-btn" onclick="setupBack()" style="display:none">← BACK</button>
-    <button class="setup-btn-next" id="setup-next-btn" onclick="setupNext()">NEXT ▶</button>
+    <button class="setup-btn-back" id="setup-back-btn" onclick="setupBack()" style="display:none">&#8592; BACK</button>
+    <button class="setup-btn-next" id="setup-next-btn" onclick="setupNext()">NEXT &#9654;</button>
   </div>
 </div>
 
@@ -628,9 +699,27 @@
         </div>
         <div id="quest-list"></div>
       </div>
+
+      <!-- SECOND AWAKENING GOAL -->
+      <div class="quest-section" id="awakening-goal-section">
+        <div class="quest-section-header">
+          <div class="quest-section-icon">⚡</div>
+          <div class="quest-section-title">Second Awakening</div>
+          <button onclick="openEditGoal()" style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">✎ EDIT</button>
+        </div>
+        <div class="awakening-goal-card" id="awakening-goal-card">
+          <div class="awakening-goal-label">▶ GOAL TO UNLOCK</div>
+          <div class="awakening-goal-text" id="quest-awakening-goal">—</div>
+          <div id="awakening-goal-action">
+            <button onclick="promptSecondAwakening()" id="mark-awakening-btn" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:9px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;width:100%;margin-top:10px;">[ MARK AS ACHIEVED ]</button>
+          </div>
+          <div id="awakening-goal-done" style="display:none;margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;text-align:center;">✓ SECOND AWAKENING COMPLETE</div>
+        </div>
+      </div>
+
       <div class="sys-warning">
         <div class="sys-warning-title">⚠ PENALTY WARNING</div>
-        <div class="sys-warning-body">[Failure to complete the Daily Quest bleeds XP and breaks your streak. No shields. No saves.]</div>
+        <div class="sys-warning-body">[Failure to complete the Daily Quest will result in an appropriate penalty.]</div>
       </div>
     </div>
   </div>
@@ -647,7 +736,7 @@
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
         <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Dungeons Sealed</div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Dungeons are sealed until the Second Awakening is achieved. Train first. Then the gates open.</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Dungeons are locked for beginner-level Players. Achieve your first goal to trigger the Second Awakening.</div>
       </div>
 
       <div id="dungeons-content" style="display:none;">
@@ -787,25 +876,17 @@
 
       <div class="mission-block">
         <div class="mission-label">▶ DEFINITE MAJOR PURPOSE</div>
-        <div class="mission-title" id="dmp-title">—</div>
+        <div class="mission-title" id="dmp-title">Not yet defined.</div>
         <div class="mission-sub" id="dmp-sub">Set your Definite Major Purpose to begin.</div>
+        <button onclick="openEditDMP()" style="margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">✎ SET PURPOSE</button>
       </div>
 
       <div class="sys-section">Milestones</div>
 
-      <div class="milestone" id="milestone-first">
-        <div class="milestone-name">First Awakening</div>
-        <div class="milestone-sub">Complete the System assessment and establish your profile</div>
-        <div class="milestone-effect" id="first-awakening-status">✓ COMPLETE</div>
-      </div>
-
       <div class="milestone" id="milestone-second">
         <div class="milestone-name">Second Awakening</div>
-        <div class="milestone-sub" id="awakening-goal-text">Define and achieve your fitness goal</div>
+        <div class="milestone-sub" id="awakening-goal-text">—</div>
         <div class="milestone-effect">Unlocks: Stats · Dungeons · Items · Skills</div>
-        <div id="awakening-btn-wrap" style="margin-top:10px;display:none">
-          <button onclick="promptSecondAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">[ MARK AS ACHIEVED ]</button>
-        </div>
         <div id="awakening-complete-label" style="display:none;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;">✓ SECOND AWAKENING COMPLETE</div>
       </div>
 
@@ -847,7 +928,7 @@
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
         <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Items and Skills are locked until the Second Awakening is achieved. Prove yourself first.</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Items and Skills are locked for beginner-level Players. Achieve your first goal to trigger the Second Awakening.</div>
       </div>
       <div id="inventory-content" style="display:none">
         <div class="sys-section">Items</div>
@@ -968,7 +1049,7 @@ const PINS = ['— None —', 'Platinum', 'Ruby', 'Sapphire', 'Emerald', 'Diamon
 const PIN_LEVELS = [0, 20, 40, 60, 80, 100];
 
 const PIN_HINTS = [
-  'No pin yet. Build daily activity. Sponsor consistently. Climb toward Platinum.',
+  'Next pin: Platinum. Earned through structure and group volume — not grinding alone.',
   '6/25 with Core+ IBOs or 6/50 with Core. ~7,500 PV group.',
   'Multiple Platinum legs. Network solidifying.',
   '~9/75 structure. Top 1% household income territory.',
@@ -1014,6 +1095,8 @@ const SPONSORING_COUNTERS = [
 ];
 
 const COUNTER_XP = 5;
+// Player level gets half a counter tick's XP — kept as a whole number.
+const COUNTER_LEVEL_XP = Math.round(COUNTER_XP / 2);
 const IBO_LAUNCH_XP = 500;
 
 // Bleed penalties (Duolingo with teeth — all or nothing)
@@ -1027,8 +1110,8 @@ const BLEED_WEEKLY_MISS = 500;
 const MONTHLY_PV_TARGETS = [1500, 7500, 10000, 12000, 15000, 25000];
 
 const ACHIEVEMENTS = [
-  { id:'first',  icon:'🎯', name:'First Awakening',  desc:'Profile complete',          check:s => s.setupComplete },
-  { id:'second', icon:'⚡', name:'Second Awakening',  desc:'Fitness goal achieved',     check:s => s.secondAwakeningComplete },
+  { id:'player', icon:'🎯', name:'The System',        desc:'Became a Player',           check:s => s.setupComplete },
+  { id:'second', icon:'⚡', name:'Second Awakening',  desc:'First goal achieved',       check:s => s.secondAwakeningComplete },
   { id:'plat',   icon:'🥈', name:'Platinum',          desc:'First pin earned',          check:s => s.pinIndex >= 1 },
   { id:'ruby',   icon:'🥉', name:'Ruby',              desc:'Second pin earned',         check:s => s.pinIndex >= 2 },
   { id:'sapph',  icon:'💠', name:'Sapphire',          desc:'Third pin earned',          check:s => s.pinIndex >= 3 },
@@ -1060,8 +1143,7 @@ const DEFAULT_STATE = {
   workCycle: '',
   dailyQuests: [],
 
-  // Awakenings
-  firstAwakeningComplete: false,
+  // Awakening — Second Awakening unlocks when the player's first goal is met
   secondAwakeningComplete: false,
 
   // Progress
@@ -1159,7 +1241,10 @@ function levelFromTotalXp(total) {
   return lvl;
 }
 
-function getQuestXP() { return +(5 / (1 + state.level / 10)).toFixed(2); }
+function getQuestXP() {
+  // Diminishing XP per quest as level rises — original base 5, rounded to a whole number, minimum 1.
+  return Math.max(1, Math.round(5 / (1 + state.level / 10)));
+}
 
 // ============================================================
 // GATE LOGIC
@@ -1204,17 +1289,19 @@ function migrate(old) {
     out.dailyQuests = old.dailyQuests.map(q => typeof q === 'string' ? {text:q, completed:false} : {text:q.text||'', completed:!!q.completed});
   }
 
-  out.firstAwakeningComplete = !!old.setupComplete;
   out.secondAwakeningComplete = !!(old.awakeningComplete || old.secondAwakeningComplete);
 
-  // Total XP preserved. Level recomputed under new curve.
-  out.totalXp = +old.totalXp || +old.xp || 0;
+  // Total XP preserved. Level recomputed under new curve. Rounded — no fractions.
+  out.totalXp = Math.round(+old.totalXp || +old.xp || 0);
   out.streak = +old.streak || 0;
   out.lastQuestCompleteDate = old.lastQuestCompleteDate || old.lastQuestDate || '';
   out.lastBootDate = old.lastBootDate || '';
   out.lastMonthChecked = old.lastMonthChecked || '';
   out.monthlyStrikes = +old.monthlyStrikes || 0;
-  out.stats = { sales: +(old.stats && old.stats.sales) || 0, sponsoring: +(old.stats && old.stats.sponsoring) || 0 };
+  out.stats = {
+    sales: Math.round(+(old.stats && old.stats.sales) || 0),
+    sponsoring: Math.round(+(old.stats && old.stats.sponsoring) || 0)
+  };
 
   // Migrate old rankIndex (15 tiers) → new pinIndex (6 entries)
   // old 0-8 (IBO + PBS) → 0 (no pin)
@@ -1250,12 +1337,12 @@ function migrate(old) {
     out.totalXp = totalXpForLevel(gate);
     out.level = gate;
     out.xp = 0;
-    out.bufferedXp = extra;
+    out.bufferedXp = Math.round(extra);
   } else if (out.level === gate) {
-    out.bufferedXp = +old.bufferedXp || +old.xp || 0;
+    out.bufferedXp = Math.round(+old.bufferedXp || +old.xp || 0);
     out.xp = 0;
   } else {
-    out.bufferedXp = +old.bufferedXp || 0;
+    out.bufferedXp = Math.round(+old.bufferedXp || 0);
   }
 
   if (old.dungeons) {
@@ -1274,7 +1361,7 @@ function migrate(old) {
     });
   }
 
-  if (Array.isArray(old.weeklyXp) && old.weeklyXp.length === 7) out.weeklyXp = old.weeklyXp.map(n => +n||0);
+  if (Array.isArray(old.weeklyXp) && old.weeklyXp.length === 7) out.weeklyXp = old.weeklyXp.map(n => Math.round(+n || 0));
   out.weekStartKey = old.weekStartKey || '';
   out.dmpTitle = old.dmpTitle || '';
   out.dmpSub = old.dmpSub || '';
@@ -1316,7 +1403,7 @@ function loadState() {
 // XP EARN — routes to buffer if gated
 // ============================================================
 function addXP(amount) {
-  amount = +amount;
+  amount = Math.round(+amount);
   if (!isFinite(amount) || amount <= 0) return;
 
   // Weekly chart: always record earned XP regardless of gating
@@ -1648,6 +1735,18 @@ function renderQuests() {
   const pct = total ? (done / total * 100) : 0;
   $('quest-bar').style.width = pct + '%';
   $('quest-pct').textContent = Math.round(pct) + '%';
+
+  // Second Awakening goal section
+  if ($('quest-awakening-goal')) {
+    $('quest-awakening-goal').textContent = state.awakeningGoal || 'No goal set. Tap EDIT to define one.';
+  }
+  if (state.secondAwakeningComplete) {
+    if ($('awakening-goal-action')) $('awakening-goal-action').style.display = 'none';
+    if ($('awakening-goal-done'))   $('awakening-goal-done').style.display = 'block';
+  } else {
+    if ($('awakening-goal-action')) $('awakening-goal-action').style.display = 'block';
+    if ($('awakening-goal-done'))   $('awakening-goal-done').style.display = 'none';
+  }
 }
 
 function toggleQuest(i) {
@@ -1703,6 +1802,41 @@ function saveEditedQuests() {
   state.dailyQuests = out;
   closeEditQuests();
   renderQuests();
+  saveState();
+}
+
+// First goal (Second Awakening condition)
+function openEditGoal() {
+  if ($('edit-goal-input')) $('edit-goal-input').value = state.awakeningGoal || '';
+  $('edit-goal-overlay').classList.add('show');
+  setTimeout(() => { if ($('edit-goal-input')) $('edit-goal-input').focus(); }, 100);
+}
+function closeEditGoal() { $('edit-goal-overlay').classList.remove('show'); }
+function saveEditedGoal() {
+  const v = $('edit-goal-input') ? $('edit-goal-input').value.trim() : '';
+  if (!v) { showToast('ENTER A GOAL'); return; }
+  state.awakeningGoal = v;
+  closeEditGoal();
+  renderQuests();
+  renderMission();
+  saveState();
+}
+
+// Definite Major Purpose
+function openEditDMP() {
+  if ($('edit-dmp-title')) $('edit-dmp-title').value = state.dmpTitle || '';
+  if ($('edit-dmp-sub'))   $('edit-dmp-sub').value = state.dmpSub || '';
+  $('edit-dmp-overlay').classList.add('show');
+  setTimeout(() => { if ($('edit-dmp-title')) $('edit-dmp-title').focus(); }, 100);
+}
+function closeEditDMP() { $('edit-dmp-overlay').classList.remove('show'); }
+function saveEditedDMP() {
+  const t = $('edit-dmp-title') ? $('edit-dmp-title').value.trim() : '';
+  if (!t) { showToast('ENTER A PURPOSE'); return; }
+  state.dmpTitle = t;
+  state.dmpSub = $('edit-dmp-sub') ? $('edit-dmp-sub').value.trim() : '';
+  closeEditDMP();
+  renderMission();
   saveState();
 }
 
@@ -1790,7 +1924,7 @@ function adjustCounter(period, key, delta) {
     const isSales = SALES_COUNTERS.some(([k]) => k === key);
     if (isSales) state.stats.sales += COUNTER_XP * change;
     else state.stats.sponsoring += COUNTER_XP * change;
-    addXP(COUNTER_XP * change * 0.5);
+    addXP(COUNTER_LEVEL_XP * change);
   } else if (change < 0) {
     const isSales = SALES_COUNTERS.some(([k]) => k === key);
     if (isSales) state.stats.sales = Math.max(0, state.stats.sales + COUNTER_XP * change);
@@ -2040,6 +2174,7 @@ function confirmSecondAwakening() {
   state.secondAwakeningComplete = true;
   $('awakening-overlay').classList.remove('show');
   applyAwakenedTheme();
+  renderQuests();
   renderMission();
   renderDungeonView();
   renderStatus();
@@ -2059,11 +2194,9 @@ function renderMission() {
   if ($('awakening-goal-text')) $('awakening-goal-text').textContent = state.awakeningGoal || 'Goal not yet defined.';
 
   if (state.secondAwakeningComplete) {
-    if ($('awakening-btn-wrap'))     $('awakening-btn-wrap').style.display = 'none';
     if ($('awakening-complete-label')) $('awakening-complete-label').style.display = 'block';
-    if ($('milestone-second'))       $('milestone-second').classList.remove('locked');
+    if ($('milestone-second'))         $('milestone-second').classList.remove('locked');
   } else {
-    if ($('awakening-btn-wrap'))     $('awakening-btn-wrap').style.display = 'block';
     if ($('awakening-complete-label')) $('awakening-complete-label').style.display = 'none';
   }
 
@@ -2262,7 +2395,7 @@ function executeFactoryReset() {
 // SETUP WIZARD
 // ============================================================
 let setupStep = 1;
-const SETUP_TOTAL_SCREENS = 2;
+const SETUP_TOTAL_SCREENS = 3;
 
 function showSetupScreen(n) {
   for (let i = 1; i <= SETUP_TOTAL_SCREENS; i++) {
@@ -2271,7 +2404,7 @@ function showSetupScreen(n) {
   }
   $('setup-progress-fill').style.width = (n / SETUP_TOTAL_SCREENS * 100) + '%';
   $('setup-back-btn').style.display = n > 1 ? '' : 'none';
-  $('setup-next-btn').textContent = n === SETUP_TOTAL_SCREENS ? 'BEGIN ▶' : 'NEXT ▶';
+  $('setup-next-btn').textContent = n === SETUP_TOTAL_SCREENS ? 'BEGIN \u25B6' : 'NEXT \u25B6';
   setupValidate();
 }
 
@@ -2279,7 +2412,8 @@ function setupValidate() {
   const n = setupStep;
   let ok = true;
   if (n === 1) ok = $('setup-name') && $('setup-name').value.trim().length > 0;
-  if (n === 2) ok = $('sq1') && $('sq1').value.trim().length > 0;
+  if (n === 2) ok = $('setup-goal') && $('setup-goal').value.trim().length > 0;
+  if (n === 3) ok = $('sq1') && $('sq1').value.trim().length > 0;
   $('setup-next-btn').disabled = !ok;
 }
 
@@ -2303,12 +2437,14 @@ function completeSetup() {
     const v = $(id).value.trim();
     if (v) state.dailyQuests.push({ text: v, completed: false });
   });
+  // First goal — the condition for the Second Awakening
+  const goalField = $('setup-goal');
+  if (goalField) state.awakeningGoal = goalField.value.trim();
   state.setupComplete = true;
-  state.firstAwakeningComplete = true;
   try { localStorage.setItem('sys_setupComplete', '1'); } catch(e){}
   saveState();
   $('setup-overlay').classList.remove('show');
-  showGlitchTransition('FIRST AWAKENING\nCOMPLETE', () => {
+  showGlitchTransition('PROFILE\nREGISTERED', () => {
     renderAll();
   });
 }
@@ -2318,13 +2454,30 @@ function completeSetup() {
 // ============================================================
 async function pressStart() {
   const splash = $('splash');
+  const black  = $('black-overlay');
+
+  // Raise the black curtain immediately so nothing leaks through during load
+  if (black) black.classList.add('show');
+
   splash.classList.add('fade-out');
   setTimeout(() => splash.style.display = 'none', 600);
   await loadState();
 
   if (!state.playerAccepted) {
+    // Curtain stays up through the opening sequence
     await sleep(700);
     await playCourageOfTheWeak();
+    // playerAccepted is now true (or setup will follow) — drop the curtain
+    if (black) {
+      black.classList.add('fade-out');
+      setTimeout(() => { black.classList.remove('show'); black.classList.remove('fade-out'); }, 400);
+    }
+  } else {
+    // Returning player — drop curtain once splash is gone
+    if (black) {
+      black.classList.add('fade-out');
+      setTimeout(() => { black.classList.remove('show'); black.classList.remove('fade-out'); }, 400);
+    }
   }
 
   bootSystem();
@@ -2370,6 +2523,12 @@ window.toggleQuest = toggleQuest;
 window.openEditQuests = openEditQuests;
 window.closeEditQuests = closeEditQuests;
 window.saveEditedQuests = saveEditedQuests;
+window.openEditGoal = openEditGoal;
+window.closeEditGoal = closeEditGoal;
+window.saveEditedGoal = saveEditedGoal;
+window.openEditDMP = openEditDMP;
+window.closeEditDMP = closeEditDMP;
+window.saveEditedDMP = saveEditedDMP;
 window.switchDungeon = switchDungeon;
 window.adjustCounter = adjustCounter;
 window.openLogSale = openLogSale;
