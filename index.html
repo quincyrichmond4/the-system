@@ -33,9 +33,14 @@
       --success:     #1a9a5a;
       --purple:      #9b4dff;
       --purple-glow: rgba(155, 77, 255, 0.3);
+      /* Enemy tier accents */
+      --tier-0:      #5a7090;
+      --tier-1:      #a8c8f0;
+      --tier-2:      #00d4ff;
+      --tier-3:      #c8a84b;
+      --tier-4:      #ff3a4a;
     }
 
-    /* SECOND AWAKENING THEME SHIFT (activates when body has .awakened class) */
     body.awakened {
       --blue:      #9b4dff;
       --cyan:      #c478ff;
@@ -46,100 +51,34 @@
       --border2:   rgba(155, 77, 255, 0.6);
     }
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-    }
+    html, body { height: 100%; overflow: hidden; background: var(--bg); }
+    body { font-family: 'Lato', sans-serif; color: var(--text); display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; background: var(--bg); transition: --blue 0.6s, --cyan 0.6s; }
 
-    body {
-      font-family: 'Lato', sans-serif;
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      max-width: 480px;
-      margin: 0 auto;
-      position: relative;
-      background: var(--bg);
-      transition: --blue 0.6s, --cyan 0.6s;
-    }
-
-    /* ── SPLASH ───────────────────────────────────────── */
-    #splash {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 1200;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+    #splash { position: fixed; inset: 0; background: #000; z-index: 1200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; -webkit-tap-highlight-color: transparent; }
     #splash.fade-out { animation: splash-out 0.6s ease forwards; }
     @keyframes splash-out { to { opacity: 0; pointer-events: none; visibility: hidden; } }
+    .splash-title { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 6px; text-transform: uppercase; opacity: 0; animation: splash-fade-in 0.3s ease 0.2s forwards; text-shadow: 0 0 30px rgba(30,111,255,0.5); }
+    .splash-btn { position: absolute; bottom: 80px; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--blue); background: transparent; border: 1px solid var(--border2); padding: 14px 40px; letter-spacing: 3px; cursor: pointer; opacity: 0; animation: splash-fade-in 0.3s ease 0.5s forwards; -webkit-tap-highlight-color: transparent; box-shadow: 0 0 16px var(--blue-glow); transition: transform 0.1s, border-color 0.2s, color 0.2s; }
+    .splash-btn:active { transform: scale(0.96); border-color: var(--cyan); color: var(--cyan); }
+    @keyframes splash-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    .splash-title {
-      font-size: 32px;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      opacity: 0;
-      animation: splash-fade-in 0.3s ease 0.2s forwards;
-      text-shadow: 0 0 30px rgba(30,111,255,0.5);
-    }
-    .splash-btn {
-      position: absolute;
-      bottom: 80px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 13px;
-      color: var(--blue);
-      background: transparent;
-      border: 1px solid var(--border2);
-      padding: 14px 40px;
-      letter-spacing: 3px;
-      cursor: pointer;
-      opacity: 0;
-      animation: splash-fade-in 0.3s ease 0.5s forwards;
-      -webkit-tap-highlight-color: transparent;
-      box-shadow: 0 0 16px var(--blue-glow);
-      transition: transform 0.1s, border-color 0.2s, color 0.2s;
-    }
-    .splash-btn:active {
-      transform: scale(0.96);
-      border-color: var(--cyan);
-      color: var(--cyan);
-    }
-    @keyframes splash-fade-in {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── HEADER ───────────────────────────────────────── */
-    .sys-header {
-      position: relative;
-      z-index: 10;
-      padding: 12px 16px 8px;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(6,18,38,0.98) 0%, rgba(2,5,9,0.95) 100%);
-      flex-shrink: 0;
-    }
+    .sys-header { position: relative; z-index: 10; padding: 12px 16px 8px; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(6,18,38,0.98) 0%, rgba(2,5,9,0.95) 100%); flex-shrink: 0; }
     .sys-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .sys-title-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--blue); letter-spacing: 4px; margin-bottom: 2px; }
     .sys-title-name { font-size: 11px; font-weight: 900; color: var(--text-bright); letter-spacing: 3px; text-transform: uppercase; }
     .sys-level-block { text-align: right; }
     .sys-level-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; }
     .sys-level-val { font-family: 'Share Tech Mono', monospace; font-size: 22px; color: var(--cyan); font-weight: 700; line-height: 1; }
+    .sys-level-val.gated { color: var(--gold); }
     .sys-xp-row { display: flex; align-items: center; gap: 8px; }
     .sys-xp-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 1px; flex-shrink: 0; }
     .sys-xp-track { flex: 1; height: 4px; background: rgba(30,111,255,0.1); overflow: hidden; }
     .sys-xp-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.6s ease; }
+    .sys-xp-fill.gated { background: linear-gradient(90deg, var(--gold), #f0d080); }
     .sys-xp-val { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--cyan); flex-shrink: 0; min-width: 70px; text-align: right; }
+    .sys-xp-val.gated { color: var(--gold); }
     .sys-datebar { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; text-align: center; padding: 4px 16px; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(30,111,255,0.1); flex-shrink: 0; position: relative; z-index: 10; }
 
-    /* ── CONTENT ──────────────────────────────────────── */
     .sys-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; z-index: 5; -webkit-overflow-scrolling: touch; }
     .sys-panel { display: none; animation: panel-open 0.25s ease forwards; }
     .sys-panel.active { display: block; }
@@ -149,7 +88,6 @@
     .panel-header-title { font-size: 18px; font-weight: 900; color: var(--text-bright); letter-spacing: 1px; text-transform: uppercase; }
     .panel-body { padding: 14px 16px; }
 
-    /* ── NOTIFICATIONS ────────────────────────────────── */
     .sys-notification { border: 1px solid var(--border2); background: var(--blue-dim); padding: 12px 14px; margin-bottom: 14px; position: relative; overflow: hidden; }
     .sys-notification::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--blue); }
     .sys-notification-title { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); letter-spacing: 3px; margin-bottom: 6px; }
@@ -159,7 +97,6 @@
     .sys-warning-title { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--danger); letter-spacing: 3px; margin-bottom: 6px; }
     .sys-warning-body { font-size: 12px; color: #e06070; line-height: 1.5; }
 
-    /* ── PROGRESS ─────────────────────────────────────── */
     .sys-progress { background: rgba(6,18,38,0.8); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
     .sys-progress-count { font-family: 'Share Tech Mono', monospace; font-size: 26px; color: var(--blue); font-weight: 700; line-height: 1; flex-shrink: 0; }
     .sys-progress-right { flex: 1; }
@@ -168,7 +105,6 @@
     .sys-progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.4s ease; }
     .sys-progress-pct { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); margin-top: 3px; }
 
-    /* ── QUESTS ───────────────────────────────────────── */
     .quest-section { margin-bottom: 16px; }
     .quest-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
     .quest-section-icon { font-size: 14px; }
@@ -186,7 +122,7 @@
     .quest-item.completed .quest-text { color: var(--text-dim); text-decoration: line-through; }
     .quest-xp { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
 
-    /* ── DUNGEONS ─────────────────────────────────────── */
+    /* DUNGEONS / WEEKLY HUNT */
     .dungeon-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
     .dungeon-tab { flex: 1; padding: 9px 6px; font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--text-dim); background: rgba(6,18,38,0.6); border: 1px solid var(--border); cursor: pointer; -webkit-tap-highlight-color: transparent; text-align: center; transition: all 0.15s; }
     .dungeon-tab.active { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); }
@@ -200,6 +136,11 @@
     .dungeon-boss-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #f0d080); transition: width 0.4s ease; }
     .dungeon-boss-meta { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); display: flex; justify-content: space-between; }
 
+    .hunt-summary { background: rgba(6,18,38,0.5); border: 1px solid var(--border); padding: 9px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text); letter-spacing: 1px; }
+    .hunt-summary-kills { color: var(--cyan); font-weight: 700; font-size: 13px; }
+    .hunt-summary-status { color: var(--gold); font-size: 9px; letter-spacing: 2px; }
+    .hunt-summary-status.warning { color: var(--danger); }
+
     .dungeon-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
     .dungeon-action-btn { padding: 12px 8px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--cyan); background: rgba(0,212,255,0.05); border: 1px solid var(--border2); cursor: pointer; -webkit-tap-highlight-color: transparent; text-align: center; line-height: 1.4; transition: all 0.15s; }
     .dungeon-action-btn.ibo { color: var(--gold); border-color: rgba(200,168,75,0.4); background: var(--gold-dim); }
@@ -209,7 +150,19 @@
     .counter-section-header { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); letter-spacing: 3px; padding-bottom: 6px; margin-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; }
     .counter-section-total { color: var(--gold); font-size: 9px; }
     .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .counter-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; -webkit-tap-highlight-color: transparent; }
+    .counter-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; -webkit-tap-highlight-color: transparent; position: relative; }
+    .counter-card::before { content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 100%; }
+    .counter-card.enemy-tier-0::before { background: var(--tier-0); }
+    .counter-card.enemy-tier-1::before { background: var(--tier-1); }
+    .counter-card.enemy-tier-2::before { background: var(--tier-2); }
+    .counter-card.enemy-tier-3::before { background: var(--tier-3); }
+    .counter-card.enemy-tier-4::before { background: var(--tier-4); box-shadow: 0 0 6px var(--tier-4); }
+    .counter-tier-tag { font-family: 'Share Tech Mono', monospace; font-size: 7px; letter-spacing: 1px; opacity: 0.7; margin-top: 1px; }
+    .counter-card.enemy-tier-0 .counter-tier-tag { color: var(--tier-0); }
+    .counter-card.enemy-tier-1 .counter-tier-tag { color: var(--tier-1); }
+    .counter-card.enemy-tier-2 .counter-tier-tag { color: var(--tier-2); }
+    .counter-card.enemy-tier-3 .counter-tier-tag { color: var(--tier-3); }
+    .counter-card.enemy-tier-4 .counter-tier-tag { color: var(--tier-4); }
     .counter-label { font-size: 11px; color: var(--text); line-height: 1.2; flex: 1; }
     .counter-controls { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
     .counter-btn { width: 22px; height: 22px; background: transparent; border: 1px solid var(--border2); color: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size: 12px; line-height: 1; cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; padding: 0; }
@@ -225,7 +178,6 @@
     .dungeon-sale-xp { color: var(--cyan); font-family: 'Share Tech Mono', monospace; }
     .dungeon-sales-log-empty { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); text-align: center; padding: 8px 0; }
 
-    /* ── STATUS STATS ─────────────────────────────────── */
     .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
     .stat-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px; position: relative; overflow: hidden; }
     .stat-card::after { content: ''; position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; background: radial-gradient(circle at bottom right, var(--blue-glow), transparent 70%); }
@@ -234,14 +186,13 @@
     .stat-bar { height: 2px; background: rgba(30,111,255,0.1); overflow: hidden; }
     .stat-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); transition: width 0.8s ease; }
 
-    /* ── INFO ─────────────────────────────────────────── */
     .sys-info-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); margin-bottom: 10px; }
     .sys-info-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; border-bottom: 1px solid rgba(30,111,255,0.08); font-size: 13px; }
     .sys-info-row:last-child { border-bottom: none; }
     .sys-info-key { color: var(--text-dim); font-size: 11px; letter-spacing: 0.5px; }
     .sys-info-val { font-weight: 700; color: var(--text-bright); }
 
-    /* ── RANK ─────────────────────────────────────────── */
+    /* RANK / GATE STATUS */
     .rank-block { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 10px; }
     .rank-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
     .rank-name { font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: 700; color: var(--gold); }
@@ -249,7 +200,21 @@
     .rank-confirm-btn { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); background: transparent; border: 1px solid rgba(200,168,75,0.4); padding: 6px 12px; cursor: pointer; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; margin-top: 8px; width: 100%; }
     .rank-confirm-btn:active { background: var(--gold-dim); }
 
-    /* ── ACHIEVEMENTS ─────────────────────────────────── */
+    /* When the player is at a gate, recolor the header XP bar to indicate buffer mode */
+    .gate-locked .sys-xp-fill { background: linear-gradient(90deg, var(--purple), #c478ff) !important; }
+    .gate-locked .sys-xp-val  { color: var(--purple) !important; }
+    .gate-locked #xp-label::after { content: ' (BUFFER)'; color: var(--purple); }
+
+    .gate-status-block { background: linear-gradient(180deg, rgba(200,168,75,0.08), rgba(200,168,75,0.02)); border: 1px solid rgba(200,168,75,0.5); padding: 12px 14px; margin-bottom: 10px; position: relative; overflow: hidden; }
+    .gate-status-block::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); animation: gate-pulse 2.4s ease-in-out infinite; }
+    @keyframes gate-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .gate-status-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
+    .gate-status-title { font-size: 14px; font-weight: 900; color: var(--text-bright); margin-bottom: 4px; letter-spacing: 1px; }
+    .gate-status-sub { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
+    .gate-buffer-track { height: 4px; background: rgba(200,168,75,0.1); overflow: hidden; margin: 6px 0 4px; }
+    .gate-buffer-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #f0d080); transition: width 0.6s ease; }
+    .gate-buffer-meta { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); display: flex; justify-content: space-between; }
+
     .achievement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
     .achievement { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 10px; display: flex; align-items: center; gap: 8px; }
     .achievement.unlocked { border-color: rgba(200,168,75,0.4); background: var(--gold-dim); }
@@ -261,7 +226,6 @@
     .achievement-desc { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); margin-top: 2px; }
     .achievement-tag { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--gold); margin-top: 2px; }
 
-    /* ── WEEKLY CHART ─────────────────────────────────── */
     .chart-wrap { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 10px; }
     .chart-title { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 10px; }
     .chart-bars { display: flex; align-items: flex-end; justify-content: space-between; height: 60px; gap: 4px; margin-bottom: 6px; }
@@ -273,7 +237,6 @@
 
     .sys-section { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 3px; padding: 10px 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
 
-    /* ── MISSION ──────────────────────────────────────── */
     .mission-block { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 14px; margin-bottom: 10px; position: relative; overflow: hidden; }
     .mission-block::after { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: radial-gradient(circle, var(--gold-dim), transparent 70%); }
     .mission-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
@@ -286,8 +249,10 @@
     .milestone-sub { font-size: 11px; color: var(--text-dim); margin-bottom: 3px; }
     .milestone-effect { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--cyan); }
     .milestone-lock { position: absolute; top: 8px; right: 10px; font-size: 12px; opacity: 0.5; }
+    .milestone.crown { background: linear-gradient(180deg, rgba(155,77,255,0.08), rgba(155,77,255,0.02)); border-color: rgba(155,77,255,0.4); }
+    .milestone.crown .milestone-name { color: var(--purple); }
+    .milestone.crown .milestone-effect { color: var(--purple); }
 
-    /* ── INVENTORY ────────────────────────────────────── */
     .shop-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; margin-bottom: 4px; border: 1px solid var(--border); background: rgba(6,18,38,0.4); cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .shop-item:active { background: var(--blue-dim); }
     .shop-item.locked { opacity: 0.35; cursor: default; }
@@ -301,32 +266,18 @@
     .skill-unlocked { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--success); }
     .skill-locked-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
 
-    /* ── NAV ──────────────────────────────────────────── */
     .sys-nav { position: relative; z-index: 10; display: flex; background: rgba(4,11,20,0.97); border-top: 1px solid var(--border); flex-shrink: 0; }
     .sys-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 4px 8px; font-family: 'Share Tech Mono', monospace; font-size: 8px; letter-spacing: 1px; color: var(--text-dim); background: transparent; border: none; border-top: 2px solid transparent; cursor: pointer; transition: all 0.2s; gap: 4px; -webkit-tap-highlight-color: transparent; }
     .sys-nav-icon { font-size: 16px; line-height: 1; }
     .sys-nav-btn.active { color: var(--cyan); border-top-color: var(--cyan); background: var(--cyan-dim); }
 
-    /* ── TOAST ────────────────────────────────────────── */
     .sys-toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: rgba(6,18,38,0.96); border: 1px solid var(--border2); color: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size: 11px; padding: 8px 20px; letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; box-shadow: 0 0 20px var(--blue-glow); }
     .sys-toast.show { opacity: 1; }
+    .sys-toast.danger { color: var(--danger); border-color: rgba(204,34,51,0.6); box-shadow: 0 0 20px rgba(204,34,51,0.3); }
 
-    /* ── GLITCH ───────────────────────────────────────── */
     #glitch-screen { position: fixed; inset: 0; background: #000; z-index: 1100; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; }
     #glitch-screen.show { display: flex; }
-    .glitch-line1 { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 4px; margin-bottom: 20px; opacity: 0; }
-    .glitch-title { font-family: 'Share Tech Mono', monospace; font-size: 18px; font-weight: 700; color: var(--text-bright); letter-spacing: 2px; line-height: 1.8; opacity: 0; position: relative; white-space: pre-line; text-align: center; }
-    .glitch-title.glitching { animation: glitch-text 0.4s steps(1) infinite; }
-    @keyframes glitch-text {
-      0% { transform: translate(0); color: var(--text-bright); }
-      10% { transform: translate(-3px, 1px); color: var(--cyan); clip-path: inset(20% 0 60% 0); }
-      20% { transform: translate(3px, -1px); color: #ff2244; clip-path: inset(60% 0 10% 0); }
-      30% { transform: translate(0); color: var(--text-bright); clip-path: none; }
-      40% { transform: translate(-2px, 2px); color: var(--cyan); }
-      50% { transform: translate(2px, -1px); color: #ff2244; }
-      60% { transform: translate(0); color: var(--text-bright); }
-      100% { transform: translate(0); color: var(--text-bright); }
-    }
+    @keyframes glitch-text { 0% { transform: translate(0); color: var(--text-bright); } 10% { transform: translate(-3px, 1px); color: var(--cyan); clip-path: inset(20% 0 60% 0); } 20% { transform: translate(3px, -1px); color: #ff2244; clip-path: inset(60% 0 10% 0); } 30% { transform: translate(0); color: var(--text-bright); clip-path: none; } 40% { transform: translate(-2px, 2px); color: var(--cyan); } 50% { transform: translate(2px, -1px); color: #ff2244; } 60% { transform: translate(0); color: var(--text-bright); } 100% { transform: translate(0); color: var(--text-bright); } }
     .glitch-scanline { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.03) 2px, rgba(0,212,255,0.03) 4px); pointer-events: none; animation: scanline-move 8s linear infinite; }
     @keyframes scanline-move { from { background-position: 0 0; } to { background-position: 0 100px; } }
     .glitch-bar { position: absolute; height: 2px; background: var(--cyan); left: 0; right: 0; opacity: 0; animation: glitch-bar 0.3s steps(1) infinite; }
@@ -336,7 +287,6 @@
     #black-overlay.show { opacity: 1; pointer-events: all; }
     #black-overlay.fade-out { opacity: 0; pointer-events: none; }
 
-    /* ── MODALS ───────────────────────────────────────── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 950; display: none; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.show { display: flex; }
     .modal-window { background: rgba(4,11,20,0.99); border: 1px solid var(--border2); width: 100%; max-width: 360px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 40px var(--blue-glow); animation: alert-window-in 0.25s ease; }
@@ -353,7 +303,7 @@
     .modal-submit-btn { width: 100%; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #000; background: var(--cyan); border: none; padding: 12px; cursor: pointer; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
     .modal-info { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); line-height: 1.6; padding: 12px; background: var(--blue-dim); border: 1px solid var(--border); margin-bottom: 14px; }
 
-    /* ── SETUP WIZARD ─────────────────────────────────── */
+    /* SETUP WIZARD */
     #setup-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 990; display: none; flex-direction: column; overflow: hidden; }
     #setup-overlay.show { display: flex; }
     .setup-header { padding: 16px; border-bottom: 1px solid var(--border); background: rgba(6,18,38,0.8); flex-shrink: 0; }
@@ -369,18 +319,38 @@
     .setup-field-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 6px; }
     .setup-input { width: 100%; background: rgba(6,18,38,0.8); border: 1px solid var(--border2); color: var(--text-bright); font-family: 'Lato', sans-serif; font-size: 15px; padding: 12px 14px; margin-bottom: 20px; outline: none; -webkit-appearance: none; }
     .setup-input:focus { border-color: var(--cyan); }
-    .setup-select { width: 100%; background: rgba(6,18,38,0.8); border: 1px solid var(--border2); color: var(--text-bright); font-family: 'Share Tech Mono', monospace; font-size: 12px; padding: 12px 14px; margin-bottom: 20px; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
-    .setup-select option { background: #040b14; }
-    .setup-confirm-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(30,111,255,0.08); }
-    .setup-confirm-key { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 1px; }
-    .setup-confirm-val { font-size: 13px; font-weight: 700; color: var(--text-bright); max-width: 60%; text-align: right; }
-    .setup-warning { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--danger); letter-spacing: 1px; margin: 16px 0; padding: 10px 12px; border: 1px solid rgba(204,34,51,0.3); background: rgba(204,34,51,0.05); line-height: 1.6; }
     .setup-footer { padding: 14px 16px; border-top: 1px solid var(--border); background: rgba(4,11,20,0.97); display: flex; gap: 10px; flex-shrink: 0; }
     .setup-btn-next { flex: 1; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #000; background: var(--cyan); border: none; padding: 14px; cursor: pointer; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
     .setup-btn-back { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-dim); background: transparent; border: 1px solid var(--border); padding: 14px 20px; cursor: pointer; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; }
     .setup-btn-next:disabled { opacity: 0.35; cursor: default; }
 
-    /* ── ALERT ────────────────────────────────────────── */
+    /* COURAGE OF THE WEAK NOTIFICATION WINDOW */
+    .sys-notify-window { position: relative; width: 92%; max-width: 360px; background: radial-gradient(ellipse at top, rgba(30,111,255,0.15), transparent 70%), linear-gradient(180deg, #0a1a35 0%, #050a18 100%); border: 2px solid var(--cyan); border-radius: 4px; box-shadow: 0 0 40px rgba(0, 212, 255, 0.45), 0 0 80px rgba(0, 212, 255, 0.15), inset 0 0 30px rgba(30, 111, 255, 0.08); opacity: 0; transform: scale(0.92); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); overflow: hidden; }
+    .sys-notify-window::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(60deg, rgba(0,212,255,0.025) 0px, rgba(0,212,255,0.025) 1px, transparent 1px, transparent 14px), repeating-linear-gradient(-60deg, rgba(0,212,255,0.025) 0px, rgba(0,212,255,0.025) 1px, transparent 1px, transparent 14px); pointer-events: none; }
+    .sys-notify-window.show { opacity: 1; transform: scale(1); }
+    .sys-notify-window.tier-gold { border-color: var(--gold); box-shadow: 0 0 40px rgba(200, 168, 75, 0.55), 0 0 80px rgba(200, 168, 75, 0.18), inset 0 0 30px rgba(200, 168, 75, 0.08); }
+    .sys-notify-window.tier-gold .sys-notify-header { background: linear-gradient(180deg, rgba(200,168,75,0.22) 0%, rgba(200,168,75,0.08) 100%); border-bottom-color: var(--gold); }
+    .sys-notify-window.tier-gold .sys-notify-icon { border-color: var(--gold); color: var(--gold); }
+    .sys-notify-window.tier-gold .sys-notify-label { color: var(--gold); }
+    .sys-notify-window.tier-gold .sys-notify-btn { border-color: var(--gold); }
+    .sys-notify-window.tier-danger { border-color: var(--danger); box-shadow: 0 0 40px rgba(204, 34, 51, 0.55), 0 0 80px rgba(204, 34, 51, 0.18), inset 0 0 30px rgba(204, 34, 51, 0.08); }
+    .sys-notify-window.tier-danger .sys-notify-header { background: linear-gradient(180deg, rgba(204,34,51,0.22) 0%, rgba(204,34,51,0.08) 100%); border-bottom-color: var(--danger); }
+    .sys-notify-window.tier-danger .sys-notify-icon { border-color: var(--danger); color: var(--danger); }
+    .sys-notify-window.tier-danger .sys-notify-label { color: var(--danger); }
+    .sys-notify-shake.glitching { animation: notify-shake 0.25s steps(1) 4; }
+    @keyframes notify-shake { 0% { transform: translate(0); filter: none; } 20% { transform: translate(-4px, 2px); filter: hue-rotate(20deg) brightness(1.3); } 40% { transform: translate(4px, -1px); filter: hue-rotate(-15deg); } 60% { transform: translate(-2px, 3px); filter: brightness(1.5); } 80% { transform: translate(2px, 0); filter: none; } 100% { transform: translate(0); filter: none; } }
+    .sys-notify-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(180deg, rgba(30,111,255,0.22) 0%, rgba(30,111,255,0.08) 100%); border-bottom: 1px solid var(--cyan); position: relative; }
+    .sys-notify-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 1.5px solid var(--cyan); color: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size: 14px; font-weight: 700; background: rgba(0, 0, 0, 0.4); }
+    .sys-notify-label { font-family: 'Share Tech Mono', monospace; font-size: 13px; font-weight: 700; color: #ffffff; letter-spacing: 3px; }
+    .sys-notify-body { padding: 24px 22px 18px; text-align: center; color: #ffffff; font-family: 'Share Tech Mono', monospace; font-size: 13px; letter-spacing: 0.5px; line-height: 1.8; min-height: 80px; position: relative; }
+    .sys-notify-body .sys-notify-emphasis { color: #ff3a4a; font-weight: 700; }
+    .sys-notify-body .sys-notify-quest-label { font-size: 11px; letter-spacing: 3px; color: var(--cyan); margin-bottom: 14px; }
+    .sys-notify-body .sys-notify-quest-title { font-size: 18px; font-weight: 700; color: #ffffff; letter-spacing: 1px; }
+    .sys-notify-btns { display: flex; gap: 14px; padding: 0 22px 22px; justify-content: center; position: relative; }
+    .sys-notify-btn { flex: 1; max-width: 110px; padding: 10px 0; background: transparent; border: 1.5px solid var(--cyan); color: #ffffff; font-family: 'Share Tech Mono', monospace; font-size: 13px; letter-spacing: 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s, transform 0.1s, color 0.15s; }
+    .sys-notify-btn:active { background: rgba(0, 212, 255, 0.18); transform: scale(0.96); }
+
+    /* ALERT */
     #sys-alert-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 950; display: none; align-items: center; justify-content: center; padding: 20px; animation: alert-bg-in 0.2s ease; }
     #sys-alert-overlay.show { display: flex; }
     @keyframes alert-bg-in { from { opacity: 0; } to { opacity: 1; } }
@@ -393,8 +363,13 @@
     .sys-alert-subtitle { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 16px; line-height: 1.6; white-space: pre-line; }
     .sys-alert-btn { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); background: transparent; border: 1px solid var(--border2); padding: 8px 24px; cursor: pointer; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
     .sys-alert-btn:active { border-color: var(--cyan); color: #fff; }
+    .sys-alert-window.danger { border-color: rgba(204,34,51,0.6); box-shadow: 0 0 40px rgba(204,34,51,0.3); }
+    .sys-alert-window.danger .sys-alert-header { background: rgba(204,34,51,0.12); border-color: rgba(204,34,51,0.3); }
+    .sys-alert-window.danger .sys-alert-label { color: var(--danger); }
+    .sys-alert-window.danger .sys-alert-title { color: var(--danger); }
+    .sys-alert-window.danger .sys-alert-btn { color: var(--danger); border-color: rgba(204,34,51,0.5); }
 
-    /* ── DETAIL POPUP ─────────────────────────────────── */
+    /* DETAIL POPUP */
     #sys-popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 900; display: none; align-items: center; justify-content: center; padding: 20px; }
     #sys-popup-overlay.show { display: flex; }
     .sys-popup { background: rgba(4,11,20,0.98); border: 1px solid var(--border2); width: 100%; max-width: 360px; box-shadow: 0 0 40px var(--blue-glow); animation: alert-window-in 0.3s ease; }
@@ -408,15 +383,22 @@
 </head>
 <body>
 
-<!-- GLITCH TRANSITION SCREEN -->
+<!-- COURAGE OF THE WEAK / SYSTEM NOTIFICATION SCREEN -->
 <div id="glitch-screen">
   <div class="glitch-scanline"></div>
   <div class="glitch-bar"></div>
-  <div class="glitch-line1" id="glitch-line1">[ SYSTEM ]</div>
-  <div class="glitch-title" id="glitch-title">—</div>
-  <div id="glitch-btns" style="display:none;gap:16px;margin-top:32px;justify-content:center;flex-wrap:wrap;">
-    <button class="sys-alert-btn" style="color:#000;background:var(--cyan);border:none;padding:12px 36px;font-size:12px;letter-spacing:3px;" onclick="glitchAccept()">YES</button>
-    <button class="sys-alert-btn" style="padding:12px 36px;font-size:12px;letter-spacing:3px;" onclick="glitchDecline()">NO</button>
+  <div class="sys-notify-window" id="notify-window">
+    <div class="sys-notify-shake" id="notify-shake">
+      <div class="sys-notify-header">
+        <div class="sys-notify-icon" id="notify-icon">!</div>
+        <div class="sys-notify-label" id="notify-header-label">NOTIFICATION</div>
+      </div>
+      <div class="sys-notify-body" id="notify-body"></div>
+      <div class="sys-notify-btns" id="notify-btns" style="display:none;">
+        <button class="sys-notify-btn" onclick="glitchAccept()">Yes</button>
+        <button class="sys-notify-btn" onclick="glitchDecline()">No</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -431,7 +413,7 @@
 
 <!-- SYSTEM ALERT POPUP -->
 <div id="sys-alert-overlay">
-  <div class="sys-alert-window">
+  <div class="sys-alert-window" id="sys-alert-window">
     <div class="sys-alert-header">
       <div class="sys-alert-label" id="alert-label">[ SYSTEM ]</div>
     </div>
@@ -490,27 +472,7 @@
   </div>
 </div>
 
-<!-- SECOND AWAKENING CONFIRMATION -->
-<div id="awakening-overlay" class="modal-overlay">
-  <div class="modal-window" style="max-width:320px;">
-    <div class="modal-header">
-      <div class="modal-label">[ SYSTEM — MILESTONE VERIFICATION ]</div>
-    </div>
-    <div class="modal-body" style="text-align:center;">
-      <div style="font-size:28px;margin-bottom:10px;">⚡</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[Second Awakening milestone detected.]</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:6px;line-height:1.6;">Have you achieved your goal?</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:1px;margin-bottom:20px;padding:8px;border:1px solid var(--border);background:var(--blue-dim);" id="awakening-goal-confirm">—</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--danger);letter-spacing:1px;margin-bottom:20px;line-height:1.6;">[This cannot be undone. The System accepts your word.]</div>
-      <div style="display:flex;gap:10px;justify-content:center;">
-        <button onclick="confirmSecondAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--cyan);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">YES</button>
-        <button onclick="cancelSecondAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">NO</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- LOG SALE MODAL (NEW) -->
+<!-- LOG SALE MODAL -->
 <div id="log-sale-overlay" class="modal-overlay">
   <div class="modal-window">
     <div class="modal-header">
@@ -529,7 +491,7 @@
   </div>
 </div>
 
-<!-- LAUNCH IBO MODAL (NEW) -->
+<!-- LAUNCH IBO MODAL -->
 <div id="launch-ibo-overlay" class="modal-overlay">
   <div class="modal-window" style="max-width:320px;">
     <div class="modal-header">
@@ -551,18 +513,18 @@
   </div>
 </div>
 
-<!-- RANK CONFIRM MODAL (NEW) -->
+<!-- RANK CONFIRM MODAL (PIN VERIFICATION) -->
 <div id="rank-confirm-overlay" class="modal-overlay">
   <div class="modal-window" style="max-width:340px;">
     <div class="modal-header">
-      <div class="modal-label" style="color:var(--gold);">[ RANK ADVANCEMENT ]</div>
+      <div class="modal-label" style="color:var(--gold);">[ PIN VERIFICATION ]</div>
       <button onclick="closeRankConfirm()" class="modal-close-btn">✕</button>
     </div>
     <div class="modal-body" style="text-align:center;">
       <div style="font-size:28px;margin-bottom:10px;">🏅</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[Confirm next rank pin?]</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[Has this pin been officially recognized?]</div>
       <div class="modal-tier-display" id="rank-confirm-target" style="margin-bottom:14px;">→ —</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:18px;line-height:1.6;">[Only confirm a rank that has been officially recognized. The System accepts your word.]</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:18px;line-height:1.6;">[The structure gate releases. Buffered XP cascades into the new tier. The System accepts your word.]</div>
       <div style="display:flex;gap:10px;justify-content:center;">
         <button onclick="submitRankUp()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--gold);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">CONFIRM</button>
         <button onclick="closeRankConfirm()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">CANCEL</button>
@@ -624,14 +586,14 @@
       <div class="sys-title-name" id="player-name">Hunter</div>
     </div>
     <div class="sys-level-block">
-      <div class="sys-level-label">LEVEL</div>
+      <div class="sys-level-label" id="level-label">LEVEL</div>
       <div class="sys-level-val" id="level-display">1</div>
     </div>
   </div>
   <div class="sys-xp-row">
-    <div class="sys-xp-label">EXP</div>
+    <div class="sys-xp-label" id="xp-label">EXP</div>
     <div class="sys-xp-track"><div class="sys-xp-fill" id="xp-bar" style="width:0%"></div></div>
-    <div class="sys-xp-val" id="xp-display">0 / 50</div>
+    <div class="sys-xp-val" id="xp-display">0 / 500</div>
   </div>
 </div>
 <div class="sys-datebar" id="datebar"></div>
@@ -668,12 +630,12 @@
       </div>
       <div class="sys-warning">
         <div class="sys-warning-title">⚠ PENALTY WARNING</div>
-        <div class="sys-warning-body">[Failure to complete the Daily Quest before midnight will result in a penalty without exception.]</div>
+        <div class="sys-warning-body">[Failure to complete the Daily Quest bleeds XP and breaks your streak. No shields. No saves.]</div>
       </div>
     </div>
   </div>
 
-  <!-- DUNGEONS (NEW) -->
+  <!-- DUNGEONS / WEEKLY HUNT -->
   <div class="sys-panel" id="panel-dungeons">
     <div class="panel-header">
       <div class="panel-header-label">[ DUNGEON ]</div>
@@ -681,7 +643,6 @@
     </div>
     <div class="panel-body">
 
-      <!-- PRE-AWAKENING LOCK -->
       <div id="dungeons-lock-screen" style="text-align:center;padding:40px 20px;">
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
@@ -689,7 +650,6 @@
         <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Dungeons are sealed until the Second Awakening is achieved. Train first. Then the gates open.</div>
       </div>
 
-      <!-- POST-AWAKENING CONTENT -->
       <div id="dungeons-content" style="display:none;">
         <div class="dungeon-tabs">
           <div class="dungeon-tab active" data-period="daily" onclick="switchDungeon('daily')">DAILY</div>
@@ -708,6 +668,17 @@
           </div>
         </div>
 
+        <div class="hunt-summary" id="hunt-summary">
+          <div>
+            <div style="color:var(--text-dim);font-size:8px;letter-spacing:2px;">ENEMIES SLAIN</div>
+            <div class="hunt-summary-kills" id="hunt-kills">0</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color:var(--text-dim);font-size:8px;letter-spacing:2px;">STATUS</div>
+            <div class="hunt-summary-status" id="hunt-status">ON TRACK</div>
+          </div>
+        </div>
+
         <div class="dungeon-action-row">
           <button class="dungeon-action-btn" onclick="openLogSale()">⚔️ LOG SALE</button>
           <button class="dungeon-action-btn ibo" onclick="openLaunchIBO()">🏛️ LAUNCH IBO</button>
@@ -715,7 +686,7 @@
 
         <div class="counter-section">
           <div class="counter-section-header">
-            <span>SALES ACTIVITY</span>
+            <span>SALES ENEMIES</span>
             <span class="counter-section-total" id="sales-counter-total">0 XP</span>
           </div>
           <div class="counter-grid" id="sales-counter-grid"></div>
@@ -723,7 +694,7 @@
 
         <div class="counter-section">
           <div class="counter-section-header">
-            <span>SPONSORING ACTIVITY</span>
+            <span>SPONSORING ENEMIES</span>
             <span class="counter-section-total" id="sponsoring-counter-total">0 XP</span>
           </div>
           <div class="counter-grid" id="sponsoring-counter-grid"></div>
@@ -740,7 +711,7 @@
     </div>
   </div>
 
-  <!-- STATUS (MODIFIED — 2 stats, new rank system) -->
+  <!-- STATUS -->
   <div class="sys-panel" id="panel-status">
     <div class="panel-header">
       <div class="panel-header-label">[ STATUS WINDOW ]</div>
@@ -750,20 +721,32 @@
 
       <div class="sys-info-card">
         <div class="sys-info-row"><span class="sys-info-key">NAME</span><span class="sys-info-val" id="status-name">—</span></div>
-        <div class="sys-info-row"><span class="sys-info-key">PROFESSION</span><span class="sys-info-val" id="status-profession" style="color:var(--text)">—</span></div>
-        <div class="sys-info-row"><span class="sys-info-key">RANK</span><span class="sys-info-val" id="rank-display" style="color:var(--gold)">IBO</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">CLASS</span><span class="sys-info-val" id="status-class" style="color:var(--cyan)">IBO</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">PIN</span><span class="sys-info-val" id="status-pin" style="color:var(--gold)">— None —</span></div>
         <div class="sys-info-row"><span class="sys-info-key">LEVEL</span><span class="sys-info-val" id="status-level" style="color:var(--cyan)">1</span></div>
         <div class="sys-info-row"><span class="sys-info-key">STREAK</span><span class="sys-info-val" id="streak-display" style="color:var(--gold)">0 Days</span></div>
         <div class="sys-info-row"><span class="sys-info-key">TOTAL EXP</span><span class="sys-info-val" id="total-xp-display" style="color:var(--blue)">0</span></div>
       </div>
 
-      <div class="rank-block">
-        <div class="rank-header">
-          <div class="rank-name" id="rank-name-display">IBO</div>
-          <div class="rank-next" id="rank-next-display">→ 3% PBS</div>
+      <!-- GATE STATUS — shown when at a gate level awaiting pin verification -->
+      <div class="gate-status-block" id="gate-status-block" style="display:none;">
+        <div class="gate-status-label" id="gate-status-label">▶ AWAITING VERIFICATION</div>
+        <div class="gate-status-title" id="gate-status-title">Platinum Wall</div>
+        <div class="gate-status-sub" id="gate-status-sub">Level frozen. Earn the pin in real life to release.</div>
+        <div class="gate-buffer-track"><div class="gate-buffer-fill" id="gate-buffer-fill" style="width:0%"></div></div>
+        <div class="gate-buffer-meta">
+          <span id="gate-buffer-amount">0 XP buffered</span>
+          <span id="gate-buffer-est">— levels ready</span>
         </div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;line-height:1.6;" id="rank-structure-hint">Structure-driven. Climb by hitting confirmed pin requirements.</div>
-        <button class="rank-confirm-btn" id="rank-confirm-trigger" onclick="openRankConfirm()">[ CONFIRM NEW PIN ]</button>
+        <button class="rank-confirm-btn" onclick="openRankConfirm()" style="margin-top:10px;">[ CONFIRM PIN ]</button>
+      </div>
+
+      <div class="rank-block" id="rank-block">
+        <div class="rank-header">
+          <div class="rank-name" id="rank-name-display">Player</div>
+          <div class="rank-next" id="rank-next-display">→ Platinum</div>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;line-height:1.6;" id="rank-structure-hint">Climb the levels. Pins gate the rank progression.</div>
       </div>
 
       <div class="sys-section">Stats</div>
@@ -818,7 +801,7 @@
 
       <div class="milestone" id="milestone-second">
         <div class="milestone-name">Second Awakening</div>
-        <div class="milestone-sub" id="awakening-goal-text">—</div>
+        <div class="milestone-sub" id="awakening-goal-text">Define and achieve your fitness goal</div>
         <div class="milestone-effect">Unlocks: Stats · Dungeons · Items · Skills</div>
         <div id="awakening-btn-wrap" style="margin-top:10px;display:none">
           <button onclick="promptSecondAwakening()" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">[ MARK AS ACHIEVED ]</button>
@@ -832,11 +815,23 @@
         <div class="milestone-effect">↑ Streak bonus</div>
       </div>
 
-      <div class="milestone locked" id="milestone-locked-block">
-        <div class="milestone-lock">🔒</div>
-        <div class="milestone-name" style="color:var(--text-dim)">Further Milestones</div>
-        <div class="milestone-sub" style="color:var(--text-dim)">Locked until Second Awakening is achieved.</div>
-        <div class="milestone-effect" style="color:var(--text-dim)">Arise first. Then the path reveals itself.</div>
+      <div class="milestone locked" id="milestone-platinum">
+        <div class="milestone-name">Platinum</div>
+        <div class="milestone-sub">6/25 with Core+ IBOs. ~7,500 PV group.</div>
+        <div class="milestone-effect">Level 20 wall · First pin recognized</div>
+      </div>
+
+      <div class="milestone locked" id="milestone-diamond">
+        <div class="milestone-name">Diamond</div>
+        <div class="milestone-sub">Symbol of Peace. Top 0.1% income tier.</div>
+        <div class="milestone-effect">Level 100 · The summit of the playable game</div>
+      </div>
+
+      <!-- CROWN — only visible once Diamond reached -->
+      <div class="milestone crown locked" id="milestone-crown" style="display:none;">
+        <div class="milestone-name">Crown</div>
+        <div class="milestone-sub">Beyond measurement. The Shadow Monarch state.</div>
+        <div class="milestone-effect">No XP. No grind. Lore only.</div>
       </div>
     </div>
   </div>
@@ -865,7 +860,7 @@
           <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
         <div class="shop-item locked">
-          <div><div class="shop-name">🧤 Ruler's Gloves</div><div class="shop-req">🔒 Reach Crown rank</div></div>
+          <div><div class="shop-name">🧤 Ruler's Gloves</div><div class="shop-req">🔒 Reach Crown state</div></div>
           <div class="shop-status" style="color:var(--text-dim)">LOCKED</div>
         </div>
         <div class="sys-section">Skills</div>
@@ -965,29 +960,29 @@ window.onerror = function(msg, src, line) {
 // ============================================================
 // CONSTANTS
 // ============================================================
-const RANKS = [
-  'IBO', '3% PBS', '6% PBS', '9% PBS', '12% PBS', '15% PBS',
-  '18% PBS', '21% PBS', '25% PBS',
-  'Platinum', 'Ruby', 'Sapphire', 'Emerald', 'Diamond', 'Crown'
+// IBO is the Player class. Permanent. Pins are the rank progression layered on top.
+const PLAYER_CLASS = 'IBO';
+
+// 5 pins. Index 0 = no pin (just IBO). Crown is lore-only, not a rank.
+const PINS = ['— None —', 'Platinum', 'Ruby', 'Sapphire', 'Emerald', 'Diamond'];
+const PIN_LEVELS = [0, 20, 40, 60, 80, 100];
+
+const PIN_HINTS = [
+  'No pin yet. Build daily activity. Sponsor consistently. Climb toward Platinum.',
+  '6/25 with Core+ IBOs or 6/50 with Core. ~7,500 PV group.',
+  'Multiple Platinum legs. Network solidifying.',
+  '~9/75 structure. Top 1% household income territory.',
+  '~12/100 structure. Wealth class.',
+  'Symbol of Peace. Top 0.1% income. The summit.'
 ];
 
-const RANK_HINTS = [
-  'Pre-PBS. Build daily activity. Complete training quests. Earn your first 3%.',
-  'First Performance Bonus bracket. ~100 PV/mo. Keep stacking volume.',
-  '~300 PV/mo. Sharper consistency. Customers retain.',
-  '3 frontline / 10 total. ~1500 PV group. Lead emerging.',
-  '4–5 frontline. Group depth showing.',
-  'Refined leadership. Multiple legs activating.',
-  'Wider base, broader influence.',
-  'Approaching Platinum threshold. Hold the line.',
-  'Final bracket before pin. Six months of 7500 PV ahead.',
-  '6/25 with Core+ IBOs or 6/50 with Core. ~7500 PV. First pin recognized.',
-  'Multiple Platinum legs. Network solidifying.',
-  '9/75 structure. Top 1% household income territory.',
-  '12/100 structure. Wealth class.',
-  'Symbol of Peace. Top 0.1% individual income. $1M+ tier.',
-  'Beyond measurement. Mythical.'
-];
+// XP curve: piecewise linear per tier. Each tier resets to a higher baseline.
+// Tier 0 (L1-19):  500   + 500   * (lvl-1)
+// Tier 1 (L20-39): 5,000 + 500   * (lvl-20)
+// Tier 2 (L40-59): 10,000 + 1,000 * (lvl-40)
+// Tier 3 (L60-79): 20,000 + 2,000 * (lvl-60)
+// Tier 4 (L80-99): 40,000 + 4,000 * (lvl-80)
+const LEVEL_CAP = 100;
 
 const SALES_COUNTERS = [
   ['leads',         'Customer Leads'],
@@ -1021,14 +1016,26 @@ const SPONSORING_COUNTERS = [
 const COUNTER_XP = 5;
 const IBO_LAUNCH_XP = 500;
 
+// Bleed penalties (Duolingo with teeth — all or nothing)
+const BLEED_DAY_1 = 50;
+const BLEED_DAY_2 = 100;
+const BLEED_DAY_3_PLUS = 200;
+const BLEED_WEEKLY_MISS = 500;
+
+// Boss PV targets by pin level
+// Index 0 = pre-Platinum, ..., 5 = Diamond
+const MONTHLY_PV_TARGETS = [1500, 7500, 10000, 12000, 15000, 25000];
+
 const ACHIEVEMENTS = [
   { id:'first',  icon:'🎯', name:'First Awakening',  desc:'Profile complete',          check:s => s.setupComplete },
   { id:'second', icon:'⚡', name:'Second Awakening',  desc:'Fitness goal achieved',     check:s => s.secondAwakeningComplete },
-  { id:'pbs',    icon:'🥉', name:'First Pin',         desc:'Reach 3% PBS',              check:s => s.rankIndex >= 1 },
-  { id:'plat',   icon:'🥈', name:'Platinum',          desc:'Reach Platinum',            check:s => s.rankIndex >= 9 },
-  { id:'diam',   icon:'💎', name:'Diamond',           desc:'Top 0.1% income',           check:s => s.rankIndex >= 13 },
+  { id:'plat',   icon:'🥈', name:'Platinum',          desc:'First pin earned',          check:s => s.pinIndex >= 1 },
+  { id:'ruby',   icon:'🥉', name:'Ruby',              desc:'Second pin earned',         check:s => s.pinIndex >= 2 },
+  { id:'sapph',  icon:'💠', name:'Sapphire',          desc:'Third pin earned',          check:s => s.pinIndex >= 3 },
+  { id:'em',     icon:'🟢', name:'Emerald',           desc:'Fourth pin earned',         check:s => s.pinIndex >= 4 },
+  { id:'diam',   icon:'💎', name:'Diamond',           desc:'The summit',                check:s => s.pinIndex >= 5 },
   { id:'streak7',icon:'🔥', name:'Iron Will',         desc:'7-day quest streak',        check:s => s.streak >= 7 },
-  { id:'lvl10',  icon:'⭐', name:'Awakened',          desc:'Reach Level 10',            check:s => s.level >= 10 },
+  { id:'streak30',icon:'⚔️', name:'Discipline',        desc:'30-day quest streak',       check:s => s.streak >= 30 },
   { id:'lvl50',  icon:'🌟', name:'Hunter',            desc:'Reach Level 50',            check:s => s.level >= 50 }
 ];
 
@@ -1042,7 +1049,7 @@ function emptyDungeonPeriod() {
 }
 
 const DEFAULT_STATE = {
-  // === Courage of the Weak acceptance ===
+  // Courage of the Weak acceptance
   playerAccepted: false,
 
   // Setup
@@ -1061,14 +1068,20 @@ const DEFAULT_STATE = {
   level: 1,
   xp: 0,
   totalXp: 0,
+  bufferedXp: 0,           // XP accumulated past a gate, awaiting pin confirmation
   streak: 0,
-  lastQuestDate: '',
+  lastQuestCompleteDate: '',  // last day any quest was completed
+  lastBootDate: '',         // for detecting day rollovers between boots
 
   // Stats
   stats: { sales: 0, sponsoring: 0 },
 
-  // Rank — IBO by default, user advances manually
-  rankIndex: 0,
+  // Pin index (0 = no pin, 1 = Platinum, 5 = Diamond)
+  pinIndex: 0,
+
+  // Failure tracking
+  monthlyStrikes: 0,
+  lastMonthChecked: '',
 
   // Dungeons
   dungeons: { daily: null, weekly: null, monthly: null },
@@ -1112,6 +1125,56 @@ function dayOfWeekIndex(d = new Date()) {
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function daysBetween(dateStrA, dateStrB) {
+  if (!dateStrA || !dateStrB) return 0;
+  const a = new Date(dateStrA + 'T00:00:00');
+  const b = new Date(dateStrB + 'T00:00:00');
+  return Math.round((b - a) / 86400000);
+}
+
+// ============================================================
+// XP / LEVEL — piecewise linear per tier
+// ============================================================
+function xpForNextLevel(lvl) {
+  if (lvl >= LEVEL_CAP) return Infinity;
+  if (lvl < 20)  return 500   + 500   * (lvl - 1);
+  if (lvl < 40)  return 5000  + 500   * (lvl - 20);
+  if (lvl < 60)  return 10000 + 1000  * (lvl - 40);
+  if (lvl < 80)  return 20000 + 2000  * (lvl - 60);
+                 return 40000 + 4000  * (lvl - 80);
+}
+
+function totalXpForLevel(lvl) {
+  let total = 0;
+  for (let i = 1; i < lvl; i++) total += xpForNextLevel(i);
+  return total;
+}
+
+function levelFromTotalXp(total) {
+  let lvl = 1, acc = 0;
+  while (lvl < LEVEL_CAP && acc + xpForNextLevel(lvl) <= total) {
+    acc += xpForNextLevel(lvl);
+    lvl++;
+  }
+  return lvl;
+}
+
+function getQuestXP() { return +(5 / (1 + state.level / 10)).toFixed(2); }
+
+// ============================================================
+// GATE LOGIC
+// ============================================================
+function nextPinGateLevel() {
+  // Returns the level at which the next unconfirmed pin gates progression.
+  // pinIndex 0 → next gate is L20 (Platinum). pinIndex 5 → no more gates.
+  if (state.pinIndex >= 5) return null;
+  return PIN_LEVELS[state.pinIndex + 1];
+}
+
+function isGated() {
+  const g = nextPinGateLevel();
+  return g !== null && state.level >= g;
+}
 
 // ============================================================
 // PERSISTENCE
@@ -1128,7 +1191,6 @@ function migrate(old) {
   out.dungeons.monthly = emptyDungeonPeriod();
   if (!old || typeof old !== 'object') return out;
 
-  // If they had setup complete previously, they already accepted (implicitly)
   out.playerAccepted = !!(old.playerAccepted || old.setupComplete);
 
   if (old.setupComplete)      out.setupComplete = true;
@@ -1145,13 +1207,56 @@ function migrate(old) {
   out.firstAwakeningComplete = !!old.setupComplete;
   out.secondAwakeningComplete = !!(old.awakeningComplete || old.secondAwakeningComplete);
 
-  out.xp = +old.xp || 0;
-  out.totalXp = +old.totalXp || out.xp;
+  // Total XP preserved. Level recomputed under new curve.
+  out.totalXp = +old.totalXp || +old.xp || 0;
   out.streak = +old.streak || 0;
-  out.lastQuestDate = old.lastQuestDate || old.lastDate || '';
-  out.level = +old.level || levelFromTotalXp(out.totalXp);
+  out.lastQuestCompleteDate = old.lastQuestCompleteDate || old.lastQuestDate || '';
+  out.lastBootDate = old.lastBootDate || '';
+  out.lastMonthChecked = old.lastMonthChecked || '';
+  out.monthlyStrikes = +old.monthlyStrikes || 0;
   out.stats = { sales: +(old.stats && old.stats.sales) || 0, sponsoring: +(old.stats && old.stats.sponsoring) || 0 };
-  out.rankIndex = (typeof old.rankIndex === 'number') ? old.rankIndex : 0;
+
+  // Migrate old rankIndex (15 tiers) → new pinIndex (6 entries)
+  // old 0-8 (IBO + PBS) → 0 (no pin)
+  // old 9 (Platinum) → 1
+  // old 10 (Ruby) → 2
+  // old 11 (Sapphire) → 3
+  // old 12 (Emerald) → 4
+  // old 13 (Diamond) → 5
+  // old 14 (Crown) → 5 (Crown isn't a rank now)
+  if (typeof old.pinIndex === 'number') {
+    out.pinIndex = clamp(old.pinIndex, 0, 5);
+  } else if (typeof old.rankIndex === 'number') {
+    const r = old.rankIndex;
+    if (r <= 8)       out.pinIndex = 0;
+    else if (r === 9) out.pinIndex = 1;
+    else if (r === 10)out.pinIndex = 2;
+    else if (r === 11)out.pinIndex = 3;
+    else if (r === 12)out.pinIndex = 4;
+    else              out.pinIndex = 5;
+  } else {
+    out.pinIndex = 0;
+  }
+
+  // Recompute level + current xp from total
+  out.level = levelFromTotalXp(out.totalXp);
+  out.xp = out.totalXp - totalXpForLevel(out.level);
+
+  // If recomputed level exceeds the current pin's gate ceiling, cap it and buffer excess
+  const gate = (out.pinIndex < 5) ? PIN_LEVELS[out.pinIndex + 1] : LEVEL_CAP;
+  if (out.level > gate) {
+    // Move excess XP into buffer
+    let extra = totalXpForLevel(out.level) - totalXpForLevel(gate) + out.xp;
+    out.totalXp = totalXpForLevel(gate);
+    out.level = gate;
+    out.xp = 0;
+    out.bufferedXp = extra;
+  } else if (out.level === gate) {
+    out.bufferedXp = +old.bufferedXp || +old.xp || 0;
+    out.xp = 0;
+  } else {
+    out.bufferedXp = +old.bufferedXp || 0;
+  }
 
   if (old.dungeons) {
     ['daily','weekly','monthly'].forEach(p => {
@@ -1208,41 +1313,260 @@ function loadState() {
 }
 
 // ============================================================
-// XP / LEVEL
+// XP EARN — routes to buffer if gated
 // ============================================================
-function totalXpForLevel(lvl) {
-  let total = 0;
-  for (let i = 1; i < lvl; i++) total += 50 + 10 * (i - 1);
-  return total;
-}
-function xpForNextLevel(lvl) { return 50 + 10 * (lvl - 1); }
-function levelFromTotalXp(total) {
-  let lvl = 1, acc = 0;
-  while (acc + xpForNextLevel(lvl) <= total) { acc += xpForNextLevel(lvl); lvl++; }
-  return lvl;
-}
-function getQuestXP() { return +(5 / (1 + state.level / 10)).toFixed(2); }
-
 function addXP(amount) {
   amount = +amount;
   if (!isFinite(amount) || amount <= 0) return;
-  state.xp += amount;
-  state.totalXp += amount;
+
+  // Weekly chart: always record earned XP regardless of gating
   const wk = weekStartKey();
   if (state.weekStartKey !== wk) {
     state.weeklyXp = [0,0,0,0,0,0,0];
     state.weekStartKey = wk;
   }
   state.weeklyXp[dayOfWeekIndex()] += amount;
+
+  // Gated? Route to buffer.
+  if (isGated()) {
+    state.bufferedXp = (state.bufferedXp || 0) + amount;
+    return;
+  }
+
+  // Normal flow
+  state.totalXp += amount;
+  state.xp += amount;
+
   let needed = xpForNextLevel(state.level);
-  let leveled = false;
-  while (state.xp >= needed) {
+  while (state.xp >= needed && state.level < LEVEL_CAP) {
     state.xp -= needed;
     state.level++;
-    leveled = true;
+
+    // Just hit a gate? Stash remaining XP in buffer and stop leveling.
+    if (isGated()) {
+      state.bufferedXp = (state.bufferedXp || 0) + state.xp;
+      state.totalXp -= state.xp;
+      state.xp = 0;
+      const nextPin = PINS[state.pinIndex + 1];
+      showSystemNotify('▶ GATE REACHED',
+        nextPin.toUpperCase() + ' verification required.\nXP buffering until the pin is earned.');
+      return;
+    }
+
+    showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
     needed = xpForNextLevel(state.level);
   }
-  if (leveled) showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
+}
+
+// ============================================================
+// XP BLEED — eat buffer, then current xp, then de-level
+// ============================================================
+function applyBleed(amount, reason) {
+  if (!amount || amount <= 0) return;
+  let remaining = amount;
+  let originalLevel = state.level;
+
+  // 1. Eat buffer first
+  if (state.bufferedXp > 0) {
+    const eaten = Math.min(state.bufferedXp, remaining);
+    state.bufferedXp -= eaten;
+    remaining -= eaten;
+  }
+
+  // 2. Eat current level XP
+  if (remaining > 0 && state.xp > 0) {
+    const eaten = Math.min(state.xp, remaining);
+    state.xp -= eaten;
+    state.totalXp = Math.max(0, state.totalXp - eaten);
+    remaining -= eaten;
+  }
+
+  // 3. De-level
+  while (remaining > 0 && state.level > 1) {
+    state.level--;
+    const refill = xpForNextLevel(state.level);
+    state.xp = refill;
+    const eaten = Math.min(refill, remaining);
+    state.xp -= eaten;
+    state.totalXp = Math.max(0, state.totalXp - eaten);
+    remaining -= eaten;
+  }
+
+  if (state.totalXp < 0) state.totalXp = 0;
+  if (state.xp < 0) state.xp = 0;
+
+  let subtitle = '-' + amount + ' XP';
+  if (reason) subtitle += '\n' + reason;
+  if (state.level < originalLevel) subtitle += '\nLevel: ' + originalLevel + ' → ' + state.level;
+  showAlert('XP BLEED', subtitle, '⚠');
+}
+
+// ============================================================
+// DAILY MISS DETECTION
+// ============================================================
+function checkDailyMissOnBoot() {
+  if (!state.dailyQuests || !state.dailyQuests.length) return;
+  if (!state.lastQuestCompleteDate) return; // Never completed a quest yet — no penalty
+
+  const today = todayKey();
+  if (state.lastQuestCompleteDate === today) return; // Already active today
+
+  // Number of full days missed (excluding today, which is still in progress)
+  // If last activity was yesterday, daysSince = 1 — but that's not yet a "miss day" since today is still in play.
+  // A miss day is a calendar day with no completed quests that has already ended.
+  const daysSinceLast = daysBetween(state.lastQuestCompleteDate, today);
+  const missedDays = daysSinceLast - 1; // -1 to exclude today
+
+  if (missedDays <= 0) return;
+
+  // Streak breaks on the first missed day
+  if (state.streak > 0) {
+    state.streak = 0;
+    showAlert('STREAK BROKEN', 'Your daily quest streak has ended.', '💔');
+  }
+
+  // Compute bleed
+  let bleed = 0;
+  for (let i = 1; i <= missedDays; i++) {
+    if (i === 1)      bleed += BLEED_DAY_1;
+    else if (i === 2) bleed += BLEED_DAY_2;
+    else              bleed += BLEED_DAY_3_PLUS;
+  }
+
+  applyBleed(bleed, missedDays + ' day(s) of inactivity');
+}
+
+// ============================================================
+// PERIOD ROLLOVER + EVALUATION
+// ============================================================
+function ensurePeriodKey(period) {
+  const d = state.dungeons[period];
+  let key;
+  if (period === 'daily')   key = todayKey();
+  if (period === 'weekly')  key = weekStartKey();
+  if (period === 'monthly') key = monthStartKey();
+
+  if (d.key && d.key !== key) {
+    evaluateClosedPeriod(period, d);
+  }
+  if (d.key !== key) {
+    state.dungeons[period] = emptyDungeonPeriod();
+    state.dungeons[period].key = key;
+  }
+}
+
+function checkPeriodRollovers() { ['daily','weekly','monthly'].forEach(ensurePeriodKey); }
+
+function evaluateClosedPeriod(period, oldData) {
+  const targets = targetsForPin(state.pinIndex);
+  if (period === 'weekly') {
+    if (oldData.totalPV < targets.weekly) {
+      applyBleed(BLEED_WEEKLY_MISS,
+        'Weekly hunt incomplete: ' + oldData.totalPV + ' / ' + targets.weekly + ' PV');
+    }
+  }
+  if (period === 'monthly') {
+    if (oldData.totalPV < targets.monthly) {
+      state.monthlyStrikes = (state.monthlyStrikes || 0) + 1;
+      if (state.monthlyStrikes >= 2 && state.pinIndex >= 1) {
+        triggerDeRank();
+      } else {
+        showSystemNotify('⚠ MONTHLY MISS',
+          'PV target missed: ' + oldData.totalPV + ' / ' + targets.monthly +
+          '.\nOne more miss triggers de-rank.');
+      }
+    } else {
+      state.monthlyStrikes = 0;
+    }
+  }
+}
+
+function targetsForPin(pinIdx) {
+  const monthly = MONTHLY_PV_TARGETS[clamp(pinIdx, 0, 5)];
+  return {
+    daily:   Math.round(monthly / 30),
+    weekly:  Math.round(monthly / 4.3),
+    monthly: monthly
+  };
+}
+
+// ============================================================
+// DE-RANK
+// ============================================================
+function triggerDeRank() {
+  if (state.pinIndex < 1) return;
+  const lostPin = PINS[state.pinIndex];
+  state.pinIndex--;
+  // Snap level to floor of new pin (pinIndex 0 → L1, pinIndex 1 → L20, etc.)
+  const floor = PIN_LEVELS[state.pinIndex] || 1;
+  state.level = floor;
+  state.xp = 0;
+  state.bufferedXp = 0;
+  state.totalXp = totalXpForLevel(state.level);
+  state.monthlyStrikes = 0;
+  showSystemNotify('⚠ DE-RANK',
+    lostPin + ' has been forfeit.\nLevel snapped to ' + state.level + '.\nAll buffered XP lost.');
+}
+
+// ============================================================
+// PIN CONFIRMATION = BREAKTHROUGH CASCADE
+// ============================================================
+function openPinConfirm() {
+  if (state.pinIndex >= 5) return;
+  if (!isGated()) {
+    showToast('REACH LEVEL ' + PIN_LEVELS[state.pinIndex + 1] + ' FIRST');
+    return;
+  }
+  const next = PINS[state.pinIndex + 1];
+  $('rank-confirm-target').innerHTML = '→ ' + next;
+  $('rank-confirm-overlay').classList.add('show');
+}
+
+function submitPinUp() {
+  if (state.pinIndex >= 5) return;
+  if (!isGated()) {
+    closeRankConfirm();
+    showToast('NOT AT A GATE');
+    return;
+  }
+  const startLevel = state.level;
+  state.pinIndex++;
+
+  // Release buffered XP. Cascade through levels.
+  const buffered = state.bufferedXp || 0;
+  state.bufferedXp = 0;
+  state.totalXp += buffered;
+  state.xp += buffered;
+
+  let needed = xpForNextLevel(state.level);
+  while (state.xp >= needed && state.level < LEVEL_CAP) {
+    state.xp -= needed;
+    state.level++;
+    // If we crash into the next gate during cascade, stash excess
+    if (isGated()) {
+      state.bufferedXp = state.xp;
+      state.totalXp -= state.xp;
+      state.xp = 0;
+      break;
+    }
+    needed = xpForNextLevel(state.level);
+  }
+
+  // Pin reward: +50 to each stat
+  state.stats.sales += 50;
+  state.stats.sponsoring += 50;
+
+  closeRankConfirm();
+  const jumped = state.level - startLevel;
+  const earnedPin = PINS[state.pinIndex];
+  const subtitle = earnedPin + ' confirmed.\n' +
+    'Level ' + startLevel + ' → ' + state.level +
+    (jumped > 0 ? ' (+' + jumped + ' levels)' : '') +
+    (state.bufferedXp > 0 ? '\n' + Math.floor(state.bufferedXp) + ' XP buffered for next gate.' : '') +
+    '\n+50 to all stats.';
+  showAlert('BREAKTHROUGH\n' + earnedPin.toUpperCase(), subtitle, '🏅');
+  renderAll();
+  saveState();
 }
 
 // ============================================================
@@ -1266,10 +1590,25 @@ function switchPanel(name, btn) {
 function updateHeader() {
   $('player-name').textContent = state.playerName || 'Hunter';
   $('level-display').textContent = state.level;
-  const needed = xpForNextLevel(state.level);
-  $('xp-display').textContent = Math.floor(state.xp) + ' / ' + needed;
-  $('xp-bar').style.width = clamp(state.xp / needed * 100, 0, 100) + '%';
+
+  if (isGated()) {
+    document.body.classList.add('gate-locked');
+    // Show buffered XP instead of level XP
+    $('xp-display').textContent = Math.floor(state.bufferedXp) + ' XP buffered';
+    $('xp-bar').style.width = '100%'; // bar always full when gated (level is maxed at this gate)
+  } else {
+    document.body.classList.remove('gate-locked');
+    const needed = xpForNextLevel(state.level);
+    if (!isFinite(needed)) {
+      $('xp-display').textContent = 'MAX LEVEL';
+      $('xp-bar').style.width = '100%';
+    } else {
+      $('xp-display').textContent = Math.floor(state.xp) + ' / ' + needed;
+      $('xp-bar').style.width = clamp(state.xp / needed * 100, 0, 100) + '%';
+    }
+  }
 }
+
 function updateDatebar() {
   const d = new Date();
   const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
@@ -1283,11 +1622,14 @@ function updateDatebar() {
 function renderQuests() {
   const list = $('quest-list');
   if (!list) return;
+
+  // Reset completions if it's a new day
   const today = todayKey();
-  if (state.lastQuestDate !== today) {
+  if (state._lastQuestRenderDay !== today) {
     state.dailyQuests.forEach(q => q.completed = false);
-    state.lastQuestDate = today;
+    state._lastQuestRenderDay = today;
   }
+
   if (!state.dailyQuests.length) {
     list.innerHTML = '<div style="color:var(--text-dim);font-size:12px;padding:14px;text-align:center;">No quests set. Tap EDIT to add some.</div>';
   } else {
@@ -1299,26 +1641,37 @@ function renderQuests() {
       </div>
     `).join('');
   }
+
   const total = state.dailyQuests.length;
   const done = state.dailyQuests.filter(q => q.completed).length;
   $('quest-count').textContent = done + '/' + total;
   const pct = total ? (done / total * 100) : 0;
   $('quest-bar').style.width = pct + '%';
   $('quest-pct').textContent = Math.round(pct) + '%';
-  if (total && done === total) {
-    const td = todayKey();
-    if (state.lastQuestDate === td && state._streakAwardedToday !== td) {
-      state.streak++;
-      state._streakAwardedToday = td;
-    }
-  }
 }
 
 function toggleQuest(i) {
   if (i < 0 || i >= state.dailyQuests.length) return;
   const q = state.dailyQuests[i];
-  if (!q.completed) { q.completed = true; addXP(getQuestXP()); }
-  else q.completed = false;
+  const today = todayKey();
+
+  if (!q.completed) {
+    q.completed = true;
+    addXP(getQuestXP());
+
+    // Update last completion date (any quest done = today is active)
+    state.lastQuestCompleteDate = today;
+
+    // If ALL quests done, increment streak (once per day)
+    const allDone = state.dailyQuests.every(q => q.completed);
+    if (allDone && state._streakAwardedToday !== today) {
+      state.streak++;
+      state._streakAwardedToday = today;
+    }
+  } else {
+    q.completed = false;
+  }
+
   renderQuests();
   updateHeader();
   saveState();
@@ -1358,19 +1711,6 @@ function saveEditedQuests() {
 // ============================================================
 let currentDungeonPeriod = 'daily';
 
-function ensurePeriodKey(period) {
-  const d = state.dungeons[period];
-  let key;
-  if (period === 'daily')   key = todayKey();
-  if (period === 'weekly')  key = weekStartKey();
-  if (period === 'monthly') key = monthStartKey();
-  if (d.key !== key) {
-    state.dungeons[period] = emptyDungeonPeriod();
-    state.dungeons[period].key = key;
-  }
-}
-function checkPeriodRollovers() { ['daily','weekly','monthly'].forEach(ensurePeriodKey); }
-
 function renderCountersGrid(period) {
   const d = state.dungeons[period];
   const salesGrid = $('sales-counter-grid');
@@ -1400,6 +1740,13 @@ function renderCountersGrid(period) {
   updateCounterTotals(period);
 }
 
+function totalKillsForPeriod(period) {
+  const d = state.dungeons[period];
+  let total = 0;
+  [...SALES_COUNTERS, ...SPONSORING_COUNTERS].forEach(([k]) => total += (d.counters[k] || 0));
+  return total;
+}
+
 function updateCounterTotals(period) {
   const d = state.dungeons[period];
   let salesTotal = 0, sponsTotal = 0;
@@ -1407,8 +1754,29 @@ function updateCounterTotals(period) {
   SPONSORING_COUNTERS.forEach(([k]) => sponsTotal += (d.counters[k] || 0) * COUNTER_XP);
   salesTotal += d.salesXP || 0;
   sponsTotal += (d.sponsXP || 0) + (d.ibos || 0) * IBO_LAUNCH_XP;
-  $('sales-counter-total').textContent = salesTotal + ' XP';
-  $('sponsoring-counter-total').textContent = sponsTotal + ' XP';
+  if ($('sales-counter-total')) $('sales-counter-total').textContent = salesTotal + ' XP';
+  if ($('sponsoring-counter-total')) $('sponsoring-counter-total').textContent = sponsTotal + ' XP';
+}
+
+function updateHuntSummary() {
+  const kills = totalKillsForPeriod(currentDungeonPeriod);
+  const el = $('hunt-kills');
+  if (el) el.textContent = kills;
+  const status = $('hunt-status');
+  if (!status) return;
+  const d = state.dungeons[currentDungeonPeriod];
+  const t = targetsForPin(state.pinIndex);
+  const target = (currentDungeonPeriod === 'daily') ? t.daily : (currentDungeonPeriod === 'weekly') ? t.weekly : t.monthly;
+  if (d.totalPV >= target) {
+    status.textContent = 'BOSS DOWN';
+    status.classList.remove('warning');
+  } else if (d.totalPV >= target * 0.5) {
+    status.textContent = 'ON TRACK';
+    status.classList.remove('warning');
+  } else {
+    status.textContent = 'BEHIND';
+    status.classList.add('warning');
+  }
 }
 
 function adjustCounter(period, key, delta) {
@@ -1431,6 +1799,7 @@ function adjustCounter(period, key, delta) {
   const el = $('cnt-' + period + '-' + key);
   if (el) el.textContent = next;
   updateCounterTotals(period);
+  updateHuntSummary();
   updateBoss();
   updateHeader();
   saveState();
@@ -1454,41 +1823,38 @@ function renderDungeonView() {
   renderCountersGrid(currentDungeonPeriod);
   renderSalesLog(currentDungeonPeriod);
   updateBoss();
+  updateHuntSummary();
 }
 
 function updateBoss() {
   const p = currentDungeonPeriod;
   const d = state.dungeons[p];
   if (!d) return;
-  const targets = bossTarget(p);
-  $('boss-label').textContent = '▶ ' + p.toUpperCase() + ' BOSS';
-  $('boss-title').textContent = targets.name;
-  $('boss-sub').textContent = targets.sub;
-  const pct = clamp(d.totalPV / targets.pv * 100, 0, 100);
-  $('boss-fill').style.width = pct + '%';
-  $('boss-progress').textContent = d.totalPV + ' / ' + targets.pv + ' PV';
-  $('boss-time-left').textContent = targets.timeLeft;
+  const tgt = bossTarget(p);
+  if ($('boss-label')) $('boss-label').textContent = '▶ ' + p.toUpperCase() + ' BOSS';
+  if ($('boss-title')) $('boss-title').textContent = tgt.name;
+  if ($('boss-sub'))   $('boss-sub').textContent = tgt.sub;
+  if ($('boss-fill'))  $('boss-fill').style.width = clamp(d.totalPV / tgt.pv * 100, 0, 100) + '%';
+  if ($('boss-progress')) $('boss-progress').textContent = d.totalPV + ' / ' + tgt.pv + ' PV';
+  if ($('boss-time-left')) $('boss-time-left').textContent = tgt.timeLeft;
 }
 
 function bossTarget(period) {
-  const rankPV = [100, 300, 600, 1500, 3000, 4500, 6000, 7000, 7500, 7500, 8500, 10000, 12000, 15000, 25000];
-  const monthlyPV = rankPV[state.rankIndex] || 100;
-  const weeklyPV = Math.round(monthlyPV / 4.3);
-  const dailyPV  = Math.round(monthlyPV / 30);
+  const t = targetsForPin(state.pinIndex);
   const now = new Date();
   if (period === 'daily') {
     const end = new Date(now); end.setHours(24,0,0,0);
-    return { name: 'Daily PV Target', sub:'Hit today\u2019s sales mark.', pv: dailyPV, timeLeft: fmtTimeLeft(end - now) };
+    return { name: 'Daily PV Target', sub:'Hit today\u2019s sales mark.', pv: t.daily, timeLeft: fmtTimeLeft(end - now) };
   }
   if (period === 'weekly') {
     const end = new Date(now);
     const day = end.getDay() === 0 ? 7 : end.getDay();
     end.setDate(end.getDate() + (7 - day));
     end.setHours(24,0,0,0);
-    return { name: 'Weekly PV Target', sub:'Hit the week\u2019s sales mark.', pv: weeklyPV, timeLeft: fmtTimeLeft(end - now) };
+    return { name: 'Weekly PV Target', sub:'Hit the week\u2019s sales mark.', pv: t.weekly, timeLeft: fmtTimeLeft(end - now) };
   }
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-  return { name: 'Monthly Group PV', sub:'Defeat by reaching next PBS bracket.', pv: monthlyPV, timeLeft: fmtTimeLeft(end - now) };
+  return { name: 'Monthly Group PV', sub:'Defeat by reaching the monthly target.', pv: t.monthly, timeLeft: fmtTimeLeft(end - now) };
 }
 
 function fmtTimeLeft(ms) {
@@ -1564,7 +1930,7 @@ function renderSalesLog(period) {
   if (!wrap) return;
   if (!d.sales.length) {
     wrap.innerHTML = '<div class="dungeon-sales-log-empty">No sales logged this period.</div>';
-    $('sales-log-summary').textContent = '0 PV · 0 XP';
+    if ($('sales-log-summary')) $('sales-log-summary').textContent = '0 PV · 0 XP';
     return;
   }
   const recent = d.sales.slice(-10).reverse();
@@ -1574,43 +1940,77 @@ function renderSalesLog(period) {
       <span class="dungeon-sale-tier">T${s.tier}</span>
       <span class="dungeon-sale-xp">+${s.xp}</span>
     </div>`).join('');
-  $('sales-log-summary').textContent = d.totalPV + ' PV · ' + d.salesXP + ' XP';
+  if ($('sales-log-summary')) $('sales-log-summary').textContent = d.totalPV + ' PV · ' + d.salesXP + ' XP';
 }
 
 // ============================================================
-// STATUS / RANK
+// STATUS
 // ============================================================
 function renderStatus() {
-  $('status-name').textContent = state.playerName || '—';
-  $('status-profession').textContent = state.profession || '—';
-  $('rank-display').textContent = RANKS[state.rankIndex];
-  $('status-level').textContent = state.level;
-  $('streak-display').textContent = state.streak + ' Days';
-  $('total-xp-display').textContent = Math.floor(state.totalXp);
+  if ($('status-name'))      $('status-name').textContent = state.playerName || '—';
+  if ($('status-class'))     $('status-class').textContent = PLAYER_CLASS;
+  if ($('status-pin'))       $('status-pin').textContent = PINS[state.pinIndex];
+  if ($('status-level'))     $('status-level').textContent = state.level;
+  if ($('streak-display'))   $('streak-display').textContent = state.streak + ' Days';
+  if ($('total-xp-display')) $('total-xp-display').textContent = Math.floor(state.totalXp);
 
-  $('rank-name-display').textContent = RANKS[state.rankIndex];
-  const next = state.rankIndex < RANKS.length - 1 ? RANKS[state.rankIndex + 1] : '— MAX —';
-  $('rank-next-display').textContent = state.rankIndex < RANKS.length - 1 ? '→ ' + next : next;
-  $('rank-structure-hint').textContent = RANK_HINTS[state.rankIndex] || '';
-  $('rank-confirm-trigger').style.display = state.rankIndex < RANKS.length - 1 ? '' : 'none';
-  $('rank-confirm-trigger').textContent = state.rankIndex < RANKS.length - 1 ? '[ CONFIRM ' + RANKS[state.rankIndex + 1] + ' ]' : '';
+  // Gate status block
+  const gateBlock = $('gate-status-block');
+  const rankBlock = $('rank-block');
+  if (isGated()) {
+    if (gateBlock) {
+      gateBlock.style.display = 'block';
+      const nextPin = PINS[state.pinIndex + 1];
+      if ($('gate-status-label')) $('gate-status-label').textContent = '▶ AWAITING ' + nextPin.toUpperCase() + ' VERIFICATION';
+      if ($('gate-status-title')) $('gate-status-title').textContent = nextPin + ' Wall';
+      if ($('gate-status-sub'))   $('gate-status-sub').textContent = 'Level frozen at ' + state.level + '. Earn the pin in real life to release the buffer.';
+      // Buffer "progress" — show as raw amount and estimated levels it could cascade
+      const buffered = state.bufferedXp || 0;
+      let estLevels = 0;
+      let sim = buffered;
+      let simLvl = state.level;
+      while (sim >= xpForNextLevel(simLvl) && simLvl < LEVEL_CAP) {
+        sim -= xpForNextLevel(simLvl);
+        simLvl++;
+        estLevels++;
+      }
+      if ($('gate-buffer-amount')) $('gate-buffer-amount').textContent = Math.floor(buffered).toLocaleString() + ' XP buffered';
+      if ($('gate-buffer-est'))    $('gate-buffer-est').textContent = estLevels + ' levels ready';
+      // Bar shows fill toward the next breakthrough level
+      const nextNeeded = xpForNextLevel(simLvl);
+      const barPct = nextNeeded === Infinity ? 100 : clamp(sim / nextNeeded * 100, 2, 100);
+      if ($('gate-buffer-fill'))   $('gate-buffer-fill').style.width = barPct + '%';
+    }
+    if (rankBlock) rankBlock.style.display = 'none';
+  } else {
+    if (gateBlock) gateBlock.style.display = 'none';
+    if (rankBlock) rankBlock.style.display = 'block';
+    if ($('rank-name-display')) $('rank-name-display').textContent = PINS[state.pinIndex];
+    const next = state.pinIndex < 5 ? PINS[state.pinIndex + 1] : '— MAX —';
+    if ($('rank-next-display')) $('rank-next-display').textContent = state.pinIndex < 5 ? '→ ' + next : next;
+    if ($('rank-structure-hint')) $('rank-structure-hint').textContent = PIN_HINTS[state.pinIndex] || '';
+  }
 
+  // Stats — gated on second awakening
   const statVis = state.secondAwakeningComplete ? 1 : 0.4;
   document.querySelectorAll('.stat-card').forEach(c => c.style.opacity = statVis);
-  $('stat-sales').textContent = Math.floor(state.stats.sales);
-  $('stat-sponsoring').textContent = Math.floor(state.stats.sponsoring);
+  if ($('stat-sales'))      $('stat-sales').textContent = Math.floor(state.stats.sales);
+  if ($('stat-sponsoring')) $('stat-sponsoring').textContent = Math.floor(state.stats.sponsoring);
   const maxStat = Math.max(1000, state.stats.sales, state.stats.sponsoring);
-  $('bar-sales').style.width = clamp(state.stats.sales / maxStat * 100, 2, 100) + '%';
-  $('bar-sponsoring').style.width = clamp(state.stats.sponsoring / maxStat * 100, 2, 100) + '%';
+  if ($('bar-sales'))      $('bar-sales').style.width = clamp(state.stats.sales / maxStat * 100, 2, 100) + '%';
+  if ($('bar-sponsoring')) $('bar-sponsoring').style.width = clamp(state.stats.sponsoring / maxStat * 100, 2, 100) + '%';
 
+  // Weekly chart
   const chart = $('weekly-chart');
-  const wkMax = Math.max(...state.weeklyXp, 10);
-  const today = dayOfWeekIndex();
-  chart.innerHTML = state.weeklyXp.map((v, i) => {
-    const h = clamp(v / wkMax * 100, 2, 100);
-    const cls = i === today ? 'chart-bar today' : (v > 0 ? 'chart-bar done' : 'chart-bar');
-    return `<div class="chart-col"><div class="${cls}" style="height:${h}%"></div></div>`;
-  }).join('');
+  if (chart) {
+    const wkMax = Math.max(...state.weeklyXp, 10);
+    const today = dayOfWeekIndex();
+    chart.innerHTML = state.weeklyXp.map((v, i) => {
+      const h = clamp(v / wkMax * 100, 2, 100);
+      const cls = i === today ? 'chart-bar today' : (v > 0 ? 'chart-bar done' : 'chart-bar');
+      return `<div class="chart-col"><div class="${cls}" style="height:${h}%"></div></div>`;
+    }).join('');
+  }
 
   renderAchievements();
 }
@@ -1621,29 +2021,12 @@ function showStatPopup(stat) {
       'Your sword. Grown by logging actual sales and customer-side activity. Tier multipliers reward higher-PV products: Tier 1 (&lt;50 PV) ×1, Tier 2 (51–99) ×2, Tier 3 (100+) ×3.<br><br>Current: <b>' + Math.floor(state.stats.sales) + '</b>');
   } else {
     showPopup('[ STAT — SPONSORING ]', 'Sponsoring',
-      'Multiplies your damage. Every IBO launched adds another sword to the army. +500 Sponsoring XP per launch. Sponsoring activity counters also add XP per tick.<br><br>Current: <b>' + Math.floor(state.stats.sponsoring) + '</b>');
+      'Multiplies your damage. Every IBO launched adds another sword to the army. +500 XP per launch. Sponsoring activity counters add XP per tick.<br><br>Current: <b>' + Math.floor(state.stats.sponsoring) + '</b>');
   }
 }
 
-function openRankConfirm() {
-  if (state.rankIndex >= RANKS.length - 1) return;
-  const next = RANKS[state.rankIndex + 1];
-  $('rank-confirm-target').innerHTML = '→ ' + next;
-  $('rank-confirm-overlay').classList.add('show');
-}
+function openRankConfirm() { openPinConfirm(); }
 function closeRankConfirm() { $('rank-confirm-overlay').classList.remove('show'); }
-function submitRankUp() {
-  if (state.rankIndex >= RANKS.length - 1) return;
-  state.rankIndex++;
-  for (let i = 0; i < 5; i++) state.level++;
-  state.stats.sales += 50;
-  state.stats.sponsoring += 50;
-  closeRankConfirm();
-  showAlert('RANK UP\n' + RANKS[state.rankIndex], '+5 Levels · +50 to all stats.', '🏅');
-  renderStatus();
-  updateHeader();
-  saveState();
-}
 
 // ============================================================
 // AWAKENING
@@ -1671,17 +2054,31 @@ function applyAwakenedTheme() {
 // MISSION
 // ============================================================
 function renderMission() {
-  $('dmp-title').textContent = state.dmpTitle || 'Not yet defined.';
-  $('dmp-sub').textContent = state.dmpSub || 'Set your Definite Major Purpose to begin.';
-  $('awakening-goal-text').textContent = state.awakeningGoal || 'Goal not yet defined.';
+  if ($('dmp-title')) $('dmp-title').textContent = state.dmpTitle || 'Not yet defined.';
+  if ($('dmp-sub'))   $('dmp-sub').textContent = state.dmpSub || 'Set your Definite Major Purpose to begin.';
+  if ($('awakening-goal-text')) $('awakening-goal-text').textContent = state.awakeningGoal || 'Goal not yet defined.';
+
   if (state.secondAwakeningComplete) {
-    $('awakening-btn-wrap').style.display = 'none';
-    $('awakening-complete-label').style.display = 'block';
-    $('milestone-second').classList.remove('locked');
-    $('milestone-locked-block').style.display = 'none';
+    if ($('awakening-btn-wrap'))     $('awakening-btn-wrap').style.display = 'none';
+    if ($('awakening-complete-label')) $('awakening-complete-label').style.display = 'block';
+    if ($('milestone-second'))       $('milestone-second').classList.remove('locked');
   } else {
-    $('awakening-btn-wrap').style.display = 'block';
-    $('awakening-complete-label').style.display = 'none';
+    if ($('awakening-btn-wrap'))     $('awakening-btn-wrap').style.display = 'block';
+    if ($('awakening-complete-label')) $('awakening-complete-label').style.display = 'none';
+  }
+
+  // Platinum milestone unlocked when pinIndex >= 1
+  if ($('milestone-platinum')) {
+    $('milestone-platinum').classList.toggle('locked', state.pinIndex < 1);
+  }
+  // Diamond milestone unlocked when pinIndex >= 5
+  if ($('milestone-diamond')) {
+    $('milestone-diamond').classList.toggle('locked', state.pinIndex < 5);
+  }
+  // Crown lore — only visible AFTER Diamond achieved
+  if ($('milestone-crown')) {
+    $('milestone-crown').style.display = state.pinIndex >= 5 ? 'block' : 'none';
+    $('milestone-crown').classList.remove('locked');
   }
 }
 
@@ -1731,138 +2128,123 @@ function showPopup(label, title, body) {
 function closePopup(e) { if (e.target.id === 'sys-popup-overlay') $('sys-popup-overlay').classList.remove('show'); }
 function closePopupDirect() { $('sys-popup-overlay').classList.remove('show'); }
 
+// System notification = quick non-modal notice
+function showSystemNotify(label, message) {
+  // Use the alert popup for these — they're important enough
+  showAlert(label, message, '🔔');
+}
+
 // ============================================================
-// COURAGE OF THE WEAK — Opening sequence
-// Plays once per profile. Faithful to the manhwa/anime.
+// COURAGE OF THE WEAK — Opening sequence (unchanged)
 // ============================================================
 let _resolveOpening = null;
+
+function setNotifyContent(html, withButtons) {
+  $('notify-body').innerHTML = html;
+  $('notify-btns').style.display = withButtons ? 'flex' : 'none';
+}
+function shakeNotifyWindow() {
+  const shake = $('notify-shake');
+  shake.classList.remove('glitching');
+  void shake.offsetWidth;
+  shake.classList.add('glitching');
+}
 
 async function playCourageOfTheWeak() {
   return new Promise((resolve) => {
     _resolveOpening = resolve;
-
     const screen = $('glitch-screen');
-    const line1  = $('glitch-line1');
-    const title  = $('glitch-title');
-    const btns   = $('glitch-btns');
-
-    // Ensure transitions
-    line1.style.transition = 'opacity 0.5s ease';
-    title.style.transition = 'opacity 0.5s ease';
-
-    // Reset
-    line1.style.opacity = '0';
-    title.style.opacity = '0';
-    btns.style.display = 'none';
-    title.classList.remove('glitching');
-    line1.style.color = '';
-
-    // PHASE 1: "[ SECRET QUEST ]" + "Courage of the Weak"
+    const win    = $('notify-window');
+    win.classList.remove('show');
+    setNotifyContent('', false);
     screen.classList.add('show');
 
     setTimeout(() => {
-      line1.textContent = '[ SECRET QUEST ]';
-      line1.style.opacity = '1';
-    }, 400);
+      setNotifyContent(
+        '<div class="sys-notify-quest-label">▶ SECRET QUEST COMPLETE</div>' +
+        '<div class="sys-notify-quest-title">Courage of the Weak</div>',
+        false
+      );
+      requestAnimationFrame(() => { win.classList.add('show'); });
+    }, 250);
+
+    setTimeout(() => { shakeNotifyWindow(); }, 700);
 
     setTimeout(() => {
-      title.textContent = 'Courage of the Weak';
-      title.style.opacity = '1';
-      title.classList.add('glitching');
-    }, 900);
-
-    setTimeout(() => {
-      title.classList.remove('glitching');
-    }, 1900);
-
-    setTimeout(() => {
-      line1.textContent = '✓ COMPLETED';
-      line1.style.color = 'var(--success)';
-    }, 2300);
-
-    // PHASE 2: transition to the qualifications message + YES/NO
-    setTimeout(() => {
-      title.style.opacity = '0';
-      line1.style.opacity = '0';
-    }, 3400);
-
-    setTimeout(() => {
-      line1.textContent = '▶ NOTIFICATION';
-      line1.style.color = '';
-      line1.style.opacity = '1';
-      title.textContent = 'You have acquired the qualifications\nto be a Player.\n\nWill you accept?';
-      title.style.opacity = '1';
-      title.classList.add('glitching');
-    }, 4000);
-
-    setTimeout(() => {
-      title.classList.remove('glitching');
-    }, 4700);
-
-    setTimeout(() => {
-      btns.style.display = 'flex';
-      btns.style.opacity = '0';
-      btns.style.transition = 'opacity 0.4s ease';
-      requestAnimationFrame(() => { btns.style.opacity = '1'; });
-    }, 5000);
+      shakeNotifyWindow();
+      setTimeout(() => {
+        setNotifyContent(
+          '<div style="margin-bottom:14px;">You have acquired the qualifications to be a Player.</div>' +
+          '<div style="margin-bottom:14px;color:var(--text);">Refuse and the System <span class="sys-notify-emphasis">departs forever</span>.</div>' +
+          '<div>Will you accept?</div>',
+          true
+        );
+      }, 250);
+    }, 3000);
   });
 }
 
 function glitchAccept() {
   const screen = $('glitch-screen');
-  const line1  = $('glitch-line1');
-  const title  = $('glitch-title');
-  const btns   = $('glitch-btns');
+  const win    = $('notify-window');
+  const btns   = $('notify-btns');
 
+  shakeNotifyWindow();
   btns.style.display = 'none';
-  title.classList.add('glitching');
-  line1.textContent = '▶ ACCEPTED';
-  line1.style.color = 'var(--cyan)';
-  title.textContent = 'ARISE.';
 
-  setTimeout(() => {
-    title.classList.remove('glitching');
-  }, 800);
-
-  setTimeout(() => {
-    line1.style.opacity = '0';
-    title.style.opacity = '0';
-  }, 1800);
-
+  setTimeout(() => { win.classList.remove('show'); }, 600);
   setTimeout(() => {
     screen.classList.remove('show');
     state.playerAccepted = true;
     saveState();
     if (_resolveOpening) { _resolveOpening(); _resolveOpening = null; }
-  }, 2400);
+  }, 1100);
 }
 
 function glitchDecline() {
-  // The System does not accept refusal.
-  const line1 = $('glitch-line1');
-  const title = $('glitch-title');
-  const btns  = $('glitch-btns');
-
+  const btns = $('notify-btns');
   btns.style.display = 'none';
-  title.classList.add('glitching');
-  const prevLine = line1.textContent;
-  const prevTitle = title.textContent;
-
-  line1.style.color = 'var(--danger)';
-  line1.textContent = '⚠ REFUSAL DENIED';
-  title.textContent = 'The System does not accept refusal.';
-
-  setTimeout(() => { title.classList.remove('glitching'); }, 700);
+  shakeNotifyWindow();
 
   setTimeout(() => {
-    // Return to the qualifications prompt
-    title.classList.add('glitching');
-    line1.style.color = '';
-    line1.textContent = '▶ NOTIFICATION';
-    title.textContent = 'You have acquired the qualifications\nto be a Player.\n\nWill you accept?';
-    setTimeout(() => { title.classList.remove('glitching'); }, 600);
-    setTimeout(() => { btns.style.display = 'flex'; }, 800);
-  }, 2500);
+    setNotifyContent(
+      '<div style="color:var(--danger);font-size:13px;letter-spacing:2px;margin-bottom:12px;">⚠ REFUSAL DENIED</div>' +
+      '<div>The System does not accept refusal.</div>',
+      false
+    );
+  }, 250);
+
+  setTimeout(() => {
+    shakeNotifyWindow();
+    setTimeout(() => {
+      setNotifyContent(
+        '<div style="margin-bottom:14px;">You have acquired the qualifications to be a Player.</div>' +
+        '<div style="margin-bottom:14px;color:var(--text);">Refuse and the System <span class="sys-notify-emphasis">departs forever</span>.</div>' +
+        '<div>Will you accept?</div>',
+        true
+      );
+    }, 250);
+  }, 2400);
+}
+
+function showGlitchTransition(text, cb) {
+  const screen = $('glitch-screen');
+  const win    = $('notify-window');
+  win.classList.remove('show');
+  setNotifyContent(
+    '<div style="font-size:14px;font-weight:700;color:#fff;letter-spacing:2px;">' +
+      text.replace(/\n/g, '<br>') +
+    '</div>',
+    false
+  );
+  screen.classList.add('show');
+  requestAnimationFrame(() => { win.classList.add('show'); });
+  setTimeout(() => { shakeNotifyWindow(); }, 400);
+  setTimeout(() => { win.classList.remove('show'); }, 1800);
+  setTimeout(() => {
+    screen.classList.remove('show');
+    if (cb) cb();
+  }, 2300);
 }
 
 // ============================================================
@@ -1877,7 +2259,7 @@ function executeFactoryReset() {
 }
 
 // ============================================================
-// SETUP WIZARD — 2 screens only (name + daily quests)
+// SETUP WIZARD
 // ============================================================
 let setupStep = 1;
 const SETUP_TOTAL_SCREENS = 2;
@@ -1923,42 +2305,12 @@ function completeSetup() {
   });
   state.setupComplete = true;
   state.firstAwakeningComplete = true;
-  // Profession, rank (0=IBO), awakeningGoal, workCycle all left at defaults
   try { localStorage.setItem('sys_setupComplete', '1'); } catch(e){}
   saveState();
   $('setup-overlay').classList.remove('show');
   showGlitchTransition('FIRST AWAKENING\nCOMPLETE', () => {
     renderAll();
   });
-}
-
-// Quick glitch effect used after setup completion
-function showGlitchTransition(text, cb) {
-  const screen = $('glitch-screen');
-  const line1  = $('glitch-line1');
-  const title  = $('glitch-title');
-  const btns   = $('glitch-btns');
-
-  line1.style.transition = 'opacity 0.4s ease';
-  title.style.transition = 'opacity 0.4s ease';
-  btns.style.display = 'none';
-  line1.style.color = '';
-  line1.textContent = '[ SYSTEM ]';
-  title.textContent = text;
-  title.classList.add('glitching');
-  line1.style.opacity = '1';
-  title.style.opacity = '1';
-  screen.classList.add('show');
-
-  setTimeout(() => { title.classList.remove('glitching'); }, 800);
-  setTimeout(() => {
-    line1.style.opacity = '0';
-    title.style.opacity = '0';
-  }, 1800);
-  setTimeout(() => {
-    screen.classList.remove('show');
-    if (cb) cb();
-  }, 2400);
 }
 
 // ============================================================
@@ -1970,9 +2322,7 @@ async function pressStart() {
   setTimeout(() => splash.style.display = 'none', 600);
   await loadState();
 
-  // If player has not accepted the Courage of the Weak yet, play the opening sequence
   if (!state.playerAccepted) {
-    // Wait for splash fade to finish before sequence
     await sleep(700);
     await playCourageOfTheWeak();
   }
@@ -1988,13 +2338,19 @@ function bootSystem() {
     return;
   }
   applyAwakenedTheme();
+
+  // Run boot-time evaluations: did we miss days? Did periods roll over?
+  checkPeriodRollovers();   // weekly + monthly closeouts (with bleed/de-rank)
+  checkDailyMissOnBoot();   // daily quest miss bleed
+  state.lastBootDate = todayKey();
+  saveState();
+
   renderAll();
 }
 
 function renderAll() {
   updateHeader();
   updateDatebar();
-  checkPeriodRollovers();
   renderQuests();
   renderStatus();
   renderMission();
@@ -2025,7 +2381,9 @@ window.closeLaunchIBO = closeLaunchIBO;
 window.submitIBOLaunch = submitIBOLaunch;
 window.openRankConfirm = openRankConfirm;
 window.closeRankConfirm = closeRankConfirm;
-window.submitRankUp = submitRankUp;
+window.submitRankUp = submitPinUp;       // legacy name still wired in modal
+window.submitPinUp = submitPinUp;
+window.openPinConfirm = openPinConfirm;
 window.promptSecondAwakening = promptSecondAwakening;
 window.cancelSecondAwakening = cancelSecondAwakening;
 window.confirmSecondAwakening = confirmSecondAwakening;
