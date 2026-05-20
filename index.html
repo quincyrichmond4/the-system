@@ -111,8 +111,8 @@
     .quest-section-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 3px; }
 
     .awakening-goal-card {
-      background: rgba(155, 77, 255, 0.06);
-      border: 1px solid rgba(155, 77, 255, 0.3);
+      background: var(--blue-dim);
+      border: 1px solid var(--border2);
       padding: 12px 14px;
       position: relative;
       overflow: hidden;
@@ -122,12 +122,12 @@
       position: absolute;
       left: 0; top: 0;
       width: 3px; height: 100%;
-      background: var(--purple);
+      background: var(--blue);
     }
     .awakening-goal-label {
       font-family: 'Share Tech Mono', monospace;
       font-size: 8px;
-      color: var(--purple);
+      color: var(--cyan);
       letter-spacing: 2px;
       margin-bottom: 6px;
     }
@@ -220,28 +220,13 @@
     .sys-info-key { color: var(--text-dim); font-size: 11px; letter-spacing: 0.5px; }
     .sys-info-val { font-weight: 700; color: var(--text-bright); }
 
-    /* RANK / GATE STATUS */
-    .rank-block { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 10px; }
-    .rank-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-    .rank-name { font-family: 'Share Tech Mono', monospace; font-size: 16px; font-weight: 700; color: var(--gold); }
-    .rank-next { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
-    .rank-confirm-btn { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); background: transparent; border: 1px solid rgba(200,168,75,0.4); padding: 6px 12px; cursor: pointer; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; margin-top: 8px; width: 100%; }
-    .rank-confirm-btn:active { background: var(--gold-dim); }
-
     /* When the player is at a gate, recolor the header XP bar to indicate buffer mode */
     .gate-locked .sys-xp-fill { background: linear-gradient(90deg, var(--purple), #c478ff) !important; }
     .gate-locked .sys-xp-val  { color: var(--purple) !important; }
     .gate-locked #xp-label::after { content: ' (BUFFER)'; color: var(--purple); }
 
-    .gate-status-block { background: linear-gradient(180deg, rgba(200,168,75,0.08), rgba(200,168,75,0.02)); border: 1px solid rgba(200,168,75,0.5); padding: 12px 14px; margin-bottom: 10px; position: relative; overflow: hidden; }
-    .gate-status-block::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); animation: gate-pulse 2.4s ease-in-out infinite; }
-    @keyframes gate-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-    .gate-status-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; }
-    .gate-status-title { font-size: 14px; font-weight: 900; color: var(--text-bright); margin-bottom: 4px; letter-spacing: 1px; }
-    .gate-status-sub { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
-    .gate-buffer-track { height: 4px; background: rgba(200,168,75,0.1); overflow: hidden; margin: 6px 0 4px; }
-    .gate-buffer-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #f0d080); transition: width 0.6s ease; }
-    .gate-buffer-meta { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); display: flex; justify-content: space-between; }
+    .rank-confirm-btn { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); background: transparent; border: 1px solid rgba(200,168,75,0.4); padding: 6px 12px; cursor: pointer; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; margin-top: 8px; width: 100%; }
+    .rank-confirm-btn:active { background: var(--gold-dim); }
 
     .achievement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
     .achievement { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 10px; display: flex; align-items: center; gap: 8px; }
@@ -280,6 +265,126 @@
     .milestone.crown { background: linear-gradient(180deg, rgba(155,77,255,0.08), rgba(155,77,255,0.02)); border-color: rgba(155,77,255,0.4); }
     .milestone.crown .milestone-name { color: var(--purple); }
     .milestone.crown .milestone-effect { color: var(--purple); }
+
+    /* ── GATE BANNER (Status tab) ─────────────────────── */
+    .gate-banner {
+      background: rgba(155, 77, 255, 0.07);
+      border: 1px solid rgba(155, 77, 255, 0.4);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .gate-banner::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 3px; height: 100%;
+      background: var(--purple);
+    }
+    .gate-banner-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--purple);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+    .gate-banner-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .gate-banner-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+    .gate-banner-btn {
+      width: 100%;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--gold);
+      background: var(--gold-dim);
+      border: 1px solid rgba(200,168,75,0.5);
+      padding: 9px;
+      cursor: pointer;
+      letter-spacing: 2px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .gate-banner-btn:active { background: rgba(200,168,75,0.25); }
+
+    /* ── SYSTEM LOG FEED ──────────────────────────────── */
+    .log-entry {
+      position: relative;
+      padding: 10px 12px 10px 14px;
+      margin-bottom: 4px;
+      background: rgba(6,18,38,0.5);
+      border: 1px solid var(--border);
+    }
+    .log-entry::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 2px; height: 100%;
+    }
+    .log-entry.system::before { background: var(--cyan); }
+    .log-entry.manual::before { background: var(--gold); }
+    .log-entry-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+    .log-entry-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 2px;
+    }
+    .log-entry.system .log-entry-tag { color: var(--cyan); }
+    .log-entry.manual .log-entry-tag { color: var(--gold); }
+    .log-entry-date {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+    .log-entry-body {
+      font-size: 13px;
+      color: var(--text-bright);
+      line-height: 1.5;
+      font-weight: 300;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .log-entry-delete {
+      margin-top: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .log-entry-delete:active { color: var(--danger); border-color: var(--danger); }
+    .log-feed-empty {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 20px 10px;
+      letter-spacing: 1px;
+    }
 
     .shop-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; margin-bottom: 4px; border: 1px solid var(--border); background: rgba(6,18,38,0.4); cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .shop-item:active { background: var(--blue-dim); }
@@ -534,6 +639,22 @@
   </div>
 </div>
 
+<!-- ADD LOG ENTRY MODAL -->
+<div id="add-log-overlay" class="modal-overlay">
+  <div class="modal-window">
+    <div class="modal-header">
+      <div class="modal-label">[ NEW LOG ENTRY ]</div>
+      <button onclick="closeAddLogEntry()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">[Record your own entry in the System Log. Your reflections — what the climb is costing, what you're learning.]</div>
+      <div class="modal-field-label">ENTRY</div>
+      <textarea class="modal-input" id="add-log-text" maxlength="500" rows="4" placeholder="Write your entry..." style="resize:none;font-family:'Lato',sans-serif;line-height:1.5;"></textarea>
+      <button onclick="submitLogEntry()" class="modal-submit-btn">[ RECORD ENTRY ]</button>
+    </div>
+  </div>
+</div>
+
 <!-- LOG SALE MODAL -->
 <div id="log-sale-overlay" class="modal-overlay">
   <div class="modal-window">
@@ -735,7 +856,7 @@
       <div id="dungeons-lock-screen" style="text-align:center;padding:40px 20px;">
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
-        <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Dungeons Sealed</div>
+        <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
         <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Dungeons are locked for beginner-level Players. Achieve your first goal to trigger the Second Awakening.</div>
       </div>
 
@@ -810,32 +931,21 @@
 
       <div class="sys-info-card">
         <div class="sys-info-row"><span class="sys-info-key">NAME</span><span class="sys-info-val" id="status-name">—</span></div>
-        <div class="sys-info-row"><span class="sys-info-key">CLASS</span><span class="sys-info-val" id="status-class" style="color:var(--cyan)">IBO</span></div>
         <div class="sys-info-row"><span class="sys-info-key">PIN</span><span class="sys-info-val" id="status-pin" style="color:var(--gold)">— None —</span></div>
         <div class="sys-info-row"><span class="sys-info-key">LEVEL</span><span class="sys-info-val" id="status-level" style="color:var(--cyan)">1</span></div>
         <div class="sys-info-row"><span class="sys-info-key">STREAK</span><span class="sys-info-val" id="streak-display" style="color:var(--gold)">0 Days</span></div>
         <div class="sys-info-row"><span class="sys-info-key">TOTAL EXP</span><span class="sys-info-val" id="total-xp-display" style="color:var(--blue)">0</span></div>
       </div>
 
-      <!-- GATE STATUS — shown when at a gate level awaiting pin verification -->
-      <div class="gate-status-block" id="gate-status-block" style="display:none;">
-        <div class="gate-status-label" id="gate-status-label">▶ AWAITING VERIFICATION</div>
-        <div class="gate-status-title" id="gate-status-title">Platinum Wall</div>
-        <div class="gate-status-sub" id="gate-status-sub">Level frozen. Earn the pin in real life to release.</div>
-        <div class="gate-buffer-track"><div class="gate-buffer-fill" id="gate-buffer-fill" style="width:0%"></div></div>
-        <div class="gate-buffer-meta">
-          <span id="gate-buffer-amount">0 XP buffered</span>
-          <span id="gate-buffer-est">— levels ready</span>
+      <!-- GATE BANNER — shown only when at a gate awaiting pin verification -->
+      <div class="gate-banner" id="gate-banner" style="display:none;">
+        <div class="gate-banner-label" id="gate-banner-label">▶ AWAITING VERIFICATION</div>
+        <div class="gate-banner-sub" id="gate-banner-sub">Level frozen. Earn the pin to release the buffer.</div>
+        <div class="gate-banner-meta">
+          <span id="gate-banner-amount">0 XP buffered</span>
+          <span id="gate-banner-est">— levels ready</span>
         </div>
-        <button class="rank-confirm-btn" onclick="openRankConfirm()" style="margin-top:10px;">[ CONFIRM PIN ]</button>
-      </div>
-
-      <div class="rank-block" id="rank-block">
-        <div class="rank-header">
-          <div class="rank-name" id="rank-name-display">Player</div>
-          <div class="rank-next" id="rank-next-display">→ Platinum</div>
-        </div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;line-height:1.6;" id="rank-structure-hint">Climb the levels. Pins gate the rank progression.</div>
+        <button class="gate-banner-btn" onclick="openRankConfirm()" id="gate-banner-btn">[ CONFIRM PIN ]</button>
       </div>
 
       <div class="sys-section">Stats</div>
@@ -859,26 +969,6 @@
         <div style="display:flex;justify-content:space-between;margin-top:4px;">
           <span class="chart-day">MON</span><span class="chart-day">TUE</span><span class="chart-day">WED</span><span class="chart-day">THU</span><span class="chart-day">FRI</span><span class="chart-day">SAT</span><span class="chart-day">SUN</span>
         </div>
-      </div>
-
-      <div class="sys-section">Achievements</div>
-      <div class="achievement-grid" id="achievements-grid"></div>
-    </div>
-  </div>
-
-  <!-- MISSION -->
-  <div class="sys-panel" id="panel-mission">
-    <div class="panel-header">
-      <div class="panel-header-label">[ MAIN QUEST ]</div>
-      <div class="panel-header-title">Mission</div>
-    </div>
-    <div class="panel-body">
-
-      <div class="mission-block">
-        <div class="mission-label">▶ DEFINITE MAJOR PURPOSE</div>
-        <div class="mission-title" id="dmp-title">Not yet defined.</div>
-        <div class="mission-sub" id="dmp-sub">Set your Definite Major Purpose to begin.</div>
-        <button onclick="openEditDMP()" style="margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">✎ SET PURPOSE</button>
       </div>
 
       <div class="sys-section">Milestones</div>
@@ -913,6 +1003,43 @@
         <div class="milestone-name">Crown</div>
         <div class="milestone-sub">Beyond measurement. The Shadow Monarch state.</div>
         <div class="milestone-effect">No XP. No grind. Lore only.</div>
+      </div>
+
+      <div class="sys-section">Achievements</div>
+      <div class="achievement-grid" id="achievements-grid"></div>
+    </div>
+  </div>
+
+  <!-- MISSION -->
+  <div class="sys-panel" id="panel-mission">
+    <div class="panel-header">
+      <div class="panel-header-label">[ MAIN QUEST ]</div>
+      <div class="panel-header-title">Mission</div>
+    </div>
+    <div class="panel-body">
+
+      <!-- PRE-AWAKENING LOCK -->
+      <div id="mission-lock-screen" style="text-align:center;padding:40px 20px;">
+        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
+        <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">The Mission log is locked for beginner-level Players. Achieve your first goal to trigger the Second Awakening.</div>
+      </div>
+
+      <!-- POST-AWAKENING CONTENT -->
+      <div id="mission-content" style="display:none;">
+        <div class="mission-block">
+          <div class="mission-label">▶ DEFINITE MAJOR PURPOSE</div>
+          <div class="mission-title" id="dmp-title">Not yet defined.</div>
+          <div class="mission-sub" id="dmp-sub">Set your Definite Major Purpose to begin.</div>
+          <button onclick="openEditDMP()" style="margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:8px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;">✎ SET PURPOSE</button>
+        </div>
+
+        <div class="sys-section" style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span>System Log</span>
+          <button onclick="openAddLogEntry()" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:4px 10px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">+ ENTRY</button>
+        </div>
+        <div id="log-feed"></div>
       </div>
     </div>
   </div>
@@ -1174,7 +1301,10 @@ const DEFAULT_STATE = {
 
   // DMP
   dmpTitle: '',
-  dmpSub: ''
+  dmpSub: '',
+
+  // System Log — array of { id, type:'system'|'manual', text, t }
+  log: []
 };
 
 let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -1365,6 +1495,12 @@ function migrate(old) {
   out.weekStartKey = old.weekStartKey || '';
   out.dmpTitle = old.dmpTitle || '';
   out.dmpSub = old.dmpSub || '';
+  out.log = Array.isArray(old.log) ? old.log.filter(e => e && e.text).map(e => ({
+    id: e.id || ('log_' + Math.random().toString(36).slice(2)),
+    type: e.type === 'manual' ? 'manual' : 'system',
+    text: String(e.text),
+    t: +e.t || Date.now()
+  })) : [];
   return out;
 }
 
@@ -1435,11 +1571,13 @@ function addXP(amount) {
       state.totalXp -= state.xp;
       state.xp = 0;
       const nextPin = PINS[state.pinIndex + 1];
+      systemLog('Gate reached at Level ' + state.level + '. ' + nextPin + ' verification required — XP now buffering.');
       showSystemNotify('▶ GATE REACHED',
         nextPin.toUpperCase() + ' verification required.\nXP buffering until the pin is earned.');
       return;
     }
 
+    systemLog('Reached Level ' + state.level + '.');
     showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
     needed = xpForNextLevel(state.level);
   }
@@ -1485,6 +1623,9 @@ function applyBleed(amount, reason) {
   let subtitle = '-' + amount + ' XP';
   if (reason) subtitle += '\n' + reason;
   if (state.level < originalLevel) subtitle += '\nLevel: ' + originalLevel + ' → ' + state.level;
+  let logMsg = 'XP bleed: -' + amount + ' XP' + (reason ? ' (' + reason + ')' : '') + '.';
+  if (state.level < originalLevel) logMsg += ' Fell from Level ' + originalLevel + ' to ' + state.level + '.';
+  systemLog(logMsg);
   showAlert('XP BLEED', subtitle, '⚠');
 }
 
@@ -1508,6 +1649,7 @@ function checkDailyMissOnBoot() {
 
   // Streak breaks on the first missed day
   if (state.streak > 0) {
+    systemLog('Daily quest streak broken at ' + state.streak + ' day' + (state.streak === 1 ? '' : 's') + '.');
     state.streak = 0;
     showAlert('STREAK BROKEN', 'Your daily quest streak has ended.', '💔');
   }
@@ -1591,6 +1733,7 @@ function triggerDeRank() {
   state.bufferedXp = 0;
   state.totalXp = totalXpForLevel(state.level);
   state.monthlyStrikes = 0;
+  systemLog('DE-RANK. ' + lostPin + ' forfeit. Level snapped to ' + state.level + '. All buffered XP lost.');
   showSystemNotify('⚠ DE-RANK',
     lostPin + ' has been forfeit.\nLevel snapped to ' + state.level + '.\nAll buffered XP lost.');
 }
@@ -1651,6 +1794,8 @@ function submitPinUp() {
     (jumped > 0 ? ' (+' + jumped + ' levels)' : '') +
     (state.bufferedXp > 0 ? '\n' + Math.floor(state.bufferedXp) + ' XP buffered for next gate.' : '') +
     '\n+50 to all stats.';
+  systemLog('BREAKTHROUGH. ' + earnedPin + ' confirmed. Level ' + startLevel + ' \u2192 ' + state.level +
+    (jumped > 0 ? ' (+' + jumped + ' levels)' : '') + '. +50 to all stats.');
   showAlert('BREAKTHROUGH\n' + earnedPin.toUpperCase(), subtitle, '🏅');
   renderAll();
   saveState();
@@ -1837,6 +1982,80 @@ function saveEditedDMP() {
   state.dmpSub = $('edit-dmp-sub') ? $('edit-dmp-sub').value.trim() : '';
   closeEditDMP();
   renderMission();
+  saveState();
+}
+
+// ============================================================
+// SYSTEM LOG
+// ============================================================
+function makeLogId() { return 'log_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+// Called by the System on progression events. Permanent — cannot be deleted.
+function systemLog(text) {
+  if (!state.log) state.log = [];
+  state.log.push({ id: makeLogId(), type: 'system', text: String(text), t: Date.now() });
+  // Keep the feed bounded — newest 200 entries
+  if (state.log.length > 200) state.log = state.log.slice(-200);
+}
+
+function fmtLogDate(ts) {
+  const d = new Date(ts);
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  let h = d.getHours();
+  const m = pad(d.getMinutes());
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; if (h === 0) h = 12;
+  return months[d.getMonth()] + ' ' + d.getDate() + ' · ' + h + ':' + m + ' ' + ampm;
+}
+
+function renderLog() {
+  const feed = $('log-feed');
+  if (!feed) return;
+  if (!state.log || !state.log.length) {
+    feed.innerHTML = '<div class="log-feed-empty">[ No entries yet. The System records your progress here. ]</div>';
+    return;
+  }
+  // Newest first
+  const entries = state.log.slice().sort((a, b) => b.t - a.t);
+  feed.innerHTML = entries.map(e => {
+    const isManual = e.type === 'manual';
+    const tag = isManual ? '✎ PLAYER' : '▶ SYSTEM';
+    const delBtn = isManual
+      ? `<button class="log-entry-delete" onclick="deleteLogEntry('${e.id}')">DELETE</button>`
+      : '';
+    return `<div class="log-entry ${isManual ? 'manual' : 'system'}">
+      <div class="log-entry-head">
+        <span class="log-entry-tag">${tag}</span>
+        <span class="log-entry-date">${fmtLogDate(e.t)}</span>
+      </div>
+      <div class="log-entry-body">${escapeHtml(e.text)}</div>
+      ${delBtn}
+    </div>`;
+  }).join('');
+}
+
+function openAddLogEntry() {
+  if ($('add-log-text')) $('add-log-text').value = '';
+  $('add-log-overlay').classList.add('show');
+  setTimeout(() => { if ($('add-log-text')) $('add-log-text').focus(); }, 100);
+}
+function closeAddLogEntry() { $('add-log-overlay').classList.remove('show'); }
+function submitLogEntry() {
+  const text = $('add-log-text') ? $('add-log-text').value.trim() : '';
+  if (!text) { showToast('ENTER SOMETHING FIRST'); return; }
+  if (!state.log) state.log = [];
+  state.log.push({ id: makeLogId(), type: 'manual', text: text, t: Date.now() });
+  closeAddLogEntry();
+  renderLog();
+  saveState();
+}
+function deleteLogEntry(id) {
+  if (!state.log) return;
+  const entry = state.log.find(e => e.id === id);
+  // Only manual entries are deletable — System entries are permanent
+  if (!entry || entry.type !== 'manual') return;
+  state.log = state.log.filter(e => e.id !== id);
+  renderLog();
   saveState();
 }
 
@@ -2052,6 +2271,7 @@ function submitIBOLaunch() {
   state.stats.sponsoring += IBO_LAUNCH_XP;
   addXP(IBO_LAUNCH_XP);
   closeLaunchIBO();
+  systemLog('New IBO launched. A new soldier joins the army. +' + IBO_LAUNCH_XP + ' Sponsoring XP.');
   showAlert('NEW IBO\nLAUNCHED', 'A new soldier joins the army.\n+' + IBO_LAUNCH_XP + ' Sponsoring XP', '⚔️');
   renderDungeonView();
   updateHeader();
@@ -2082,47 +2302,33 @@ function renderSalesLog(period) {
 // ============================================================
 function renderStatus() {
   if ($('status-name'))      $('status-name').textContent = state.playerName || '—';
-  if ($('status-class'))     $('status-class').textContent = PLAYER_CLASS;
   if ($('status-pin'))       $('status-pin').textContent = PINS[state.pinIndex];
   if ($('status-level'))     $('status-level').textContent = state.level;
   if ($('streak-display'))   $('streak-display').textContent = state.streak + ' Days';
   if ($('total-xp-display')) $('total-xp-display').textContent = Math.floor(state.totalXp);
 
-  // Gate status block
-  const gateBlock = $('gate-status-block');
-  const rankBlock = $('rank-block');
-  if (isGated()) {
-    if (gateBlock) {
-      gateBlock.style.display = 'block';
+  // Gate banner — only when at a gate awaiting pin verification
+  const gateBanner = $('gate-banner');
+  if (gateBanner) {
+    if (isGated()) {
+      gateBanner.style.display = 'block';
       const nextPin = PINS[state.pinIndex + 1];
-      if ($('gate-status-label')) $('gate-status-label').textContent = '▶ AWAITING ' + nextPin.toUpperCase() + ' VERIFICATION';
-      if ($('gate-status-title')) $('gate-status-title').textContent = nextPin + ' Wall';
-      if ($('gate-status-sub'))   $('gate-status-sub').textContent = 'Level frozen at ' + state.level + '. Earn the pin in real life to release the buffer.';
-      // Buffer "progress" — show as raw amount and estimated levels it could cascade
+      if ($('gate-banner-label')) $('gate-banner-label').textContent = '▶ AWAITING ' + nextPin.toUpperCase() + ' VERIFICATION';
+      if ($('gate-banner-sub'))   $('gate-banner-sub').textContent = 'Level frozen at ' + state.level + '. Earn ' + nextPin + ' in real life to release the buffer.';
+      // Estimate how many levels the buffer would cascade
       const buffered = state.bufferedXp || 0;
-      let estLevels = 0;
-      let sim = buffered;
-      let simLvl = state.level;
+      let estLevels = 0, sim = buffered, simLvl = state.level;
       while (sim >= xpForNextLevel(simLvl) && simLvl < LEVEL_CAP) {
         sim -= xpForNextLevel(simLvl);
         simLvl++;
         estLevels++;
       }
-      if ($('gate-buffer-amount')) $('gate-buffer-amount').textContent = Math.floor(buffered).toLocaleString() + ' XP buffered';
-      if ($('gate-buffer-est'))    $('gate-buffer-est').textContent = estLevels + ' levels ready';
-      // Bar shows fill toward the next breakthrough level
-      const nextNeeded = xpForNextLevel(simLvl);
-      const barPct = nextNeeded === Infinity ? 100 : clamp(sim / nextNeeded * 100, 2, 100);
-      if ($('gate-buffer-fill'))   $('gate-buffer-fill').style.width = barPct + '%';
+      if ($('gate-banner-amount')) $('gate-banner-amount').textContent = Math.floor(buffered).toLocaleString() + ' XP buffered';
+      if ($('gate-banner-est'))    $('gate-banner-est').textContent = estLevels + ' level' + (estLevels === 1 ? '' : 's') + ' ready';
+      if ($('gate-banner-btn'))    $('gate-banner-btn').textContent = '[ CONFIRM ' + nextPin.toUpperCase() + ' ]';
+    } else {
+      gateBanner.style.display = 'none';
     }
-    if (rankBlock) rankBlock.style.display = 'none';
-  } else {
-    if (gateBlock) gateBlock.style.display = 'none';
-    if (rankBlock) rankBlock.style.display = 'block';
-    if ($('rank-name-display')) $('rank-name-display').textContent = PINS[state.pinIndex];
-    const next = state.pinIndex < 5 ? PINS[state.pinIndex + 1] : '— MAX —';
-    if ($('rank-next-display')) $('rank-next-display').textContent = state.pinIndex < 5 ? '→ ' + next : next;
-    if ($('rank-structure-hint')) $('rank-structure-hint').textContent = PIN_HINTS[state.pinIndex] || '';
   }
 
   // Stats — gated on second awakening
@@ -2146,6 +2352,7 @@ function renderStatus() {
     }).join('');
   }
 
+  renderMilestones();
   renderAchievements();
 }
 
@@ -2174,6 +2381,7 @@ function confirmSecondAwakening() {
   state.secondAwakeningComplete = true;
   $('awakening-overlay').classList.remove('show');
   applyAwakenedTheme();
+  systemLog('SECOND AWAKENING. First goal achieved: "' + (state.awakeningGoal || 'goal') + '". Stats, Dungeons, Items and Skills unlocked.');
   renderQuests();
   renderMission();
   renderDungeonView();
@@ -2189,8 +2397,23 @@ function applyAwakenedTheme() {
 // MISSION
 // ============================================================
 function renderMission() {
+  // Mission tab is locked until the Second Awakening
+  if (!state.secondAwakeningComplete) {
+    if ($('mission-lock-screen')) $('mission-lock-screen').style.display = 'block';
+    if ($('mission-content'))     $('mission-content').style.display = 'none';
+    return;
+  }
+  if ($('mission-lock-screen')) $('mission-lock-screen').style.display = 'none';
+  if ($('mission-content'))     $('mission-content').style.display = 'block';
+
   if ($('dmp-title')) $('dmp-title').textContent = state.dmpTitle || 'Not yet defined.';
   if ($('dmp-sub'))   $('dmp-sub').textContent = state.dmpSub || 'Set your Definite Major Purpose to begin.';
+
+  renderLog();
+}
+
+// Milestones now live in the Status tab
+function renderMilestones() {
   if ($('awakening-goal-text')) $('awakening-goal-text').textContent = state.awakeningGoal || 'Goal not yet defined.';
 
   if (state.secondAwakeningComplete) {
@@ -2529,6 +2752,10 @@ window.saveEditedGoal = saveEditedGoal;
 window.openEditDMP = openEditDMP;
 window.closeEditDMP = closeEditDMP;
 window.saveEditedDMP = saveEditedDMP;
+window.openAddLogEntry = openAddLogEntry;
+window.closeAddLogEntry = closeAddLogEntry;
+window.submitLogEntry = submitLogEntry;
+window.deleteLogEntry = deleteLogEntry;
 window.switchDungeon = switchDungeon;
 window.adjustCounter = adjustCounter;
 window.openLogSale = openLogSale;
