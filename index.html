@@ -314,6 +314,28 @@
     .stepper-goal b { color: var(--cyan); }
     .stepper-goal.exceeded b { color: var(--gold); }
 
+    /* ── QUEST EDIT ROW + DAY PICKER ───────────────────── */
+    .quest-edit-row { border: 1px solid var(--border); background: rgba(6,18,38,0.4); padding: 10px; margin-bottom: 8px; }
+    .quest-edit-row-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 6px; }
+    .day-picker { display: flex; gap: 4px; margin-top: 8px; }
+    .day-pill {
+      flex: 1;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--text-dim);
+      background: rgba(6,18,38,0.8);
+      border: 1px solid var(--border);
+      padding: 6px 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: all 0.12s;
+    }
+    .day-pill.on { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); }
+    .day-picker-hint { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 1px; margin-top: 5px; }
+    .quest-sched-tag { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--cyan); letter-spacing: 1px; margin-top: 3px; }
+
     .dungeon-sales-log { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 10px 12px; margin-bottom: 14px; }
     .dungeon-sales-log-header { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 8px; display: flex; justify-content: space-between; }
     .dungeon-sale-entry { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-bottom: 1px solid rgba(30,111,255,0.06); }
@@ -906,17 +928,8 @@
     <div class="setup-screen" id="setup-s3">
       <div class="setup-sys-message">&#9654; QUERY 3 OF 3</div>
       <div class="setup-title">Define your Daily Quests.</div>
-      <div class="setup-desc">Up to 5 daily training tasks. At least 1 is required. These are your foundational daily obligations. They can be edited later.</div>
-      <div class="setup-field-label">QUEST 1 &mdash; REQUIRED</div>
-      <input class="setup-input" id="sq1" type="text" placeholder="e.g. 100 Push-ups" maxlength="60" oninput="setupValidate()"/>
-      <div class="setup-field-label">QUEST 2</div>
-      <input class="setup-input" id="sq2" type="text" placeholder="Optional" maxlength="60"/>
-      <div class="setup-field-label">QUEST 3</div>
-      <input class="setup-input" id="sq3" type="text" placeholder="Optional" maxlength="60"/>
-      <div class="setup-field-label">QUEST 4</div>
-      <input class="setup-input" id="sq4" type="text" placeholder="Optional" maxlength="60"/>
-      <div class="setup-field-label">QUEST 5</div>
-      <input class="setup-input" id="sq5" type="text" placeholder="Optional" maxlength="60"/>
+      <div class="setup-desc">Up to 5 starting quests. At least 1 is required. Toggle days to schedule a quest &mdash; leave all days off and it runs every day. More can be added later.</div>
+      <div id="setup-quest-fields"></div>
     </div>
 
   </div>
@@ -1577,14 +1590,15 @@ function migrate(old) {
 
   if (Array.isArray(old.dailyQuests)) {
     out.dailyQuests = old.dailyQuests.map(q => {
-      if (typeof q === 'string') return { text: q, completed: false, goal: 0, step: 0, count: 0 };
+      if (typeof q === 'string') return { text: q, completed: false, goal: 0, step: 0, count: 0, days: [] };
       const goal = +q.goal || 0;
       return {
         text: q.text || '',
         completed: !!q.completed,
         goal: goal,
         step: +q.step || (goal ? (goal >= 1000 ? 1000 : 1) : 0),
-        count: +q.count || 0
+        count: +q.count || 0,
+        days: Array.isArray(q.days) ? q.days.filter(d => d>=0 && d<=6) : []
       };
     });
   }
@@ -2030,6 +2044,18 @@ function updateDatebar() {
 // ============================================================
 function questHasCounter(q) { return q && +q.goal > 0; }
 
+// days: array of weekday indexes (0=Mon..6=Sun). Empty/missing = every day.
+const DAY_LETTERS = ['M','T','W','T','F','S','S'];
+const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+function questActiveToday(q) {
+  if (!q.days || !q.days.length) return true;
+  return q.days.indexOf(dayOfWeekIndex()) !== -1;
+}
+function questScheduleLabel(q) {
+  if (!q.days || !q.days.length) return 'Every day';
+  return q.days.slice().sort((a,b)=>a-b).map(d => DAY_NAMES[d]).join(', ');
+}
+
 function renderQuests() {
   const list = $('quest-list');
   if (!list) return;
@@ -2041,10 +2067,15 @@ function renderQuests() {
     state._lastQuestRenderDay = today;
   }
 
-  if (!state.dailyQuests.length) {
-    list.innerHTML = '<div style="color:var(--text-dim);font-size:12px;padding:14px;text-align:center;">No quests set. Tap EDIT to add some.</div>';
+  // Only quests scheduled for today appear in the log
+  const todays = state.dailyQuests
+    .map((q, i) => ({ q, i }))
+    .filter(x => questActiveToday(x.q));
+
+  if (!todays.length) {
+    list.innerHTML = '<div style="color:var(--text-dim);font-size:12px;padding:14px;text-align:center;">No quests scheduled today. Tap EDIT to add or reschedule.</div>';
   } else {
-    list.innerHTML = state.dailyQuests.map((q, i) => {
+    list.innerHTML = todays.map(({ q, i }) => {
       let counterRow = '';
       if (questHasCounter(q)) {
         const count = +q.count || 0;
@@ -2058,11 +2089,13 @@ function renderQuests() {
             <button class="quest-counter-btn" onclick="openQuestCounter(${i})">TRACK</button>
           </div>`;
       }
+      const schedTag = (q.days && q.days.length)
+        ? `<div class="quest-sched-tag">${questScheduleLabel(q)}</div>` : '';
       return `
         <div class="quest-item ${q.completed ? 'completed' : ''}">
           <div style="display:flex;align-items:flex-start;gap:12px;" onclick="toggleQuest(${i})">
             <div class="quest-check"><div class="quest-check-inner"></div></div>
-            <div class="quest-text">${escapeHtml(q.text)}</div>
+            <div class="quest-text">${escapeHtml(q.text)}${schedTag}</div>
             <div class="quest-xp">+${getQuestXP()} XP</div>
           </div>
           ${counterRow}
@@ -2070,8 +2103,8 @@ function renderQuests() {
     }).join('');
   }
 
-  const total = state.dailyQuests.length;
-  const done = state.dailyQuests.filter(q => q.completed).length;
+  const total = todays.length;
+  const done = todays.filter(x => x.q.completed).length;
   $('quest-count').textContent = done + '/' + total;
   const pct = total ? (done / total * 100) : 0;
   $('quest-bar').style.width = pct + '%';
@@ -2103,7 +2136,8 @@ function toggleQuest(i) {
 
     state.lastQuestCompleteDate = today;
 
-    const allDone = state.dailyQuests.every(q => q.completed);
+    const todays = state.dailyQuests.filter(questActiveToday);
+    const allDone = todays.length > 0 && todays.every(q => q.completed);
     if (allDone && state._streakAwardedToday !== today) {
       state.streak++;
       state._streakAwardedToday = today;
@@ -2183,7 +2217,8 @@ function saveQuestCounter() {
   if (newCount >= goal && !q.completed) {
     q.completed = true;
     state.lastQuestCompleteDate = todayKey();
-    const allDone = state.dailyQuests.every(x => x.completed);
+    const todays = state.dailyQuests.filter(questActiveToday);
+    const allDone = todays.length > 0 && todays.every(x => x.completed);
     if (allDone && state._streakAwardedToday !== todayKey()) {
       state.streak++;
       state._streakAwardedToday = todayKey();
@@ -2198,36 +2233,79 @@ function saveQuestCounter() {
   if (gained > 0) showToast('+' + gained + ' XP');
 }
 
+const MAX_QUESTS = 12;
+// Working copy of day selections while the edit modal is open
+let _editDaySel = [];
+
+function dayPickerHtml(idx, days) {
+  let pills = '';
+  for (let d = 0; d < 7; d++) {
+    const on = days.indexOf(d) !== -1;
+    pills += `<div class="day-pill ${on ? 'on' : ''}" onclick="toggleEditDay(${idx},${d})">${DAY_LETTERS[d]}</div>`;
+  }
+  return `<div class="day-picker" id="edit-days-${idx}">${pills}</div>
+    <div class="day-picker-hint" id="edit-days-hint-${idx}">${days.length ? questScheduleLabel({days:days}) : 'Runs every day'}</div>`;
+}
+
 function openEditQuests() {
   const wrap = $('edit-quest-fields');
+  _editDaySel = [];
+  for (let i = 0; i < MAX_QUESTS; i++) {
+    const q = state.dailyQuests[i];
+    _editDaySel[i] = (q && Array.isArray(q.days)) ? q.days.slice() : [];
+  }
   let html = '';
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < MAX_QUESTS; i++) {
     const q = state.dailyQuests[i];
     const val = q ? q.text : '';
     const goal = q && q.goal ? q.goal : '';
     const label = i === 0 ? 'QUEST 1 — REQUIRED' : 'QUEST ' + (i+1);
-    html += `<div class="modal-field-label">${label}</div>`;
+    html += `<div class="quest-edit-row">`;
+    html += `<div class="quest-edit-row-label">${label}</div>`;
     html += `<input class="modal-input" id="edit-q${i}" type="text" maxlength="60" value="${escapeHtml(val)}" placeholder="${i===0?'Required':'Optional'}" style="margin-bottom:6px;"/>`;
-    html += `<input class="modal-input" id="edit-qgoal${i}" type="number" inputmode="numeric" min="0" value="${goal}" placeholder="Target number (optional — e.g. 15000)"/>`;
+    html += `<input class="modal-input" id="edit-qgoal${i}" type="number" inputmode="numeric" min="0" value="${goal}" placeholder="Target number (optional — e.g. 15000)" style="margin-bottom:0;"/>`;
+    html += dayPickerHtml(i, _editDaySel[i]);
+    html += `</div>`;
   }
   wrap.innerHTML = html;
   $('edit-quests-overlay').classList.add('show');
 }
 function closeEditQuests() { $('edit-quests-overlay').classList.remove('show'); }
+
+function toggleEditDay(idx, d) {
+  const arr = _editDaySel[idx];
+  const pos = arr.indexOf(d);
+  if (pos === -1) arr.push(d); else arr.splice(pos, 1);
+  // Refresh the pills for this row
+  const picker = $('edit-days-' + idx);
+  if (picker) {
+    let pills = '';
+    for (let dd = 0; dd < 7; dd++) {
+      const on = arr.indexOf(dd) !== -1;
+      pills += `<div class="day-pill ${on ? 'on' : ''}" onclick="toggleEditDay(${idx},${dd})">${DAY_LETTERS[dd]}</div>`;
+    }
+    picker.innerHTML = pills;
+  }
+  const hint = $('edit-days-hint-' + idx);
+  if (hint) hint.textContent = arr.length ? questScheduleLabel({days:arr}) : 'Runs every day';
+}
+
 function saveEditedQuests() {
   const out = [];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < MAX_QUESTS; i++) {
     const v = ($('edit-q' + i) ? $('edit-q' + i).value.trim() : '');
     if (v) {
       const existing = state.dailyQuests[i];
       const goalRaw = $('edit-qgoal' + i) ? parseInt($('edit-qgoal' + i).value, 10) : 0;
       const goal = (isFinite(goalRaw) && goalRaw > 0) ? goalRaw : 0;
+      const days = (_editDaySel[i] || []).slice().sort((a,b)=>a-b);
       out.push({
         text: v,
         completed: existing ? existing.completed : false,
         goal: goal,
         step: goal ? inferStep(goal) : 0,
-        count: existing ? (+existing.count || 0) : 0
+        count: existing ? (+existing.count || 0) : 0,
+        days: days
       });
     }
   }
@@ -2990,7 +3068,45 @@ function showSetupScreen(n) {
   $('setup-progress-fill').style.width = (n / SETUP_TOTAL_SCREENS * 100) + '%';
   $('setup-back-btn').style.display = n > 1 ? '' : 'none';
   $('setup-next-btn').textContent = n === SETUP_TOTAL_SCREENS ? 'BEGIN \u25B6' : 'NEXT \u25B6';
+  if (n === 3) buildSetupQuestFields();
   setupValidate();
+}
+
+// Setup screen 3 — 5 starting quest rows with day pickers
+let _setupDaySel = [[],[],[],[],[]];
+function buildSetupQuestFields() {
+  const wrap = $('setup-quest-fields');
+  if (!wrap || wrap.dataset.built === '1') return;
+  let html = '';
+  for (let i = 0; i < 5; i++) {
+    const label = i === 0 ? 'QUEST 1 — REQUIRED' : 'QUEST ' + (i+1);
+    html += `<div class="quest-edit-row">`;
+    html += `<div class="quest-edit-row-label">${label}</div>`;
+    html += `<input class="modal-input" id="sq${i}" type="text" maxlength="60" placeholder="${i===0?'e.g. 100 Push-ups':'Optional'}" style="margin-bottom:0;" ${i===0?'oninput="setupValidate()"':''}/>`;
+    let pills = '';
+    for (let d = 0; d < 7; d++) pills += `<div class="day-pill" onclick="toggleSetupDay(${i},${d})">${DAY_LETTERS[d]}</div>`;
+    html += `<div class="day-picker" id="setup-days-${i}">${pills}</div>`;
+    html += `<div class="day-picker-hint" id="setup-days-hint-${i}">Runs every day</div>`;
+    html += `</div>`;
+  }
+  wrap.innerHTML = html;
+  wrap.dataset.built = '1';
+}
+function toggleSetupDay(idx, d) {
+  const arr = _setupDaySel[idx];
+  const pos = arr.indexOf(d);
+  if (pos === -1) arr.push(d); else arr.splice(pos, 1);
+  const picker = $('setup-days-' + idx);
+  if (picker) {
+    let pills = '';
+    for (let dd = 0; dd < 7; dd++) {
+      const on = arr.indexOf(dd) !== -1;
+      pills += `<div class="day-pill ${on ? 'on' : ''}" onclick="toggleSetupDay(${idx},${dd})">${DAY_LETTERS[dd]}</div>`;
+    }
+    picker.innerHTML = pills;
+  }
+  const hint = $('setup-days-hint-' + idx);
+  if (hint) hint.textContent = arr.length ? questScheduleLabel({days:arr}) : 'Runs every day';
 }
 
 function setupValidate() {
@@ -2998,7 +3114,7 @@ function setupValidate() {
   let ok = true;
   if (n === 1) ok = $('setup-name') && $('setup-name').value.trim().length > 0;
   if (n === 2) ok = $('setup-goal') && $('setup-goal').value.trim().length > 0;
-  if (n === 3) ok = $('sq1') && $('sq1').value.trim().length > 0;
+  if (n === 3) ok = $('sq0') && $('sq0').value.trim().length > 0;
   $('setup-next-btn').disabled = !ok;
 }
 
@@ -3018,10 +3134,14 @@ function setupNext() {
 function completeSetup() {
   state.playerName  = $('setup-name').value.trim();
   state.dailyQuests = [];
-  ['sq1','sq2','sq3','sq4','sq5'].forEach(id => {
-    const v = $(id).value.trim();
-    if (v) state.dailyQuests.push({ text: v, completed: false });
-  });
+  for (let i = 0; i < 5; i++) {
+    const el = $('sq' + i);
+    const v = el ? el.value.trim() : '';
+    if (v) state.dailyQuests.push({
+      text: v, completed: false, goal: 0, step: 0, count: 0,
+      days: (_setupDaySel[i] || []).slice().sort((a,b)=>a-b)
+    });
+  }
   // First goal — the condition for the Second Awakening
   const goalField = $('setup-goal');
   if (goalField) state.awakeningGoal = goalField.value.trim();
@@ -3106,6 +3226,8 @@ setInterval(() => {
 window.switchPanel = switchPanel;
 window.toggleQuest = toggleQuest;
 window.openEditQuests = openEditQuests;
+window.toggleEditDay = toggleEditDay;
+window.toggleSetupDay = toggleSetupDay;
 window.openQuestCounter = openQuestCounter;
 window.closeQuestCounter = closeQuestCounter;
 window.stepQuestCounter = stepQuestCounter;
