@@ -197,6 +197,123 @@
     .counter-btn:active { background: var(--cyan-dim); }
     .counter-val { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--text-bright); min-width: 22px; text-align: center; font-weight: 700; }
 
+    /* ── WEEKLY DUNGEON BOX (Quests tab) ──────────────── */
+    .dungeon-box {
+      background: var(--blue-dim);
+      border: 1px solid var(--border2);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .dungeon-box::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 3px; height: 100%;
+      background: var(--blue);
+    }
+    .dungeon-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+    .dungeon-box-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      letter-spacing: 3px;
+      font-weight: 700;
+    }
+    .dungeon-box-reset {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+    .dungeon-box-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.4;
+      margin-bottom: 10px;
+      font-weight: 300;
+    }
+    #dungeon-counter-grid { grid-template-columns: 1fr; }
+
+    /* ── QUEST COUNTER (quantifiable quests) ──────────── */
+    .quest-counter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(30,111,255,0.1);
+    }
+    .quest-counter-progress {
+      flex: 1;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+    .quest-counter-progress b { color: var(--cyan); }
+    .quest-counter-progress.exceeded b { color: var(--gold); }
+    .quest-counter-btn {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--cyan);
+      background: transparent;
+      border: 1px solid var(--border2);
+      padding: 5px 10px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
+    .quest-counter-btn:active { background: var(--cyan-dim); }
+
+    /* Stepper used in the quest-counter pop-up */
+    .stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 8px 0 16px;
+    }
+    .stepper-btn {
+      width: 44px; height: 44px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--cyan);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0;
+    }
+    .stepper-btn:active { background: var(--cyan-dim); }
+    .stepper-val {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-bright);
+      min-width: 90px;
+      text-align: center;
+    }
+    .stepper-goal {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .stepper-goal b { color: var(--cyan); }
+    .stepper-goal.exceeded b { color: var(--gold); }
+
     .dungeon-sales-log { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 10px 12px; margin-bottom: 14px; }
     .dungeon-sales-log-header { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 8px; display: flex; justify-content: space-between; }
     .dungeon-sale-entry { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-bottom: 1px solid rgba(30,111,255,0.06); }
@@ -655,6 +772,46 @@
   </div>
 </div>
 
+<!-- QUEST COUNTER STEPPER MODAL -->
+<div id="quest-counter-overlay" class="modal-overlay">
+  <div class="modal-window" style="max-width:320px;">
+    <div class="modal-header">
+      <div class="modal-label">[ TRACK PROGRESS ]</div>
+      <button onclick="closeQuestCounter()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field-label" id="quest-counter-name">QUEST</div>
+      <div class="stepper">
+        <button class="stepper-btn" onclick="stepQuestCounter(-1)">−</button>
+        <div class="stepper-val" id="quest-counter-val">0</div>
+        <button class="stepper-btn" onclick="stepQuestCounter(1)">+</button>
+      </div>
+      <div class="stepper-goal" id="quest-counter-goal">Goal: —</div>
+      <button onclick="saveQuestCounter()" class="modal-submit-btn">[ SAVE ]</button>
+    </div>
+  </div>
+</div>
+
+<!-- DUNGEON COUNTER STEPPER MODAL -->
+<div id="dungeon-counter-overlay" class="modal-overlay">
+  <div class="modal-window" style="max-width:320px;">
+    <div class="modal-header">
+      <div class="modal-label">[ DUNGEON — TRACK ]</div>
+      <button onclick="closeDungeonCounter()" class="modal-close-btn">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field-label" id="dungeon-counter-name">METRIC</div>
+      <div class="stepper">
+        <button class="stepper-btn" onclick="stepDungeonCounter(-1)">−</button>
+        <div class="stepper-val" id="dungeon-counter-val">0</div>
+        <button class="stepper-btn" onclick="stepDungeonCounter(1)">+</button>
+      </div>
+      <div class="stepper-goal" id="dungeon-counter-info">This week</div>
+      <button onclick="saveDungeonCounter()" class="modal-submit-btn">[ SAVE ]</button>
+    </div>
+  </div>
+</div>
+
 <!-- LOG SALE MODAL -->
 <div id="log-sale-overlay" class="modal-overlay">
   <div class="modal-window">
@@ -812,6 +969,16 @@
           <div class="sys-progress-pct" id="quest-pct">0%</div>
         </div>
       </div>
+      <!-- WEEKLY DUNGEON — QI tracker -->
+      <div class="dungeon-box" id="dungeon-box">
+        <div class="dungeon-box-header">
+          <div class="dungeon-box-title">▶ WEEKLY DUNGEON</div>
+          <div class="dungeon-box-reset" id="dungeon-reset">Resets in —</div>
+        </div>
+        <div class="dungeon-box-sub">Track your weekly business metrics. Each one slain is XP earned.</div>
+        <div class="counter-grid" id="dungeon-counter-grid"></div>
+      </div>
+
       <div class="quest-section">
         <div class="quest-section-header">
           <div class="quest-section-icon">⚔️</div>
@@ -844,21 +1011,6 @@
       </div>
     </div>
   </div>
-
-  <!-- DUNGEONS / WEEKLY HUNT -->
-  <div class="sys-panel" id="panel-dungeons">
-    <div class="panel-header">
-      <div class="panel-header-label">[ DUNGEON ]</div>
-      <div class="panel-header-title">Dungeons</div>
-    </div>
-    <div class="panel-body">
-
-      <div id="dungeons-lock-screen" style="text-align:center;padding:40px 20px;">
-        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
-        <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Dungeons are locked for beginner-level Players. Achieve your first goal to trigger the Second Awakening.</div>
-      </div>
 
       <div id="dungeons-content" style="display:none;">
         <div class="dungeon-tabs">
@@ -1101,7 +1253,6 @@
 
 <nav class="sys-nav">
   <button class="sys-nav-btn active" onclick="switchPanel('quests', this)"><div class="sys-nav-icon">📋</div><span>QUESTS</span></button>
-  <button class="sys-nav-btn" onclick="switchPanel('dungeons', this)"><div class="sys-nav-icon">🗡️</div><span>DUNGEON</span></button>
   <button class="sys-nav-btn" onclick="switchPanel('status', this)"><div class="sys-nav-icon">⚔️</div><span>STATUS</span></button>
   <button class="sys-nav-btn" onclick="switchPanel('mission', this)"><div class="sys-nav-icon">🎯</div><span>MISSION</span></button>
   <button class="sys-nav-btn" onclick="switchPanel('inventory', this)"><div class="sys-nav-icon">🎒</div><span>ITEMS</span></button>
@@ -1226,6 +1377,11 @@ const COUNTER_XP = 5;
 const COUNTER_LEVEL_XP = Math.round(COUNTER_XP / 2);
 const IBO_LAUNCH_XP = 500;
 
+// Weekly Dungeon metrics — QI tracker for now. XP per increment.
+const WEEKLY_METRICS = [
+  ['qis', 'QIs', 25]
+];
+
 // Bleed penalties (Duolingo with teeth — all or nothing)
 const BLEED_DAY_1 = 50;
 const BLEED_DAY_2 = 100;
@@ -1292,8 +1448,12 @@ const DEFAULT_STATE = {
   monthlyStrikes: 0,
   lastMonthChecked: '',
 
-  // Dungeons
+  // Dungeons (legacy period system — kept for save compatibility)
   dungeons: { daily: null, weekly: null, monthly: null },
+
+  // Weekly Dungeon — simple metric counters, reset each week
+  // { key: 'YYYY-MM-DD' (week start), counters: { metricId: count } }
+  weeklyDungeon: { key: '', counters: {} },
 
   // Weekly chart
   weeklyXp: [0,0,0,0,0,0,0],
@@ -1416,7 +1576,17 @@ function migrate(old) {
   if (old.workCycle)          out.workCycle = old.workCycle;
 
   if (Array.isArray(old.dailyQuests)) {
-    out.dailyQuests = old.dailyQuests.map(q => typeof q === 'string' ? {text:q, completed:false} : {text:q.text||'', completed:!!q.completed});
+    out.dailyQuests = old.dailyQuests.map(q => {
+      if (typeof q === 'string') return { text: q, completed: false, goal: 0, step: 0, count: 0 };
+      const goal = +q.goal || 0;
+      return {
+        text: q.text || '',
+        completed: !!q.completed,
+        goal: goal,
+        step: +q.step || (goal ? (goal >= 1000 ? 1000 : 1) : 0),
+        count: +q.count || 0
+      };
+    });
   }
 
   out.secondAwakeningComplete = !!(old.awakeningComplete || old.secondAwakeningComplete);
@@ -1493,6 +1663,14 @@ function migrate(old) {
 
   if (Array.isArray(old.weeklyXp) && old.weeklyXp.length === 7) out.weeklyXp = old.weeklyXp.map(n => Math.round(+n || 0));
   out.weekStartKey = old.weekStartKey || '';
+  if (old.weeklyDungeon && typeof old.weeklyDungeon === 'object') {
+    out.weeklyDungeon = {
+      key: old.weeklyDungeon.key || '',
+      counters: (old.weeklyDungeon.counters && typeof old.weeklyDungeon.counters === 'object') ? old.weeklyDungeon.counters : {}
+    };
+  } else {
+    out.weeklyDungeon = { key: '', counters: {} };
+  }
   out.dmpTitle = old.dmpTitle || '';
   out.dmpSub = old.dmpSub || '';
   out.log = Array.isArray(old.log) ? old.log.filter(e => e && e.text).map(e => ({
@@ -1810,7 +1988,6 @@ function switchPanel(name, btn) {
   const panel = $('panel-' + name);
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
-  if (name === 'dungeons') { checkPeriodRollovers(); renderDungeonView(); }
   if (name === 'status')   renderStatus();
   if (name === 'quests')   renderQuests();
   if (name === 'mission')  renderMission();
@@ -1851,27 +2028,46 @@ function updateDatebar() {
 // ============================================================
 // QUESTS
 // ============================================================
+function questHasCounter(q) { return q && +q.goal > 0; }
+
 function renderQuests() {
   const list = $('quest-list');
   if (!list) return;
 
-  // Reset completions if it's a new day
+  // Reset completions + counts if it's a new day
   const today = todayKey();
   if (state._lastQuestRenderDay !== today) {
-    state.dailyQuests.forEach(q => q.completed = false);
+    state.dailyQuests.forEach(q => { q.completed = false; q.count = 0; });
     state._lastQuestRenderDay = today;
   }
 
   if (!state.dailyQuests.length) {
     list.innerHTML = '<div style="color:var(--text-dim);font-size:12px;padding:14px;text-align:center;">No quests set. Tap EDIT to add some.</div>';
   } else {
-    list.innerHTML = state.dailyQuests.map((q, i) => `
-      <div class="quest-item ${q.completed ? 'completed' : ''}" onclick="toggleQuest(${i})">
-        <div class="quest-check"><div class="quest-check-inner"></div></div>
-        <div class="quest-text">${escapeHtml(q.text)}</div>
-        <div class="quest-xp">+${getQuestXP()} XP</div>
-      </div>
-    `).join('');
+    list.innerHTML = state.dailyQuests.map((q, i) => {
+      let counterRow = '';
+      if (questHasCounter(q)) {
+        const count = +q.count || 0;
+        const goal = +q.goal;
+        const exceeded = count > goal;
+        counterRow = `
+          <div class="quest-counter" onclick="event.stopPropagation()">
+            <div class="quest-counter-progress ${exceeded ? 'exceeded' : ''}">
+              <b>${count.toLocaleString()}</b> / ${goal.toLocaleString()}${exceeded ? ' ⚡' : ''}
+            </div>
+            <button class="quest-counter-btn" onclick="openQuestCounter(${i})">TRACK</button>
+          </div>`;
+      }
+      return `
+        <div class="quest-item ${q.completed ? 'completed' : ''}">
+          <div style="display:flex;align-items:flex-start;gap:12px;" onclick="toggleQuest(${i})">
+            <div class="quest-check"><div class="quest-check-inner"></div></div>
+            <div class="quest-text">${escapeHtml(q.text)}</div>
+            <div class="quest-xp">+${getQuestXP()} XP</div>
+          </div>
+          ${counterRow}
+        </div>`;
+    }).join('');
   }
 
   const total = state.dailyQuests.length;
@@ -1892,6 +2088,8 @@ function renderQuests() {
     if ($('awakening-goal-action')) $('awakening-goal-action').style.display = 'block';
     if ($('awakening-goal-done'))   $('awakening-goal-done').style.display = 'none';
   }
+
+  renderDungeonBox();
 }
 
 function toggleQuest(i) {
@@ -1903,10 +2101,8 @@ function toggleQuest(i) {
     q.completed = true;
     addXP(getQuestXP());
 
-    // Update last completion date (any quest done = today is active)
     state.lastQuestCompleteDate = today;
 
-    // If ALL quests done, increment streak (once per day)
     const allDone = state.dailyQuests.every(q => q.completed);
     if (allDone && state._streakAwardedToday !== today) {
       state.streak++;
@@ -1921,14 +2117,98 @@ function toggleQuest(i) {
   saveState();
 }
 
+// ── QUEST COUNTER ──────────────────────────────────────
+let _questCounterIdx = -1;
+let _questCounterTemp = 0;
+
+function inferStep(goal) { return goal >= 1000 ? 1000 : 1; }
+
+function openQuestCounter(i) {
+  const q = state.dailyQuests[i];
+  if (!q || !questHasCounter(q)) return;
+  _questCounterIdx = i;
+  _questCounterTemp = +q.count || 0;
+  $('quest-counter-name').textContent = q.text.toUpperCase();
+  updateQuestCounterModal();
+  $('quest-counter-overlay').classList.add('show');
+}
+function closeQuestCounter() { $('quest-counter-overlay').classList.remove('show'); _questCounterIdx = -1; }
+function updateQuestCounterModal() {
+  const q = state.dailyQuests[_questCounterIdx];
+  if (!q) return;
+  const goal = +q.goal;
+  const exceeded = _questCounterTemp > goal;
+  $('quest-counter-val').textContent = _questCounterTemp.toLocaleString();
+  const goalEl = $('quest-counter-goal');
+  goalEl.className = 'stepper-goal' + (exceeded ? ' exceeded' : '');
+  goalEl.innerHTML = 'Goal: <b>' + goal.toLocaleString() + '</b>' +
+    (exceeded ? ' — exceeded! Bonus XP on save.' : '');
+}
+function stepQuestCounter(dir) {
+  const q = state.dailyQuests[_questCounterIdx];
+  if (!q) return;
+  const step = +q.step || inferStep(+q.goal);
+  _questCounterTemp = Math.max(0, _questCounterTemp + dir * step);
+  updateQuestCounterModal();
+}
+function saveQuestCounter() {
+  const q = state.dailyQuests[_questCounterIdx];
+  if (!q) { closeQuestCounter(); return; }
+  const goal = +q.goal;
+  const prevCount = +q.count || 0;
+  const newCount = _questCounterTemp;
+
+  // XP for newly-gained units since last save
+  const prevBase = Math.min(prevCount, goal);
+  const newBase  = Math.min(newCount, goal);
+  const prevOver = Math.max(0, prevCount - goal);
+  const newOver  = Math.max(0, newCount - goal);
+
+  // Per-unit XP: the quest's flat XP spread across the goal
+  const perUnit = getQuestXP() / goal;
+  // Base units earn standard rate; over-goal units earn double.
+  // Bonus (over-goal) XP capped at 2x the quest's flat XP.
+  let gained = 0;
+  if (newBase > prevBase) gained += (newBase - prevBase) * perUnit;
+  if (newOver > prevOver) {
+    const cappedOver = Math.min(newOver, goal * 2); // cap overshoot credit at 2x goal
+    const cappedPrevOver = Math.min(prevOver, goal * 2);
+    gained += Math.max(0, cappedOver - cappedPrevOver) * perUnit * 2;
+  }
+  gained = Math.round(gained);
+
+  q.count = newCount;
+
+  // Auto-complete the quest once the goal is met
+  if (newCount >= goal && !q.completed) {
+    q.completed = true;
+    state.lastQuestCompleteDate = todayKey();
+    const allDone = state.dailyQuests.every(x => x.completed);
+    if (allDone && state._streakAwardedToday !== todayKey()) {
+      state.streak++;
+      state._streakAwardedToday = todayKey();
+    }
+  }
+
+  if (gained > 0) addXP(gained);
+  closeQuestCounter();
+  renderQuests();
+  updateHeader();
+  saveState();
+  if (gained > 0) showToast('+' + gained + ' XP');
+}
+
 function openEditQuests() {
   const wrap = $('edit-quest-fields');
   let html = '';
   for (let i = 0; i < 5; i++) {
-    const val = state.dailyQuests[i] ? state.dailyQuests[i].text : '';
+    const q = state.dailyQuests[i];
+    const val = q ? q.text : '';
+    const goal = q && q.goal ? q.goal : '';
     const label = i === 0 ? 'QUEST 1 — REQUIRED' : 'QUEST ' + (i+1);
     html += `<div class="modal-field-label">${label}</div>`;
-    html += `<input class="modal-input" id="edit-q${i}" type="text" maxlength="60" value="${escapeHtml(val)}" placeholder="${i===0?'Required':'Optional'}"/>`;
+    html += `<input class="modal-input" id="edit-q${i}" type="text" maxlength="60" value="${escapeHtml(val)}" placeholder="${i===0?'Required':'Optional'}" style="margin-bottom:6px;"/>`;
+    html += `<input class="modal-input" id="edit-qgoal${i}" type="number" inputmode="numeric" min="0" value="${goal}" placeholder="Target number (optional — e.g. 15000)"/>`;
   }
   wrap.innerHTML = html;
   $('edit-quests-overlay').classList.add('show');
@@ -1940,7 +2220,15 @@ function saveEditedQuests() {
     const v = ($('edit-q' + i) ? $('edit-q' + i).value.trim() : '');
     if (v) {
       const existing = state.dailyQuests[i];
-      out.push({ text: v, completed: existing ? existing.completed : false });
+      const goalRaw = $('edit-qgoal' + i) ? parseInt($('edit-qgoal' + i).value, 10) : 0;
+      const goal = (isFinite(goalRaw) && goalRaw > 0) ? goalRaw : 0;
+      out.push({
+        text: v,
+        completed: existing ? existing.completed : false,
+        goal: goal,
+        step: goal ? inferStep(goal) : 0,
+        count: existing ? (+existing.count || 0) : 0
+      });
     }
   }
   if (!out.length) { showToast('AT LEAST 1 QUEST REQUIRED'); return; }
@@ -1948,6 +2236,88 @@ function saveEditedQuests() {
   closeEditQuests();
   renderQuests();
   saveState();
+}
+
+// ── WEEKLY DUNGEON (QI tracker) ────────────────────────
+function ensureWeeklyDungeon() {
+  const wk = weekStartKey();
+  if (!state.weeklyDungeon) state.weeklyDungeon = { key: '', counters: {} };
+  if (state.weeklyDungeon.key !== wk) {
+    state.weeklyDungeon = { key: wk, counters: {} };
+  }
+}
+
+function weekResetText() {
+  // Days until next Monday 00:00
+  const now = new Date();
+  const end = new Date(now);
+  const day = end.getDay() === 0 ? 7 : end.getDay();
+  end.setDate(end.getDate() + (7 - day));
+  end.setHours(0,0,0,0);
+  const ms = end - now;
+  const h = Math.floor(ms / 3600000);
+  if (h >= 24) { const d = Math.floor(h / 24); return 'Resets in ' + d + 'd ' + (h % 24) + 'h'; }
+  return 'Resets in ' + h + 'h';
+}
+
+function renderDungeonBox() {
+  ensureWeeklyDungeon();
+  const grid = $('dungeon-counter-grid');
+  if (!grid) return;
+  if ($('dungeon-reset')) $('dungeon-reset').textContent = weekResetText();
+  grid.innerHTML = WEEKLY_METRICS.map(([id, label]) => {
+    const count = state.weeklyDungeon.counters[id] || 0;
+    return `
+      <div class="counter-card">
+        <div class="counter-label">${label}</div>
+        <div class="counter-controls">
+          <button class="counter-btn" onclick="openDungeonCounter('${id}')">TRACK</button>
+          <div class="counter-val">${count}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+let _dungeonMetricId = null;
+let _dungeonCounterTemp = 0;
+
+function openDungeonCounter(id) {
+  ensureWeeklyDungeon();
+  const metric = WEEKLY_METRICS.find(m => m[0] === id);
+  if (!metric) return;
+  _dungeonMetricId = id;
+  _dungeonCounterTemp = state.weeklyDungeon.counters[id] || 0;
+  $('dungeon-counter-name').textContent = metric[1].toUpperCase();
+  updateDungeonCounterModal();
+  $('dungeon-counter-overlay').classList.add('show');
+}
+function closeDungeonCounter() { $('dungeon-counter-overlay').classList.remove('show'); _dungeonMetricId = null; }
+function updateDungeonCounterModal() {
+  $('dungeon-counter-val').textContent = _dungeonCounterTemp;
+  $('dungeon-counter-info').textContent = 'This week';
+}
+function stepDungeonCounter(dir) {
+  _dungeonCounterTemp = Math.max(0, _dungeonCounterTemp + dir);
+  updateDungeonCounterModal();
+}
+function saveDungeonCounter() {
+  if (!_dungeonMetricId) { closeDungeonCounter(); return; }
+  ensureWeeklyDungeon();
+  const metric = WEEKLY_METRICS.find(m => m[0] === _dungeonMetricId);
+  const xpPer = metric ? metric[2] : COUNTER_XP;
+  const prev = state.weeklyDungeon.counters[_dungeonMetricId] || 0;
+  const next = _dungeonCounterTemp;
+  state.weeklyDungeon.counters[_dungeonMetricId] = next;
+
+  // XP only for newly-added increments
+  const gained = (next > prev) ? Math.round((next - prev) * xpPer) : 0;
+  if (gained > 0) addXP(gained);
+
+  closeDungeonCounter();
+  renderDungeonBox();
+  updateHeader();
+  saveState();
+  if (gained > 0) showToast('+' + gained + ' XP');
 }
 
 // First goal (Second Awakening condition)
@@ -2165,18 +2535,10 @@ function switchDungeon(period) {
 }
 
 function renderDungeonView() {
-  if (!state.secondAwakeningComplete) {
-    $('dungeons-lock-screen').style.display = 'block';
-    $('dungeons-content').style.display = 'none';
-    return;
-  }
-  $('dungeons-lock-screen').style.display = 'none';
-  $('dungeons-content').style.display = 'block';
-  ensurePeriodKey(currentDungeonPeriod);
-  renderCountersGrid(currentDungeonPeriod);
-  renderSalesLog(currentDungeonPeriod);
-  updateBoss();
-  updateHuntSummary();
+  // Legacy period-dungeon panel was removed; the Weekly Dungeon now lives
+  // in the Quests tab (renderDungeonBox). This is a guarded no-op so any
+  // remaining calls from older code paths do nothing.
+  if (!$('dungeons-content')) return;
 }
 
 function updateBoss() {
@@ -2744,6 +3106,14 @@ setInterval(() => {
 window.switchPanel = switchPanel;
 window.toggleQuest = toggleQuest;
 window.openEditQuests = openEditQuests;
+window.openQuestCounter = openQuestCounter;
+window.closeQuestCounter = closeQuestCounter;
+window.stepQuestCounter = stepQuestCounter;
+window.saveQuestCounter = saveQuestCounter;
+window.openDungeonCounter = openDungeonCounter;
+window.closeDungeonCounter = closeDungeonCounter;
+window.stepDungeonCounter = stepDungeonCounter;
+window.saveDungeonCounter = saveDungeonCounter;
 window.closeEditQuests = closeEditQuests;
 window.saveEditedQuests = saveEditedQuests;
 window.openEditGoal = openEditGoal;
