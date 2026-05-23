@@ -1342,7 +1342,8 @@
 <!-- FIREBASE MODULE -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, doc, getDoc, setDoc, collection } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getMessaging, getToken, onMessage } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyBqGBnG9v1kdm-181xBCvNZeVe5B1wfFzc",
@@ -1352,6 +1353,9 @@
     messagingSenderId: "881172104244",
     appId: "1:881172104244:web:1010d48037fc807ef97661"
   };
+
+  // Web Push public (VAPID) key — safe to expose in client code.
+  const VAPID_KEY = "BDE48Cg_NVuBUxJtG-lCZsZMICw5enn_YmkmPz4feb-whlI92d8UrXF8gJfM-TFE_bRiISjGKFCWkG6ltO5Y5Zg";
 
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
@@ -1373,6 +1377,38 @@
   window._resetCloud = async () => {
     try { await setDoc(ref, { _wiped: Date.now() }); }
     catch(e) { console.warn('Reset failed:', e); }
+  };
+
+  // ── PUSH NOTIFICATIONS (FCM) ──────────────────────────
+  // Registers this device's push token in Firestore so the
+  // scheduled Cloud Function can send notifications to it.
+  window._registerPush = async () => {
+    try {
+      if (!('serviceWorker' in navigator)) return false;
+      if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return false;
+      const messaging = getMessaging(app);
+      // The FCM service worker must be registered at the site root.
+      const swReg = await navigator.serviceWorker.register('firebase-messaging-sw.js');
+      const token = await getToken(messaging, {
+        vapidKey: VAPID_KEY,
+        serviceWorkerRegistration: swReg
+      });
+      if (!token) return false;
+      // Store token (doc id = token so duplicates collapse).
+      const tokRef = doc(collection(ref, 'fcmTokens'), token.slice(0, 100));
+      await setDoc(tokRef, { token: token, updated: Date.now() });
+      // Foreground messages: show them while the app is open.
+      onMessage(messaging, (payload) => {
+        const n = payload && payload.notification;
+        if (n && window._showForegroundPush) {
+          window._showForegroundPush(n.title || 'The System', n.body || '');
+        }
+      });
+      return true;
+    } catch(e) {
+      console.warn('Push registration failed:', e);
+      return false;
+    }
   };
 
   window._firebaseReady = true;
@@ -3365,6 +3401,10 @@ function renderAll() {
   renderDungeonView();
   updateNotifUI();
   checkScheduledNotifications();
+  // If notifications are already enabled, refresh this device's push token.
+  if (notifSupported() && Notification.permission === 'granted' && window._registerPush) {
+    window._registerPush();
+  }
 }
 
 setInterval(() => {
@@ -3416,6 +3456,8 @@ function updateNotifUI() {
 function toggleNotifications() {
   if (!notifSupported()) return;
   if (Notification.permission === 'granted') {
+    // Already on — make sure this device is registered for push.
+    if (window._registerPush) window._registerPush();
     showToast('NOTIFICATIONS ALREADY ON');
     return;
   }
@@ -3426,10 +3468,16 @@ function toggleNotifications() {
   Notification.requestPermission().then(perm => {
     updateNotifUI();
     if (perm === 'granted') {
+      if (window._registerPush) window._registerPush();
       fireNotification('The System', 'Notifications enabled. The System will alert you.');
     }
   });
 }
+
+// Show a foreground push (app open) using the same window-style alert.
+window._showForegroundPush = function(title, body) {
+  try { fireNotification(title, body); } catch(e) {}
+};
 
 // Fire a notification — prefers the service worker so it survives backgrounding.
 function fireNotification(title, body) {
@@ -3540,7 +3588,7 @@ window.setupBack = setupBack;
 window.setupValidate = setupValidate;
 window.showStatPopup = showStatPopup;
 window.pressStart = pressStart;
-window.toggleNotifications = toggleNotifications;
+
 
 // Register the service worker (enables background notifications + offline cache)
 if ('serviceWorker' in navigator) {
