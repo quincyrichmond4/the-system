@@ -31,7 +31,10 @@
       --gold-dim:    rgba(200, 168, 75, 0.15);
       --danger:      #cc2233;
       --success:     #1a9a5a;
+      --green:       #1a9a5a;
+      --green-bright:#2ad98a;
       --purple:      #9b4dff;
+      --purple-label:#c89bff;
       --purple-glow: rgba(155, 77, 255, 0.3);
       /* Enemy tier accents */
       --tier-0:      #5a7090;
@@ -113,7 +116,7 @@
     .awakening-goal-card {
       background: var(--blue-dim);
       border: 1px solid var(--border2);
-      padding: 12px 14px;
+      padding: 14px;
       position: relative;
       overflow: hidden;
     }
@@ -126,14 +129,14 @@
     }
     .awakening-goal-label {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
+      font-size: 9px;
       color: var(--cyan);
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       margin-bottom: 6px;
     }
     .awakening-goal-text {
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 900;
       color: var(--text-bright);
       line-height: 1.5;
     }
@@ -146,7 +149,7 @@
     .quest-item.completed .quest-check { background: var(--success); border-color: var(--success); }
     .quest-check-inner { width: 10px; height: 10px; background: white; display: none; clip-path: polygon(20% 50%, 45% 75%, 80% 20%, 90% 30%, 45% 88%, 10% 60%); }
     .quest-item.completed .quest-check-inner { display: block; }
-    .quest-text { flex: 1; font-size: 13px; color: var(--text); line-height: 1.4; }
+    .quest-text { flex: 1; min-width: 0; font-size: 13px; color: var(--text); line-height: 1.4; word-break: break-word; }
     .quest-item.completed .quest-text { color: var(--text-dim); text-decoration: line-through; }
     .quest-xp { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
 
@@ -199,10 +202,10 @@
 
     /* ── WEEKLY DUNGEON BOX (Quests tab) ──────────────── */
     .dungeon-box {
-      background: var(--blue-dim);
-      border: 1px solid var(--border2);
-      padding: 12px 14px;
-      margin-bottom: 16px;
+      background: rgba(26,154,90,0.06);
+      border: 1px solid rgba(26,154,90,0.45);
+      padding: 14px;
+      margin-bottom: 12px;
       position: relative;
       overflow: hidden;
     }
@@ -211,7 +214,7 @@
       position: absolute;
       left: 0; top: 0;
       width: 3px; height: 100%;
-      background: var(--blue);
+      background: var(--green);
     }
     .dungeon-box-header {
       display: flex;
@@ -221,21 +224,21 @@
     }
     .dungeon-box-title {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--cyan);
+      font-size: 9px;
+      color: var(--green-bright);
       letter-spacing: 3px;
       font-weight: 700;
     }
     .dungeon-box-reset {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
+      font-size: 9px;
       color: var(--text-dim);
       letter-spacing: 1px;
     }
     .dungeon-box-sub {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-dim);
-      line-height: 1.4;
+      line-height: 1.5;
       margin-bottom: 10px;
       font-weight: 300;
     }
@@ -339,7 +342,7 @@
     }
     .day-pill.on { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); }
     .day-picker-hint { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 1px; margin-top: 5px; }
-    .quest-sched-tag { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--cyan); letter-spacing: 1px; margin-top: 3px; }
+    .quest-sched-tag { display: block; font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--cyan); letter-spacing: 1px; margin-top: 4px; }
 
     .dungeon-sales-log { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 10px 12px; margin-bottom: 14px; }
     .dungeon-sales-log-header { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 8px; display: flex; justify-content: space-between; }
@@ -462,6 +465,117 @@
       -webkit-tap-highlight-color: transparent;
     }
     .gate-banner-btn:active { background: rgba(200,168,75,0.25); }
+
+    /* ══ UNIFIED WINDOW SYSTEM ═════════════════════════════
+       Base structure + locked type scale shared by every
+       content block. Category modifiers change colour only.
+       Categories: (default) primary · .penalty · .dungeon
+       · .system · .awaken
+    ═══════════════════════════════════════════════════════ */
+    .win {
+      --win-accent: var(--blue);
+      --win-label:  var(--cyan);
+      --win-bg:     rgba(6,18,38,0.6);
+      --win-border: var(--border);
+      position: relative;
+      overflow: hidden;
+      background: var(--win-bg);
+      border: 1px solid var(--win-border);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .win::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--win-accent);
+    }
+    /* ── Category modifiers ── */
+    .win.penalty {
+      --win-accent: var(--danger);
+      --win-label:  var(--danger);
+      --win-bg:     rgba(204,34,51,0.05);
+      --win-border: rgba(204,34,51,0.5);
+    }
+    .win.dungeon {
+      --win-accent: var(--green);
+      --win-label:  var(--green-bright);
+      --win-bg:     rgba(26,154,90,0.06);
+      --win-border: rgba(26,154,90,0.45);
+    }
+    .win.system {
+      --win-accent: var(--cyan);
+      --win-label:  var(--cyan);
+      --win-bg:     var(--blue-dim);
+      --win-border: var(--border2);
+    }
+    .win.awaken {
+      --win-accent: var(--purple);
+      --win-label:  var(--purple-label);
+      --win-bg:     rgba(155,77,255,0.06);
+      --win-border: rgba(155,77,255,0.4);
+    }
+    /* ── Shared type scale (used inside any .win) ── */
+    .win-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--win-label);
+      margin-bottom: 6px;
+    }
+    .win-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--text-bright);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .win-body {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-bright);
+      font-weight: 300;
+    }
+    .win.penalty .win-body { color: #e06070; }
+    .win-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* ── Existing window classes inherit the unified scale ──
+       Structure/colour kept per category; type sizes locked. */
+    .sys-notification, .sys-warning, .sys-progress, .dungeon-box,
+    .awakening-goal-card, .mission-block, .gate-banner {
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    /* normalise titles */
+    .sys-notification-title, .sys-warning-title, .dungeon-box-title,
+    .gate-banner-label, .mission-label, .awakening-goal-label {
+      font-size: 9px !important;
+      letter-spacing: 3px !important;
+      font-family: 'Share Tech Mono', monospace !important;
+      margin-bottom: 6px !important;
+    }
+    /* normalise body text */
+    .sys-notification-body, .sys-warning-body, .dungeon-box-sub,
+    .gate-banner-sub {
+      font-size: 13px !important;
+      line-height: 1.5 !important;
+      font-weight: 300 !important;
+    }
+    /* normalise meta text */
+    .sys-progress-pct, .dungeon-box-reset, .gate-banner-meta,
+    .sys-progress-label {
+      font-size: 9px !important;
+      font-family: 'Share Tech Mono', monospace !important;
+    }
+    .mission-title { font-size: 15px !important; font-weight: 900 !important; }
+    .mission-sub   { font-size: 13px !important; line-height: 1.5 !important; }
 
     /* ── SYSTEM LOG FEED ──────────────────────────────── */
     .log-entry {
@@ -1030,67 +1144,6 @@
     </div>
   </div>
 
-      <div id="dungeons-content" style="display:none;">
-        <div class="dungeon-tabs">
-          <div class="dungeon-tab active" data-period="daily" onclick="switchDungeon('daily')">DAILY</div>
-          <div class="dungeon-tab" data-period="weekly" onclick="switchDungeon('weekly')">WEEKLY</div>
-          <div class="dungeon-tab" data-period="monthly" onclick="switchDungeon('monthly')">MONTHLY</div>
-        </div>
-
-        <div class="dungeon-boss">
-          <div class="dungeon-boss-label" id="boss-label">▶ DAILY BOSS</div>
-          <div class="dungeon-boss-title" id="boss-title">Boss Encounter</div>
-          <div class="dungeon-boss-sub" id="boss-sub">Defeat by hitting today's PV target.</div>
-          <div class="dungeon-boss-track"><div class="dungeon-boss-fill" id="boss-fill" style="width:0%"></div></div>
-          <div class="dungeon-boss-meta">
-            <span id="boss-progress">0 / 100 PV</span>
-            <span id="boss-time-left">—</span>
-          </div>
-        </div>
-
-        <div class="hunt-summary" id="hunt-summary">
-          <div>
-            <div style="color:var(--text-dim);font-size:8px;letter-spacing:2px;">ENEMIES SLAIN</div>
-            <div class="hunt-summary-kills" id="hunt-kills">0</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="color:var(--text-dim);font-size:8px;letter-spacing:2px;">STATUS</div>
-            <div class="hunt-summary-status" id="hunt-status">ON TRACK</div>
-          </div>
-        </div>
-
-        <div class="dungeon-action-row">
-          <button class="dungeon-action-btn" onclick="openLogSale()">⚔️ LOG SALE</button>
-          <button class="dungeon-action-btn ibo" onclick="openLaunchIBO()">🏛️ LAUNCH IBO</button>
-        </div>
-
-        <div class="counter-section">
-          <div class="counter-section-header">
-            <span>SALES ENEMIES</span>
-            <span class="counter-section-total" id="sales-counter-total">0 XP</span>
-          </div>
-          <div class="counter-grid" id="sales-counter-grid"></div>
-        </div>
-
-        <div class="counter-section">
-          <div class="counter-section-header">
-            <span>SPONSORING ENEMIES</span>
-            <span class="counter-section-total" id="sponsoring-counter-total">0 XP</span>
-          </div>
-          <div class="counter-grid" id="sponsoring-counter-grid"></div>
-        </div>
-
-        <div class="dungeon-sales-log">
-          <div class="dungeon-sales-log-header">
-            <span>SALES LOG</span>
-            <span id="sales-log-summary">— PV · — XP</span>
-          </div>
-          <div id="sales-log-entries"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- STATUS -->
   <div class="sys-panel" id="panel-status">
     <div class="panel-header">
@@ -1258,6 +1311,14 @@
       <div class="panel-header-title">Settings</div>
     </div>
     <div class="panel-body">
+      <div class="sys-section">Notifications</div>
+      <div style="background:rgba(6,18,38,0.6);border:1px solid var(--border);padding:14px;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">System Alerts</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.6;margin-bottom:12px;font-weight:300;">[Get notified when the Weekly Dungeon resets and when Daily Quests remain unfinished. Works while the app is open or running in the background.]</div>
+        <button onclick="toggleNotifications()" id="notif-toggle-btn" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--border2);padding:10px 16px;cursor:pointer;letter-spacing:2px;width:100%;-webkit-tap-highlight-color:transparent;">[ ENABLE NOTIFICATIONS ]</button>
+        <div id="notif-status" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-top:8px;text-align:center;"></div>
+      </div>
+
       <div class="sys-section">Account</div>
       <div style="background:rgba(6,18,38,0.6);border:1px solid var(--border);padding:14px;margin-bottom:10px;">
         <div style="font-size:13px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Factory Reset</div>
@@ -1297,15 +1358,15 @@
   const ref = doc(db, 'players', 'strive');
 
   window._saveToCloud = async (data) => {
-    try { await setDoc(ref, data, { merge: false }); }
-    catch(e) { console.warn('Save failed:', e); }
+    try { await setDoc(ref, data, { merge: false }); return true; }
+    catch(e) { console.warn('Cloud save failed:', e); return false; }
   };
 
   window._loadFromCloud = async () => {
     try {
       const snap = await getDoc(ref);
       if (snap.exists()) return snap.data();
-    } catch(e) { console.warn('Load failed:', e); }
+    } catch(e) { console.warn('Cloud load failed:', e); }
     return null;
   };
 
@@ -1395,9 +1456,18 @@ const COUNTER_XP = 5;
 const COUNTER_LEVEL_XP = Math.round(COUNTER_XP / 2);
 const IBO_LAUNCH_XP = 500;
 
-// Weekly Dungeon metrics — QI tracker for now. XP per increment.
+// Weekly Dungeon metrics — IPA tracker. [id, label, XP per increment]
 const WEEKLY_METRICS = [
-  ['qis', 'QIs', 25]
+  ['newCustSales',  'New Customer Sales',      25],
+  ['newProdSales',  'New Product Sales',       25],
+  ['recurCustSales','Recurring Customer Sales',20],
+  ['qis',           'QIs',                     25],
+  ['bizOverviews',  'Business Overviews',      20],
+  ['guests1',       '1st-Time Guests',         15],
+  ['guests2',       '2nd-Time Guests',         20],
+  ['roadmaps',      'Roadmap Overviews',       30],
+  ['finalReviews',  'Final Reviews',           35],
+  ['iboLaunches',   'IBO Launches',            50]
 ];
 
 // Bleed penalties (Duolingo with teeth — all or nothing)
@@ -1472,6 +1542,7 @@ const DEFAULT_STATE = {
   // Weekly Dungeon — simple metric counters, reset each week
   // { key: 'YYYY-MM-DD' (week start), counters: { metricId: count } }
   weeklyDungeon: { key: '', counters: {} },
+  notifSent: {},
 
   // Weekly chart
   weeklyXp: [0,0,0,0,0,0,0],
@@ -1573,8 +1644,18 @@ function isGated() {
 // PERSISTENCE
 // ============================================================
 function saveState() {
-  try { localStorage.setItem('sys_state', JSON.stringify(state)); } catch(e){}
-  if (window._saveToCloud) window._saveToCloud(state);
+  // Stamp every save so we can later tell which copy (local vs cloud) is newer.
+  state._savedAt = Date.now();
+  let json;
+  try { json = JSON.stringify(state); } catch(e) { json = null; }
+  // localStorage is the reliable source of truth — always write it first.
+  if (json) {
+    try { localStorage.setItem('sys_state', json); } catch(e){}
+  }
+  // Cloud is best-effort. A failure here must never lose local data.
+  if (window._saveToCloud && json) {
+    try { window._saveToCloud(JSON.parse(json)); } catch(e){}
+  }
 }
 
 function migrate(old) {
@@ -1690,6 +1771,7 @@ function migrate(old) {
   } else {
     out.weeklyDungeon = { key: '', counters: {} };
   }
+  out.notifSent = (old.notifSent && typeof old.notifSent === 'object') ? old.notifSent : {};
   out.dmpTitle = old.dmpTitle || '';
   out.dmpSub = old.dmpSub || '';
   out.log = Array.isArray(old.log) ? old.log.filter(e => e && e.text).map(e => ({
@@ -1703,23 +1785,38 @@ function migrate(old) {
 
 function loadState() {
   return new Promise((resolve) => {
+    // Read the local copy up front — it is the reliable baseline.
+    let localData = null;
+    try {
+      const raw = localStorage.getItem('sys_state');
+      if (raw) localData = JSON.parse(raw);
+    } catch(e) { localData = null; }
+
+    const finish = (chosen) => {
+      if (chosen) { try { state = migrate(chosen); } catch(e) {} }
+      resolve();
+    };
+
     const tryLoad = () => {
       if (window._loadFromCloud) {
-        window._loadFromCloud().then(data => {
-          if (data && !data._wiped) {
-            state = migrate(data);
-          } else {
-            const local = localStorage.getItem('sys_state');
-            if (local) { try { state = migrate(JSON.parse(local)); } catch(e) {} }
+        window._loadFromCloud().then(cloudData => {
+          if (cloudData && cloudData._wiped) {
+            // Account was reset from another device — honour it.
+            finish(localData && localData._wiped && localData._wiped >= cloudData._wiped ? localData : null);
+            return;
           }
-          resolve();
-        }).catch(() => resolve());
+          if (!cloudData) { finish(localData); return; }
+          if (!localData) { finish(cloudData); return; }
+          // Both exist — keep whichever was saved most recently.
+          const lt = +localData._savedAt || 0;
+          const ct = +cloudData._savedAt || 0;
+          finish(lt >= ct ? localData : cloudData);
+        }).catch(() => finish(localData));
       } else {
-        const local = localStorage.getItem('sys_state');
-        if (local) { try { state = migrate(JSON.parse(local)); } catch(e) {} }
-        resolve();
+        finish(localData);
       }
     };
+
     if (window._firebaseReady) tryLoad();
     else {
       let attempts = 0;
@@ -2010,6 +2107,7 @@ function switchPanel(name, btn) {
   if (name === 'status')   renderStatus();
   if (name === 'quests')   renderQuests();
   if (name === 'mission')  renderMission();
+  if (name === 'settings') updateNotifUI();
 }
 
 // ============================================================
@@ -2056,9 +2154,19 @@ function questActiveToday(q) {
   if (!q.days || !q.days.length) return true;
   return q.days.indexOf(dayOfWeekIndex()) !== -1;
 }
+const DAY_ABBR = ['Mo','Tu','We','Th','Fr','Sa','Su'];
 function questScheduleLabel(q) {
   if (!q.days || !q.days.length) return 'Every day';
   return q.days.slice().sort((a,b)=>a-b).map(d => DAY_NAMES[d]).join(', ');
+}
+// Compact form for the in-log tag — collapses common patterns.
+function questScheduleShort(q) {
+  if (!q.days || !q.days.length) return '';
+  const d = q.days.slice().sort((a,b)=>a-b);
+  if (d.length === 7) return 'Daily';
+  if (d.length === 5 && d.join() === '0,1,2,3,4') return 'Weekdays';
+  if (d.length === 2 && d.join() === '5,6') return 'Weekends';
+  return d.map(x => DAY_ABBR[x]).join(' ');
 }
 
 function renderQuests() {
@@ -2095,7 +2203,7 @@ function renderQuests() {
           </div>`;
       }
       const schedTag = (q.days && q.days.length)
-        ? `<div class="quest-sched-tag">${questScheduleLabel(q)}</div>` : '';
+        ? `<div class="quest-sched-tag">\u25B8 ${questScheduleShort(q)}</div>` : '';
       return `
         <div class="quest-item ${q.completed ? 'completed' : ''}">
           <div style="display:flex;align-items:flex-start;gap:12px;" onclick="toggleQuest(${i})">
@@ -2322,8 +2430,45 @@ function saveEditedQuests() {
 }
 
 // ── WEEKLY DUNGEON (QI tracker) ────────────────────────
+// Dungeon week resets every Tuesday at 8:00 PM US Eastern (auto-adjusts for DST).
+// Eastern's UTC offset for a given instant, in ms (EST = -5h, EDT = -4h).
+function easternOffsetMs(instant) {
+  // Read the same instant as wall-clock time in New York, compare to UTC.
+  const fmt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', hour12: false,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+  const p = {};
+  fmt.formatToParts(instant).forEach(x => { if (x.type !== 'literal') p[x.type] = x.value; });
+  let hh = p.hour === '24' ? '00' : p.hour;
+  const asUTC = Date.UTC(+p.year, +p.month - 1, +p.day, +hh, +p.minute, +p.second);
+  return asUTC - instant.getTime(); // positive-ish; for Eastern this is negative
+}
+
+// Most recent Tuesday 8PM Eastern as a real UTC timestamp.
+function dungeonResetBoundary(ref) {
+  const off = easternOffsetMs(ref);            // Eastern offset at the reference instant
+  const east = new Date(ref.getTime() + off);  // east's UTC fields = wall-clock Eastern
+  const day = east.getUTCDay();                // 0=Sun..6=Sat; Tuesday=2
+  // This week's Tuesday 20:00 Eastern wall-clock
+  const tue = new Date(Date.UTC(east.getUTCFullYear(), east.getUTCMonth(), east.getUTCDate(), 20, 0, 0));
+  tue.setUTCDate(tue.getUTCDate() + (2 - day));
+  // Convert that Eastern wall-clock back to a true UTC instant.
+  // Use the offset at the boundary itself so a DST switch in between is handled.
+  let boundary = tue.getTime() - off;
+  const offAtBoundary = easternOffsetMs(new Date(boundary));
+  if (offAtBoundary !== off) boundary = tue.getTime() - offAtBoundary;
+  if (boundary > ref.getTime()) boundary -= 7 * 86400000;
+  return boundary;
+}
+
+function dungeonWeekKey(ref = new Date()) {
+  return 'dw_' + dungeonResetBoundary(ref);
+}
+
 function ensureWeeklyDungeon() {
-  const wk = weekStartKey();
+  const wk = dungeonWeekKey();
   if (!state.weeklyDungeon) state.weeklyDungeon = { key: '', counters: {} };
   if (state.weeklyDungeon.key !== wk) {
     state.weeklyDungeon = { key: wk, counters: {} };
@@ -2331,16 +2476,16 @@ function ensureWeeklyDungeon() {
 }
 
 function weekResetText() {
-  // Days until next Monday 00:00
+  // Time until the next Tuesday 8PM EST
   const now = new Date();
-  const end = new Date(now);
-  const day = end.getDay() === 0 ? 7 : end.getDay();
-  end.setDate(end.getDate() + (7 - day));
-  end.setHours(0,0,0,0);
-  const ms = end - now;
+  const nextReset = dungeonResetBoundary(now) + 7 * 86400000;
+  const ms = nextReset - now.getTime();
+  if (ms <= 0) return 'Resets soon';
   const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
   if (h >= 24) { const d = Math.floor(h / 24); return 'Resets in ' + d + 'd ' + (h % 24) + 'h'; }
-  return 'Resets in ' + h + 'h';
+  if (h >= 1) return 'Resets in ' + h + 'h ' + m + 'm';
+  return 'Resets in ' + m + 'm';
 }
 
 function renderDungeonBox() {
@@ -3218,17 +3363,129 @@ function renderAll() {
   renderStatus();
   renderMission();
   renderDungeonView();
+  updateNotifUI();
+  checkScheduledNotifications();
 }
 
 setInterval(() => {
   updateDatebar();
   if (currentDungeonPeriod) updateBoss();
+  checkScheduledNotifications();
 }, 60000);
+
+// ============================================================
+// NOTIFICATIONS (local — fire while app is open or backgrounded)
+// ============================================================
+function notifSupported() {
+  return ('Notification' in window);
+}
+
+function updateNotifUI() {
+  const btn = $('notif-toggle-btn');
+  const status = $('notif-status');
+  if (!btn || !status) return;
+  if (!notifSupported()) {
+    btn.textContent = '[ NOT SUPPORTED ]';
+    btn.disabled = true;
+    btn.style.opacity = '0.4';
+    status.textContent = 'This device does not support notifications.';
+    return;
+  }
+  const perm = Notification.permission;
+  if (perm === 'granted') {
+    btn.textContent = '[ NOTIFICATIONS ON ]';
+    btn.style.color = 'var(--success)';
+    btn.style.borderColor = 'var(--success)';
+    btn.style.background = 'rgba(26,154,90,0.12)';
+    status.textContent = 'Active — alerts for dungeon reset & unfinished quests.';
+  } else if (perm === 'denied') {
+    btn.textContent = '[ BLOCKED IN BROWSER ]';
+    btn.style.color = 'var(--danger)';
+    btn.style.borderColor = 'rgba(204,34,51,0.4)';
+    btn.style.background = 'rgba(204,34,51,0.08)';
+    status.textContent = 'Blocked. Enable notifications for this site in browser settings.';
+  } else {
+    btn.textContent = '[ ENABLE NOTIFICATIONS ]';
+    btn.style.color = 'var(--cyan)';
+    btn.style.borderColor = 'var(--border2)';
+    btn.style.background = 'var(--cyan-dim)';
+    status.textContent = '';
+  }
+}
+
+function toggleNotifications() {
+  if (!notifSupported()) return;
+  if (Notification.permission === 'granted') {
+    showToast('NOTIFICATIONS ALREADY ON');
+    return;
+  }
+  if (Notification.permission === 'denied') {
+    showToast('UNBLOCK IN BROWSER SETTINGS');
+    return;
+  }
+  Notification.requestPermission().then(perm => {
+    updateNotifUI();
+    if (perm === 'granted') {
+      fireNotification('The System', 'Notifications enabled. The System will alert you.');
+    }
+  });
+}
+
+// Fire a notification — prefers the service worker so it survives backgrounding.
+function fireNotification(title, body) {
+  if (!notifSupported() || Notification.permission !== 'granted') return;
+  const opts = { body: body, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'the-system', renotify: true };
+  // Prefer the service worker registration (survives backgrounding); fall back fast.
+  if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg && reg.showNotification) {
+        reg.showNotification(title, opts);
+      } else {
+        try { new Notification(title, opts); } catch(e) {}
+      }
+    }).catch(() => { try { new Notification(title, opts); } catch(e) {} });
+  } else {
+    try { new Notification(title, opts); } catch(e) {}
+  }
+}
+
+// Checks run each minute: dungeon reset + evening quest reminder.
+function checkScheduledNotifications() {
+  if (!notifSupported() || Notification.permission !== 'granted') return;
+  if (!state.notifSent) state.notifSent = {};
+  const now = new Date();
+
+  // 1. Dungeon reset — fire within the first few minutes after the boundary.
+  const boundary = dungeonResetBoundary(now);
+  const sinceReset = now.getTime() - boundary;
+  const resetTag = 'reset_' + boundary;
+  if (sinceReset >= 0 && sinceReset < 6 * 60000 && state.notifSent.lastReset !== resetTag) {
+    state.notifSent.lastReset = resetTag;
+    fireNotification('Weekly Dungeon Reset', 'A new hunt begins. Your IPA counters are cleared — go earn XP.');
+    saveState();
+  }
+
+  // 2. Evening quest reminder — 8:00–8:09 PM local, if quests remain unfinished.
+  if (now.getHours() === 20 && now.getMinutes() < 10) {
+    const tag = 'quests_' + todayKey();
+    if (state.notifSent.lastQuestNudge !== tag) {
+      const todays = (state.dailyQuests || []).filter(questActiveToday);
+      const undone = todays.filter(q => !q.completed).length;
+      if (undone > 0) {
+        state.notifSent.lastQuestNudge = tag;
+        fireNotification('Daily Quest Incomplete',
+          undone + ' quest' + (undone === 1 ? '' : 's') + ' still unfinished. Failure carries a penalty.');
+        saveState();
+      }
+    }
+  }
+}
 
 // ============================================================
 // EXPOSE FOR INLINE HANDLERS
 // ============================================================
 window.switchPanel = switchPanel;
+window.toggleNotifications = toggleNotifications;
 window.toggleQuest = toggleQuest;
 window.openEditQuests = openEditQuests;
 window.toggleEditDay = toggleEditDay;
@@ -3283,6 +3540,14 @@ window.setupBack = setupBack;
 window.setupValidate = setupValidate;
 window.showStatPopup = showStatPopup;
 window.pressStart = pressStart;
+window.toggleNotifications = toggleNotifications;
+
+// Register the service worker (enables background notifications + offline cache)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
 
 </script>
 
