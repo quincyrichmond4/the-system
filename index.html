@@ -147,6 +147,10 @@
     .quest-item.completed::before { background: var(--success); }
     .quest-check { width: 18px; height: 18px; border: 1px solid var(--border2); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
     .quest-item.completed .quest-check { background: var(--success); border-color: var(--success); }
+    /* Tracked quests: checkbox is display-only, completed via the tracker */
+    .quest-check.locked { border-style: dashed; opacity: 0.55; }
+    .quest-item.completed .quest-check.locked { opacity: 1; border-style: solid; }
+    .quest-item.tracked > div:first-child { cursor: default; }
     .quest-check-inner { width: 10px; height: 10px; background: white; display: none; clip-path: polygon(20% 50%, 45% 75%, 80% 20%, 90% 30%, 45% 88%, 10% 60%); }
     .quest-item.completed .quest-check-inner { display: block; }
     .quest-text { flex: 1; min-width: 0; font-size: 13px; color: var(--text); line-height: 1.4; word-break: break-word; }
@@ -1319,6 +1323,12 @@
         <div id="notif-status" style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-top:8px;text-align:center;"></div>
       </div>
 
+      <div style="background:rgba(6,18,38,0.6);border:1px solid var(--border);padding:14px;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Interface Sounds</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.6;margin-bottom:12px;font-weight:300;">[System sounds for navigation, level-ups, and app open.]</div>
+        <button onclick="toggleSound()" id="sound-toggle-btn" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--border2);padding:10px 16px;cursor:pointer;letter-spacing:2px;width:100%;-webkit-tap-highlight-color:transparent;">[ SOUND ON ]</button>
+      </div>
+
       <div class="sys-section">Account</div>
       <div style="background:rgba(6,18,38,0.6);border:1px solid var(--border);padding:14px;margin-bottom:10px;">
         <div style="font-size:13px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Factory Reset</div>
@@ -1579,6 +1589,7 @@ const DEFAULT_STATE = {
   // { key: 'YYYY-MM-DD' (week start), counters: { metricId: count } }
   weeklyDungeon: { key: '', counters: {} },
   notifSent: {},
+  soundEnabled: true,
 
   // Weekly chart
   weeklyXp: [0,0,0,0,0,0,0],
@@ -1808,6 +1819,7 @@ function migrate(old) {
     out.weeklyDungeon = { key: '', counters: {} };
   }
   out.notifSent = (old.notifSent && typeof old.notifSent === 'object') ? old.notifSent : {};
+  out.soundEnabled = (old.soundEnabled === false) ? false : true;
   out.dmpTitle = old.dmpTitle || '';
   out.dmpSub = old.dmpSub || '';
   out.log = Array.isArray(old.log) ? old.log.filter(e => e && e.text).map(e => ({
@@ -1908,6 +1920,7 @@ function addXP(amount) {
     }
 
     systemLog('Reached Level ' + state.level + '.');
+    playSound('levelup');
     showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
     needed = xpForNextLevel(state.level);
   }
@@ -2135,6 +2148,7 @@ function submitPinUp() {
 // PANEL SWITCHING
 // ============================================================
 function switchPanel(name, btn) {
+  playSound('counter');
   document.querySelectorAll('.sys-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sys-nav-btn').forEach(b => b.classList.remove('active'));
   const panel = $('panel-' + name);
@@ -2143,7 +2157,7 @@ function switchPanel(name, btn) {
   if (name === 'status')   renderStatus();
   if (name === 'quests')   renderQuests();
   if (name === 'mission')  renderMission();
-  if (name === 'settings') updateNotifUI();
+  if (name === 'settings') { updateNotifUI(); updateSoundUI(); }
 }
 
 // ============================================================
@@ -2240,10 +2254,14 @@ function renderQuests() {
       }
       const schedTag = (q.days && q.days.length)
         ? `<div class="quest-sched-tag">\u25B8 ${questScheduleShort(q)}</div>` : '';
+      const tracked = questHasCounter(q);
+      // Tracked quests: checkbox is locked — completion happens via the tracker only.
+      const rowClick = tracked ? '' : `onclick="toggleQuest(${i})"`;
+      const checkCls = tracked ? 'quest-check locked' : 'quest-check';
       return `
-        <div class="quest-item ${q.completed ? 'completed' : ''}">
-          <div style="display:flex;align-items:flex-start;gap:12px;" onclick="toggleQuest(${i})">
-            <div class="quest-check"><div class="quest-check-inner"></div></div>
+        <div class="quest-item ${q.completed ? 'completed' : ''} ${tracked ? 'tracked' : ''}">
+          <div style="display:flex;align-items:flex-start;gap:12px;" ${rowClick}>
+            <div class="${checkCls}"><div class="quest-check-inner"></div></div>
             <div class="quest-text">${escapeHtml(q.text)}${schedTag}</div>
             <div class="quest-xp">+${getQuestXP()} XP</div>
           </div>
@@ -2277,6 +2295,8 @@ function renderQuests() {
 function toggleQuest(i) {
   if (i < 0 || i >= state.dailyQuests.length) return;
   const q = state.dailyQuests[i];
+  // Tracked quests can only be completed through the tracker, never the checkbox.
+  if (questHasCounter(q)) { showToast('USE THE TRACKER FOR THIS QUEST'); return; }
   const today = todayKey();
 
   if (!q.completed) {
@@ -3347,6 +3367,11 @@ async function pressStart() {
   const splash = $('splash');
   const black  = $('black-overlay');
 
+  // First user gesture — unlock audio playback, then play the open sound.
+  _initSounds();
+  unlockSounds();
+  playSound('menupop');
+
   // Raise the black curtain immediately so nothing leaks through during load
   if (black) black.classList.add('show');
 
@@ -3400,6 +3425,7 @@ function renderAll() {
   renderMission();
   renderDungeonView();
   updateNotifUI();
+  updateSoundUI();
   checkScheduledNotifications();
   // If notifications are already enabled, refresh this device's push token.
   if (notifSupported() && Notification.permission === 'granted' && window._registerPush) {
@@ -3412,6 +3438,78 @@ setInterval(() => {
   if (currentDungeonPeriod) updateBoss();
   checkScheduledNotifications();
 }, 60000);
+
+// ============================================================
+// SOUND SYSTEM — short UI sounds played from files in the repo
+// ============================================================
+const SOUNDS = {
+  levelup: 'snd-levelup.mp3',
+  counter: 'snd-counter.mp3',
+  menupop: 'snd-menupop.mp3'
+};
+const _audioCache = {};
+let _soundUnlocked = false;
+
+// Preload the audio elements once.
+function _initSounds() {
+  for (const key in SOUNDS) {
+    try {
+      const a = new Audio(SOUNDS[key]);
+      a.preload = 'auto';
+      a.volume = 0.6;
+      _audioCache[key] = a;
+    } catch(e) {}
+  }
+}
+
+// Mobile browsers block audio until the first user gesture.
+// Call this from the first tap (Press Start) to unlock playback.
+function unlockSounds() {
+  if (_soundUnlocked) return;
+  _soundUnlocked = true;
+  for (const key in _audioCache) {
+    const a = _audioCache[key];
+    try {
+      a.muted = true;
+      a.play().then(() => { a.pause(); a.currentTime = 0; a.muted = false; })
+              .catch(() => { a.muted = false; });
+    } catch(e) {}
+  }
+}
+
+function playSound(name) {
+  if (state && state.soundEnabled === false) return;
+  const a = _audioCache[name];
+  if (!a) return;
+  try {
+    a.currentTime = 0;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => {});
+  } catch(e) {}
+}
+
+function toggleSound() {
+  state.soundEnabled = !state.soundEnabled;
+  updateSoundUI();
+  if (state.soundEnabled) playSound('counter');
+  saveState();
+}
+
+function updateSoundUI() {
+  const btn = $('sound-toggle-btn');
+  if (!btn) return;
+  if (state.soundEnabled === false) {
+    btn.textContent = '[ SOUND OFF ]';
+    btn.style.color = 'var(--text-dim)';
+    btn.style.borderColor = 'var(--border)';
+    btn.style.background = 'transparent';
+  } else {
+    btn.textContent = '[ SOUND ON ]';
+    btn.style.color = 'var(--cyan)';
+    btn.style.borderColor = 'var(--border2)';
+    btn.style.background = 'var(--cyan-dim)';
+  }
+}
 
 // ============================================================
 // NOTIFICATIONS (local — fire while app is open or backgrounded)
@@ -3534,6 +3632,7 @@ function checkScheduledNotifications() {
 // ============================================================
 window.switchPanel = switchPanel;
 window.toggleNotifications = toggleNotifications;
+window.toggleSound = toggleSound;
 window.toggleQuest = toggleQuest;
 window.openEditQuests = openEditQuests;
 window.toggleEditDay = toggleEditDay;
