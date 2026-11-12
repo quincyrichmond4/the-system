@@ -113,33 +113,6 @@
     .quest-section-icon { font-size: 14px; }
     .quest-section-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 3px; }
 
-    .awakening-goal-card {
-      background: var(--blue-dim);
-      border: 1px solid var(--border2);
-      padding: 14px;
-      position: relative;
-      overflow: hidden;
-    }
-    .awakening-goal-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0;
-      width: 3px; height: 100%;
-      background: var(--blue);
-    }
-    .awakening-goal-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      color: var(--cyan);
-      letter-spacing: 3px;
-      margin-bottom: 6px;
-    }
-    .awakening-goal-text {
-      font-size: 15px;
-      font-weight: 900;
-      color: var(--text-bright);
-      line-height: 1.5;
-    }
     .quest-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; margin-bottom: 3px; background: rgba(6,18,38,0.6); border: 1px solid rgba(30,111,255,0.12); cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; user-select: none; }
     .quest-item::before { content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 100%; background: var(--border2); transition: background 0.2s; }
     .quest-item:active { background: rgba(30,111,255,0.06); }
@@ -553,13 +526,13 @@
     /* ── Existing window classes inherit the unified scale ──
        Structure/colour kept per category; type sizes locked. */
     .sys-notification, .sys-warning, .sys-progress, .dungeon-box,
-    .awakening-goal-card, .mission-block, .gate-banner {
+    .mission-block, .gate-banner {
       padding: 14px;
       margin-bottom: 12px;
     }
     /* normalise titles */
     .sys-notification-title, .sys-warning-title, .dungeon-box-title,
-    .gate-banner-label, .mission-label, .awakening-goal-label {
+    .gate-banner-label, .mission-label {
       font-size: 9px !important;
       letter-spacing: 3px !important;
       font-family: 'Share Tech Mono', monospace !important;
@@ -918,22 +891,6 @@
   </div>
 </div>
 
-<!-- EDIT FIRST GOAL MODAL -->
-<div id="edit-goal-overlay" class="modal-overlay">
-  <div class="modal-window">
-    <div class="modal-header">
-      <div class="modal-label">[ EDIT FIRST GOAL ]</div>
-      <button onclick="closeEditGoal()" class="modal-close-btn">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-info">[This is the goal that unlocks your Second Awakening. Achieve it, then mark it complete.]</div>
-      <div class="modal-field-label">FIRST GOAL</div>
-      <input class="modal-input" id="edit-goal-input" type="text" maxlength="80" placeholder="e.g. Reach my first PV target"/>
-      <button onclick="saveEditedGoal()" class="modal-submit-btn">[ SAVE GOAL ]</button>
-    </div>
-  </div>
-</div>
-
 <!-- EDIT DEFINITE MAJOR PURPOSE MODAL -->
 <div id="edit-dmp-overlay" class="modal-overlay">
   <div class="modal-window">
@@ -1059,28 +1016,6 @@
   </div>
 </div>
 
-<!-- LAUNCH IBO MODAL -->
-<div id="launch-ibo-overlay" class="modal-overlay">
-  <div class="modal-window" style="max-width:320px;">
-    <div class="modal-header">
-      <div class="modal-label" style="color:var(--gold);">[ LAUNCH IBO ]</div>
-      <button onclick="closeLaunchIBO()" class="modal-close-btn">✕</button>
-    </div>
-    <div class="modal-body" style="text-align:center;">
-      <div style="font-size:28px;margin-bottom:10px;">⚔️</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-bright);letter-spacing:1px;margin-bottom:8px;line-height:1.6;">[New IBO launched?]</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:14px;line-height:1.6;">A new soldier joins the army.</div>
-      <div class="modal-tier-display" style="margin-bottom:16px;">
-        Reward: <span style="color:var(--text-bright);">+500 Sponsoring XP</span>
-      </div>
-      <div style="display:flex;gap:10px;justify-content:center;">
-        <button onclick="submitIBOLaunch()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#000;background:var(--gold);border:none;padding:10px 28px;cursor:pointer;letter-spacing:2px;">CONFIRM</button>
-        <button onclick="closeLaunchIBO()" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:10px 28px;cursor:pointer;letter-spacing:2px;">CANCEL</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- RANK CONFIRM MODAL (PIN VERIFICATION) -->
 <div id="rank-confirm-overlay" class="modal-overlay">
   <div class="modal-window" style="max-width:340px;">
@@ -1114,25 +1049,16 @@
 
     <!-- SCREEN 1: NAME -->
     <div class="setup-screen active" id="setup-s1">
-      <div class="setup-sys-message">&#9654; QUERY 1 OF 3</div>
+      <div class="setup-sys-message">&#9654; QUERY 1 OF 2</div>
       <div class="setup-title">State your name.</div>
       <div class="setup-desc">The name by which the System will address you. This is permanent and cannot be changed.</div>
       <div class="setup-field-label">PLAYER NAME</div>
       <input class="setup-input" id="setup-name" type="text" placeholder="Enter your name" maxlength="30" oninput="setupValidate()"/>
     </div>
 
-    <!-- SCREEN 2: FIRST GOAL (Second Awakening condition) -->
+    <!-- SCREEN 2: DAILY QUESTS -->
     <div class="setup-screen" id="setup-s2">
-      <div class="setup-sys-message">&#9654; QUERY 2 OF 3</div>
-      <div class="setup-title">Name your first goal.</div>
-      <div class="setup-desc">The goal that will unlock your Second Awakening. Achieve it, and the System recognizes your awakening &mdash; Stats, Dungeons, Items and Skills unlock. Choose something real. It can be edited later.</div>
-      <div class="setup-field-label">FIRST GOAL</div>
-      <input class="setup-input" id="setup-goal" type="text" placeholder="e.g. Reach my first PV target" maxlength="80" oninput="setupValidate()"/>
-    </div>
-
-    <!-- SCREEN 3: DAILY QUESTS -->
-    <div class="setup-screen" id="setup-s3">
-      <div class="setup-sys-message">&#9654; QUERY 3 OF 3</div>
+      <div class="setup-sys-message">&#9654; QUERY 2 OF 2</div>
       <div class="setup-title">Define your Daily Quests.</div>
       <div class="setup-desc">Up to 5 starting quests. At least 1 is required. Toggle days to schedule a quest &mdash; leave all days off and it runs every day. More can be added later.</div>
       <div id="setup-quest-fields"></div>
@@ -1205,23 +1131,6 @@
           <button onclick="openEditQuests()" style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">✎ EDIT</button>
         </div>
         <div id="quest-list"></div>
-      </div>
-
-      <!-- FIRST GOAL -->
-      <div class="quest-section" id="awakening-goal-section">
-        <div class="quest-section-header">
-          <div class="quest-section-icon">⚡</div>
-          <div class="quest-section-title">First Goal</div>
-          <button onclick="openEditGoal()" style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">✎ EDIT</button>
-        </div>
-        <div class="awakening-goal-card" id="awakening-goal-card">
-          <div class="awakening-goal-label">▶ CURRENT GOAL</div>
-          <div class="awakening-goal-text" id="quest-awakening-goal">—</div>
-          <div id="awakening-goal-action">
-            <button onclick="promptSecondAwakening()" id="mark-awakening-btn" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:9px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;width:100%;margin-top:10px;">[ MARK AS ACHIEVED ]</button>
-          </div>
-          <div id="awakening-goal-done" style="display:none;margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;text-align:center;">✓ GOAL COMPLETE</div>
-        </div>
       </div>
 
       <div class="sys-warning">
@@ -1300,12 +1209,6 @@
 
       <div class="sys-section">Milestones</div>
 
-      <div class="milestone" id="milestone-second">
-        <div class="milestone-name">First Goal</div>
-        <div class="milestone-sub" id="awakening-goal-text">&mdash;</div>
-        <div class="milestone-effect">Set your first goal in the Quests tab. Mark it complete when achieved.</div>
-      </div>
-
       <div class="milestone" id="milestone-dqm">
         <div class="milestone-name">Daily Quest Mastery</div>
         <div class="milestone-sub">Complete 7 consecutive daily quests</div>
@@ -1367,7 +1270,7 @@
         <div style="font-size:48px;margin-bottom:16px;">🔒</div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
         <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Items and Skills are locked for beginner-level Players. Achieve your first goal to trigger the Second Awakening.</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">Items and Skills unlock as you climb. Keep closing.</div>
       </div>
       <div id="inventory-content" style="display:none">
         <div class="sys-section">Items</div>
@@ -1625,7 +1528,6 @@ const DEFAULT_STATE = {
   setupComplete: false,
   playerName: '',
   profession: '',
-  awakeningGoal: '',
   workCycle: '',
   dailyQuests: [],
 
@@ -1785,7 +1687,6 @@ function migrate(old) {
   if (old.playerName)         out.playerName = old.playerName;
   if (old.profession)         out.profession = old.profession;
   if (old.job && !old.profession) out.profession = old.job;
-  if (old.awakeningGoal)      out.awakeningGoal = old.awakeningGoal;
   if (old.workCycle)          out.workCycle = old.workCycle;
 
   if (Array.isArray(old.dailyQuests)) {
@@ -2124,13 +2025,6 @@ function renderQuests() {
   const pct = total ? (done / total * 100) : 0;
   $('quest-bar').style.width = pct + '%';
   $('quest-pct').textContent = Math.round(pct) + '%';
-
-  // First Goal section
-  if ($('quest-awakening-goal')) {
-    $('quest-awakening-goal').textContent = state.awakeningGoal || 'No goal set. Tap EDIT to define one.';
-  }
-  if ($('awakening-goal-action')) $('awakening-goal-action').style.display = 'block';
-  if ($('awakening-goal-done'))   $('awakening-goal-done').style.display = 'none';
 
   renderDungeonBox();
 }
@@ -2588,23 +2482,6 @@ function updateDungeonCounterModal() {}
 function stepDungeonCounter() {}
 function saveDungeonCounter() { closeLogSale(); }
 
-// First goal (Second Awakening condition)
-function openEditGoal() {
-  if ($('edit-goal-input')) $('edit-goal-input').value = state.awakeningGoal || '';
-  $('edit-goal-overlay').classList.add('show');
-  setTimeout(() => { if ($('edit-goal-input')) $('edit-goal-input').focus(); }, 100);
-}
-function closeEditGoal() { $('edit-goal-overlay').classList.remove('show'); }
-function saveEditedGoal() {
-  const v = $('edit-goal-input') ? $('edit-goal-input').value.trim() : '';
-  if (!v) { showToast('ENTER A GOAL'); return; }
-  state.awakeningGoal = v;
-  closeEditGoal();
-  renderQuests();
-  renderMission();
-  saveState();
-}
-
 // Definite Major Purpose
 function openEditDMP() {
   if ($('edit-dmp-title')) $('edit-dmp-title').value = state.dmpTitle || '';
@@ -2698,234 +2575,20 @@ function deleteLogEntry(id) {
 }
 
 // ============================================================
-// DUNGEONS
+// DUNGEONS — legacy stubs (replaced by Sales Logger in Quests tab)
 // ============================================================
-let currentDungeonPeriod = 'daily';
-
-function renderCountersGrid(period) {
-  const d = state.dungeons[period];
-  const salesGrid = $('sales-counter-grid');
-  const sponsGrid = $('sponsoring-counter-grid');
-  if (!salesGrid || !sponsGrid) return;
-
-  salesGrid.innerHTML = SALES_COUNTERS.map(([k, label]) => `
-    <div class="counter-card">
-      <div class="counter-label">${label}</div>
-      <div class="counter-controls">
-        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',-1)">−</button>
-        <div class="counter-val" id="cnt-${period}-${k}">${d.counters[k] || 0}</div>
-        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',1)">+</button>
-      </div>
-    </div>`).join('');
-
-  sponsGrid.innerHTML = SPONSORING_COUNTERS.map(([k, label]) => `
-    <div class="counter-card">
-      <div class="counter-label">${label}</div>
-      <div class="counter-controls">
-        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',-1)">−</button>
-        <div class="counter-val" id="cnt-${period}-${k}">${d.counters[k] || 0}</div>
-        <button class="counter-btn" onclick="adjustCounter('${period}','${k}',1)">+</button>
-      </div>
-    </div>`).join('');
-
-  updateCounterTotals(period);
-}
-
-function totalKillsForPeriod(period) {
-  const d = state.dungeons[period];
-  let total = 0;
-  [...SALES_COUNTERS, ...SPONSORING_COUNTERS].forEach(([k]) => total += (d.counters[k] || 0));
-  return total;
-}
-
-function updateCounterTotals(period) {
-  const d = state.dungeons[period];
-  let salesTotal = 0, sponsTotal = 0;
-  SALES_COUNTERS.forEach(([k]) => salesTotal += (d.counters[k] || 0) * COUNTER_XP);
-  SPONSORING_COUNTERS.forEach(([k]) => sponsTotal += (d.counters[k] || 0) * COUNTER_XP);
-  salesTotal += d.salesXP || 0;
-  sponsTotal += (d.sponsXP || 0) + (d.ibos || 0) * IBO_LAUNCH_XP;
-  if ($('sales-counter-total')) $('sales-counter-total').textContent = salesTotal + ' XP';
-  if ($('sponsoring-counter-total')) $('sponsoring-counter-total').textContent = sponsTotal + ' XP';
-}
-
-function updateHuntSummary() {
-  const kills = totalKillsForPeriod(currentDungeonPeriod);
-  const el = $('hunt-kills');
-  if (el) el.textContent = kills;
-  const status = $('hunt-status');
-  if (!status) return;
-  const d = state.dungeons[currentDungeonPeriod];
-  const t = targetsForPin(state.pinIndex);
-  const target = (currentDungeonPeriod === 'daily') ? t.daily : (currentDungeonPeriod === 'weekly') ? t.weekly : t.monthly;
-  if (d.totalPV >= target) {
-    status.textContent = 'BOSS DOWN';
-    status.classList.remove('warning');
-  } else if (d.totalPV >= target * 0.5) {
-    status.textContent = 'ON TRACK';
-    status.classList.remove('warning');
-  } else {
-    status.textContent = 'BEHIND';
-    status.classList.add('warning');
-  }
-}
-
-function adjustCounter(period, key, delta) {
-  const d = state.dungeons[period];
-  if (!d) return;
-  const prev = d.counters[key] || 0;
-  const next = Math.max(0, prev + delta);
-  d.counters[key] = next;
-  const change = next - prev;
-  if (change > 0) {
-    const isSales = SALES_COUNTERS.some(([k]) => k === key);
-    if (isSales) state.stats.sales += COUNTER_XP * change;
-    else state.stats.sponsoring += COUNTER_XP * change;
-    addXP(COUNTER_LEVEL_XP * change);
-  } else if (change < 0) {
-    const isSales = SALES_COUNTERS.some(([k]) => k === key);
-    if (isSales) state.stats.sales = Math.max(0, state.stats.sales + COUNTER_XP * change);
-    else state.stats.sponsoring = Math.max(0, state.stats.sponsoring + COUNTER_XP * change);
-  }
-  const el = $('cnt-' + period + '-' + key);
-  if (el) el.textContent = next;
-  updateCounterTotals(period);
-  updateHuntSummary();
-  updateBoss();
-  updateHeader();
-  saveState();
-}
-
-function switchDungeon(period) {
-  currentDungeonPeriod = period;
-  document.querySelectorAll('.dungeon-tab').forEach(t => t.classList.toggle('active', t.dataset.period === period));
-  renderDungeonView();
-}
-
-function renderDungeonView() {
-  // Legacy period-dungeon panel was removed; the Weekly Dungeon now lives
-  // in the Quests tab (renderDungeonBox). This is a guarded no-op so any
-  // remaining calls from older code paths do nothing.
-  if (!$('dungeons-content')) return;
-}
-
-function updateBoss() {
-  const p = currentDungeonPeriod;
-  const d = state.dungeons[p];
-  if (!d) return;
-  const tgt = bossTarget(p);
-  if ($('boss-label')) $('boss-label').textContent = '▶ ' + p.toUpperCase() + ' BOSS';
-  if ($('boss-title')) $('boss-title').textContent = tgt.name;
-  if ($('boss-sub'))   $('boss-sub').textContent = tgt.sub;
-  if ($('boss-fill'))  $('boss-fill').style.width = clamp(d.totalPV / tgt.pv * 100, 0, 100) + '%';
-  if ($('boss-progress')) $('boss-progress').textContent = d.totalPV + ' / ' + tgt.pv + ' PV';
-  if ($('boss-time-left')) $('boss-time-left').textContent = tgt.timeLeft;
-}
-
-function bossTarget(period) {
-  const t = targetsForPin(state.pinIndex);
-  const now = new Date();
-  if (period === 'daily') {
-    const end = new Date(now); end.setHours(24,0,0,0);
-    return { name: 'Daily PV Target', sub:'Hit today\u2019s sales mark.', pv: t.daily, timeLeft: fmtTimeLeft(end - now) };
-  }
-  if (period === 'weekly') {
-    const end = new Date(now);
-    const day = end.getDay() === 0 ? 7 : end.getDay();
-    end.setDate(end.getDate() + (7 - day));
-    end.setHours(24,0,0,0);
-    return { name: 'Weekly PV Target', sub:'Hit the week\u2019s sales mark.', pv: t.weekly, timeLeft: fmtTimeLeft(end - now) };
-  }
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-  return { name: 'Monthly Group PV', sub:'Defeat by reaching the monthly target.', pv: t.monthly, timeLeft: fmtTimeLeft(end - now) };
-}
-
-function fmtTimeLeft(ms) {
-  if (ms <= 0) return 'RESET';
-  const h = Math.floor(ms / 3600000);
-  const m = Math.floor((ms % 3600000) / 60000);
-  if (h >= 24) {
-    const d = Math.floor(h / 24);
-    return d + 'd ' + (h % 24) + 'h';
-  }
-  return h + 'h ' + m + 'm';
-}
-
-function openLogSale() {
-  $('sale-pv-input').value = '';
-  updateSalePreview();
-  $('log-sale-overlay').classList.add('show');
-  setTimeout(() => $('sale-pv-input').focus(), 100);
-}
-function closeLogSale() { $('log-sale-overlay').classList.remove('show'); }
-function saleTierOf(pv) { return pv < 50 ? 1 : pv < 100 ? 2 : 3; }
-function saleXP(pv) { return pv * saleTierOf(pv); }
-function updateSalePreview() {
-  const pv = +$('sale-pv-input').value || 0;
-  if (pv <= 0) { $('sale-tier-display').innerHTML = 'Tier: —<br>XP: —'; return; }
-  const tier = saleTierOf(pv);
-  const xp = saleXP(pv);
-  $('sale-tier-display').innerHTML = 'Tier ' + tier + ' (×' + tier + ')<br>+' + xp + ' Sales XP';
-}
-function submitSale() {
-  const pv = +$('sale-pv-input').value || 0;
-  if (pv <= 0) { showToast('ENTER A VALID PV'); return; }
-  const tier = saleTierOf(pv);
-  const xp = saleXP(pv);
-  ['daily','weekly','monthly'].forEach(period => {
-    ensurePeriodKey(period);
-    const d = state.dungeons[period];
-    d.sales.push({ pv, tier, xp, t: Date.now() });
-    d.totalPV += pv;
-    d.salesXP += xp;
-  });
-  state.stats.sales += xp;
-  addXP(xp);
-  closeLogSale();
-  showToast('+' + xp + ' SALES XP');
-  renderDungeonView();
-  updateHeader();
-  saveState();
-}
-
-function openLaunchIBO() { $('launch-ibo-overlay').classList.add('show'); }
-function closeLaunchIBO() { $('launch-ibo-overlay').classList.remove('show'); }
-function submitIBOLaunch() {
-  ['daily','weekly','monthly'].forEach(period => {
-    ensurePeriodKey(period);
-    const d = state.dungeons[period];
-    d.ibos += 1;
-    d.sponsXP += IBO_LAUNCH_XP;
-    d.counters.newIBOs = (d.counters.newIBOs || 0) + 1;
-  });
-  state.stats.sponsoring += IBO_LAUNCH_XP;
-  addXP(IBO_LAUNCH_XP);
-  closeLaunchIBO();
-  systemLog('New IBO launched. A new soldier joins the army. +' + IBO_LAUNCH_XP + ' Sponsoring XP.');
-  showAlert('NEW IBO\nLAUNCHED', 'A new soldier joins the army.\n+' + IBO_LAUNCH_XP + ' Sponsoring XP', '⚔️');
-  renderDungeonView();
-  updateHeader();
-  saveState();
-}
-
-function renderSalesLog(period) {
-  const d = state.dungeons[period];
-  const wrap = $('sales-log-entries');
-  if (!wrap) return;
-  if (!d.sales.length) {
-    wrap.innerHTML = '<div class="dungeon-sales-log-empty">No sales logged this period.</div>';
-    if ($('sales-log-summary')) $('sales-log-summary').textContent = '0 PV · 0 XP';
-    return;
-  }
-  const recent = d.sales.slice(-10).reverse();
-  wrap.innerHTML = recent.map(s => `
-    <div class="dungeon-sale-entry">
-      <span class="dungeon-sale-pv">${s.pv} PV</span>
-      <span class="dungeon-sale-tier">T${s.tier}</span>
-      <span class="dungeon-sale-xp">+${s.xp}</span>
-    </div>`).join('');
-  if ($('sales-log-summary')) $('sales-log-summary').textContent = d.totalPV + ' PV · ' + d.salesXP + ' XP';
-}
+let currentDungeonPeriod = 'weekly';
+function renderCountersGrid() {}
+function totalKillsForPeriod() { return 0; }
+function updateCounterTotals() {}
+function updateHuntSummary() {}
+function adjustCounter() {}
+function switchDungeon() {}
+function renderDungeonView() {}
+function updateBoss() {}
+function bossTarget() { return { name:'', sub:'', pv:0, timeLeft:'' }; }
+function fmtTimeLeft() { return ''; }
+function renderSalesLog() {}
 
 // ============================================================
 // STATUS
@@ -3019,24 +2682,7 @@ function addPowerXP(amount) {
   }
 }
 
-// ============================================================
-// AWAKENING (legacy stub \u2014 goal-mark button stays functional for personal milestone)
-// ============================================================
-function promptSecondAwakening() {
-  if ($('awakening-goal-confirm')) $('awakening-goal-confirm').textContent = state.awakeningGoal || 'No goal set \u2014 proceed by your own word.';
-  if ($('awakening-overlay')) $('awakening-overlay').classList.add('show');
-}
-function cancelSecondAwakening() { if ($('awakening-overlay')) $('awakening-overlay').classList.remove('show'); }
-function confirmSecondAwakening() {
-  if ($('awakening-overlay')) $('awakening-overlay').classList.remove('show');
-  systemLog('First goal marked complete: "' + (state.awakeningGoal || 'goal') + '".');
-  showAlert('GOAL ACHIEVED', 'First goal complete.\nThe System recognizes your word.', '\u26a1');
-  renderQuests();
-  renderMission();
-  renderStatus();
-  saveState();
-}
-function applyAwakenedTheme() { /* no-op \u2014 theme is always primary in new system */ }
+function applyAwakenedTheme() { /* no-op */ }
 
 // ============================================================
 // MISSION — DMP + log, always accessible
@@ -3050,7 +2696,6 @@ function renderMission() {
 }
 
 function renderMilestones() {
-  if ($('awakening-goal-text')) $('awakening-goal-text').textContent = state.awakeningGoal || 'Goal not yet defined.';
   // Rank-based milestones
   if ($('milestone-s'))    $('milestone-s').classList.toggle('locked', state.rankIndex < 5);
   if ($('milestone-nat'))  $('milestone-nat').classList.toggle('locked', state.rankIndex < 6);
@@ -3236,7 +2881,7 @@ function executeFactoryReset() {
 // SETUP WIZARD
 // ============================================================
 let setupStep = 1;
-const SETUP_TOTAL_SCREENS = 3;
+const SETUP_TOTAL_SCREENS = 2;
 
 function showSetupScreen(n) {
   for (let i = 1; i <= SETUP_TOTAL_SCREENS; i++) {
@@ -3246,7 +2891,7 @@ function showSetupScreen(n) {
   $('setup-progress-fill').style.width = (n / SETUP_TOTAL_SCREENS * 100) + '%';
   $('setup-back-btn').style.display = n > 1 ? '' : 'none';
   $('setup-next-btn').textContent = n === SETUP_TOTAL_SCREENS ? 'BEGIN \u25B6' : 'NEXT \u25B6';
-  if (n === 3) buildSetupQuestFields();
+  if (n === 2) buildSetupQuestFields();
   setupValidate();
 }
 
@@ -3291,8 +2936,7 @@ function setupValidate() {
   const n = setupStep;
   let ok = true;
   if (n === 1) ok = $('setup-name') && $('setup-name').value.trim().length > 0;
-  if (n === 2) ok = $('setup-goal') && $('setup-goal').value.trim().length > 0;
-  if (n === 3) ok = $('sq0') && $('sq0').value.trim().length > 0;
+  if (n === 2) ok = $('sq0') && $('sq0').value.trim().length > 0;
   $('setup-next-btn').disabled = !ok;
 }
 
@@ -3320,9 +2964,6 @@ function completeSetup() {
       days: (_setupDaySel[i] || []).slice().sort((a,b)=>a-b)
     });
   }
-  // First goal — the condition for the Second Awakening
-  const goalField = $('setup-goal');
-  if (goalField) state.awakeningGoal = goalField.value.trim();
   state.setupComplete = true;
   try { localStorage.setItem('sys_setupComplete', '1'); } catch(e){}
   saveState();
@@ -3335,6 +2976,29 @@ function completeSetup() {
 // ============================================================
 // SPLASH / BOOT
 // ============================================================
+// One-shot factory reset — bumping this string wipes every device on next boot.
+const RESET_SENTINEL_KEY = 'sys_reset_sentinel';
+const RESET_SENTINEL_VAL = 'v2_2026_11_12';
+
+async function performOneShotReset() {
+  // 1) Clear local save
+  try {
+    localStorage.removeItem('sys_state');
+    localStorage.removeItem('sys_setupComplete');
+  } catch(e) {}
+  // 2) Wait briefly for firebase, then wipe cloud
+  const startedAt = Date.now();
+  while (!window._resetCloud && Date.now() - startedAt < 6000) {
+    await sleep(100);
+  }
+  if (window._resetCloud) {
+    try { await window._resetCloud(); } catch(e) {}
+  }
+  // 3) Mark sentinel so we never do this again, then hard reload.
+  try { localStorage.setItem(RESET_SENTINEL_KEY, RESET_SENTINEL_VAL); } catch(e) {}
+  location.reload();
+}
+
 async function pressStart() {
   const splash = $('splash');
   const black  = $('black-overlay');
@@ -3346,6 +3010,15 @@ async function pressStart() {
 
   // Raise the black curtain immediately so nothing leaks through during load
   if (black) black.classList.add('show');
+
+  // One-shot factory reset — runs once on this device, clears local + cloud, reloads.
+  let needsReset = false;
+  try { needsReset = (localStorage.getItem(RESET_SENTINEL_KEY) !== RESET_SENTINEL_VAL); } catch(e) {}
+  if (needsReset) {
+    splash.style.display = 'none';
+    await performOneShotReset();
+    return; // location.reload() has been called
+  }
 
   splash.classList.add('fade-out');
   setTimeout(() => splash.style.display = 'none', 600);
@@ -3619,9 +3292,6 @@ window.stepDungeonCounter = stepDungeonCounter;
 window.saveDungeonCounter = saveDungeonCounter;
 window.closeEditQuests = closeEditQuests;
 window.saveEditedQuests = saveEditedQuests;
-window.openEditGoal = openEditGoal;
-window.closeEditGoal = closeEditGoal;
-window.saveEditedGoal = saveEditedGoal;
 window.openEditDMP = openEditDMP;
 window.closeEditDMP = closeEditDMP;
 window.saveEditedDMP = saveEditedDMP;
@@ -3633,24 +3303,16 @@ window.switchDungeon = switchDungeon;
 window.adjustCounter = adjustCounter;
 window.openLogSale = openLogSale;
 window.closeLogSale = closeLogSale;
-window.updateSalePreview = updateSalePreview;
-window.submitSale = submitSale;
 window.selectLogSaleProduct = selectLogSaleProduct;
 window.setLogSaleType = setLogSaleType;
 window.updateLogSalePreview = updateLogSalePreview;
 window.submitLogSale = submitLogSale;
 window.addPowerXP = addPowerXP;
-window.openLaunchIBO = openLaunchIBO;
-window.closeLaunchIBO = closeLaunchIBO;
-window.submitIBOLaunch = submitIBOLaunch;
 window.openRankConfirm = openRankConfirm;
 window.closeRankConfirm = closeRankConfirm;
 window.submitRankUp = submitPinUp;       // legacy name still wired in modal
 window.submitPinUp = submitPinUp;
 window.openPinConfirm = openPinConfirm;
-window.promptSecondAwakening = promptSecondAwakening;
-window.cancelSecondAwakening = cancelSecondAwakening;
-window.confirmSecondAwakening = confirmSecondAwakening;
 window.promptFactoryReset = promptFactoryReset;
 window.cancelFactoryReset = cancelFactoryReset;
 window.executeFactoryReset = executeFactoryReset;
