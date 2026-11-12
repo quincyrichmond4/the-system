@@ -774,6 +774,57 @@
     .sys-popup-body { padding: 16px; }
     .sys-popup-title { font-size: 16px; font-weight: 900; color: var(--text-bright); letter-spacing: 1px; margin-bottom: 10px; }
     .sys-popup-desc { font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 12px; font-weight: 300; }
+
+    /* === NEW FRAMEWORK: Rank progress, stats-3, lifetime, dungeon summary, log-sale === */
+    .rank-progress-card { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 14px; }
+    .rank-progress-head { display: flex; justify-content: space-between; align-items: baseline; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 8px; }
+    .rank-progress-label { color: var(--text-bright); font-weight: 700; letter-spacing: 3px; }
+    .rank-progress-bar { width: 100%; height: 8px; background: rgba(6,18,38,0.9); border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .rank-progress-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--blue)); box-shadow: 0 0 10px var(--cyan); transition: width 0.4s ease; }
+    .rank-progress-sub { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); margin-top: 6px; letter-spacing: 1px; }
+    .rank-progress-hint { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--gold); margin-top: 6px; letter-spacing: 1px; }
+
+    .stat-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 14px; }
+    .stat-grid-3 .stat-card { padding: 10px 8px; }
+    .stat-tag { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 1px; margin-top: 2px; text-transform: uppercase; }
+
+    .lifetime-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 14px; }
+    .lifetime-cell { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 8px 6px; text-align: center; }
+    .lifetime-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 4px; }
+    .lifetime-val { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--cyan); font-weight: 700; }
+
+    .dungeon-summary-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+    .dungeon-sum-cell { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 8px 6px; text-align: center; }
+    .dungeon-sum-label { font-family: 'Share Tech Mono', monospace; font-size: 8px; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 4px; }
+    .dungeon-sum-val { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--cyan); font-weight: 700; }
+
+    .dungeon-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+    .dungeon-type-cell { background: rgba(6,18,38,0.5); border: 1px solid var(--border); padding: 6px 8px; display: flex; justify-content: space-between; align-items: center; }
+    .dungeon-type-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text); letter-spacing: 1px; }
+    .dungeon-type-count { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: var(--cyan); font-weight: 700; }
+    .dungeon-type-mult { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--gold); margin-left: 4px; }
+
+    .dungeon-log { margin-top: 10px; max-height: 240px; overflow-y: auto; }
+    .dungeon-log-head { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 2px; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+    .dungeon-log-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 4px; border-bottom: 1px solid rgba(90,216,255,0.08); }
+    .dungeon-log-name { font-size: 12px; color: var(--text-bright); font-weight: 600; }
+    .dungeon-log-meta { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
+    .dungeon-log-xp { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); font-weight: 700; }
+
+    .log-sale-types { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+    .log-sale-type-pill { background: rgba(6,18,38,0.6); border: 1px solid var(--border); padding: 8px 6px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text); letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+    .log-sale-type-pill span { color: var(--gold); font-size: 11px; }
+    .log-sale-type-pill:hover { border-color: var(--cyan); }
+    .log-sale-type-pill.active { background: rgba(30,111,255,0.2); border-color: var(--cyan); color: var(--text-bright); box-shadow: 0 0 10px var(--blue-glow); }
+    .log-sale-type-current { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 2px; text-align: center; margin-bottom: 8px; }
+
+    .log-sale-library { max-height: 140px; overflow-y: auto; background: rgba(6,18,38,0.4); border: 1px solid var(--border); padding: 6px; margin-bottom: 4px; }
+    .log-sale-empty { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); text-align: center; padding: 10px; letter-spacing: 1px; }
+    .log-sale-prod { padding: 6px 8px; border-bottom: 1px solid rgba(90,216,255,0.08); cursor: pointer; transition: background 0.15s; }
+    .log-sale-prod:hover { background: rgba(30,111,255,0.1); }
+    .log-sale-prod:last-child { border-bottom: none; }
+    .log-sale-prod-name { font-size: 12px; color: var(--text-bright); font-weight: 600; }
+    .log-sale-prod-meta { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); }
   </style>
 </head>
 <body>
@@ -959,19 +1010,51 @@
 
 <!-- LOG SALE MODAL -->
 <div id="log-sale-overlay" class="modal-overlay">
-  <div class="modal-window">
+  <div class="modal-window" style="max-width:380px;">
     <div class="modal-header">
       <div class="modal-label">[ LOG SALE ]</div>
       <button onclick="closeLogSale()" class="modal-close-btn">✕</button>
     </div>
     <div class="modal-body">
-      <div class="modal-field-label">PV AMOUNT</div>
-      <input class="modal-input" id="sale-pv-input" type="number" inputmode="numeric" placeholder="Enter PV" min="1" oninput="updateSalePreview()"/>
-      <div class="modal-tier-display" id="sale-tier-display">
-        Tier: —<br>XP: —
+      <!-- Sale type pills -->
+      <div class="modal-field-label">SALE TYPE</div>
+      <div class="log-sale-types">
+        <div class="log-sale-type-pill" data-tid="newCustomer" onclick="setLogSaleType('newCustomer')">NEW CUSTOMER<br><span>×1</span></div>
+        <div class="log-sale-type-pill" data-tid="newProduct"  onclick="setLogSaleType('newProduct')">NEW PRODUCT<br><span>×1</span></div>
+        <div class="log-sale-type-pill" data-tid="recurring"   onclick="setLogSaleType('recurring')">RECURRING<br><span>×1.5</span></div>
+        <div class="log-sale-type-pill" data-tid="upsell"      onclick="setLogSaleType('upsell')">UPSELL<br><span>×2</span></div>
       </div>
-      <div class="modal-info" style="margin-bottom:14px;">[Tier 1: &lt;50 PV × 1 &nbsp;·&nbsp; Tier 2: 51–99 PV × 2 &nbsp;·&nbsp; Tier 3: 100+ PV × 3]</div>
-      <button onclick="submitSale()" class="modal-submit-btn">[ LOG SALE ]</button>
+      <div class="log-sale-type-current" id="log-sale-type">NEW CUSTOMER SALE ×1</div>
+
+      <!-- Product library -->
+      <div class="modal-field-label" style="margin-top:10px;">PRODUCT LIBRARY</div>
+      <div class="log-sale-library" id="log-sale-library">
+        <div class="log-sale-empty">No products yet.</div>
+      </div>
+
+      <!-- Entry fields -->
+      <div class="modal-field-label" style="margin-top:12px;">PRODUCT NAME</div>
+      <input class="modal-input" id="log-sale-name" type="text" placeholder="e.g. Nutrilite Daily" />
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;">
+        <div>
+          <div class="modal-field-label">PV</div>
+          <input class="modal-input" id="log-sale-pv" type="number" inputmode="numeric" min="0" step="0.01" placeholder="0" oninput="updateLogSalePreview()" />
+        </div>
+        <div>
+          <div class="modal-field-label">BV ($)</div>
+          <input class="modal-input" id="log-sale-bv" type="number" inputmode="numeric" min="0" step="0.01" placeholder="0" oninput="updateLogSalePreview()" />
+        </div>
+        <div>
+          <div class="modal-field-label">QTY</div>
+          <input class="modal-input" id="log-sale-qty" type="number" inputmode="numeric" min="1" step="1" value="1" oninput="updateLogSalePreview()" />
+        </div>
+      </div>
+
+      <div class="modal-tier-display" id="log-sale-preview" style="margin-top:14px;">
+        <b>+0 XP</b> · $0 BV
+      </div>
+
+      <button onclick="submitLogSale()" class="modal-submit-btn" style="margin-top:12px;">[ LOG SALE ]</button>
     </div>
   </div>
 </div>
@@ -1105,14 +1188,14 @@
           <div class="sys-progress-pct" id="quest-pct">0%</div>
         </div>
       </div>
-      <!-- WEEKLY DUNGEON — QI tracker -->
+      <!-- WEEKLY DUNGEON — Sales Logger -->
       <div class="dungeon-box" id="dungeon-box">
         <div class="dungeon-box-header">
           <div class="dungeon-box-title">▶ WEEKLY DUNGEON</div>
           <div class="dungeon-box-reset" id="dungeon-reset">Resets in —</div>
         </div>
-        <div class="dungeon-box-sub">Track your weekly business metrics. Each one slain is XP earned.</div>
-        <div class="counter-grid" id="dungeon-counter-grid"></div>
+        <div class="dungeon-box-sub">Log sales as they happen. Each kill feeds Strength + Skill. Rank climbs with lifetime BV.</div>
+        <div id="dungeon-counter-grid"></div>
       </div>
 
       <div class="quest-section">
@@ -1124,20 +1207,20 @@
         <div id="quest-list"></div>
       </div>
 
-      <!-- SECOND AWAKENING GOAL -->
+      <!-- FIRST GOAL -->
       <div class="quest-section" id="awakening-goal-section">
         <div class="quest-section-header">
           <div class="quest-section-icon">⚡</div>
-          <div class="quest-section-title">Second Awakening</div>
+          <div class="quest-section-title">First Goal</div>
           <button onclick="openEditGoal()" style="margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;letter-spacing:1px;-webkit-tap-highlight-color:transparent;">✎ EDIT</button>
         </div>
         <div class="awakening-goal-card" id="awakening-goal-card">
-          <div class="awakening-goal-label">▶ GOAL TO UNLOCK</div>
+          <div class="awakening-goal-label">▶ CURRENT GOAL</div>
           <div class="awakening-goal-text" id="quest-awakening-goal">—</div>
           <div id="awakening-goal-action">
             <button onclick="promptSecondAwakening()" id="mark-awakening-btn" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);background:transparent;border:1px solid var(--border2);padding:9px 16px;cursor:pointer;letter-spacing:2px;-webkit-tap-highlight-color:transparent;width:100%;margin-top:10px;">[ MARK AS ACHIEVED ]</button>
           </div>
-          <div id="awakening-goal-done" style="display:none;margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;text-align:center;">✓ SECOND AWAKENING COMPLETE</div>
+          <div id="awakening-goal-done" style="display:none;margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;text-align:center;">✓ GOAL COMPLETE</div>
         </div>
       </div>
 
@@ -1157,36 +1240,53 @@
     <div class="panel-body">
 
       <div class="sys-info-card">
-        <div class="sys-info-row"><span class="sys-info-key">NAME</span><span class="sys-info-val" id="status-name">—</span></div>
-        <div class="sys-info-row"><span class="sys-info-key">PIN</span><span class="sys-info-val" id="status-pin" style="color:var(--gold)">— None —</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">NAME</span><span class="sys-info-val" id="status-name">&mdash;</span></div>
+        <div class="sys-info-row"><span class="sys-info-key">RANK</span><span class="sys-info-val" id="status-pin" style="color:var(--gold)">E</span></div>
         <div class="sys-info-row"><span class="sys-info-key">LEVEL</span><span class="sys-info-val" id="status-level" style="color:var(--cyan)">1</span></div>
         <div class="sys-info-row"><span class="sys-info-key">STREAK</span><span class="sys-info-val" id="streak-display" style="color:var(--gold)">0 Days</span></div>
         <div class="sys-info-row"><span class="sys-info-key">TOTAL EXP</span><span class="sys-info-val" id="total-xp-display" style="color:var(--blue)">0</span></div>
       </div>
 
-      <!-- GATE BANNER — shown only when at a gate awaiting pin verification -->
-      <div class="gate-banner" id="gate-banner" style="display:none;">
-        <div class="gate-banner-label" id="gate-banner-label">▶ AWAITING VERIFICATION</div>
-        <div class="gate-banner-sub" id="gate-banner-sub">Level frozen. Earn the pin to release the buffer.</div>
-        <div class="gate-banner-meta">
-          <span id="gate-banner-amount">0 XP buffered</span>
-          <span id="gate-banner-est">— levels ready</span>
+      <div class="gate-banner" id="gate-banner" style="display:none;"></div>
+
+      <div class="sys-section">Rank Progress</div>
+      <div class="rank-progress-card">
+        <div class="rank-progress-head">
+          <span class="rank-progress-label" id="rank-income">Income: &mdash;</span>
+          <span class="rank-progress-label" id="rank-sales">Sales: &mdash;</span>
         </div>
-        <button class="gate-banner-btn" onclick="openRankConfirm()" id="gate-banner-btn">[ CONFIRM PIN ]</button>
+        <div class="rank-progress-bar"><div class="rank-progress-fill" id="rank-bar" style="width:0%"></div></div>
+        <div class="rank-progress-sub" id="rank-bar-label">$0 BV</div>
+        <div class="rank-progress-hint" id="rank-hint">&mdash;</div>
       </div>
 
       <div class="sys-section">Stats</div>
-      <div class="stat-grid">
-        <div class="stat-card" onclick="showStatPopup('sales')">
-          <div class="stat-name">SALES</div>
-          <div class="stat-val" id="stat-sales">0</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="bar-sales" style="width:0%"></div></div>
+      <div class="stat-grid stat-grid-3">
+        <div class="stat-card" onclick="showStatPopup('strength')">
+          <div class="stat-name">STRENGTH</div>
+          <div class="stat-val" id="stat-strength">0</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-strength" style="width:0%;background:var(--danger)"></div></div>
+          <div class="stat-tag">Money</div>
         </div>
-        <div class="stat-card" onclick="showStatPopup('sponsoring')">
-          <div class="stat-name">SPONSORING</div>
-          <div class="stat-val" id="stat-sponsoring">0</div>
-          <div class="stat-bar"><div class="stat-bar-fill" id="bar-sponsoring" style="width:0%"></div></div>
+        <div class="stat-card" onclick="showStatPopup('power')">
+          <div class="stat-name">POWER</div>
+          <div class="stat-val" id="stat-power">0</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-power" style="width:0%;background:var(--purple)"></div></div>
+          <div class="stat-tag">Followers</div>
         </div>
+        <div class="stat-card" onclick="showStatPopup('skill')">
+          <div class="stat-name">SKILL</div>
+          <div class="stat-val" id="stat-skill">0</div>
+          <div class="stat-bar"><div class="stat-bar-fill" id="bar-skill" style="width:0%;background:var(--cyan)"></div></div>
+          <div class="stat-tag">Sales</div>
+        </div>
+      </div>
+
+      <div class="sys-section">Lifetime Totals</div>
+      <div class="lifetime-grid">
+        <div class="lifetime-cell"><div class="lifetime-label">BV</div><div class="lifetime-val" id="lifetime-bv">$0</div></div>
+        <div class="lifetime-cell"><div class="lifetime-label">PV</div><div class="lifetime-val" id="lifetime-pv">0</div></div>
+        <div class="lifetime-cell"><div class="lifetime-label">SALES</div><div class="lifetime-val" id="lifetime-sales">0</div></div>
       </div>
 
       <div class="sys-section">Weekly Progress</div>
@@ -1201,35 +1301,27 @@
       <div class="sys-section">Milestones</div>
 
       <div class="milestone" id="milestone-second">
-        <div class="milestone-name">Second Awakening</div>
-        <div class="milestone-sub" id="awakening-goal-text">—</div>
-        <div class="milestone-effect">Unlocks: Stats · Dungeons · Items · Skills</div>
-        <div id="awakening-complete-label" style="display:none;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;">✓ SECOND AWAKENING COMPLETE</div>
+        <div class="milestone-name">First Goal</div>
+        <div class="milestone-sub" id="awakening-goal-text">&mdash;</div>
+        <div class="milestone-effect">Set your first goal in the Quests tab. Mark it complete when achieved.</div>
       </div>
 
       <div class="milestone" id="milestone-dqm">
         <div class="milestone-name">Daily Quest Mastery</div>
         <div class="milestone-sub">Complete 7 consecutive daily quests</div>
-        <div class="milestone-effect">↑ Streak bonus</div>
+        <div class="milestone-effect">\u2191 Streak bonus</div>
       </div>
 
-      <div class="milestone locked" id="milestone-platinum">
-        <div class="milestone-name">Platinum</div>
-        <div class="milestone-sub">6/25 with Core+ IBOs. ~7,500 PV group.</div>
-        <div class="milestone-effect">Level 20 wall · First pin recognized</div>
+      <div class="milestone locked" id="milestone-s">
+        <div class="milestone-name">S-Rank</div>
+        <div class="milestone-sub">$1M lifetime BV sold. $500K+ annual income tier.</div>
+        <div class="milestone-effect">Top 1% of sellers. The breakthrough.</div>
       </div>
 
-      <div class="milestone locked" id="milestone-diamond">
-        <div class="milestone-name">Diamond</div>
-        <div class="milestone-sub">Symbol of Peace. Top 0.1% income tier.</div>
-        <div class="milestone-effect">Level 100 · The summit of the playable game</div>
-      </div>
-
-      <!-- CROWN — only visible once Diamond reached -->
-      <div class="milestone crown locked" id="milestone-crown" style="display:none;">
-        <div class="milestone-name">Crown</div>
-        <div class="milestone-sub">Beyond measurement. The Shadow Monarch state.</div>
-        <div class="milestone-effect">No XP. No grind. Lore only.</div>
+      <div class="milestone crown locked" id="milestone-nat">
+        <div class="milestone-name">National Level</div>
+        <div class="milestone-sub">$5M lifetime BV. $1M+ annual income.</div>
+        <div class="milestone-effect">Beyond measurement. The summit.</div>
       </div>
 
       <div class="sys-section">Achievements</div>
@@ -1245,16 +1337,9 @@
     </div>
     <div class="panel-body">
 
-      <!-- PRE-AWAKENING LOCK -->
-      <div id="mission-lock-screen" style="text-align:center;padding:40px 20px;">
-        <div style="font-size:48px;margin-bottom:16px;">🔒</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:10px;">[ SYSTEM ]</div>
-        <div style="font-size:15px;font-weight:900;color:var(--text-bright);margin-bottom:8px;">Access Restricted</div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;font-weight:300;">The Mission log is locked for beginner-level Players. Achieve your first goal to trigger the Second Awakening.</div>
-      </div>
+      <div id="mission-lock-screen" style="display:none;"></div>
 
-      <!-- POST-AWAKENING CONTENT -->
-      <div id="mission-content" style="display:none;">
+      <div id="mission-content" style="display:block;">
         <div class="mission-block">
           <div class="mission-label">▶ DEFINITE MAJOR PURPOSE</div>
           <div class="mission-title" id="dmp-title">Not yet defined.</div>
@@ -1444,108 +1529,92 @@ window.onerror = function(msg, src, line) {
 // ============================================================
 // CONSTANTS
 // ============================================================
-// IBO is the Player class. Permanent. Pins are the rank progression layered on top.
+// IBO is the Player class. Permanent.
 const PLAYER_CLASS = 'IBO';
 
-// 5 pins. Index 0 = no pin (just IBO). Crown is lore-only, not a rank.
-const PINS = ['— None —', 'Platinum', 'Ruby', 'Sapphire', 'Emerald', 'Diamond'];
-const PIN_LEVELS = [0, 20, 40, 60, 80, 100];
-
-const PIN_HINTS = [
-  'Next pin: Platinum. Earned through structure and group volume — not grinding alone.',
-  '6/25 with Core+ IBOs or 6/50 with Core. ~7,500 PV group.',
-  'Multiple Platinum legs. Network solidifying.',
-  '~9/75 structure. Top 1% household income territory.',
-  '~12/100 structure. Wealth class.',
-  'Symbol of Peace. Top 0.1% income. The summit.'
+// RANKS — output-based. Rank determined by cumulative lifetime sales BV.
+// E = <$25K, D = $25K-$99K, C = $100K-$249K, B = $250K-$499K,
+// A = $500K-$999K, S = $1M-$4.99M, National Level = $5M+
+const RANKS = ['E', 'D', 'C', 'B', 'A', 'S', 'National Level'];
+const RANK_THRESHOLDS = [0, 25000, 100000, 250000, 500000, 1000000, 5000000];
+const RANK_INCOME = [
+  '< $49K',
+  '$50K – $99K',
+  '$100K – $149K',
+  '$150K – $249K',
+  '$250K – $499K',
+  '$500K – $999K',
+  '$1M+'
+];
+const RANK_SALES = [
+  '< $25K/yr',
+  '$25K – $99K/yr',
+  '$100K – $249K/yr',
+  '$250K – $499K/yr',
+  '$500K – $999K/yr',
+  '$1M – $4.99M/yr',
+  '$5M+/yr'
+];
+const RANK_HINTS = [
+  'Begin the climb. Train daily. Close your first sales.',
+  'Discipline forming. Sales landing. The habit is real.',
+  'Serious operator. The craft is taking shape.',
+  'Top sales territory. Six-figure producer.',
+  'Elite. Breakthrough tier.',
+  'S-Rank. $83K+/mo sustained. Only ~1% of sellers live here.',
+  'National Level. Beyond measurement. The summit.'
 ];
 
-// XP curve: piecewise linear per tier. Each tier resets to a higher baseline.
-// Tier 0 (L1-19):  500   + 500   * (lvl-1)
-// Tier 1 (L20-39): 5,000 + 500   * (lvl-20)
-// Tier 2 (L40-59): 10,000 + 1,000 * (lvl-40)
-// Tier 3 (L60-79): 20,000 + 2,000 * (lvl-60)
-// Tier 4 (L80-99): 40,000 + 4,000 * (lvl-80)
-const LEVEL_CAP = 100;
+// XP CURVE — quadratic within a rank: XP_to_next_level = 100 × level²
+// Level 1→2: 100 XP. Level 10→11: 10,000 XP. Level 50→51: 250,000 XP.
+const LEVEL_CAP = 999;
 
-const SALES_COUNTERS = [
-  ['leads',         'Customer Leads'],
-  ['followups',     'Follow-Ups'],
-  ['salesCalls',    'Sales Calls'],
-  ['cnas',          'CNAs'],
-  ['samples',       'Qualified Samples'],
-  ['gcards',        'Gratitude Cards'],
-  ['firstSales',    '1st-Time Sales'],
-  ['newProdSales',  'New Product Sales'],
-  ['repeatSales',   'Repeat Sales'],
-  ['newRegCust',    'New Reg. Customers']
+// SALES MULTIPLIERS — Weekly Dungeon input types
+// 1 XP per $1 BV × multiplier
+const SALE_TYPES = [
+  { id: 'newCustomer', label: 'New Customer Sale', multiplier: 1,   color: '#5ad8ff' },
+  { id: 'newProduct',  label: 'New Product Sale',  multiplier: 1,   color: '#5ad8ff' },
+  { id: 'recurring',   label: 'Recurring Sale',    multiplier: 1.5, color: '#2ad98a' },
+  { id: 'upsell',      label: 'Upsell',            multiplier: 2,   color: '#ffc83d' }
 ];
+const BASE_XP_PER_BV = 1; // 1 XP per $1 BV before multiplier
 
-const SPONSORING_COUNTERS = [
-  ['btis',          'BTIs'],
-  ['convos',        'Conversations'],
-  ['msas',          'MSAs'],
-  ['dtms',          'DTMs'],
-  ['contacts',      'Contacts'],
-  ['sponsFollowups','Follow-Ups'],
-  ['qis',           'QIs'],
-  ['bizOverviews',  'Biz Overviews'],
-  ['guests1',       '1st-Time Guests'],
-  ['guests2',       '2nd-Time Guests'],
-  ['roadmaps',      'Roadmap Overviews'],
-  ['finalReviews',  'Final Reviews'],
-  ['newIBOs',       'New IBOs']
+// STATS — Strength (money), Power (followers), Skill (sales craft)
+const STATS = [
+  { id: 'strength', label: 'Strength', desc: 'Money / Rank' },
+  { id: 'power',    label: 'Power',    desc: 'Followers / Trust' },
+  { id: 'skill',    label: 'Skill',    desc: 'Sales craft' }
 ];
-
-const COUNTER_XP = 5;
-// Player level gets half a counter tick's XP — kept as a whole number.
-const COUNTER_LEVEL_XP = Math.round(COUNTER_XP / 2);
-const IBO_LAUNCH_XP = 500;
-
-// Weekly Dungeon metrics — IPA tracker. [id, label, XP per increment]
-const WEEKLY_METRICS = [
-  ['newCustSales',  'New Customer Sales',      25],
-  ['newProdSales',  'New Product Sales',       25],
-  ['recurCustSales','Recurring Customer Sales',20],
-  ['qis',           'QIs',                     25],
-  ['bizOverviews',  'Business Overviews',      20],
-  ['guests1',       '1st-Time Guests',         15],
-  ['guests2',       '2nd-Time Guests',         20],
-  ['roadmaps',      'Roadmap Overviews',       30],
-  ['finalReviews',  'Final Reviews',           35],
-  ['iboLaunches',   'IBO Launches',            50]
-];
-
-// Bleed penalties (Duolingo with teeth — all or nothing)
-const BLEED_DAY_1 = 50;
-const BLEED_DAY_2 = 100;
-const BLEED_DAY_3_PLUS = 200;
-const BLEED_WEEKLY_MISS = 500;
-
-// Boss PV targets by pin level
-// Index 0 = pre-Platinum, ..., 5 = Diamond
-const MONTHLY_PV_TARGETS = [1500, 7500, 10000, 12000, 15000, 25000];
 
 const ACHIEVEMENTS = [
-  { id:'player', icon:'🎯', name:'The System',        desc:'Became a Player',           check:s => s.setupComplete },
-  { id:'second', icon:'⚡', name:'Second Awakening',  desc:'First goal achieved',       check:s => s.secondAwakeningComplete },
-  { id:'plat',   icon:'🥈', name:'Platinum',          desc:'First pin earned',          check:s => s.pinIndex >= 1 },
-  { id:'ruby',   icon:'🥉', name:'Ruby',              desc:'Second pin earned',         check:s => s.pinIndex >= 2 },
-  { id:'sapph',  icon:'💠', name:'Sapphire',          desc:'Third pin earned',          check:s => s.pinIndex >= 3 },
-  { id:'em',     icon:'🟢', name:'Emerald',           desc:'Fourth pin earned',         check:s => s.pinIndex >= 4 },
-  { id:'diam',   icon:'💎', name:'Diamond',           desc:'The summit',                check:s => s.pinIndex >= 5 },
-  { id:'streak7',icon:'🔥', name:'Iron Will',         desc:'7-day quest streak',        check:s => s.streak >= 7 },
-  { id:'streak30',icon:'⚔️', name:'Discipline',        desc:'30-day quest streak',       check:s => s.streak >= 30 },
-  { id:'lvl50',  icon:'🌟', name:'Hunter',            desc:'Reach Level 50',            check:s => s.level >= 50 }
+  { id:'player',   icon:'🎯', name:'The System',    desc:'Became a Player',       check:s => s.setupComplete },
+  { id:'first_sale',icon:'⚔️', name:'First Blood',   desc:'First sale logged',     check:s => (s.totalBV || 0) > 0 },
+  { id:'d_rank',   icon:'🥉', name:'D-Rank',        desc:'$25K lifetime BV',       check:s => (s.totalBV || 0) >= 25000 },
+  { id:'c_rank',   icon:'🥈', name:'C-Rank',        desc:'$100K lifetime BV',      check:s => (s.totalBV || 0) >= 100000 },
+  { id:'b_rank',   icon:'🥇', name:'B-Rank',        desc:'$250K lifetime BV',      check:s => (s.totalBV || 0) >= 250000 },
+  { id:'a_rank',   icon:'💠', name:'A-Rank',        desc:'$500K lifetime BV',      check:s => (s.totalBV || 0) >= 500000 },
+  { id:'s_rank',   icon:'💎', name:'S-Rank',        desc:'$1M lifetime BV',        check:s => (s.totalBV || 0) >= 1000000 },
+  { id:'national', icon:'👑', name:'National Level',desc:'$5M lifetime BV',        check:s => (s.totalBV || 0) >= 5000000 },
+  { id:'streak7',  icon:'🔥', name:'Iron Will',     desc:'7-day quest streak',     check:s => s.streak >= 7 },
+  { id:'streak30', icon:'⚡', name:'Discipline',    desc:'30-day quest streak',    check:s => s.streak >= 30 },
+  { id:'lvl25',    icon:'🌟', name:'Hunter',        desc:'Reach Level 25',         check:s => s.level >= 25 },
+  { id:'lvl50',    icon:'⭐', name:'Veteran',       desc:'Reach Level 50',         check:s => s.level >= 50 }
 ];
 
 // ============================================================
 // STATE
 // ============================================================
-function emptyDungeonPeriod() {
-  const c = {};
-  [...SALES_COUNTERS, ...SPONSORING_COUNTERS].forEach(([k]) => c[k] = 0);
-  return { counters: c, sales: [], ibos: 0, totalPV: 0, salesXP: 0, sponsXP: 0, key: '' };
+function emptyWeeklyDungeon() {
+  // Weekly dungeon tracks sales entries for the current week.
+  // Resets Tuesday 8PM Eastern. Lifetime totals accumulate separately on state.
+  return {
+    key: '',
+    entries: [],       // [{ id, productId, productName, pv, bv, qty, typeId, mult, xp, t }]
+    totalBV: 0,
+    totalPV: 0,
+    totalXP: 0,
+    countsByType: { newCustomer: 0, newProduct: 0, recurring: 0, upsell: 0 }
+  };
 }
 
 const DEFAULT_STATE = {
@@ -1560,34 +1629,32 @@ const DEFAULT_STATE = {
   workCycle: '',
   dailyQuests: [],
 
-  // Awakening — Second Awakening unlocks when the player's first goal is met
-  secondAwakeningComplete: false,
-
   // Progress
   level: 1,
   xp: 0,
   totalXp: 0,
-  bufferedXp: 0,           // XP accumulated past a gate, awaiting pin confirmation
   streak: 0,
-  lastQuestCompleteDate: '',  // last day any quest was completed
-  lastBootDate: '',         // for detecting day rollovers between boots
+  lastQuestCompleteDate: '',
+  lastBootDate: '',
 
-  // Stats
-  stats: { sales: 0, sponsoring: 0 },
+  // STATS — Strength (money), Power (followers), Skill (sales craft)
+  stats: { strength: 0, power: 0, skill: 0 },
 
-  // Pin index (0 = no pin, 1 = Platinum, 5 = Diamond)
-  pinIndex: 0,
+  // RANK — output-based, derived from totalBV
+  rankIndex: 0,
 
-  // Failure tracking
-  monthlyStrikes: 0,
-  lastMonthChecked: '',
+  // LIFETIME SALES — never resets. Drives rank.
+  totalBV: 0,      // lifetime BV sold (dollars)
+  totalPV: 0,      // lifetime PV
+  totalSales: 0,   // count of sales entries ever logged
 
-  // Dungeons (legacy period system — kept for save compatibility)
-  dungeons: { daily: null, weekly: null, monthly: null },
+  // PRODUCT LIBRARY — grows as player logs new products
+  // [{ id, name, pv, bv, firstLoggedAt }]
+  products: [],
 
-  // Weekly Dungeon — simple metric counters, reset each week
-  // { key: 'YYYY-MM-DD' (week start), counters: { metricId: count } }
-  weeklyDungeon: { key: '', counters: {} },
+  // WEEKLY DUNGEON — sales entries for current week
+  weeklyDungeon: emptyWeeklyDungeon(),
+
   notifSent: {},
   soundEnabled: true,
 
@@ -1599,14 +1666,11 @@ const DEFAULT_STATE = {
   dmpTitle: '',
   dmpSub: '',
 
-  // System Log — array of { id, type:'system'|'manual', text, t }
+  // System Log
   log: []
 };
 
 let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-state.dungeons.daily   = emptyDungeonPeriod();
-state.dungeons.weekly  = emptyDungeonPeriod();
-state.dungeons.monthly = emptyDungeonPeriod();
 
 // ============================================================
 // HELPERS
@@ -1641,21 +1705,18 @@ function daysBetween(dateStrA, dateStrB) {
 }
 
 // ============================================================
-// XP / LEVEL — piecewise linear per tier
+// XP / LEVEL — quadratic within a rank: XP_to_next = 100 × level²
 // ============================================================
 function xpForNextLevel(lvl) {
   if (lvl >= LEVEL_CAP) return Infinity;
-  if (lvl < 20)  return 500   + 500   * (lvl - 1);
-  if (lvl < 40)  return 5000  + 500   * (lvl - 20);
-  if (lvl < 60)  return 10000 + 1000  * (lvl - 40);
-  if (lvl < 80)  return 20000 + 2000  * (lvl - 60);
-                 return 40000 + 4000  * (lvl - 80);
+  return 100 * lvl * lvl;
 }
 
 function totalXpForLevel(lvl) {
-  let total = 0;
-  for (let i = 1; i < lvl; i++) total += xpForNextLevel(i);
-  return total;
+  // Sum of 100 × k² for k=1..lvl-1 = 100 × (lvl-1) × lvl × (2lvl-1) / 6
+  const n = lvl - 1;
+  if (n <= 0) return 0;
+  return Math.round(100 * n * (n + 1) * (2 * n + 1) / 6);
 }
 
 function levelFromTotalXp(total) {
@@ -1668,23 +1729,32 @@ function levelFromTotalXp(total) {
 }
 
 function getQuestXP() {
-  // Diminishing XP per quest as level rises — original base 5, rounded to a whole number, minimum 1.
-  return Math.max(1, Math.round(5 / (1 + state.level / 10)));
+  // Base 5 per quest, diminishing as level rises. Min 1.
+  return Math.max(1, Math.round(50 / (1 + state.level / 5)));
 }
 
 // ============================================================
-// GATE LOGIC
+// RANK — derived from totalBV
 // ============================================================
-function nextPinGateLevel() {
-  // Returns the level at which the next unconfirmed pin gates progression.
-  // pinIndex 0 → next gate is L20 (Platinum). pinIndex 5 → no more gates.
-  if (state.pinIndex >= 5) return null;
-  return PIN_LEVELS[state.pinIndex + 1];
+function rankFromBV(bv) {
+  let r = 0;
+  for (let i = RANK_THRESHOLDS.length - 1; i >= 0; i--) {
+    if (bv >= RANK_THRESHOLDS[i]) { r = i; break; }
+  }
+  return r;
 }
-
-function isGated() {
-  const g = nextPinGateLevel();
-  return g !== null && state.level >= g;
+function currentRankName() { return RANKS[state.rankIndex] || 'E'; }
+function nextRankBV() {
+  if (state.rankIndex >= RANKS.length - 1) return null;
+  return RANK_THRESHOLDS[state.rankIndex + 1];
+}
+function rankProgress() {
+  // Returns 0..1 progress to next rank, based on BV
+  if (state.rankIndex >= RANKS.length - 1) return 1;
+  const cur = RANK_THRESHOLDS[state.rankIndex];
+  const nxt = RANK_THRESHOLDS[state.rankIndex + 1];
+  const bv = state.totalBV || 0;
+  return clamp((bv - cur) / (nxt - cur), 0, 1);
 }
 
 // ============================================================
@@ -1707,9 +1777,6 @@ function saveState() {
 
 function migrate(old) {
   const out = JSON.parse(JSON.stringify(DEFAULT_STATE));
-  out.dungeons.daily   = emptyDungeonPeriod();
-  out.dungeons.weekly  = emptyDungeonPeriod();
-  out.dungeons.monthly = emptyDungeonPeriod();
   if (!old || typeof old !== 'object') return out;
 
   out.playerAccepted = !!(old.playerAccepted || old.setupComplete);
@@ -1736,88 +1803,68 @@ function migrate(old) {
     });
   }
 
-  out.secondAwakeningComplete = !!(old.awakeningComplete || old.secondAwakeningComplete);
-
-  // Total XP preserved. Level recomputed under new curve. Rounded — no fractions.
+  // Total XP preserved. Level recomputed under new curve.
   out.totalXp = Math.round(+old.totalXp || +old.xp || 0);
   out.streak = +old.streak || 0;
   out.lastQuestCompleteDate = old.lastQuestCompleteDate || old.lastQuestDate || '';
   out.lastBootDate = old.lastBootDate || '';
-  out.lastMonthChecked = old.lastMonthChecked || '';
-  out.monthlyStrikes = +old.monthlyStrikes || 0;
+
+  // STATS — migrate from legacy sales/sponsoring, or start fresh
   out.stats = {
-    sales: Math.round(+(old.stats && old.stats.sales) || 0),
-    sponsoring: Math.round(+(old.stats && old.stats.sponsoring) || 0)
+    strength: Math.round(+(old.stats && old.stats.strength) || 0),
+    power:    Math.round(+(old.stats && old.stats.power) || 0),
+    skill:    Math.round(+(old.stats && old.stats.skill) || 0)
   };
 
-  // Migrate old rankIndex (15 tiers) → new pinIndex (6 entries)
-  // old 0-8 (IBO + PBS) → 0 (no pin)
-  // old 9 (Platinum) → 1
-  // old 10 (Ruby) → 2
-  // old 11 (Sapphire) → 3
-  // old 12 (Emerald) → 4
-  // old 13 (Diamond) → 5
-  // old 14 (Crown) → 5 (Crown isn't a rank now)
-  if (typeof old.pinIndex === 'number') {
-    out.pinIndex = clamp(old.pinIndex, 0, 5);
-  } else if (typeof old.rankIndex === 'number') {
-    const r = old.rankIndex;
-    if (r <= 8)       out.pinIndex = 0;
-    else if (r === 9) out.pinIndex = 1;
-    else if (r === 10)out.pinIndex = 2;
-    else if (r === 11)out.pinIndex = 3;
-    else if (r === 12)out.pinIndex = 4;
-    else              out.pinIndex = 5;
-  } else {
-    out.pinIndex = 0;
+  // LIFETIME TOTALS — preserve or start fresh
+  out.totalBV = Math.round(+old.totalBV || 0);
+  out.totalPV = Math.round(+old.totalPV || 0);
+  out.totalSales = +old.totalSales || 0;
+
+  // PRODUCT LIBRARY — preserve
+  if (Array.isArray(old.products)) {
+    out.products = old.products
+      .filter(p => p && p.name)
+      .map(p => ({
+        id: p.id || ('prod_' + Math.random().toString(36).slice(2)),
+        name: String(p.name),
+        pv: +p.pv || 0,
+        bv: +p.bv || 0,
+        firstLoggedAt: +p.firstLoggedAt || Date.now()
+      }));
   }
+
+  // RANK — derive from totalBV
+  out.rankIndex = rankFromBV(out.totalBV);
 
   // Recompute level + current xp from total
   out.level = levelFromTotalXp(out.totalXp);
   out.xp = out.totalXp - totalXpForLevel(out.level);
 
-  // If recomputed level exceeds the current pin's gate ceiling, cap it and buffer excess
-  const gate = (out.pinIndex < 5) ? PIN_LEVELS[out.pinIndex + 1] : LEVEL_CAP;
-  if (out.level > gate) {
-    // Move excess XP into buffer
-    let extra = totalXpForLevel(out.level) - totalXpForLevel(gate) + out.xp;
-    out.totalXp = totalXpForLevel(gate);
-    out.level = gate;
-    out.xp = 0;
-    out.bufferedXp = Math.round(extra);
-  } else if (out.level === gate) {
-    out.bufferedXp = Math.round(+old.bufferedXp || +old.xp || 0);
-    out.xp = 0;
-  } else {
-    out.bufferedXp = Math.round(+old.bufferedXp || 0);
-  }
-
-  if (old.dungeons) {
-    ['daily','weekly','monthly'].forEach(p => {
-      if (old.dungeons[p]) {
-        const merged = emptyDungeonPeriod();
-        Object.assign(merged.counters, old.dungeons[p].counters || {});
-        merged.sales = Array.isArray(old.dungeons[p].sales) ? old.dungeons[p].sales : [];
-        merged.ibos = +old.dungeons[p].ibos || 0;
-        merged.totalPV = +old.dungeons[p].totalPV || 0;
-        merged.salesXP = +old.dungeons[p].salesXP || 0;
-        merged.sponsXP = +old.dungeons[p].sponsXP || 0;
-        merged.key = old.dungeons[p].key || '';
-        out.dungeons[p] = merged;
-      }
-    });
+  // WEEKLY DUNGEON — new shape, or legacy counters ignored
+  out.weeklyDungeon = emptyWeeklyDungeon();
+  if (old.weeklyDungeon && Array.isArray(old.weeklyDungeon.entries)) {
+    out.weeklyDungeon.key = old.weeklyDungeon.key || '';
+    out.weeklyDungeon.entries = old.weeklyDungeon.entries.map(e => ({
+      id: e.id || ('e_' + Math.random().toString(36).slice(2)),
+      productId: e.productId || '',
+      productName: e.productName || '',
+      pv: +e.pv || 0,
+      bv: +e.bv || 0,
+      qty: +e.qty || 1,
+      typeId: e.typeId || 'newCustomer',
+      mult: +e.mult || 1,
+      xp: +e.xp || 0,
+      t: +e.t || Date.now()
+    }));
+    out.weeklyDungeon.totalBV = +old.weeklyDungeon.totalBV || 0;
+    out.weeklyDungeon.totalPV = +old.weeklyDungeon.totalPV || 0;
+    out.weeklyDungeon.totalXP = +old.weeklyDungeon.totalXP || 0;
+    out.weeklyDungeon.countsByType = old.weeklyDungeon.countsByType || { newCustomer: 0, newProduct: 0, recurring: 0, upsell: 0 };
   }
 
   if (Array.isArray(old.weeklyXp) && old.weeklyXp.length === 7) out.weeklyXp = old.weeklyXp.map(n => Math.round(+n || 0));
   out.weekStartKey = old.weekStartKey || '';
-  if (old.weeklyDungeon && typeof old.weeklyDungeon === 'object') {
-    out.weeklyDungeon = {
-      key: old.weeklyDungeon.key || '',
-      counters: (old.weeklyDungeon.counters && typeof old.weeklyDungeon.counters === 'object') ? old.weeklyDungeon.counters : {}
-    };
-  } else {
-    out.weeklyDungeon = { key: '', counters: {} };
-  }
   out.notifSent = (old.notifSent && typeof old.notifSent === 'object') ? old.notifSent : {};
   out.soundEnabled = (old.soundEnabled === false) ? false : true;
   out.dmpTitle = old.dmpTitle || '';
@@ -1878,13 +1925,13 @@ function loadState() {
 }
 
 // ============================================================
-// XP EARN — routes to buffer if gated
+// XP EARN — simple. No gates. Attribute optional.
+// attr: 'strength' | 'power' | 'skill' | undefined (just level XP)
 // ============================================================
-function addXP(amount) {
+function addXP(amount, attr) {
   amount = Math.round(+amount);
   if (!isFinite(amount) || amount <= 0) return;
 
-  // Weekly chart: always record earned XP regardless of gating
   const wk = weekStartKey();
   if (state.weekStartKey !== wk) {
     state.weeklyXp = [0,0,0,0,0,0,0];
@@ -1892,257 +1939,65 @@ function addXP(amount) {
   }
   state.weeklyXp[dayOfWeekIndex()] += amount;
 
-  // Gated? Route to buffer.
-  if (isGated()) {
-    state.bufferedXp = (state.bufferedXp || 0) + amount;
-    return;
-  }
-
-  // Normal flow
   state.totalXp += amount;
   state.xp += amount;
 
+  if (attr && state.stats && state.stats[attr] !== undefined) {
+    state.stats[attr] += amount;
+  }
+
   let needed = xpForNextLevel(state.level);
   while (state.xp >= needed && state.level < LEVEL_CAP) {
     state.xp -= needed;
     state.level++;
-
-    // Just hit a gate? Stash remaining XP in buffer and stop leveling.
-    if (isGated()) {
-      state.bufferedXp = (state.bufferedXp || 0) + state.xp;
-      state.totalXp -= state.xp;
-      state.xp = 0;
-      const nextPin = PINS[state.pinIndex + 1];
-      systemLog('Gate reached at Level ' + state.level + '. ' + nextPin + ' verification required — XP now buffering.');
-      showSystemNotify('▶ GATE REACHED',
-        nextPin.toUpperCase() + ' verification required.\nXP buffering until the pin is earned.');
-      return;
-    }
-
     systemLog('Reached Level ' + state.level + '.');
     playSound('levelup');
-    showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '⚡');
+    showAlert('LEVEL UP\nLEVEL ' + state.level, 'The System has grown stronger.', '\u26a1');
     needed = xpForNextLevel(state.level);
   }
 }
 
 // ============================================================
-// XP BLEED — eat buffer, then current xp, then de-level
+// RANK UP CHECK — fires when totalBV crosses a threshold
 // ============================================================
-function applyBleed(amount, reason) {
-  if (!amount || amount <= 0) return;
-  let remaining = amount;
-  let originalLevel = state.level;
-
-  // 1. Eat buffer first
-  if (state.bufferedXp > 0) {
-    const eaten = Math.min(state.bufferedXp, remaining);
-    state.bufferedXp -= eaten;
-    remaining -= eaten;
+function checkRankUp() {
+  const newRank = rankFromBV(state.totalBV);
+  if (newRank > state.rankIndex) {
+    const from = RANKS[state.rankIndex];
+    const to = RANKS[newRank];
+    state.rankIndex = newRank;
+    systemLog('RANK UP. ' + from + ' \u2192 ' + to + '. Lifetime BV: $' + state.totalBV.toLocaleString() + '.');
+    showAlert('RANK UP\n' + to.toUpperCase(), 'From ' + from + ' to ' + to + '.\nThe System recognizes your strength.', '\ud83c\udfc5');
+    playSound('levelup');
   }
-
-  // 2. Eat current level XP
-  if (remaining > 0 && state.xp > 0) {
-    const eaten = Math.min(state.xp, remaining);
-    state.xp -= eaten;
-    state.totalXp = Math.max(0, state.totalXp - eaten);
-    remaining -= eaten;
-  }
-
-  // 3. De-level
-  while (remaining > 0 && state.level > 1) {
-    state.level--;
-    const refill = xpForNextLevel(state.level);
-    state.xp = refill;
-    const eaten = Math.min(refill, remaining);
-    state.xp -= eaten;
-    state.totalXp = Math.max(0, state.totalXp - eaten);
-    remaining -= eaten;
-  }
-
-  if (state.totalXp < 0) state.totalXp = 0;
-  if (state.xp < 0) state.xp = 0;
-
-  let subtitle = '-' + amount + ' XP';
-  if (reason) subtitle += '\n' + reason;
-  if (state.level < originalLevel) subtitle += '\nLevel: ' + originalLevel + ' → ' + state.level;
-  let logMsg = 'XP bleed: -' + amount + ' XP' + (reason ? ' (' + reason + ')' : '') + '.';
-  if (state.level < originalLevel) logMsg += ' Fell from Level ' + originalLevel + ' to ' + state.level + '.';
-  systemLog(logMsg);
-  showAlert('XP BLEED', subtitle, '⚠');
 }
 
 // ============================================================
-// DAILY MISS DETECTION
+// STREAK CHECK — streak break only, no bleed
 // ============================================================
 function checkDailyMissOnBoot() {
   if (!state.dailyQuests || !state.dailyQuests.length) return;
-  if (!state.lastQuestCompleteDate) return; // Never completed a quest yet — no penalty
+  if (!state.lastQuestCompleteDate) return;
 
   const today = todayKey();
-  if (state.lastQuestCompleteDate === today) return; // Already active today
+  if (state.lastQuestCompleteDate === today) return;
 
-  // Number of full days missed (excluding today, which is still in progress)
-  // If last activity was yesterday, daysSince = 1 — but that's not yet a "miss day" since today is still in play.
-  // A miss day is a calendar day with no completed quests that has already ended.
   const daysSinceLast = daysBetween(state.lastQuestCompleteDate, today);
-  const missedDays = daysSinceLast - 1; // -1 to exclude today
+  const missedDays = daysSinceLast - 1;
 
   if (missedDays <= 0) return;
 
-  // Streak breaks on the first missed day
   if (state.streak > 0) {
     systemLog('Daily quest streak broken at ' + state.streak + ' day' + (state.streak === 1 ? '' : 's') + '.');
     state.streak = 0;
-    showAlert('STREAK BROKEN', 'Your daily quest streak has ended.', '💔');
-  }
-
-  // Compute bleed
-  let bleed = 0;
-  for (let i = 1; i <= missedDays; i++) {
-    if (i === 1)      bleed += BLEED_DAY_1;
-    else if (i === 2) bleed += BLEED_DAY_2;
-    else              bleed += BLEED_DAY_3_PLUS;
-  }
-
-  applyBleed(bleed, missedDays + ' day(s) of inactivity');
-}
-
-// ============================================================
-// PERIOD ROLLOVER + EVALUATION
-// ============================================================
-function ensurePeriodKey(period) {
-  const d = state.dungeons[period];
-  let key;
-  if (period === 'daily')   key = todayKey();
-  if (period === 'weekly')  key = weekStartKey();
-  if (period === 'monthly') key = monthStartKey();
-
-  if (d.key && d.key !== key) {
-    evaluateClosedPeriod(period, d);
-  }
-  if (d.key !== key) {
-    state.dungeons[period] = emptyDungeonPeriod();
-    state.dungeons[period].key = key;
+    showAlert('STREAK BROKEN', 'Your daily quest streak has ended.', '\ud83d\udc94');
   }
 }
 
-function checkPeriodRollovers() { ['daily','weekly','monthly'].forEach(ensurePeriodKey); }
-
-function evaluateClosedPeriod(period, oldData) {
-  const targets = targetsForPin(state.pinIndex);
-  if (period === 'weekly') {
-    if (oldData.totalPV < targets.weekly) {
-      applyBleed(BLEED_WEEKLY_MISS,
-        'Weekly hunt incomplete: ' + oldData.totalPV + ' / ' + targets.weekly + ' PV');
-    }
-  }
-  if (period === 'monthly') {
-    if (oldData.totalPV < targets.monthly) {
-      state.monthlyStrikes = (state.monthlyStrikes || 0) + 1;
-      if (state.monthlyStrikes >= 2 && state.pinIndex >= 1) {
-        triggerDeRank();
-      } else {
-        showSystemNotify('⚠ MONTHLY MISS',
-          'PV target missed: ' + oldData.totalPV + ' / ' + targets.monthly +
-          '.\nOne more miss triggers de-rank.');
-      }
-    } else {
-      state.monthlyStrikes = 0;
-    }
-  }
-}
-
-function targetsForPin(pinIdx) {
-  const monthly = MONTHLY_PV_TARGETS[clamp(pinIdx, 0, 5)];
-  return {
-    daily:   Math.round(monthly / 30),
-    weekly:  Math.round(monthly / 4.3),
-    monthly: monthly
-  };
-}
-
-// ============================================================
-// DE-RANK
-// ============================================================
-function triggerDeRank() {
-  if (state.pinIndex < 1) return;
-  const lostPin = PINS[state.pinIndex];
-  state.pinIndex--;
-  // Snap level to floor of new pin (pinIndex 0 → L1, pinIndex 1 → L20, etc.)
-  const floor = PIN_LEVELS[state.pinIndex] || 1;
-  state.level = floor;
-  state.xp = 0;
-  state.bufferedXp = 0;
-  state.totalXp = totalXpForLevel(state.level);
-  state.monthlyStrikes = 0;
-  systemLog('DE-RANK. ' + lostPin + ' forfeit. Level snapped to ' + state.level + '. All buffered XP lost.');
-  showSystemNotify('⚠ DE-RANK',
-    lostPin + ' has been forfeit.\nLevel snapped to ' + state.level + '.\nAll buffered XP lost.');
-}
-
-// ============================================================
-// PIN CONFIRMATION = BREAKTHROUGH CASCADE
-// ============================================================
-function openPinConfirm() {
-  if (state.pinIndex >= 5) return;
-  if (!isGated()) {
-    showToast('REACH LEVEL ' + PIN_LEVELS[state.pinIndex + 1] + ' FIRST');
-    return;
-  }
-  const next = PINS[state.pinIndex + 1];
-  $('rank-confirm-target').innerHTML = '→ ' + next;
-  $('rank-confirm-overlay').classList.add('show');
-}
-
-function submitPinUp() {
-  if (state.pinIndex >= 5) return;
-  if (!isGated()) {
-    closeRankConfirm();
-    showToast('NOT AT A GATE');
-    return;
-  }
-  const startLevel = state.level;
-  state.pinIndex++;
-
-  // Release buffered XP. Cascade through levels.
-  const buffered = state.bufferedXp || 0;
-  state.bufferedXp = 0;
-  state.totalXp += buffered;
-  state.xp += buffered;
-
-  let needed = xpForNextLevel(state.level);
-  while (state.xp >= needed && state.level < LEVEL_CAP) {
-    state.xp -= needed;
-    state.level++;
-    // If we crash into the next gate during cascade, stash excess
-    if (isGated()) {
-      state.bufferedXp = state.xp;
-      state.totalXp -= state.xp;
-      state.xp = 0;
-      break;
-    }
-    needed = xpForNextLevel(state.level);
-  }
-
-  // Pin reward: +50 to each stat
-  state.stats.sales += 50;
-  state.stats.sponsoring += 50;
-
-  closeRankConfirm();
-  const jumped = state.level - startLevel;
-  const earnedPin = PINS[state.pinIndex];
-  const subtitle = earnedPin + ' confirmed.\n' +
-    'Level ' + startLevel + ' → ' + state.level +
-    (jumped > 0 ? ' (+' + jumped + ' levels)' : '') +
-    (state.bufferedXp > 0 ? '\n' + Math.floor(state.bufferedXp) + ' XP buffered for next gate.' : '') +
-    '\n+50 to all stats.';
-  systemLog('BREAKTHROUGH. ' + earnedPin + ' confirmed. Level ' + startLevel + ' \u2192 ' + state.level +
-    (jumped > 0 ? ' (+' + jumped + ' levels)' : '') + '. +50 to all stats.');
-  showAlert('BREAKTHROUGH\n' + earnedPin.toUpperCase(), subtitle, '🏅');
-  renderAll();
-  saveState();
-}
+// Legacy no-ops kept so older call sites don't crash
+function checkPeriodRollovers() {}
+function applyBleed() {}
+function targetsForPin() { return { daily: 0, weekly: 0, monthly: 0 }; }
 
 // ============================================================
 // PANEL SWITCHING
@@ -2166,22 +2021,15 @@ function switchPanel(name, btn) {
 function updateHeader() {
   $('player-name').textContent = state.playerName || 'Hunter';
   $('level-display').textContent = state.level;
+  document.body.classList.remove('gate-locked');
 
-  if (isGated()) {
-    document.body.classList.add('gate-locked');
-    // Show buffered XP instead of level XP
-    $('xp-display').textContent = Math.floor(state.bufferedXp) + ' XP buffered';
-    $('xp-bar').style.width = '100%'; // bar always full when gated (level is maxed at this gate)
+  const needed = xpForNextLevel(state.level);
+  if (!isFinite(needed)) {
+    $('xp-display').textContent = 'MAX LEVEL';
+    $('xp-bar').style.width = '100%';
   } else {
-    document.body.classList.remove('gate-locked');
-    const needed = xpForNextLevel(state.level);
-    if (!isFinite(needed)) {
-      $('xp-display').textContent = 'MAX LEVEL';
-      $('xp-bar').style.width = '100%';
-    } else {
-      $('xp-display').textContent = Math.floor(state.xp) + ' / ' + needed;
-      $('xp-bar').style.width = clamp(state.xp / needed * 100, 0, 100) + '%';
-    }
+    $('xp-display').textContent = Math.floor(state.xp) + ' / ' + needed;
+    $('xp-bar').style.width = clamp(state.xp / needed * 100, 0, 100) + '%';
   }
 }
 
@@ -2277,17 +2125,12 @@ function renderQuests() {
   $('quest-bar').style.width = pct + '%';
   $('quest-pct').textContent = Math.round(pct) + '%';
 
-  // Second Awakening goal section
+  // First Goal section
   if ($('quest-awakening-goal')) {
     $('quest-awakening-goal').textContent = state.awakeningGoal || 'No goal set. Tap EDIT to define one.';
   }
-  if (state.secondAwakeningComplete) {
-    if ($('awakening-goal-action')) $('awakening-goal-action').style.display = 'none';
-    if ($('awakening-goal-done'))   $('awakening-goal-done').style.display = 'block';
-  } else {
-    if ($('awakening-goal-action')) $('awakening-goal-action').style.display = 'block';
-    if ($('awakening-goal-done'))   $('awakening-goal-done').style.display = 'none';
-  }
+  if ($('awakening-goal-action')) $('awakening-goal-action').style.display = 'block';
+  if ($('awakening-goal-done'))   $('awakening-goal-done').style.display = 'none';
 
   renderDungeonBox();
 }
@@ -2525,14 +2368,21 @@ function dungeonWeekKey(ref = new Date()) {
 
 function ensureWeeklyDungeon() {
   const wk = dungeonWeekKey();
-  if (!state.weeklyDungeon) state.weeklyDungeon = { key: '', counters: {} };
-  if (state.weeklyDungeon.key !== wk) {
-    state.weeklyDungeon = { key: wk, counters: {} };
+  if (!state.weeklyDungeon || typeof state.weeklyDungeon !== 'object') {
+    state.weeklyDungeon = emptyWeeklyDungeon();
   }
+  if (!state.weeklyDungeon.key) {
+    state.weeklyDungeon.key = wk;
+  } else if (state.weeklyDungeon.key !== wk) {
+    // Week rolled over — archive and start fresh
+    state.weeklyDungeon = emptyWeeklyDungeon();
+    state.weeklyDungeon.key = wk;
+  }
+  if (!state.weeklyDungeon.entries) state.weeklyDungeon.entries = [];
+  if (!state.weeklyDungeon.countsByType) state.weeklyDungeon.countsByType = { newCustomer: 0, newProduct: 0, recurring: 0, upsell: 0 };
 }
 
 function weekResetText() {
-  // Time until the next Tuesday 8PM EST
   const now = new Date();
   const nextReset = dungeonResetBoundary(now) + 7 * 86400000;
   const ms = nextReset - now.getTime();
@@ -2549,60 +2399,194 @@ function renderDungeonBox() {
   const grid = $('dungeon-counter-grid');
   if (!grid) return;
   if ($('dungeon-reset')) $('dungeon-reset').textContent = weekResetText();
-  grid.innerHTML = WEEKLY_METRICS.map(([id, label]) => {
-    const count = state.weeklyDungeon.counters[id] || 0;
-    return `
-      <div class="counter-card">
-        <div class="counter-label">${label}</div>
-        <div class="counter-controls">
-          <button class="quest-counter-btn" onclick="openDungeonCounter('${id}')">TRACK</button>
-          <div class="counter-val">${count}</div>
-        </div>
-      </div>`;
-  }).join('');
+  const d = state.weeklyDungeon;
+  const totals = {
+    bv: d.totalBV || 0,
+    pv: d.totalPV || 0,
+    xp: d.totalXP || 0,
+    count: (d.entries || []).length
+  };
+  // Header summary + type counters
+  let html = '';
+  html += `<div class="dungeon-summary-row">`;
+  html += `<div class="dungeon-sum-cell"><div class="dungeon-sum-label">THIS WEEK</div><div class="dungeon-sum-val">${totals.count} SALES</div></div>`;
+  html += `<div class="dungeon-sum-cell"><div class="dungeon-sum-label">BV</div><div class="dungeon-sum-val">$${Math.round(totals.bv).toLocaleString()}</div></div>`;
+  html += `<div class="dungeon-sum-cell"><div class="dungeon-sum-label">PV</div><div class="dungeon-sum-val">${Math.round(totals.pv).toLocaleString()}</div></div>`;
+  html += `<div class="dungeon-sum-cell"><div class="dungeon-sum-label">XP</div><div class="dungeon-sum-val">+${Math.round(totals.xp).toLocaleString()}</div></div>`;
+  html += `</div>`;
+
+  // Type counters
+  html += `<div class="dungeon-type-grid">`;
+  SALE_TYPES.forEach(t => {
+    const n = (d.countsByType && d.countsByType[t.id]) || 0;
+    html += `<div class="dungeon-type-cell" onclick="openLogSale('${t.id}')">`;
+    html += `<div class="dungeon-type-label" style="color:${t.color}">${t.label.toUpperCase()}</div>`;
+    html += `<div class="dungeon-type-count">${n}</div>`;
+    html += `<div class="dungeon-type-mult">\u00d7${t.multiplier}</div>`;
+    html += `</div>`;
+  });
+  html += `</div>`;
+
+  // Recent entries log
+  const recent = (d.entries || []).slice(-6).reverse();
+  if (recent.length) {
+    html += `<div class="dungeon-log">`;
+    html += `<div class="dungeon-log-head">\u25B6 RECENT KILLS</div>`;
+    recent.forEach(e => {
+      const t = SALE_TYPES.find(x => x.id === e.typeId) || SALE_TYPES[0];
+      html += `<div class="dungeon-log-row">`;
+      html += `<div class="dungeon-log-name">${escapeHtml(e.productName || 'Sale')}${e.qty > 1 ? ' \u00d7'+e.qty : ''}</div>`;
+      html += `<div class="dungeon-log-meta">$${Math.round((+e.bv||0)*(+e.qty||1)).toLocaleString()} \u00b7 ${t.label}</div>`;
+      html += `<div class="dungeon-log-xp">+${Math.round(e.xp||0).toLocaleString()} XP</div>`;
+      html += `</div>`;
+    });
+    html += `</div>`;
+  }
+
+  grid.innerHTML = html;
 }
 
-let _dungeonMetricId = null;
-let _dungeonCounterTemp = 0;
+// ============================================================
+// LOG SALE — product library + sale entry
+// ============================================================
+let _logSaleTypeId = 'newCustomer';
+let _logSaleProductId = null;
 
-function openDungeonCounter(id) {
+function openLogSale(typeId) {
+  _logSaleTypeId = typeId || 'newCustomer';
+  _logSaleProductId = null;
+  const overlay = $('log-sale-overlay');
+  if (!overlay) return;
+  renderLogSaleModal();
+  overlay.classList.add('show');
+}
+function closeLogSale() { if ($('log-sale-overlay')) $('log-sale-overlay').classList.remove('show'); }
+
+function renderLogSaleModal() {
+  const t = SALE_TYPES.find(x => x.id === _logSaleTypeId) || SALE_TYPES[0];
+  const nameEl = $('log-sale-type');
+  if (nameEl) nameEl.textContent = t.label.toUpperCase() + '  \u00d7' + t.multiplier;
+  // Toggle active pill
+  document.querySelectorAll('.log-sale-type-pill').forEach(el => {
+    if (el.getAttribute('data-tid') === _logSaleTypeId) el.classList.add('active');
+    else el.classList.remove('active');
+  });
+  const lib = (state.products || []);
+  const libEl = $('log-sale-library');
+  if (libEl) {
+    if (!lib.length) {
+      libEl.innerHTML = '<div class="log-sale-empty">No products yet. Add one below \u2014 it will be saved for next time.</div>';
+    } else {
+      libEl.innerHTML = lib.map(p => {
+        const sel = (p.id === _logSaleProductId) ? ' selected' : '';
+        return `<div class="log-sale-prod${sel}" onclick="selectLogSaleProduct('${p.id}')">
+          <div class="log-sale-prod-name">${escapeHtml(p.name)}</div>
+          <div class="log-sale-prod-meta">PV ${p.pv} \u00b7 BV $${p.bv}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+  // Pre-fill PV/BV from selected product
+  const sel = lib.find(p => p.id === _logSaleProductId);
+  if ($('log-sale-name')) $('log-sale-name').value = sel ? sel.name : '';
+  if ($('log-sale-pv'))   $('log-sale-pv').value = sel ? sel.pv : '';
+  if ($('log-sale-bv'))   $('log-sale-bv').value = sel ? sel.bv : '';
+  if ($('log-sale-qty') && !$('log-sale-qty').value) $('log-sale-qty').value = 1;
+  updateLogSalePreview();
+}
+
+function selectLogSaleProduct(id) {
+  _logSaleProductId = id;
+  renderLogSaleModal();
+}
+
+function setLogSaleType(id) {
+  _logSaleTypeId = id;
+  renderLogSaleModal();
+}
+
+function updateLogSalePreview() {
+  const t = SALE_TYPES.find(x => x.id === _logSaleTypeId) || SALE_TYPES[0];
+  const bv = +($('log-sale-bv') ? $('log-sale-bv').value : 0) || 0;
+  const qty = Math.max(1, +($('log-sale-qty') ? $('log-sale-qty').value : 1) || 1);
+  const xp = Math.round(bv * qty * t.multiplier * BASE_XP_PER_BV);
+  const totalBV = bv * qty;
+  const el = $('log-sale-preview');
+  if (el) el.innerHTML = `<b>+${xp.toLocaleString()} XP</b> \u00b7 $${Math.round(totalBV).toLocaleString()} BV`;
+}
+
+function submitLogSale() {
+  const name = ($('log-sale-name') ? $('log-sale-name').value : '').trim();
+  const pv = +($('log-sale-pv') ? $('log-sale-pv').value : 0) || 0;
+  const bv = +($('log-sale-bv') ? $('log-sale-bv').value : 0) || 0;
+  const qty = Math.max(1, Math.round(+($('log-sale-qty') ? $('log-sale-qty').value : 1) || 1));
+  if (!name) { showToast('PRODUCT NAME REQUIRED'); return; }
+  if (bv <= 0) { showToast('BV MUST BE > 0'); return; }
+
+  const t = SALE_TYPES.find(x => x.id === _logSaleTypeId) || SALE_TYPES[0];
+  const xp = Math.round(bv * qty * t.multiplier * BASE_XP_PER_BV);
+  const totalBV = bv * qty;
+  const totalPV = pv * qty;
+
+  // Add/update product library (match by lowercase name)
+  if (!state.products) state.products = [];
+  let prod = state.products.find(p => (p.name || '').toLowerCase() === name.toLowerCase());
+  if (!prod) {
+    prod = { id: 'prod_' + Math.random().toString(36).slice(2, 10), name, pv, bv, firstLoggedAt: Date.now() };
+    state.products.push(prod);
+    showToast('NEW PRODUCT UNLOCKED');
+  } else {
+    // Refresh PV/BV in case he adjusted
+    prod.pv = pv;
+    prod.bv = bv;
+  }
+
   ensureWeeklyDungeon();
-  const metric = WEEKLY_METRICS.find(m => m[0] === id);
-  if (!metric) return;
-  _dungeonMetricId = id;
-  _dungeonCounterTemp = state.weeklyDungeon.counters[id] || 0;
-  $('dungeon-counter-name').textContent = metric[1].toUpperCase();
-  updateDungeonCounterModal();
-  $('dungeon-counter-overlay').classList.add('show');
-}
-function closeDungeonCounter() { $('dungeon-counter-overlay').classList.remove('show'); _dungeonMetricId = null; }
-function updateDungeonCounterModal() {
-  $('dungeon-counter-val').textContent = _dungeonCounterTemp;
-  $('dungeon-counter-info').textContent = 'This week';
-}
-function stepDungeonCounter(dir) {
-  _dungeonCounterTemp = Math.max(0, _dungeonCounterTemp + dir);
-  updateDungeonCounterModal();
-}
-function saveDungeonCounter() {
-  if (!_dungeonMetricId) { closeDungeonCounter(); return; }
-  ensureWeeklyDungeon();
-  const metric = WEEKLY_METRICS.find(m => m[0] === _dungeonMetricId);
-  const xpPer = metric ? metric[2] : COUNTER_XP;
-  const prev = state.weeklyDungeon.counters[_dungeonMetricId] || 0;
-  const next = _dungeonCounterTemp;
-  state.weeklyDungeon.counters[_dungeonMetricId] = next;
+  const entry = {
+    id: 'e_' + Math.random().toString(36).slice(2, 10),
+    productId: prod.id,
+    productName: prod.name,
+    pv, bv, qty,
+    typeId: t.id,
+    mult: t.multiplier,
+    xp,
+    t: Date.now()
+  };
+  const d = state.weeklyDungeon;
+  d.entries.push(entry);
+  d.totalBV = (d.totalBV || 0) + totalBV;
+  d.totalPV = (d.totalPV || 0) + totalPV;
+  d.totalXP = (d.totalXP || 0) + xp;
+  if (!d.countsByType) d.countsByType = { newCustomer:0, newProduct:0, recurring:0, upsell:0 };
+  d.countsByType[t.id] = (d.countsByType[t.id] || 0) + 1;
 
-  // XP only for newly-added increments
-  const gained = (next > prev) ? Math.round((next - prev) * xpPer) : 0;
-  if (gained > 0) addXP(gained);
+  // Lifetime totals
+  state.totalBV = (state.totalBV || 0) + totalBV;
+  state.totalPV = (state.totalPV || 0) + totalPV;
+  state.totalSales = (state.totalSales || 0) + 1;
 
-  closeDungeonCounter();
+  // XP: Strength (money/rank) + Skill (craft)
+  addXP(xp, 'strength');
+  addXP(Math.round(xp / 2), 'skill');
+
+  checkRankUp();
+  systemLog('Sale logged: ' + name + (qty>1?' \u00d7'+qty:'') + ' \u00b7 ' + t.label + ' \u00b7 +' + xp.toLocaleString() + ' XP.');
+
+  closeLogSale();
   renderDungeonBox();
+  renderStatus();
   updateHeader();
   saveState();
-  if (gained > 0) showToast('+' + gained + ' XP');
+  playSound('counter');
+  showToast('+' + xp.toLocaleString() + ' XP');
 }
+
+// Legacy-named handlers kept so older HTML wiring does not crash
+function openDungeonCounter(id) { openLogSale('newCustomer'); }
+function closeDungeonCounter() { closeLogSale(); }
+function updateDungeonCounterModal() {}
+function stepDungeonCounter() {}
+function saveDungeonCounter() { closeLogSale(); }
 
 // First goal (Second Awakening condition)
 function openEditGoal() {
@@ -2947,44 +2931,46 @@ function renderSalesLog(period) {
 // STATUS
 // ============================================================
 function renderStatus() {
-  if ($('status-name'))      $('status-name').textContent = state.playerName || '—';
-  if ($('status-pin'))       $('status-pin').textContent = PINS[state.pinIndex];
+  if ($('status-name'))      $('status-name').textContent = state.playerName || '\u2014';
+  if ($('status-pin'))       $('status-pin').textContent = RANKS[state.rankIndex] || 'E';
   if ($('status-level'))     $('status-level').textContent = state.level;
   if ($('streak-display'))   $('streak-display').textContent = state.streak + ' Days';
-  if ($('total-xp-display')) $('total-xp-display').textContent = Math.floor(state.totalXp);
+  if ($('total-xp-display')) $('total-xp-display').textContent = Math.floor(state.totalXp).toLocaleString();
 
-  // Gate banner — only when at a gate awaiting pin verification
   const gateBanner = $('gate-banner');
-  if (gateBanner) {
-    if (isGated()) {
-      gateBanner.style.display = 'block';
-      const nextPin = PINS[state.pinIndex + 1];
-      if ($('gate-banner-label')) $('gate-banner-label').textContent = '▶ AWAITING ' + nextPin.toUpperCase() + ' VERIFICATION';
-      if ($('gate-banner-sub'))   $('gate-banner-sub').textContent = 'Level frozen at ' + state.level + '. Earn ' + nextPin + ' in real life to release the buffer.';
-      // Estimate how many levels the buffer would cascade
-      const buffered = state.bufferedXp || 0;
-      let estLevels = 0, sim = buffered, simLvl = state.level;
-      while (sim >= xpForNextLevel(simLvl) && simLvl < LEVEL_CAP) {
-        sim -= xpForNextLevel(simLvl);
-        simLvl++;
-        estLevels++;
-      }
-      if ($('gate-banner-amount')) $('gate-banner-amount').textContent = Math.floor(buffered).toLocaleString() + ' XP buffered';
-      if ($('gate-banner-est'))    $('gate-banner-est').textContent = estLevels + ' level' + (estLevels === 1 ? '' : 's') + ' ready';
-      if ($('gate-banner-btn'))    $('gate-banner-btn').textContent = '[ CONFIRM ' + nextPin.toUpperCase() + ' ]';
+  if (gateBanner) gateBanner.style.display = 'none';
+
+  // RANK BAR — progress from current rank to next (by lifetime BV)
+  if ($('rank-bar')) {
+    $('rank-bar').style.width = (rankProgress() * 100) + '%';
+  }
+  if ($('rank-bar-label')) {
+    const next = nextRankBV();
+    if (next === null) {
+      $('rank-bar-label').textContent = 'National Level reached';
     } else {
-      gateBanner.style.display = 'none';
+      const bv = state.totalBV || 0;
+      $('rank-bar-label').textContent = '$' + Math.round(bv).toLocaleString() + ' / $' + next.toLocaleString() + ' BV';
     }
   }
+  if ($('rank-hint')) $('rank-hint').textContent = RANK_HINTS[state.rankIndex] || '';
+  if ($('rank-income')) $('rank-income').textContent = 'Income: ' + (RANK_INCOME[state.rankIndex] || '');
+  if ($('rank-sales'))  $('rank-sales').textContent = 'Sales: ' + (RANK_SALES[state.rankIndex] || '');
 
-  // Stats — gated on second awakening
-  const statVis = state.secondAwakeningComplete ? 1 : 0.4;
-  document.querySelectorAll('.stat-card').forEach(c => c.style.opacity = statVis);
-  if ($('stat-sales'))      $('stat-sales').textContent = Math.floor(state.stats.sales);
-  if ($('stat-sponsoring')) $('stat-sponsoring').textContent = Math.floor(state.stats.sponsoring);
-  const maxStat = Math.max(1000, state.stats.sales, state.stats.sponsoring);
-  if ($('bar-sales'))      $('bar-sales').style.width = clamp(state.stats.sales / maxStat * 100, 2, 100) + '%';
-  if ($('bar-sponsoring')) $('bar-sponsoring').style.width = clamp(state.stats.sponsoring / maxStat * 100, 2, 100) + '%';
+  // THREE STATS — Strength, Power, Skill
+  document.querySelectorAll('.stat-card').forEach(c => c.style.opacity = 1);
+  if ($('stat-strength')) $('stat-strength').textContent = Math.floor(state.stats.strength || 0).toLocaleString();
+  if ($('stat-power'))    $('stat-power').textContent = Math.floor(state.stats.power || 0).toLocaleString();
+  if ($('stat-skill'))    $('stat-skill').textContent = Math.floor(state.stats.skill || 0).toLocaleString();
+  const maxStat = Math.max(1000, state.stats.strength || 0, state.stats.power || 0, state.stats.skill || 0);
+  if ($('bar-strength')) $('bar-strength').style.width = clamp((state.stats.strength || 0) / maxStat * 100, 2, 100) + '%';
+  if ($('bar-power'))    $('bar-power').style.width = clamp((state.stats.power || 0) / maxStat * 100, 2, 100) + '%';
+  if ($('bar-skill'))    $('bar-skill').style.width = clamp((state.stats.skill || 0) / maxStat * 100, 2, 100) + '%';
+
+  // Lifetime totals
+  if ($('lifetime-bv'))    $('lifetime-bv').textContent = '$' + Math.round(state.totalBV || 0).toLocaleString();
+  if ($('lifetime-pv'))    $('lifetime-pv').textContent = Math.round(state.totalPV || 0).toLocaleString();
+  if ($('lifetime-sales')) $('lifetime-sales').textContent = (state.totalSales || 0).toLocaleString();
 
   // Weekly chart
   const chart = $('weekly-chart');
@@ -3003,85 +2989,71 @@ function renderStatus() {
 }
 
 function showStatPopup(stat) {
-  if (stat === 'sales') {
-    showPopup('[ STAT — SALES ]', 'Sales',
-      'Your sword. Grown by logging actual sales and customer-side activity. Tier multipliers reward higher-PV products: Tier 1 (&lt;50 PV) ×1, Tier 2 (51–99) ×2, Tier 3 (100+) ×3.<br><br>Current: <b>' + Math.floor(state.stats.sales) + '</b>');
+  if (stat === 'strength') {
+    showPopup('[ STAT \u2014 STRENGTH ]', 'Strength',
+      'Money. Your rank. Built by sales output. Every $1 BV sold = 1 XP toward Strength (before multipliers). Recurring sales \u00d71.5, upsells \u00d72.<br><br>Current: <b>' + Math.floor(state.stats.strength||0).toLocaleString() + '</b>');
+  } else if (stat === 'power') {
+    showPopup('[ STAT \u2014 POWER ]', 'Power',
+      'Followers. The army. People who trust you, support you, and will buy from you. The deeper form of strength \u2014 what Jinwoo had with his shadow army.<br><br>Current: <b>' + Math.floor(state.stats.power||0).toLocaleString() + '</b>');
   } else {
-    showPopup('[ STAT — SPONSORING ]', 'Sponsoring',
-      'Multiplies your damage. Every IBO launched adds another sword to the army. +500 XP per launch. Sponsoring activity counters add XP per tick.<br><br>Current: <b>' + Math.floor(state.stats.sponsoring) + '</b>');
+    showPopup('[ STAT \u2014 SKILL ]', 'Skill',
+      'Sales craft. The one skill that drives everything. Grows from every sale (half the XP of Strength) plus daily training.<br><br>Current: <b>' + Math.floor(state.stats.skill||0).toLocaleString() + '</b>');
   }
 }
 
-function openRankConfirm() { openPinConfirm(); }
-function closeRankConfirm() { $('rank-confirm-overlay').classList.remove('show'); }
+function openRankConfirm() { /* no-op in new system */ }
+function closeRankConfirm() { if ($('rank-confirm-overlay')) $('rank-confirm-overlay').classList.remove('show'); }
+function openPinConfirm() {}
+function submitPinUp() {}
+function triggerDeRank() {}
+
+// Manual Power XP add (for followers / list growth / etc.)
+function addPowerXP(amount) {
+  amount = Math.round(+amount || 0);
+  if (amount > 0) {
+    addXP(amount, 'power');
+    systemLog('Power +' + amount + ' XP.');
+    renderStatus();
+    updateHeader();
+    saveState();
+  }
+}
 
 // ============================================================
-// AWAKENING
+// AWAKENING (legacy stub \u2014 goal-mark button stays functional for personal milestone)
 // ============================================================
 function promptSecondAwakening() {
-  $('awakening-goal-confirm').textContent = state.awakeningGoal || 'No goal set — proceed by your own word.';
-  $('awakening-overlay').classList.add('show');
+  if ($('awakening-goal-confirm')) $('awakening-goal-confirm').textContent = state.awakeningGoal || 'No goal set \u2014 proceed by your own word.';
+  if ($('awakening-overlay')) $('awakening-overlay').classList.add('show');
 }
-function cancelSecondAwakening() { $('awakening-overlay').classList.remove('show'); }
+function cancelSecondAwakening() { if ($('awakening-overlay')) $('awakening-overlay').classList.remove('show'); }
 function confirmSecondAwakening() {
-  state.secondAwakeningComplete = true;
-  $('awakening-overlay').classList.remove('show');
-  applyAwakenedTheme();
-  systemLog('SECOND AWAKENING. First goal achieved: "' + (state.awakeningGoal || 'goal') + '". Stats, Dungeons, Items and Skills unlocked.');
+  if ($('awakening-overlay')) $('awakening-overlay').classList.remove('show');
+  systemLog('First goal marked complete: "' + (state.awakeningGoal || 'goal') + '".');
+  showAlert('GOAL ACHIEVED', 'First goal complete.\nThe System recognizes your word.', '\u26a1');
   renderQuests();
   renderMission();
-  renderDungeonView();
   renderStatus();
-  showAlert('ARISE.', 'The Second Awakening is complete.\nDungeons unlocked.\nStats unlocked.', '⚡');
   saveState();
 }
-function applyAwakenedTheme() {
-  document.body.classList.toggle('awakened', !!state.secondAwakeningComplete);
-}
+function applyAwakenedTheme() { /* no-op \u2014 theme is always primary in new system */ }
 
 // ============================================================
-// MISSION
+// MISSION — DMP + log, always accessible
 // ============================================================
 function renderMission() {
-  // Mission tab is locked until the Second Awakening
-  if (!state.secondAwakeningComplete) {
-    if ($('mission-lock-screen')) $('mission-lock-screen').style.display = 'block';
-    if ($('mission-content'))     $('mission-content').style.display = 'none';
-    return;
-  }
   if ($('mission-lock-screen')) $('mission-lock-screen').style.display = 'none';
   if ($('mission-content'))     $('mission-content').style.display = 'block';
-
   if ($('dmp-title')) $('dmp-title').textContent = state.dmpTitle || 'Not yet defined.';
   if ($('dmp-sub'))   $('dmp-sub').textContent = state.dmpSub || 'Set your Definite Major Purpose to begin.';
-
   renderLog();
 }
 
-// Milestones now live in the Status tab
 function renderMilestones() {
   if ($('awakening-goal-text')) $('awakening-goal-text').textContent = state.awakeningGoal || 'Goal not yet defined.';
-
-  if (state.secondAwakeningComplete) {
-    if ($('awakening-complete-label')) $('awakening-complete-label').style.display = 'block';
-    if ($('milestone-second'))         $('milestone-second').classList.remove('locked');
-  } else {
-    if ($('awakening-complete-label')) $('awakening-complete-label').style.display = 'none';
-  }
-
-  // Platinum milestone unlocked when pinIndex >= 1
-  if ($('milestone-platinum')) {
-    $('milestone-platinum').classList.toggle('locked', state.pinIndex < 1);
-  }
-  // Diamond milestone unlocked when pinIndex >= 5
-  if ($('milestone-diamond')) {
-    $('milestone-diamond').classList.toggle('locked', state.pinIndex < 5);
-  }
-  // Crown lore — only visible AFTER Diamond achieved
-  if ($('milestone-crown')) {
-    $('milestone-crown').style.display = state.pinIndex >= 5 ? 'block' : 'none';
-    $('milestone-crown').classList.remove('locked');
-  }
+  // Rank-based milestones
+  if ($('milestone-s'))    $('milestone-s').classList.toggle('locked', state.rankIndex < 5);
+  if ($('milestone-nat'))  $('milestone-nat').classList.toggle('locked', state.rankIndex < 6);
 }
 
 // ============================================================
@@ -3663,6 +3635,11 @@ window.openLogSale = openLogSale;
 window.closeLogSale = closeLogSale;
 window.updateSalePreview = updateSalePreview;
 window.submitSale = submitSale;
+window.selectLogSaleProduct = selectLogSaleProduct;
+window.setLogSaleType = setLogSaleType;
+window.updateLogSalePreview = updateLogSalePreview;
+window.submitLogSale = submitLogSale;
+window.addPowerXP = addPowerXP;
 window.openLaunchIBO = openLaunchIBO;
 window.closeLaunchIBO = closeLaunchIBO;
 window.submitIBOLaunch = submitIBOLaunch;
